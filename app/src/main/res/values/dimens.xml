@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- slpt = screen off state -->
+
+    <!-- Hours -->
+    <dimen name="hours_font_size">93px</dimen>
+    <dimen name="hours_left">100px</dimen>
+    <dimen name="hours_top">136px</dimen>
+
+    <!-- Minutes -->
+    <dimen name="minutes_font_size">95px</dimen>
+    <dimen name="minutes_left">218px</dimen>
+    <dimen name="minutes_top">138px</dimen>
+
+    <!-- Seconds -->
+    <dimen name="seconds_font_size">95px</dimen>
+    <dimen name="seconds_top">160px</dimen>
+    <dimen name="seconds_left">155px</dimen>
+
+    <!-- AM / PM -->
+    <dimen name="ampm_font_size">30px</dimen>
+    <dimen name="ampm_top">141px</dimen>
+    <dimen name="ampm_left">155px</dimen>
+
+    <!-- indicator ":" -->
+    <dimen name="indicator_font_size">91px</dimen>
+    <dimen name="indicator_left">158px</dimen>
+    <dimen name="indicator_top">139px</dimen>
+
+    <!-- battery -->
+    <dimen name="battery_font_size">24px</dimen>
+    <dimen name="battery_text_left">400px</dimen>
+    <dimen name="battery_text_top">400px</dimen>
+
+    <!-- calories -->
+    <dimen name="calories_font_size">24px</dimen>
+    <dimen name="calories_text_left">500px</dimen>
+    <dimen name="calories_text_top">500px</dimen>
+
+    <!-- floors -->
+    <dimen name="floors_font_size">24px</dimen>
+    <dimen name="floors_text_left">150px</dimen>
+    <dimen name="floors_text_top">150px</dimen>
+
+    <!-- steps -->
+    <dimen name="steps_font_size">24px</dimen>
+    <dimen name="steps_text_left">256px</dimen>
+    <dimen name="steps_text_top">188px</dimen>
+
+    <!-- today distance -->
+    <dimen name="today_distance_font_size">24px</dimen>
+    <dimen name="today_distance_text_left">250px</dimen>
+    <dimen name="today_distance_text_top">172px</dimen>
+
+    <!-- total distance -->
+    <dimen name="total_distance_font_size">24px</dimen>
+    <dimen name="total_distance_text_left">205px</dimen>
+    <dimen name="total_distance_text_top">188px</dimen>
+
+    <!-- heart rate -->
+    <dimen name="heart_rate_font_size">31px</dimen>
+    <dimen name="heart_rate_text_left">257px</dimen>
+    <dimen name="heart_rate_text_top">234px</dimen>
+    <!-- heart rate flashing icon  -->
+    <dimen name="heart_rate_icon_left">228px</dimen>
+    <dimen name="heart_rate_icon_top">244px</dimen>
+
+    <!-- status (ex. charging icon) -->
+    <dimen name="status_left">-350px</dimen>
+    <dimen name="status_top">-350px</dimen>
+
+    <!-- battery icon -->
+    <dimen name="battery_icon_left">33px</dimen>
+    <dimen name="battery_icon_top">175px</dimen>
+
+    <!-- circle progress bars -->
+    <dimen name="circles_thickness">9px</dimen>
+    <dimen name="circles_padding">2px</dimen>
+    <!-- battery circle -->
+    <dimen name="battery_circle_left">0px</dimen>
+    <dimen name="battery_circle_top">0px</dimen>
+    <!-- steps circle -->
+    <dimen name="steps_circle_left">0px</dimen>
+    <dimen name="steps_circle_top">0px</dimen>
+    <!-- battery circle -->
+    <dimen name="today_distance_circle_left">0px</dimen>
+    <dimen name="today_distance_circle_top">0px</dimen>
+
+    <!-- temperature -->
+    <dimen name="temperature_font_size">21px</dimen>
+    <dimen name="temperature_left">70px</dimen>
+    <dimen name="temperature_top">232px</dimen>
+    <!-- weather icon -->
+    <dimen name="weather_img_left">400px</dimen>
+    <dimen name="weather_img_top">400px</dimen>
+
+    <!-- Weekday (Monday...) -->
+    <dimen name="weekday_font_size">28px</dimen>
+    <dimen name="weekday_left">160px</dimen>
+    <dimen name="weekday_top">240px</dimen>
+
+    <!-- Date -->
+    <dimen name="date_left">163px</dimen>
+    <dimen name="date_top">54px</dimen>
+    <dimen name="date_font_size">20px</dimen>
+
+    <dimen name="day_font_size">21px</dimen>
+    <dimen name="day_left">117px</dimen>
+    <dimen name="day_top">39px</dimen>
+
+    <dimen name="month_font_size">21px</dimen>
+    <dimen name="month_left">135px</dimen>
+    <dimen name="month_top">39px</dimen>
+
+    <dimen name="year_font_size">21px</dimen>
+    <dimen name="year_left">164px</dimen>
+    <dimen name="year_top">229px</dimen>
+</resources>

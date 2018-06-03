@@ -1,0 +1,40 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 22
+    buildToolsVersion '27.0.3'
+    defaultConfig {
+        applicationId 'pt.neno.prototype'
+        minSdkVersion 22
+        targetSdkVersion 24
+        versionCode 1
+        versionName '1.0'
+        multiDexEnabled true
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+    dexOptions {
+        jumboMode true
+        javaMaxHeapSize "4g"
+    }
+    buildTypes {
+        release {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    productFlavors {
+    }
+}
+
+dependencies {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation('com.android.support:appcompat-v7:21.0.3') {
+        exclude module: 'support-v4'
+    }
+    implementation files('libs/HuamiWatchFaces.jar')
+}
+
+
+
+
+
