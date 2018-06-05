@@ -1,4 +1,5 @@
 <resources>
-    <string name="app_name">Neno Watchface 2</string>
-    <string name="watch_face">Neno Prototype2</string>
+    <string name="app_name">Greatfit Watchfaces</string>
+    <string name="watch_face">Greatfit Mainface</string>
+    <string name="watch_face_2">Greatfit Goldfit</string>
 </resources>

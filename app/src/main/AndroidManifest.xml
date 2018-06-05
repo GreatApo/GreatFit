@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="pt.neno.prototype">
+    package="com.dinodevs.greatfitwatchface">
 
     <!-- Required to act as a custom watch face. -->
     <uses-permission android:name="com.google.android.permission.PROVIDE_BACKGROUND" />
@@ -9,9 +9,9 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application android:icon="@mipmap/ic_launcher" android:label="@string/app_name"  android:theme="@android:style/Theme.DeviceDefault">
-        <service android:name="es.LBA97.PSourceInverted.MainWatchFaceSplt2"/>
-
-        <service android:name="es.LBA97.PSourceInverted.MainWatchFace2" android:label="@string/watch_face" android:permission="android.permission.BIND_WALLPAPER">
+        <!-- Mainface -->
+        <service android:name="com.dinodevs.greatfitwatchface.MainWatchFaceSplt2"/>
+        <service android:name="com.dinodevs.greatfitwatchface.MainWatchFace2" android:label="@string/watch_face" android:permission="android.permission.BIND_WALLPAPER">
             <meta-data android:name="android.service.wallpaper" android:resource="@xml/watch_face" />
             <meta-data android:name="com.google.android.wearable.watchface.preview" android:resource="@drawable/preview" />
             <meta-data android:name="com.google.android.wearable.watchface.preview_circular" android:resource="@drawable/preview" />
@@ -22,6 +22,18 @@
             </intent-filter>
         </service>
 
+        <!-- Goldfit -->
+        <service android:name="com.dinodevs.greatfitwatchface.MainWatchFaceSplt2"/>
+        <service android:name="com.dinodevs.greatfitwatchface.MainWatchFace2" android:label="@string/watch_face_2" android:permission="android.permission.BIND_WALLPAPER">
+            <meta-data android:name="android.service.wallpaper" android:resource="@xml/watch_face_2" />
+            <meta-data android:name="com.google.android.wearable.watchface.preview" android:resource="@drawable/preview2" />
+            <meta-data android:name="com.google.android.wearable.watchface.preview_circular" android:resource="@drawable/preview2" />
+            <meta-data android:name="com.huami.watch.watchface.hasslpt" android:value="false" />
+            <intent-filter>
+                <action android:name="android.service.wallpaper.WallpaperService" />
+                <category android:name="com.google.android.wearable.watchface.category.WATCH_FACE" />
+            </intent-filter>
+        </service>
     </application>
 
 </manifest>
