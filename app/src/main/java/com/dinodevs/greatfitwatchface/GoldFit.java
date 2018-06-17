@@ -17,6 +17,10 @@ import com.huami.watch.watchface.AbstractSlptClock;
 
 public class GoldFit extends AbstractWatchFace {
 
+    public int[] pos_settings = new int[]{
+            1
+    };
+
     public GoldFit() {
         super(
                 new MainClock(),

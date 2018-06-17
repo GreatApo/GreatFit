@@ -3,23 +3,23 @@
     <!-- slpt = screen off state -->
 
     <!-- TEXT COLORS -->
-    <color name="hour_colour">#ffffff</color>
-    <color name="hour_colour_slpt">#ffffff</color>
+    <color name="hour_colour">#ff0000</color>
+    <color name="hour_colour_slpt">#ff0000</color>
 
-    <color name="minute_colour">#000000</color>
-    <color name="minute_colour_slpt">#000000</color>
+    <color name="minute_colour">#fff</color>
+    <color name="minute_colour_slpt">#fff</color>
 
-    <color name="seconds_colour">#ffffff</color>
-    <color name="seconds_colour_slpt">#ffffff</color><!--Not used yet-->
+    <color name="seconds_colour">#ff0000</color>
+    <color name="seconds_colour_slpt">#ff0000</color><!--Not used yet-->
 
-    <color name="ampm_colour">#ffffff</color>
-    <color name="ampm_colour_slpt">#ffffff</color>
+    <color name="ampm_colour">#ff0000</color>
+    <color name="ampm_colour_slpt">#ff0000</color>
 
     <color name="indicator_colour">#ffffff</color>
     <color name="indicator_colour_slpt">#ffffff</color>
 
-    <color name="heart_colour">#fd3900</color>
-    <color name="heart_colour_slpt">#ff0000</color>
+    <color name="heart_colour">#fff</color>
+    <color name="heart_colour_slpt">#fff</color>
 
     <color name="temperature_colour">#ffffff</color>
     <color name="temperature_colour_slpt">#ffffff</color>

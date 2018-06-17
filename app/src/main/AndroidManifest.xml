@@ -22,7 +22,7 @@
             </intent-filter>
         </service>
 
-        <!-- Goldfit -->
+        <!-- Goldfit
         <service android:name="com.dinodevs.greatfitwatchface.GoldFitSplt"/>
         <service android:name="com.dinodevs.greatfitwatchface.GoldFit" android:label="@string/watch_face_2" android:permission="android.permission.BIND_WALLPAPER">
             <meta-data android:name="android.service.wallpaper" android:resource="@xml/custom_watch_face" />
@@ -33,7 +33,7 @@
                 <action android:name="android.service.wallpaper.WallpaperService" />
                 <category android:name="com.google.android.wearable.watchface.category.WATCH_FACE" />
             </intent-filter>
-        </service>
+        </service> -->
     </application>
 
 </manifest>

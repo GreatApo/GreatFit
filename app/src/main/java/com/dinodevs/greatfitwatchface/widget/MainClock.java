@@ -7,13 +7,9 @@ import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.text.TextPaint;
 
+import com.dinodevs.greatfitwatchface.GreatFit;
+import com.dinodevs.greatfitwatchface.settings.APsettings;
 import com.huami.watch.watchface.util.Util;
-import com.ingenic.iwds.slpt.view.arc.SlptArcAnglePicView;
-import com.ingenic.iwds.slpt.view.arc.SlptPowerArcAnglePicView;
-import com.ingenic.iwds.slpt.view.arc.SlptTodayDistanceArcAnglePicView;
-import com.ingenic.iwds.slpt.view.arc.SlptTodayStepArcAnglePicView;
-import com.ingenic.iwds.slpt.view.core.SlptAbsoluteLayout;
-import com.ingenic.iwds.slpt.view.core.SlptBatteryView;
 import com.ingenic.iwds.slpt.view.core.SlptLinearLayout;
 import com.ingenic.iwds.slpt.view.core.SlptPictureView;
 import com.ingenic.iwds.slpt.view.core.SlptViewComponent;
@@ -30,13 +26,10 @@ import com.ingenic.iwds.slpt.view.digital.SlptYear0View;
 import com.ingenic.iwds.slpt.view.digital.SlptYear1View;
 import com.ingenic.iwds.slpt.view.digital.SlptYear2View;
 import com.ingenic.iwds.slpt.view.digital.SlptYear3View;
-import com.ingenic.iwds.slpt.view.utils.SimpleFile;
 
-import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
-import java.util.Locale;
 
 import com.dinodevs.greatfitwatchface.R;
 import com.dinodevs.greatfitwatchface.resource.ResourceManager;
@@ -49,13 +42,21 @@ public class MainClock extends DigitalClockWidget {
     private TextPaint secondsFont;
     private TextPaint indicatorFont;
     private TextPaint dateFont;
+    private TextPaint dayFont;
     private TextPaint weekdayFont;
+    private TextPaint monthFont;
 
-    private boolean secondsBool;
+    private boolean secondsBool ;//= GreatFit.bool_settings[0];
     private boolean indicatorBool;
     private boolean indicatorFlashBool;
     private boolean dateBool;
     private boolean weekdayBool;
+    private boolean dayBool;
+    private boolean monthBool;
+    private boolean month_as_textBool;
+    private boolean three_letters_month_if_textBool;
+    private boolean yearBool;
+    private boolean three_letters_day_if_textBool;
 
     private Drawable background;
     private float leftHour;
@@ -68,12 +69,47 @@ public class MainClock extends DigitalClockWidget {
     private float topIndicator;
     private float leftDate;
     private float topDate;
+    private float leftDay;
+    private float topDay;
+    private float leftMonth;
+    private float topMonth;
     private float leftWeekday;
     private float topWeekday;
 
     private String[] digitalNums = {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9"};
 
+    public static String[] colors = {"#ff0000", "#00ffff","#00ff00","#ff00ff","#ffffff","#ffff00"};
+    public int color = 3;
+    public int language = 0;
+    // Load settings
+    public APsettings settings;
+
+    // Languages
+    public static String[] codes = {
+            "English", "中文", "Czech", "Français", "Deutsch", "Ελληνικά", "עברית", "Magyar", "Italiano", "日本語", "Polski", "Português", "Русский", "Slovenčina", "Español", "Türkçe",
+    };
+
     private static String[][] days = {
+            //{"SUNDAY", "MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY"},
+            {"SUNDAY", "MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY"},
+            {"星期天", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"},
+            { "NE", "PO", "ÚT", "ST", "ČT", "PÁ", "SO"},
+            {"DIM", "LUN", "MAR", "MER", "JEU", "VEN", "SAM"},
+            {"SON", "MON", "DIE", "MIT", "DON", "FRE", "SAM"},
+            {"ΚΥΡΙΑΚΗ", "ΔΕΥΤΕΡΑ", "ΤΡΙΤΗ", "ΤΕΤΑΡΤΗ", "ΠΕΜΠΤΗ", "ΠΑΡΑΣΚΕΥΗ", "ΣΑΒΒΑΤΟ"},
+            {"ש'","ו'","ה'","ד'","ג'","ב'","א'"},
+            {"VAS", "HÉT", "KED", "SZE", "CSÜ", "PÉN", "SZO"},
+            {"DOM", "LUN", "MAR", "MER", "GIO", "VEN", "SAB"},
+            {"日曜日", "月曜日", "火曜日", "水曜日", "木曜日", "金曜日", "土曜日"},
+            {"NIE", "PON", "WTO", "ŚRO", "CZW", "PIĄ", "SOB"},
+            {"DOM", "SEG", "TER", "QUA", "QUI", "SEX", "SÁB"},
+            {"ВОС", "ПОН", "ВТО", "СРЕ", "ЧЕТ", "ПЯТ", "СУБ"},
+            {"NED", "PON", "UTO", "STR", "ŠTV", "PIA", "SOB"},
+            {"DOM", "LUN", "MAR", "MIÉ", "JUE", "VIE", "SÁB"},
+            {"PAZAR", "PAZARTESI", "SALI", "ÇARŞAMBA", "PERŞEMBE", "CUMA", "CUMARTESI"},
+    };
+
+    private static String[][] days_3let = {
             //{"SUNDAY", "MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY"},
             {"SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"},
             {"星期天", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"},
@@ -90,10 +126,30 @@ public class MainClock extends DigitalClockWidget {
             {"ВОС", "ПОН", "ВТО", "СРЕ", "ЧЕТ", "ПЯТ", "СУБ"},
             {"NED", "PON", "UTO", "STR", "ŠTV", "PIA", "SOB"},
             {"DOM", "LUN", "MAR", "MIÉ", "JUE", "VIE", "SÁB"},
-            {"PAZAR", "PAZARTESI", "SALI", "ÇARŞAMBA", "PERŞEMBE", "CUMA", "CUMARTESI"},
+            {"PAZ", "PAR", "SAL", "ÇAR", "PER", "CUM", "CUR"},
     };
 
     private static String[][] months = {
+            //{"DECEMBER", "JANUARY", "FEBRUARY", "MARCH", "APRIL", "MAY", "JUNE", "JULY", "AUGUST", "SEPTEMBER", "OCTOBER", "NOVEMBER", "DECEMBER"},
+            {"DECEMBER", "JANUARY", "FEBRUARY", "MARCH", "APRIL", "MAY", "JUNE", "JULY", "AUGUST", "SEPTEMBER", "OCTOBER", "NOVEMBER"},
+            {"十二月", "一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月"},
+            {"PRO", "LED", "ÚNO", "BŘE", "DUB", "KVĚ", "ČER", "ČER", "SRP", "ZÁŘ", "ŘÍJ", "LIS"},
+            {"DÉC", "JAN", "FÉV", "MAR", "AVR", "MAI", "JUI", "JUI", "AOÛ", "SEP", "OCT", "NOV"},
+            {"DEZ", "JAN", "FEB", "MÄR", "APR", "MAI", "JUN", "JUL", "AUG", "SEP", "OKT", "NOV"},
+            {"ΔΕΚΕΜΒΡΙΟΣ", "ΙΑΝΟΥΑΡΙΟΣ", "ΦΕΒΡΟΥΑΡΙΟΣ", "ΜΑΡΤΙΟΣ", "ΑΠΡΙΛΙΟΣ", "ΜΑΙΟΣ", "ΙΟΥΝΙΟΣ", "ΙΟΥΛΙΟΣ", "ΑΥΓΟΥΣΤΟΣ", "ΣΕΠΤΕΜΒΡΙΟΣ", "ΟΚΤΩΒΡΙΟΣ", "ΝΟΕΜΒΡΙΟΣ"},
+            {"דצמ", "ינו", "פבר", "מרץ", "אפר", "מאי", "יונ", "יול", "אוג", "ספט", "אוק", "נוב"},
+            {"DEC", "JAN", "FEB", "MÁR", "ÁPR", "MÁJ", "JÚN", "JÚL", "AUG", "SZE", "OKT", "NOV"},
+            {"DIC", "GEN", "FEB", "MAR", "APR", "MAG", "GIU", "LUG", "AGO", "SET", "OTT", "NOV"},
+            {"12月", "1月", "2月", "3月", "4月", "5月", "6月", "7月", "8月", "9月", "10月", "11月"},
+            {"GRU", "STY", "LUT", "MAR", "KWI", "MAJ", "CZE", "LIP", "SIE", "WRZ", "PAŹ", "LIS"},
+            {"DEZ", "JAN", "FEV", "MAR", "ABR", "MAI", "JUN", "JUL", "AGO", "SET", "OUT", "NOV"},
+            {"ДЕК", "ЯНВ", "ФЕВ", "МАР", "АПР", "МАЙ", "ИЮН", "ИЮЛ", "АВГ", "СЕН", "ОКТ", "НОЯ"},
+            {"DEC", "JAN", "FEB", "MAR", "APR", "MÁJ", "JÚN", "JÚL", "AUG", "SEP", "OKT", "NOV"},
+            {"DIC", "ENE", "FEB", "MAR", "ABR", "MAY", "JUN", "JUL", "AGO", "SEP", "OCT", "NOV"},
+            {"ARALIK", "OCAK", "ŞUBAT", "MART", "NISAN", "MAYIS", "HAZIRAN", "TEMMUZ", "AĞUSTOS", "EYLÜL", "EKIM", "KASIM"},
+    };
+
+    private static String[][] months_3let = {
             //{"DECEMBER", "JANUARY", "FEBRUARY", "MARCH", "APRIL", "MAY", "JUNE", "JULY", "AUGUST", "SEPTEMBER", "OCTOBER", "NOVEMBER", "DECEMBER"},
             {"DEC", "JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV"},
             {"十二月", "一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月"},
@@ -110,11 +166,14 @@ public class MainClock extends DigitalClockWidget {
             {"ДЕК", "ЯНВ", "ФЕВ", "МАР", "АПР", "МАЙ", "ИЮН", "ИЮЛ", "АВГ", "СЕН", "ОКТ", "НОЯ"},
             {"DEC", "JAN", "FEB", "MAR", "APR", "MÁJ", "JÚN", "JÚL", "AUG", "SEP", "OKT", "NOV"},
             {"DIC", "ENE", "FEB", "MAR", "ABR", "MAY", "JUN", "JUL", "AGO", "SEP", "OCT", "NOV"},
-            {"ARALIK", "OCAK", "ŞUBAT", "MART", "NISAN", "MAYIS", "HAZIRAN", "TEMMUZ", "AĞUSTOS", "EYLÜL", "EKIM", "KASIM"},
+            {"ARA", "OCA", "ŞUB", "MAR", "NIS", "MAY", "HAZ", "TEM", "AĞU", "EYL", "EKI", "KAS"},
     };
 
     @Override
     public void init(Service service) {
+        this.settings = new APsettings(MainClock.class.getName(), service);
+        this.language = this.settings.get("lang", this.language) % this.codes.length;
+        this.color = this.settings.getInt("color",this.color);
 
         this.background = service.getResources().getDrawable(R.drawable.background);
         this.background.setBounds(0, 0, 320, 300);
@@ -129,6 +188,10 @@ public class MainClock extends DigitalClockWidget {
         this.topIndicator = service.getResources().getDimension(R.dimen.indicator_top);
         this.leftDate = service.getResources().getDimension(R.dimen.date_left);
         this.topDate = service.getResources().getDimension(R.dimen.date_top);
+        this.leftDay = service.getResources().getDimension(R.dimen.day_left);
+        this.topDay = service.getResources().getDimension(R.dimen.day_top);
+        this.leftMonth = service.getResources().getDimension(R.dimen.month_left);
+        this.topMonth = service.getResources().getDimension(R.dimen.month_top);
         this.leftWeekday = service.getResources().getDimension(R.dimen.weekday_left);
         this.topWeekday = service.getResources().getDimension(R.dimen.weekday_top);
 
@@ -168,11 +231,30 @@ public class MainClock extends DigitalClockWidget {
         this.dateFont.setTextAlign(Paint.Align.CENTER);
 
         this.weekdayBool = service.getResources().getBoolean(R.bool.week_name);
+        this.three_letters_day_if_textBool = service.getResources().getBoolean(R.bool.three_letters_day_if_text);
         this.weekdayFont = new TextPaint(TextPaint.ANTI_ALIAS_FLAG);
         this.weekdayFont.setTypeface(ResourceManager.getTypeFace(service.getResources(), ResourceManager.Font.FONT_FILE));
         this.weekdayFont.setTextSize(service.getResources().getDimension(R.dimen.weekday_font_size));
         this.weekdayFont.setColor(service.getResources().getColor(R.color.weekday_colour));
         this.weekdayFont.setTextAlign(Paint.Align.CENTER);
+
+        this.dayBool = service.getResources().getBoolean(R.bool.day);
+        this.dayFont = new TextPaint(TextPaint.ANTI_ALIAS_FLAG);
+        this.dayFont.setTypeface(ResourceManager.getTypeFace(service.getResources(), ResourceManager.Font.FONT_FILE));
+        this.dayFont.setTextSize(service.getResources().getDimension(R.dimen.day_font_size));
+        this.dayFont.setColor(service.getResources().getColor(R.color.day_colour));
+        this.dayFont.setTextAlign(Paint.Align.CENTER);
+
+        this.monthBool = service.getResources().getBoolean(R.bool.month);
+        this.month_as_textBool = service.getResources().getBoolean(R.bool.month_as_text);
+        this.three_letters_month_if_textBool = service.getResources().getBoolean(R.bool.three_letters_month_if_text);
+        this.monthFont = new TextPaint(TextPaint.ANTI_ALIAS_FLAG);
+        this.monthFont.setTypeface(ResourceManager.getTypeFace(service.getResources(), ResourceManager.Font.FONT_FILE));
+        this.monthFont.setTextSize(service.getResources().getDimension(R.dimen.month_font_size));
+        this.monthFont.setColor(service.getResources().getColor(R.color.month_colour));
+        this.monthFont.setTextAlign(Paint.Align.CENTER);
+
+        this.yearBool = service.getResources().getBoolean(R.bool.year);
     }
 
     // Screen open watch mode
@@ -191,16 +273,30 @@ public class MainClock extends DigitalClockWidget {
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.DAY_OF_WEEK, week);
 
-        // Get + Draw Date (using JAVA)
+        // Get + Draw Date
         if(this.dateBool) {
             String date = String.format("%02d.%02d.%02d", day, month, year);
             canvas.drawText(date, leftDate, topDate, this.dateFont);
         }
 
+        // Get + Draw Day
+        if(this.dateBool) {
+            String dayText = String.format("%02d", day);
+            canvas.drawText(dayText, leftDay, topDay, this.dayFont);
+        }
+
         // Get + Draw WeekDay (using JAVA)
         if(this.weekdayBool) {
-            String weekday = String.format("%S", new SimpleDateFormat("EE").format(calendar.getTime()));
+            //String weekday = String.format("%S", new SimpleDateFormat("EE").format(calendar.getTime()));
+            int weekdaynum = calendar.get(Calendar.DAY_OF_WEEK)-1;
+            String weekday = (this.three_letters_day_if_textBool)? days_3let[this.language][weekdaynum] : days[this.language][weekdaynum] ;
             canvas.drawText(weekday, leftWeekday, topWeekday, this.weekdayFont);
+        }
+
+        // Get + Draw Month
+        if(this.monthBool) {
+            String monthText = (this.month_as_textBool)? ( (this.three_letters_month_if_textBool)? months_3let[this.language][month-1] : months[this.language][month-1] ) : String.format("%02d", month) ;
+            canvas.drawText(monthText, leftMonth, topMonth, this.monthFont);
         }
 
         // Draw Seconds
@@ -222,6 +318,11 @@ public class MainClock extends DigitalClockWidget {
     // Screen locked/closed watch mode (Slpt mode)
     @Override
     public List<SlptViewComponent> buildSlptViewComponent(Service service) {
+        //Load Settings
+        this.settings = new APsettings(MainClock.class.getName(), service);
+        this.language = this.settings.get("lang", this.language) % this.codes.length;
+        this.color = this.settings.getInt("color",this.color);
+
         // Draw background image
         SlptPictureView background = new SlptPictureView();
         background.setImagePicture(Util.assetToBytes(service, "background_splt.png"));
@@ -338,7 +439,6 @@ public class MainClock extends DigitalClockWidget {
         SlptLinearLayout dayLayout = new SlptLinearLayout();
         dayLayout.add(new SlptDayHView());
         dayLayout.add(new SlptDayLView());
-        dayLayout.add(point);//add .
         dayLayout.setTextAttrForAll(
                 service.getResources().getDimension(R.dimen.date_font_size),
                 service.getResources().getColor(R.color.day_colour_slpt),
@@ -358,11 +458,17 @@ public class MainClock extends DigitalClockWidget {
         if(!service.getResources().getBoolean(R.bool.day)){dayLayout.show=false;}
 
 
-        // Draw month number
+        // Draw month
         SlptLinearLayout monthLayout = new SlptLinearLayout();
         monthLayout.add(new SlptMonthHView());
         monthLayout.add(new SlptMonthLView());
-        monthLayout.add(point);//add .
+        if(service.getResources().getBoolean(R.bool.month_as_text)) { // if as text
+            if (service.getResources().getBoolean(R.bool.three_letters_month_if_text)) {
+                monthLayout.setStringPictureArrayForAll(months_3let[language]);
+            } else {
+                monthLayout.setStringPictureArrayForAll(months[language]);
+            }
+        }
         monthLayout.setTextAttrForAll(
                 service.getResources().getDimension(R.dimen.date_font_size),
                 service.getResources().getColor(R.color.month_colour_slpt),
@@ -414,6 +520,11 @@ public class MainClock extends DigitalClockWidget {
         // Draw day name
         SlptLinearLayout WeekdayLayout = new SlptLinearLayout();
         WeekdayLayout.add(new SlptWeekView());
+        if(service.getResources().getBoolean(R.bool.three_letters_day_if_text)){
+            WeekdayLayout.setStringPictureArrayForAll(days_3let[language]);
+        }else{
+            WeekdayLayout.setStringPictureArrayForAll(days[language]);
+        }
         WeekdayLayout.setTextAttrForAll(service.getResources().getDimension(R.dimen.weekday_font_size),
                 service.getResources().getColor(R.color.weekday_colour_slpt),
                 weekfont
