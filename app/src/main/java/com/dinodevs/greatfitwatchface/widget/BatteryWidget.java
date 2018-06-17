@@ -37,6 +37,7 @@ public class BatteryWidget extends AbstractWidget {
     private Drawable batteryIcon80;
     private Drawable batteryIcon90;
     private Drawable batteryIcon100;
+    private Boolean batteryBool;
     private float leftBattery;
     private float topBattery;
     private String[] numbers = new String[]{"0", "1", "2", "3", "4", "5", "6", "7", "8", "9"};
@@ -47,28 +48,32 @@ public class BatteryWidget extends AbstractWidget {
     public void init(Service service) {
         this.leftBattery = service.getResources().getDimension(R.dimen.battery_icon_left);
         this.topBattery = service.getResources().getDimension(R.dimen.battery_icon_top);
-        this.batteryIcon0 = service.getResources().getDrawable(R.drawable.battery0, null);
-        this.batteryIcon10 = service.getResources().getDrawable(R.drawable.battery10, null);
-        this.batteryIcon20 = service.getResources().getDrawable(R.drawable.battery20, null);
-        this.batteryIcon30 = service.getResources().getDrawable(R.drawable.battery30, null);
-        this.batteryIcon40 = service.getResources().getDrawable(R.drawable.battery40, null);
-        this.batteryIcon50 = service.getResources().getDrawable(R.drawable.battery50, null);
-        this.batteryIcon60 = service.getResources().getDrawable(R.drawable.battery60, null);
-        this.batteryIcon70 = service.getResources().getDrawable(R.drawable.battery70, null);
-        this.batteryIcon80 = service.getResources().getDrawable(R.drawable.battery80, null);
-        this.batteryIcon90 = service.getResources().getDrawable(R.drawable.battery90, null);
-        this.batteryIcon100 = service.getResources().getDrawable(R.drawable.battery100, null);
-        this.batteryIcon0.setBounds((int) this.leftBattery, (int) this.topBattery, ((int) this.leftBattery) + batteryIcon0.getIntrinsicWidth(), ((int) this.topBattery) + batteryIcon0.getIntrinsicHeight());
-        this.batteryIcon10.setBounds((int) this.leftBattery, (int) this.topBattery, ((int) this.leftBattery) + batteryIcon10.getIntrinsicWidth(), ((int) this.topBattery) + batteryIcon10.getIntrinsicHeight());
-        this.batteryIcon20.setBounds((int) this.leftBattery, (int) this.topBattery, ((int) this.leftBattery) + batteryIcon20.getIntrinsicWidth(), ((int) this.topBattery) + batteryIcon20.getIntrinsicHeight());
-        this.batteryIcon30.setBounds((int) this.leftBattery, (int) this.topBattery, ((int) this.leftBattery) + batteryIcon30.getIntrinsicWidth(), ((int) this.topBattery) + batteryIcon30.getIntrinsicHeight());
-        this.batteryIcon40.setBounds((int) this.leftBattery, (int) this.topBattery, ((int) this.leftBattery) + batteryIcon40.getIntrinsicWidth(), ((int) this.topBattery) + batteryIcon40.getIntrinsicHeight());
-        this.batteryIcon50.setBounds((int) this.leftBattery, (int) this.topBattery, ((int) this.leftBattery) + batteryIcon50.getIntrinsicWidth(), ((int) this.topBattery) + batteryIcon50.getIntrinsicHeight());
-        this.batteryIcon60.setBounds((int) this.leftBattery, (int) this.topBattery, ((int) this.leftBattery) + batteryIcon60.getIntrinsicWidth(), ((int) this.topBattery) + batteryIcon60.getIntrinsicHeight());
-        this.batteryIcon70.setBounds((int) this.leftBattery, (int) this.topBattery, ((int) this.leftBattery) + batteryIcon70.getIntrinsicWidth(), ((int) this.topBattery) + batteryIcon70.getIntrinsicHeight());
-        this.batteryIcon80.setBounds((int) this.leftBattery, (int) this.topBattery, ((int) this.leftBattery) + batteryIcon80.getIntrinsicWidth(), ((int) this.topBattery) + batteryIcon80.getIntrinsicHeight());
-        this.batteryIcon90.setBounds((int) this.leftBattery, (int) this.topBattery, ((int) this.leftBattery) + batteryIcon90.getIntrinsicWidth(), ((int) this.topBattery) + batteryIcon90.getIntrinsicHeight());
-        this.batteryIcon100.setBounds((int) this.leftBattery, (int) this.topBattery, ((int) this.leftBattery) + batteryIcon100.getIntrinsicWidth(), ((int) this.topBattery) + batteryIcon100.getIntrinsicHeight());
+
+        this.batteryBool = service.getResources().getBoolean(R.bool.battery_icon);
+        if(this.batteryBool) {
+            this.batteryIcon0 = service.getResources().getDrawable(R.drawable.battery0, null);
+            this.batteryIcon10 = service.getResources().getDrawable(R.drawable.battery10, null);
+            this.batteryIcon20 = service.getResources().getDrawable(R.drawable.battery20, null);
+            this.batteryIcon30 = service.getResources().getDrawable(R.drawable.battery30, null);
+            this.batteryIcon40 = service.getResources().getDrawable(R.drawable.battery40, null);
+            this.batteryIcon50 = service.getResources().getDrawable(R.drawable.battery50, null);
+            this.batteryIcon60 = service.getResources().getDrawable(R.drawable.battery60, null);
+            this.batteryIcon70 = service.getResources().getDrawable(R.drawable.battery70, null);
+            this.batteryIcon80 = service.getResources().getDrawable(R.drawable.battery80, null);
+            this.batteryIcon90 = service.getResources().getDrawable(R.drawable.battery90, null);
+            this.batteryIcon100 = service.getResources().getDrawable(R.drawable.battery100, null);
+            this.batteryIcon0.setBounds((int) this.leftBattery, (int) this.topBattery, ((int) this.leftBattery) + batteryIcon0.getIntrinsicWidth(), ((int) this.topBattery) + batteryIcon0.getIntrinsicHeight());
+            this.batteryIcon10.setBounds((int) this.leftBattery, (int) this.topBattery, ((int) this.leftBattery) + batteryIcon10.getIntrinsicWidth(), ((int) this.topBattery) + batteryIcon10.getIntrinsicHeight());
+            this.batteryIcon20.setBounds((int) this.leftBattery, (int) this.topBattery, ((int) this.leftBattery) + batteryIcon20.getIntrinsicWidth(), ((int) this.topBattery) + batteryIcon20.getIntrinsicHeight());
+            this.batteryIcon30.setBounds((int) this.leftBattery, (int) this.topBattery, ((int) this.leftBattery) + batteryIcon30.getIntrinsicWidth(), ((int) this.topBattery) + batteryIcon30.getIntrinsicHeight());
+            this.batteryIcon40.setBounds((int) this.leftBattery, (int) this.topBattery, ((int) this.leftBattery) + batteryIcon40.getIntrinsicWidth(), ((int) this.topBattery) + batteryIcon40.getIntrinsicHeight());
+            this.batteryIcon50.setBounds((int) this.leftBattery, (int) this.topBattery, ((int) this.leftBattery) + batteryIcon50.getIntrinsicWidth(), ((int) this.topBattery) + batteryIcon50.getIntrinsicHeight());
+            this.batteryIcon60.setBounds((int) this.leftBattery, (int) this.topBattery, ((int) this.leftBattery) + batteryIcon60.getIntrinsicWidth(), ((int) this.topBattery) + batteryIcon60.getIntrinsicHeight());
+            this.batteryIcon70.setBounds((int) this.leftBattery, (int) this.topBattery, ((int) this.leftBattery) + batteryIcon70.getIntrinsicWidth(), ((int) this.topBattery) + batteryIcon70.getIntrinsicHeight());
+            this.batteryIcon80.setBounds((int) this.leftBattery, (int) this.topBattery, ((int) this.leftBattery) + batteryIcon80.getIntrinsicWidth(), ((int) this.topBattery) + batteryIcon80.getIntrinsicHeight());
+            this.batteryIcon90.setBounds((int) this.leftBattery, (int) this.topBattery, ((int) this.leftBattery) + batteryIcon90.getIntrinsicWidth(), ((int) this.topBattery) + batteryIcon90.getIntrinsicHeight());
+            this.batteryIcon100.setBounds((int) this.leftBattery, (int) this.topBattery, ((int) this.leftBattery) + batteryIcon100.getIntrinsicWidth(), ((int) this.topBattery) + batteryIcon100.getIntrinsicHeight());
+        }
     }
 
     public void onDataUpdate(DataType type, Object value) {
@@ -80,8 +85,9 @@ public class BatteryWidget extends AbstractWidget {
     }
 
     public void draw(Canvas canvas, float width, float height, float centerX, float centerY) {
-        if (this.batteryData != null) {
+        if (this.batteryData != null && this.batteryBool) {
             this.sBattery = String.format("%02d", new Object[]{Integer.valueOf((this.batteryData.getLevel() * 100) / this.batteryData.getScale())});
+
             if (sBattery.equals("100")) {
                 this.batteryIcon100.draw(canvas);
             } else {
@@ -130,6 +136,8 @@ public class BatteryWidget extends AbstractWidget {
         SlptBatteryView localSlptBatteryView = new SlptBatteryView(battery_steps);
         localSlptBatteryView.setImagePictureArray(arrayOfByte);
         localSlptBatteryView.setStart((int) service.getResources().getDimension(R.dimen.battery_icon_left), (int) service.getResources().getDimension(R.dimen.battery_icon_top));
+
+        if(!service.getResources().getBoolean(R.bool.battery_icon)){localSlptBatteryView.show=false;}
 
         return Arrays.asList(new SlptViewComponent[]{localSlptBatteryView});
     }

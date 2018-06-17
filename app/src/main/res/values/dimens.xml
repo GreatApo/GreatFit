@@ -29,8 +29,8 @@
 
     <!-- battery -->
     <dimen name="battery_font_size">24px</dimen>
-    <dimen name="battery_text_left">400px</dimen>
-    <dimen name="battery_text_top">400px</dimen>
+    <dimen name="battery_text_left">158px</dimen>
+    <dimen name="battery_text_top">290px</dimen>
 
     <!-- calories -->
     <dimen name="calories_font_size">24px</dimen>

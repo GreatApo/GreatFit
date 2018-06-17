@@ -62,7 +62,7 @@ public class TimeWidget extends AbstractWidget {
         // Draw AM or PM, if enabled
         if(this.ampmBool) {
             Calendar now = Calendar.getInstance();
-            String periode = (now.get(Calendar.AM_PM) == Calendar.AM) ? "am" : "pm";
+            String periode = (now.get(Calendar.AM_PM) == Calendar.AM) ? "AM" : "PM";
             this.text = String.format("%S", periode);//Capitalize
             canvas.drawText(text, textLeft, textTop, textPaint);
         }

@@ -39,6 +39,8 @@
     <bool name="temperature">false</bool>
     <bool name="weather_image">false</bool>
     <bool name="floor">false</bool>
+    <!-- Show icons -->
+    <bool name="battery_icon">false</bool>
     <!-- widgets text align -->
     <bool name="battery_left_align">false</bool><!-- not working yet -->
     <bool name="steps_left_align">false</bool><!-- not working yet -->

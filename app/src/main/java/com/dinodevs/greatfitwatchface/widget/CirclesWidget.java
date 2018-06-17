@@ -8,6 +8,7 @@ import android.graphics.RectF;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 
+import com.huami.watch.watchface.util.Util;
 import com.ingenic.iwds.slpt.view.arc.SlptPowerArcAnglePicView;
 import com.ingenic.iwds.slpt.view.arc.SlptTodayDistanceArcAnglePicView;
 import com.ingenic.iwds.slpt.view.arc.SlptTodayStepArcAnglePicView;
@@ -465,9 +466,14 @@ public class CirclesWidget extends AbstractWidget {
         if(!service.getResources().getBoolean(R.bool.total_distance)){road.show=false;}
 
         // Circle bars
+        // Draw background image
+        SlptPictureView ring_background = new SlptPictureView();
+        ring_background.setImagePicture(SimpleFile.readFileFromAssets(service, "slpt_circles/ring_splt_bg.png"));
+        if(!service.getResources().getBoolean(R.bool.circles_background)){ring_background.show=false;}
+
         // Battery
         SlptPowerArcAnglePicView localSlptPowerArcAnglePicView = new SlptPowerArcAnglePicView();
-        localSlptPowerArcAnglePicView.setImagePicture(SimpleFile.readFileFromAssets(service, "slpt_circles/battery_splt.png"));
+        localSlptPowerArcAnglePicView.setImagePicture(SimpleFile.readFileFromAssets(service, "slpt_circles/ring1_splt1.png"));
         localSlptPowerArcAnglePicView.setStart((int) service.getResources().getDimension(R.dimen.battery_circle_left), (int) service.getResources().getDimension(R.dimen.battery_circle_top));
         localSlptPowerArcAnglePicView.start_angle = service.getResources().getInteger(R.integer.battery_circle_start_angle);
         localSlptPowerArcAnglePicView.len_angle = service.getResources().getInteger(R.integer.battery_circle_len_angle);
@@ -476,7 +482,7 @@ public class CirclesWidget extends AbstractWidget {
 
         // Steps
         SlptTodayStepArcAnglePicView localSlptTodayStepArcAnglePicView = new SlptTodayStepArcAnglePicView();
-        localSlptTodayStepArcAnglePicView.setImagePicture(SimpleFile.readFileFromAssets(service, "slpt_circles/steps_splt.png"));
+        localSlptTodayStepArcAnglePicView.setImagePicture(SimpleFile.readFileFromAssets(service, "slpt_circles/ring2_splt3.png"));
         localSlptTodayStepArcAnglePicView.setStart((int) service.getResources().getDimension(R.dimen.steps_circle_left), (int) service.getResources().getDimension(R.dimen.steps_circle_top));
         localSlptTodayStepArcAnglePicView.start_angle = service.getResources().getInteger(R.integer.steps_circle_start_angle);
         localSlptTodayStepArcAnglePicView.len_angle = service.getResources().getInteger(R.integer.steps_circle_len_angle);
@@ -485,13 +491,13 @@ public class CirclesWidget extends AbstractWidget {
 
         // Total distance
         SlptTodayDistanceArcAnglePicView localSlptTodayDistanceArcAnglePicView = new SlptTodayDistanceArcAnglePicView();
-        localSlptTodayDistanceArcAnglePicView.setImagePicture(SimpleFile.readFileFromAssets(service, "slpt_circles/today_distance_splt.png"));
+        localSlptTodayDistanceArcAnglePicView.setImagePicture(SimpleFile.readFileFromAssets(service, "slpt_circles/ring3_splt2.png"));
         localSlptTodayDistanceArcAnglePicView.setStart((int) service.getResources().getDimension(R.dimen.today_distance_circle_left), (int) service.getResources().getDimension(R.dimen.today_distance_circle_top));
         localSlptTodayDistanceArcAnglePicView.start_angle = service.getResources().getInteger(R.integer.today_distance_circle_start_angle);
         localSlptTodayDistanceArcAnglePicView.len_angle = service.getResources().getInteger(R.integer.today_distance_circle_len_angle);
         localSlptTodayDistanceArcAnglePicView.full_angle = service.getResources().getInteger(R.integer.today_distance_circle_full_angle);
         if(!this.todayDistanceCircleBool){localSlptTodayDistanceArcAnglePicView.show=false;}
 
-        return Arrays.asList(new SlptViewComponent[]{steps, sport, road, power, localSlptPowerArcAnglePicView, localSlptTodayStepArcAnglePicView, localSlptTodayDistanceArcAnglePicView});
+        return Arrays.asList(new SlptViewComponent[]{steps, sport, road, power, ring_background, localSlptPowerArcAnglePicView, localSlptTodayStepArcAnglePicView, localSlptTodayDistanceArcAnglePicView});
     }
 }
