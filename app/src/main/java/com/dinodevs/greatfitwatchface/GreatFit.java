@@ -16,23 +16,22 @@ import com.dinodevs.greatfitwatchface.widget.WeatherWidget;
  * Amazfit watch faces
  */
 
-public class MainWatchFace2 extends AbstractWatchFace {
+public class GreatFit extends AbstractWatchFace {
 
-    public MainWatchFace2() {
+    public GreatFit() {
         super(
                 new MainClock(),
                 new CirclesWidget(),
                 new HeartRateWidget(),
                 new CaloriesWidget(),
-                new FloorWidget(),
                 new BatteryWidget(),
-                new WeatherWidget(),
-                new TimeWidget()
+                new FloorWidget(),
+                new WeatherWidget()
         );
     }
 
     @Override
     protected Class<? extends AbstractSlptClock> slptClockClass() {
-        return MainWatchFaceSplt2.class;
+        return GreatFitSplt.class;
     }
 }

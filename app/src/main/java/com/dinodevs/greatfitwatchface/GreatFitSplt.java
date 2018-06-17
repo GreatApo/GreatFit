@@ -19,9 +19,9 @@ import com.ingenic.iwds.slpt.view.core.SlptViewComponent;
  * Splt version of the watch.
  */
 
-public class MainWatchFaceSplt2 extends AbstractWatchFaceSlpt {
+public class GreatFitSplt extends AbstractWatchFaceSlpt {
 
-    public MainWatchFaceSplt2() {
+    public GreatFitSplt() {
         super(
                 new MainClock(),
                 new CirclesWidget(),
@@ -29,9 +29,7 @@ public class MainWatchFaceSplt2 extends AbstractWatchFaceSlpt {
                 new CaloriesWidget(),
                 new BatteryWidget(),
                 new FloorWidget(),
-                new BatteryWidget(),
-                new WeatherWidget(),
-                new TimeWidget()
+                new WeatherWidget()
         );
     }
 

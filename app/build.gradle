@@ -4,7 +4,7 @@ android {
     compileSdkVersion 22
     buildToolsVersion '27.0.3'
     defaultConfig {
-        applicationId 'pt.neno.prototype'
+        applicationId 'com.dinodevs.greatfitwatchface'
         minSdkVersion 22
         targetSdkVersion 24
         versionCode 1
@@ -31,6 +31,7 @@ dependencies {
     implementation('com.android.support:appcompat-v7:21.0.3') {
         exclude module: 'support-v4'
     }
+    implementation 'com.android.support.constraint:constraint-layout:1.1.0'
     implementation files('libs/HuamiWatchFaces.jar')
 }
 
