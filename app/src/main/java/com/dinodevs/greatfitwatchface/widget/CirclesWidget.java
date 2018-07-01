@@ -176,13 +176,28 @@ public class CirclesWidget extends AbstractWidget {
         // Over circles layout
         this.background = service.getResources().getDrawable(R.drawable.over_circles_layout);
         this.background.setBounds(0, 0, 320, 300);
+
+        // Fix angles
+        if(this.batteryCircleBool){
+            // Steps
+            startAngleSteps = startAngleSteps+3;
+            arcSizeSteps = arcSizeSteps - 6;
+            // Sports
+            startAngleSport = startAngleSport+3;
+            arcSizeSport = arcSizeSport - 6;
+        }
+        if(this.stepCircleBool){
+            // Sports
+            startAngleSport = startAngleSport+3;
+            arcSizeSport = arcSizeSport - 6;
+        }
     }
 
     @Override
     public void draw(Canvas canvas, float width, float height, float centerX, float centerY) {
         // Circle progress bars
         int count = canvas.save();
-        int radius = Math.round(Math.min(width / 2, height / 2)) + this.thickness + this.padding;
+        int radius = Math.round(Math.min(width / 2, height / 2));// + this.thickness + this.padding;
         RectF oval = new RectF(centerX - radius, centerY - radius, centerX + radius, centerY + radius);
         RectF oval2 = new RectF(centerX - radius, centerY - radius, centerX + radius, centerY + radius);
         RectF oval3 = new RectF(centerX - radius, centerY - radius, centerX + radius, centerY + radius);
@@ -348,6 +363,7 @@ public class CirclesWidget extends AbstractWidget {
         this.batteryCircleBool = service.getResources().getBoolean(R.bool.battery_circle);
         this.stepCircleBool = service.getResources().getBoolean(R.bool.steps_circle);
         this.todayDistanceCircleBool = service.getResources().getBoolean(R.bool.today_distance_circle);
+        int sltp_circle_color = service.getResources().getInteger(R.integer.sltp_circle_color);
 
         // It's a bird, it's a plane... nope... it's a font.
         Typeface timeTypeFace = ResourceManager.getTypeFace(service.getResources(), ResourceManager.Font.FONT_FILE);
@@ -473,18 +489,18 @@ public class CirclesWidget extends AbstractWidget {
         if(this.todayDistanceCircleBool){count_widgets++;}
 
         SlptPictureView ring_background = new SlptPictureView();
-        ring_background.setImagePicture(SimpleFile.readFileFromAssets(service, "slpt_circles/ring1_splt_bg.png"));
-        if(count_widgets>1) {
+        if(count_widgets==1) {
+            ring_background.setImagePicture(SimpleFile.readFileFromAssets(service, "slpt_circles/ring1_splt_bg.png"));
+        }else if(count_widgets==2) {
             ring_background.setImagePicture(SimpleFile.readFileFromAssets(service, "slpt_circles/ring2_splt_bg.png"));
-        }
-        if(count_widgets>2) {
+        }else{
             ring_background.setImagePicture(SimpleFile.readFileFromAssets(service, "slpt_circles/ring3_splt_bg.png"));
         }
         if(!service.getResources().getBoolean(R.bool.circles_background)){ring_background.show=false;}
 
         // Battery
         SlptPowerArcAnglePicView localSlptPowerArcAnglePicView = new SlptPowerArcAnglePicView();
-        localSlptPowerArcAnglePicView.setImagePicture(SimpleFile.readFileFromAssets(service, "slpt_circles/ring1_splt1.png"));
+        localSlptPowerArcAnglePicView.setImagePicture(SimpleFile.readFileFromAssets(service, "slpt_circles/ring1_splt"+sltp_circle_color+".png"));
         localSlptPowerArcAnglePicView.setStart((int) service.getResources().getDimension(R.dimen.battery_circle_left), (int) service.getResources().getDimension(R.dimen.battery_circle_top));
         localSlptPowerArcAnglePicView.start_angle = service.getResources().getInteger(R.integer.battery_circle_start_angle);
         localSlptPowerArcAnglePicView.len_angle = service.getResources().getInteger(R.integer.battery_circle_len_angle);
@@ -495,7 +511,7 @@ public class CirclesWidget extends AbstractWidget {
         int temp_ring = 1;
         if(this.batteryCircleBool){temp_ring = 2;}
         SlptTodayStepArcAnglePicView localSlptTodayStepArcAnglePicView = new SlptTodayStepArcAnglePicView();
-        localSlptTodayStepArcAnglePicView.setImagePicture(SimpleFile.readFileFromAssets(service, "slpt_circles/ring"+temp_ring+"_splt3.png"));
+        localSlptTodayStepArcAnglePicView.setImagePicture(SimpleFile.readFileFromAssets(service, "slpt_circles/ring"+temp_ring+"_splt"+sltp_circle_color+".png"));
         localSlptTodayStepArcAnglePicView.setStart((int) service.getResources().getDimension(R.dimen.steps_circle_left), (int) service.getResources().getDimension(R.dimen.steps_circle_top));
         localSlptTodayStepArcAnglePicView.start_angle = service.getResources().getInteger(R.integer.steps_circle_start_angle);
         localSlptTodayStepArcAnglePicView.len_angle = service.getResources().getInteger(R.integer.steps_circle_len_angle);
@@ -505,7 +521,7 @@ public class CirclesWidget extends AbstractWidget {
         // Total distance
         if(count_widgets>0){temp_ring = count_widgets;}
         SlptTodayDistanceArcAnglePicView localSlptTodayDistanceArcAnglePicView = new SlptTodayDistanceArcAnglePicView();
-        localSlptTodayDistanceArcAnglePicView.setImagePicture(SimpleFile.readFileFromAssets(service, "slpt_circles/ring"+temp_ring+"_splt2.png"));
+        localSlptTodayDistanceArcAnglePicView.setImagePicture(SimpleFile.readFileFromAssets(service, "slpt_circles/ring"+temp_ring+"_splt"+sltp_circle_color+".png"));
         localSlptTodayDistanceArcAnglePicView.setStart((int) service.getResources().getDimension(R.dimen.today_distance_circle_left), (int) service.getResources().getDimension(R.dimen.today_distance_circle_top));
         localSlptTodayDistanceArcAnglePicView.start_angle = service.getResources().getInteger(R.integer.today_distance_circle_start_angle);
         localSlptTodayDistanceArcAnglePicView.len_angle = service.getResources().getInteger(R.integer.today_distance_circle_len_angle);

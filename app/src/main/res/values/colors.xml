@@ -42,9 +42,9 @@
     <color name="total_distance_colour">#ffffff</color>
     <color name="total_distance_colour_slpt">#ffffff</color>
     <!-- Circles (progress bars) colors -->
-    <color name="battery_circle_colour">#ffffff</color>
-    <color name="steps_circle_colour">#ffffff</color>
-    <color name="today_distance_circle_colour">#ffffff</color>
+    <color name="battery_circle_colour">#ff0000</color>
+    <color name="steps_circle_colour">#ff0000</color>
+    <color name="today_distance_circle_colour">#ff0000</color>
     <color name="circles_background">#505050</color>
 
 

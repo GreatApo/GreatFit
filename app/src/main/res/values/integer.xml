@@ -13,6 +13,9 @@
     <integer name="today_distance_circle_len_angle">0</integer>
     <integer name="today_distance_circle_full_angle">306</integer>
 
+    <!-- progress bars circle sltp color -->
+    <integer name="sltp_circle_color">1</integer><!-- 1=red, 2=light blue, 3=green, 4=purple, 5=white, 6=yellow, 7=black, 8=grey -->
+
     <!-- slpt battery steps -->
     <integer name="battery_steps">12</integer><!-- how many images in the assets folder -->
 
