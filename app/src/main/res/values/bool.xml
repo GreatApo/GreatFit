@@ -14,7 +14,7 @@
     <bool name="week_name">true</bool><!-- Monday -->
     <bool name="three_letters_day_if_text">true</bool><!-- Mon -->
     <!-- Show units -->
-    <bool name="calories_units">false</bool>
+    <bool name="calories_units">true</bool>
     <bool name="distance_units">false</bool>
     <bool name="heart_rate_units">false</bool>
     <bool name="temperature_units">true</bool>
@@ -25,7 +25,7 @@
     <bool name="status_bar">true</bool>
     <!-- Show widgets progress circle -->
     <bool name="battery_circle">true</bool>
-    <bool name="steps_circle">true</bool>
+    <bool name="steps_circle">false</bool>
     <bool name="today_distance_circle">false</bool>
     <!-- Show circle background when screen is on (draw full length circle as a background/empty circle) -->
     <bool name="circles_background">true</bool>
