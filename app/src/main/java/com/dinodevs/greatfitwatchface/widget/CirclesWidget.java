@@ -182,7 +182,7 @@ public class CirclesWidget extends AbstractWidget {
     public void draw(Canvas canvas, float width, float height, float centerX, float centerY) {
         // Circle progress bars
         int count = canvas.save();
-        int radius = Math.round(Math.min(width / 2, height / 2)) - this.thickness;
+        int radius = Math.round(Math.min(width / 2, height / 2)) + this.thickness + this.padding;
         RectF oval = new RectF(centerX - radius, centerY - radius, centerX + radius, centerY + radius);
         RectF oval2 = new RectF(centerX - radius, centerY - radius, centerX + radius, centerY + radius);
         RectF oval3 = new RectF(centerX - radius, centerY - radius, centerX + radius, centerY + radius);
@@ -341,6 +341,7 @@ public class CirclesWidget extends AbstractWidget {
         return (float) (cy + (height / 2D) * Math.sin((sweepAngle + startAngle) * Math.PI / 180));
     }
 
+    // SLTP mode (Screen off)
     @Override
     public List<SlptViewComponent> buildSlptViewComponent(Service service) {
         // Variables
@@ -375,7 +376,6 @@ public class CirclesWidget extends AbstractWidget {
         );
         // Hide if disabled
         if(!service.getResources().getBoolean(R.bool.battery)){power.show=false;}
-
 
         // Show steps (today)
         SlptLinearLayout steps = new SlptLinearLayout();
@@ -467,8 +467,19 @@ public class CirclesWidget extends AbstractWidget {
 
         // Circle bars
         // Draw background image
+        int count_widgets = 0;
+        if(this.batteryCircleBool){count_widgets++;}
+        if(this.stepCircleBool){count_widgets++;}
+        if(this.todayDistanceCircleBool){count_widgets++;}
+
         SlptPictureView ring_background = new SlptPictureView();
-        ring_background.setImagePicture(SimpleFile.readFileFromAssets(service, "slpt_circles/ring_splt_bg.png"));
+        ring_background.setImagePicture(SimpleFile.readFileFromAssets(service, "slpt_circles/ring1_splt_bg.png"));
+        if(count_widgets>1) {
+            ring_background.setImagePicture(SimpleFile.readFileFromAssets(service, "slpt_circles/ring2_splt_bg.png"));
+        }
+        if(count_widgets>2) {
+            ring_background.setImagePicture(SimpleFile.readFileFromAssets(service, "slpt_circles/ring3_splt_bg.png"));
+        }
         if(!service.getResources().getBoolean(R.bool.circles_background)){ring_background.show=false;}
 
         // Battery
@@ -481,8 +492,10 @@ public class CirclesWidget extends AbstractWidget {
         if(!this.batteryCircleBool){localSlptPowerArcAnglePicView.show=false;}
 
         // Steps
+        int temp_ring = 1;
+        if(this.batteryCircleBool){temp_ring = 2;}
         SlptTodayStepArcAnglePicView localSlptTodayStepArcAnglePicView = new SlptTodayStepArcAnglePicView();
-        localSlptTodayStepArcAnglePicView.setImagePicture(SimpleFile.readFileFromAssets(service, "slpt_circles/ring2_splt3.png"));
+        localSlptTodayStepArcAnglePicView.setImagePicture(SimpleFile.readFileFromAssets(service, "slpt_circles/ring"+temp_ring+"_splt3.png"));
         localSlptTodayStepArcAnglePicView.setStart((int) service.getResources().getDimension(R.dimen.steps_circle_left), (int) service.getResources().getDimension(R.dimen.steps_circle_top));
         localSlptTodayStepArcAnglePicView.start_angle = service.getResources().getInteger(R.integer.steps_circle_start_angle);
         localSlptTodayStepArcAnglePicView.len_angle = service.getResources().getInteger(R.integer.steps_circle_len_angle);
@@ -490,8 +503,9 @@ public class CirclesWidget extends AbstractWidget {
         if(!this.stepCircleBool){localSlptTodayStepArcAnglePicView.show=false;}
 
         // Total distance
+        if(count_widgets>0){temp_ring = count_widgets;}
         SlptTodayDistanceArcAnglePicView localSlptTodayDistanceArcAnglePicView = new SlptTodayDistanceArcAnglePicView();
-        localSlptTodayDistanceArcAnglePicView.setImagePicture(SimpleFile.readFileFromAssets(service, "slpt_circles/ring3_splt2.png"));
+        localSlptTodayDistanceArcAnglePicView.setImagePicture(SimpleFile.readFileFromAssets(service, "slpt_circles/ring"+temp_ring+"_splt2.png"));
         localSlptTodayDistanceArcAnglePicView.setStart((int) service.getResources().getDimension(R.dimen.today_distance_circle_left), (int) service.getResources().getDimension(R.dimen.today_distance_circle_top));
         localSlptTodayDistanceArcAnglePicView.start_angle = service.getResources().getInteger(R.integer.today_distance_circle_start_angle);
         localSlptTodayDistanceArcAnglePicView.len_angle = service.getResources().getInteger(R.integer.today_distance_circle_len_angle);
