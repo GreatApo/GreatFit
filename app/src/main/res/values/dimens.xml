@@ -30,12 +30,12 @@
     <!-- battery -->
     <dimen name="battery_font_size">24px</dimen>
     <dimen name="battery_text_left">158px</dimen>
-    <dimen name="battery_text_top">290px</dimen>
+    <dimen name="battery_text_top">294px</dimen>
 
     <!-- calories -->
     <dimen name="calories_font_size">24px</dimen>
     <dimen name="calories_text_left">192px</dimen>
-    <dimen name="calories_text_top">78px</dimen>
+    <dimen name="calories_text_top">77px</dimen>
 
     <!-- floors -->
     <dimen name="floors_font_size">24px</dimen>
@@ -45,7 +45,7 @@
     <!-- steps -->
     <dimen name="steps_font_size">24px</dimen>
     <dimen name="steps_text_left">110px</dimen>
-    <dimen name="steps_text_top">78px</dimen>
+    <dimen name="steps_text_top">77px</dimen>
 
     <!-- today distance -->
     <dimen name="today_distance_font_size">24px</dimen>
@@ -100,9 +100,9 @@
     <dimen name="weekday_top">254px</dimen>
 
     <!-- Date -->
+    <dimen name="date_font_size">20px</dimen>
     <dimen name="date_left">163px</dimen>
     <dimen name="date_top">54px</dimen>
-    <dimen name="date_font_size">20px</dimen>
 
     <!-- Day -->
     <dimen name="day_font_size">28px</dimen>

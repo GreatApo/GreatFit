@@ -49,6 +49,11 @@ public class CirclesWidget extends AbstractWidget {
     private boolean stepsBool;
     private boolean todayDistanceBool;
     private boolean totalDistanceBool;
+    private boolean batteryAlignLeftBool;
+    private boolean stepsAlignLeftBool;
+    private boolean todayDistanceAlignLeftBool;
+    private boolean totalDistanceAlignLeftBool;
+
     private int batteryColour;
     private int stepsColour;
     private int sportColour;
@@ -135,30 +140,36 @@ public class CirclesWidget extends AbstractWidget {
         this.circle.setStyle(Paint.Style.STROKE);
         */
 
+        // Aling left true or false (false= align center)
+        this.batteryAlignLeftBool = service.getResources().getBoolean(R.bool.battery_left_align);
+        this.stepsAlignLeftBool = service.getResources().getBoolean(R.bool.steps_left_align);
+        this.todayDistanceAlignLeftBool = service.getResources().getBoolean(R.bool.today_distance_left_align);
+        this.totalDistanceAlignLeftBool = service.getResources().getBoolean(R.bool.total_distance_left_align);
+
         // Widgets text colors
         this.batteryPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         this.batteryPaint.setTypeface(ResourceManager.getTypeFace(service.getResources(), ResourceManager.Font.FONT_FILE));
         this.batteryPaint.setTextSize(service.getResources().getDimension(R.dimen.steps_font_size));
         this.batteryPaint.setColor(service.getResources().getColor(R.color.battery_colour));
-        this.batteryPaint.setTextAlign(Paint.Align.CENTER);
+        this.batteryPaint.setTextAlign( (this.batteryAlignLeftBool) ? Paint.Align.LEFT : Paint.Align.CENTER );
 
         this.stepsPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         this.stepsPaint.setTypeface(ResourceManager.getTypeFace(service.getResources(), ResourceManager.Font.FONT_FILE));
         this.stepsPaint.setTextSize(service.getResources().getDimension(R.dimen.steps_font_size));
         this.stepsPaint.setColor(service.getResources().getColor(R.color.steps_colour));
-        this.stepsPaint.setTextAlign(Paint.Align.CENTER);
+        this.stepsPaint.setTextAlign( (this.stepsAlignLeftBool) ? Paint.Align.LEFT : Paint.Align.CENTER );
 
         this.sportPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         this.sportPaint.setTypeface(ResourceManager.getTypeFace(service.getResources(), ResourceManager.Font.FONT_FILE));
         this.sportPaint.setTextSize(service.getResources().getDimension(R.dimen.today_distance_font_size));
         this.sportPaint.setColor(service.getResources().getColor(R.color.today_distance_colour));
-        this.sportPaint.setTextAlign(Paint.Align.CENTER);
+        this.sportPaint.setTextAlign( (this.todayDistanceAlignLeftBool) ? Paint.Align.LEFT : Paint.Align.CENTER );
 
         this.roadPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         this.roadPaint.setTypeface(ResourceManager.getTypeFace(service.getResources(), ResourceManager.Font.FONT_FILE));
         this.roadPaint.setTextSize(service.getResources().getDimension(R.dimen.total_distance_font_size));
         this.roadPaint.setColor(service.getResources().getColor(R.color.total_distance_colour));
-        this.roadPaint.setTextAlign(Paint.Align.CENTER);
+        this.roadPaint.setTextAlign( (this.totalDistanceAlignLeftBool) ? Paint.Align.LEFT : Paint.Align.CENTER );
 
         // Text positions
         this.batteryTextLeft = service.getResources().getDimension(R.dimen.battery_text_left);
@@ -364,6 +375,7 @@ public class CirclesWidget extends AbstractWidget {
         this.stepCircleBool = service.getResources().getBoolean(R.bool.steps_circle);
         this.todayDistanceCircleBool = service.getResources().getBoolean(R.bool.today_distance_circle);
         int sltp_circle_color = service.getResources().getInteger(R.integer.sltp_circle_color);
+        int tmp_left;
 
         // It's a bird, it's a plane... nope... it's a font.
         Typeface timeTypeFace = ResourceManager.getTypeFace(service.getResources(), ResourceManager.Font.FONT_FILE);
@@ -382,12 +394,17 @@ public class CirclesWidget extends AbstractWidget {
         // Position based on screen on
         power.alignX = 2;
         power.alignY=0;
-        power.setRect(
-                (int) (2*service.getResources().getDimension(R.dimen.battery_text_left)+640),
-                (int) (service.getResources().getDimension(R.dimen.battery_font_size))
-        );
+        tmp_left = (int) service.getResources().getDimension(R.dimen.battery_text_left);
+        if(!service.getResources().getBoolean(R.bool.battery_left_align)) {
+            // If text is centered, set rectangle
+            power.setRect(
+                    (int) (2 * tmp_left + 640),
+                    (int) (service.getResources().getDimension(R.dimen.battery_font_size))
+            );
+            tmp_left = -320;
+        }
         power.setStart(
-                -320,
+                tmp_left,
                 (int) (service.getResources().getDimension(R.dimen.battery_text_top)-((float)service.getResources().getInteger(R.integer.font_ratio)/100)*service.getResources().getDimension(R.dimen.battery_font_size))
         );
         // Hide if disabled
@@ -404,12 +421,17 @@ public class CirclesWidget extends AbstractWidget {
         // Position based on screen on
         steps.alignX = 2;
         steps.alignY=0;
-        steps.setRect(
-                (int) (2*service.getResources().getDimension(R.dimen.steps_text_left)+640),
-                (int) (service.getResources().getDimension(R.dimen.steps_font_size))
-        );
+        tmp_left = (int) service.getResources().getDimension(R.dimen.steps_text_left);
+        if(!service.getResources().getBoolean(R.bool.steps_left_align)) {
+            // If text is centered, set rectangle
+            steps.setRect(
+                    (int) (2 * tmp_left + 640),
+                    (int) (service.getResources().getDimension(R.dimen.steps_font_size))
+            );
+            tmp_left = -320;
+        }
         steps.setStart(
-                -320,
+                (int) tmp_left,
                 (int) (service.getResources().getDimension(R.dimen.steps_text_top)-((float)service.getResources().getInteger(R.integer.font_ratio)/100)*service.getResources().getDimension(R.dimen.steps_font_size))
         );
         // Hide if disabled
@@ -441,12 +463,17 @@ public class CirclesWidget extends AbstractWidget {
         // Position based on screen on
         sport.alignX = 2;
         sport.alignY=0;
-        sport.setRect(
-                (int) (2*service.getResources().getDimension(R.dimen.today_distance_text_left)+640),
-                (int) (service.getResources().getDimension(R.dimen.today_distance_font_size))
-        );
+        tmp_left = (int) service.getResources().getDimension(R.dimen.today_distance_text_left);
+        if(!service.getResources().getBoolean(R.bool.today_distance_left_align)) {
+            // If text is centered, set rectangle
+            sport.setRect(
+                    (int) (2 * tmp_left + 640),
+                    (int) (service.getResources().getDimension(R.dimen.today_distance_font_size))
+            );
+            tmp_left = -320;
+        }
         sport.setStart(
-                -320,
+                (int) tmp_left,
                 (int) (service.getResources().getDimension(R.dimen.today_distance_text_top)-((float)service.getResources().getInteger(R.integer.font_ratio)/100)*service.getResources().getDimension(R.dimen.today_distance_font_size))
         );
         // Hide if disabled
@@ -470,12 +497,17 @@ public class CirclesWidget extends AbstractWidget {
         // Position based on screen on
         road.alignX = 2;
         road.alignY=0;
-        road.setRect(
-                (int) (2*service.getResources().getDimension(R.dimen.total_distance_text_left)+640),
-                (int) (service.getResources().getDimension(R.dimen.total_distance_font_size))
-        );
+        tmp_left = (int) service.getResources().getDimension(R.dimen.total_distance_text_left);
+        if(!service.getResources().getBoolean(R.bool.total_distance_left_align)) {
+            // If text is centered, set rectangle
+            road.setRect(
+                    (int) (2 * tmp_left + 640),
+                    (int) (service.getResources().getDimension(R.dimen.total_distance_font_size))
+            );
+            tmp_left = -320;
+        }
         road.setStart(
-                -320,
+                (int) tmp_left,
                 (int) (service.getResources().getDimension(R.dimen.total_distance_text_top)-((float)service.getResources().getInteger(R.integer.font_ratio)/100)*service.getResources().getDimension(R.dimen.total_distance_font_size))
         );
         // Hide if disabled

@@ -42,11 +42,11 @@
     <!-- Show icons -->
     <bool name="battery_icon">false</bool>
     <!-- widgets text align -->
-    <bool name="battery_left_align">false</bool><!-- not working yet -->
-    <bool name="steps_left_align">false</bool><!-- not working yet -->
-    <bool name="today_distance_left_align">false</bool><!-- not working yet -->
-    <bool name="total_distance_left_align">false</bool><!-- not working yet -->
-    <bool name="calories_left_align">false</bool><!-- not working yet -->
+    <bool name="battery_left_align">false</bool>
+    <bool name="steps_left_align">true</bool>
+    <bool name="today_distance_left_align">false</bool>
+    <bool name="total_distance_left_align">false</bool>
+    <bool name="calories_left_align">true</bool>
     <bool name="heart_rate_left_align">false</bool><!-- not working yet -->
     <bool name="temperature_left_align">false</bool><!-- not working yet -->
     <bool name="floor_left_align">false</bool><!-- not working yet -->

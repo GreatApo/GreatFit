@@ -30,6 +30,7 @@ public class CaloriesWidget extends AbstractWidget {
 
     private boolean showUnits;
     private boolean caloriesBool;
+    private boolean caloriesAlignLeftBool;
 
 
     @Override
@@ -37,12 +38,16 @@ public class CaloriesWidget extends AbstractWidget {
         this.textLeft = service.getResources().getDimension(R.dimen.calories_text_left);
         this.textTop = service.getResources().getDimension(R.dimen.calories_text_top);
 
+        // Aling left true or false (false= align center)
+        this.caloriesAlignLeftBool = service.getResources().getBoolean(R.bool.calories_left_align);
+
         this.textPaint = new TextPaint(TextPaint.ANTI_ALIAS_FLAG);
         this.textPaint.setColor(service.getResources().getColor(R.color.calories_colour));
         this.textPaint.setTypeface(ResourceManager.getTypeFace(service.getResources(), ResourceManager.Font.FONT_FILE));
         this.textPaint.setTextSize(service.getResources().getDimension(R.dimen.calories_font_size));
-        this.textPaint.setTextAlign(Paint.Align.CENTER);
+        this.textPaint.setTextAlign( (this.caloriesAlignLeftBool) ? Paint.Align.LEFT : Paint.Align.CENTER );
 
+        // Enable/Disable
         this.caloriesBool = service.getResources().getBoolean(R.bool.calories);
 
         // Show units boolean
@@ -67,10 +72,13 @@ public class CaloriesWidget extends AbstractWidget {
             canvas.drawText(calories.getCalories() + units, textLeft, textTop, textPaint);
         }
     }
+
+    // SLPT mode, screen off
     @Override
     public List<SlptViewComponent> buildSlptViewComponent(Service service) {
-        // Get bool variable
+        // Get bool variables
         this.caloriesBool = service.getResources().getBoolean(R.bool.calories);
+        this.caloriesAlignLeftBool = service.getResources().getBoolean(R.bool.calories_left_align);
 
         SlptLinearLayout caloriesLayout = new SlptLinearLayout();
         caloriesLayout.add(new SlptTodayCaloriesView());
@@ -87,13 +95,18 @@ public class CaloriesWidget extends AbstractWidget {
         );
         // Position based on screen on
         caloriesLayout.alignX = 2;
-        caloriesLayout.alignY=0;
-        caloriesLayout.setRect(
-                (int) (2*service.getResources().getDimension(R.dimen.calories_text_left)+640),
-                (int) (service.getResources().getDimension(R.dimen.calories_font_size))
-        );
+        caloriesLayout.alignY = 0;
+        float tmp_left = service.getResources().getDimension(R.dimen.calories_text_left);
+        if(!this.caloriesAlignLeftBool) {
+            // If text is centered, set rectangle
+            caloriesLayout.setRect(
+                    (int) (2 * tmp_left + 640),
+                    (int) (service.getResources().getDimension(R.dimen.calories_font_size))
+            );
+            tmp_left = -320;
+        }
         caloriesLayout.setStart(
-                -320,
+                (int) tmp_left,
                 (int) (service.getResources().getDimension(R.dimen.calories_text_top)-((float)service.getResources().getInteger(R.integer.font_ratio)/100)*service.getResources().getDimension(R.dimen.calories_font_size))
         );
         if(!this.caloriesBool){caloriesLayout.show=false;}

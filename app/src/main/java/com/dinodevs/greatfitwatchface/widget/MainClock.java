@@ -280,7 +280,7 @@ public class MainClock extends DigitalClockWidget {
         }
 
         // Get + Draw Day
-        if(this.dateBool) {
+        if(this.dayBool) {
             String dayText = String.format("%02d", day);
             canvas.drawText(dayText, leftDay, topDay, this.dayFont);
         }
@@ -440,7 +440,7 @@ public class MainClock extends DigitalClockWidget {
         dayLayout.add(new SlptDayHView());
         dayLayout.add(new SlptDayLView());
         dayLayout.setTextAttrForAll(
-                service.getResources().getDimension(R.dimen.date_font_size),
+                service.getResources().getDimension(R.dimen.day_font_size),
                 service.getResources().getColor(R.color.day_colour_slpt),
                 timeTypeFace);
         // Position based on screen on
