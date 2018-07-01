@@ -112,7 +112,7 @@
     <!-- Month -->
     <dimen name="month_font_size">28px</dimen>
     <dimen name="month_left">190px</dimen>
-    <dimen name="month_top">138px</dimen>
+    <dimen name="month_top">220px</dimen>
 
     <!-- Year -->
     <dimen name="year_font_size">21px</dimen>

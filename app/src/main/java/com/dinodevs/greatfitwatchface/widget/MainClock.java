@@ -45,6 +45,7 @@ public class MainClock extends DigitalClockWidget {
     private TextPaint dayFont;
     private TextPaint weekdayFont;
     private TextPaint monthFont;
+    private TextPaint yearFont;
 
     private boolean secondsBool ;//= GreatFit.bool_settings[0];
     private boolean indicatorBool;
@@ -57,6 +58,11 @@ public class MainClock extends DigitalClockWidget {
     private boolean three_letters_month_if_textBool;
     private boolean yearBool;
     private boolean three_letters_day_if_textBool;
+    private boolean dateAlignLeftBool;
+    private boolean weekdayAlignLeftBool;
+    private boolean dayAlignLeftBool;
+    private boolean monthAlignLeftBool;
+    private boolean yearAlignLeftBool;
 
     private Drawable background;
     private float leftHour;
@@ -75,6 +81,8 @@ public class MainClock extends DigitalClockWidget {
     private float topMonth;
     private float leftWeekday;
     private float topWeekday;
+    private float leftYear;
+    private float topYear;
 
     private String[] digitalNums = {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9"};
 
@@ -194,6 +202,8 @@ public class MainClock extends DigitalClockWidget {
         this.topMonth = service.getResources().getDimension(R.dimen.month_top);
         this.leftWeekday = service.getResources().getDimension(R.dimen.weekday_left);
         this.topWeekday = service.getResources().getDimension(R.dimen.weekday_top);
+        this.leftYear = service.getResources().getDimension(R.dimen.year_left);
+        this.topYear = service.getResources().getDimension(R.dimen.year_top);
 
         this.hourFont = new TextPaint(TextPaint.ANTI_ALIAS_FLAG);
         this.hourFont.setTypeface(ResourceManager.getTypeFace(service.getResources(), ResourceManager.Font.FONT_FILE));
@@ -207,7 +217,6 @@ public class MainClock extends DigitalClockWidget {
         this.minutesFont.setColor(service.getResources().getColor(R.color.minute_colour));
         this.minutesFont.setTextAlign(Paint.Align.CENTER);
 
-        // Not used
         this.secondsBool = service.getResources().getBoolean(R.bool.seconds);
         this.secondsFont = new TextPaint(TextPaint.ANTI_ALIAS_FLAG);
         this.secondsFont.setTypeface(ResourceManager.getTypeFace(service.getResources(), ResourceManager.Font.FONT_FILE));
@@ -224,37 +233,47 @@ public class MainClock extends DigitalClockWidget {
         this.indicatorFont.setTextAlign(Paint.Align.CENTER);
 
         this.dateBool = service.getResources().getBoolean(R.bool.date);
+        this.dateAlignLeftBool = service.getResources().getBoolean(R.bool.date_left_align);
         this.dateFont = new TextPaint(TextPaint.ANTI_ALIAS_FLAG);
         this.dateFont.setTypeface(ResourceManager.getTypeFace(service.getResources(), ResourceManager.Font.FONT_FILE));
         this.dateFont.setTextSize(service.getResources().getDimension(R.dimen.date_font_size));
         this.dateFont.setColor(service.getResources().getColor(R.color.date_colour));
-        this.dateFont.setTextAlign(Paint.Align.CENTER);
+        this.dateFont.setTextAlign( (this.dateAlignLeftBool) ? Paint.Align.LEFT : Paint.Align.CENTER );
 
         this.weekdayBool = service.getResources().getBoolean(R.bool.week_name);
         this.three_letters_day_if_textBool = service.getResources().getBoolean(R.bool.three_letters_day_if_text);
+        this.weekdayAlignLeftBool = service.getResources().getBoolean(R.bool.weekday_left_align);
         this.weekdayFont = new TextPaint(TextPaint.ANTI_ALIAS_FLAG);
         this.weekdayFont.setTypeface(ResourceManager.getTypeFace(service.getResources(), ResourceManager.Font.FONT_FILE));
         this.weekdayFont.setTextSize(service.getResources().getDimension(R.dimen.weekday_font_size));
         this.weekdayFont.setColor(service.getResources().getColor(R.color.weekday_colour));
-        this.weekdayFont.setTextAlign(Paint.Align.CENTER);
+        this.weekdayFont.setTextAlign( (this.weekdayAlignLeftBool) ? Paint.Align.LEFT : Paint.Align.CENTER );
 
         this.dayBool = service.getResources().getBoolean(R.bool.day);
+        this.dayAlignLeftBool = service.getResources().getBoolean(R.bool.day_left_align);
         this.dayFont = new TextPaint(TextPaint.ANTI_ALIAS_FLAG);
         this.dayFont.setTypeface(ResourceManager.getTypeFace(service.getResources(), ResourceManager.Font.FONT_FILE));
         this.dayFont.setTextSize(service.getResources().getDimension(R.dimen.day_font_size));
         this.dayFont.setColor(service.getResources().getColor(R.color.day_colour));
-        this.dayFont.setTextAlign(Paint.Align.CENTER);
+        this.dayFont.setTextAlign( (this.dayAlignLeftBool) ? Paint.Align.LEFT : Paint.Align.CENTER );
 
         this.monthBool = service.getResources().getBoolean(R.bool.month);
         this.month_as_textBool = service.getResources().getBoolean(R.bool.month_as_text);
         this.three_letters_month_if_textBool = service.getResources().getBoolean(R.bool.three_letters_month_if_text);
+        this.monthAlignLeftBool = service.getResources().getBoolean(R.bool.month_left_align);
         this.monthFont = new TextPaint(TextPaint.ANTI_ALIAS_FLAG);
         this.monthFont.setTypeface(ResourceManager.getTypeFace(service.getResources(), ResourceManager.Font.FONT_FILE));
         this.monthFont.setTextSize(service.getResources().getDimension(R.dimen.month_font_size));
         this.monthFont.setColor(service.getResources().getColor(R.color.month_colour));
-        this.monthFont.setTextAlign(Paint.Align.CENTER);
+        this.monthFont.setTextAlign( (this.monthAlignLeftBool) ? Paint.Align.LEFT : Paint.Align.CENTER );
 
         this.yearBool = service.getResources().getBoolean(R.bool.year);
+        this.yearAlignLeftBool = service.getResources().getBoolean(R.bool.year_left_align);
+        this.yearFont = new TextPaint(TextPaint.ANTI_ALIAS_FLAG);
+        this.yearFont.setTypeface(ResourceManager.getTypeFace(service.getResources(), ResourceManager.Font.FONT_FILE));
+        this.yearFont.setTextSize(service.getResources().getDimension(R.dimen.year_font_size));
+        this.yearFont.setColor(service.getResources().getColor(R.color.year_colour));
+        this.yearFont.setTextAlign( (this.yearAlignLeftBool) ? Paint.Align.LEFT : Paint.Align.CENTER );
     }
 
     // Screen open watch mode
@@ -273,13 +292,13 @@ public class MainClock extends DigitalClockWidget {
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.DAY_OF_WEEK, week);
 
-        // Get + Draw Date
+        // Draw Date
         if(this.dateBool) {
             String date = String.format("%02d.%02d.%02d", day, month, year);
             canvas.drawText(date, leftDate, topDate, this.dateFont);
         }
 
-        // Get + Draw Day
+        // Draw Day
         if(this.dayBool) {
             String dayText = String.format("%02d", day);
             canvas.drawText(dayText, leftDay, topDay, this.dayFont);
@@ -293,10 +312,16 @@ public class MainClock extends DigitalClockWidget {
             canvas.drawText(weekday, leftWeekday, topWeekday, this.weekdayFont);
         }
 
-        // Get + Draw Month
+        // Draw Month
         if(this.monthBool) {
-            String monthText = (this.month_as_textBool)? ( (this.three_letters_month_if_textBool)? months_3let[this.language][month-1] : months[this.language][month-1] ) : String.format("%02d", month) ;
+            String monthText = (this.month_as_textBool)? ( (this.three_letters_month_if_textBool)? months_3let[this.language][month] : months[this.language][month] ) : String.format("%02d", month) ;
             canvas.drawText(monthText, leftMonth, topMonth, this.monthFont);
+        }
+
+        // Draw Year
+        if(this.yearBool) {
+            String yearText = String.format("%04d", year);
+            canvas.drawText(yearText, leftYear, topYear, this.yearFont);
         }
 
         // Draw Seconds
@@ -322,6 +347,7 @@ public class MainClock extends DigitalClockWidget {
         this.settings = new APsettings(MainClock.class.getName(), service);
         this.language = this.settings.get("lang", this.language) % this.codes.length;
         this.color = this.settings.getInt("color",this.color);
+        int tmp_left;
 
         // Draw background image
         SlptPictureView background = new SlptPictureView();
@@ -422,13 +448,18 @@ public class MainClock extends DigitalClockWidget {
                 timeTypeFace);
         // Position based on screen on
         dateLayout.alignX = 2;
-        dateLayout.alignY=0;
-        dateLayout.setRect(
-                (int) (2*service.getResources().getDimension(R.dimen.date_left)+640),
-                (int) (service.getResources().getDimension(R.dimen.date_font_size))
-        );
+        dateLayout.alignY = 0;
+        tmp_left = (int) service.getResources().getDimension(R.dimen.date_left);
+        if(!service.getResources().getBoolean(R.bool.date_left_align)) {
+            // If text is centered, set rectangle
+            dateLayout.setRect(
+                    (int) (2 * tmp_left + 640),
+                    (int) (service.getResources().getDimension(R.dimen.date_font_size))
+            );
+            tmp_left = -320;
+        }
         dateLayout.setStart(
-                -320,
+                tmp_left,
                 (int) (service.getResources().getDimension(R.dimen.date_top)-((float)service.getResources().getInteger(R.integer.font_ratio)/100)*service.getResources().getDimension(R.dimen.date_font_size))
         );
         // Hide if disabled
@@ -445,13 +476,18 @@ public class MainClock extends DigitalClockWidget {
                 timeTypeFace);
         // Position based on screen on
         dayLayout.alignX = 2;
-        dayLayout.alignY=0;
-        dayLayout.setRect(
-                (int) (2*service.getResources().getDimension(R.dimen.day_left)+640),
-                (int) (service.getResources().getDimension(R.dimen.day_font_size))
-        );
+        dayLayout.alignY = 0;
+        tmp_left = (int) service.getResources().getDimension(R.dimen.day_left);
+        if(!service.getResources().getBoolean(R.bool.day_left_align)) {
+            // If text is centered, set rectangle
+            dayLayout.setRect(
+                    (int) (2 * tmp_left + 640),
+                    (int) (service.getResources().getDimension(R.dimen.day_font_size))
+            );
+            tmp_left = -320;
+        }
         dayLayout.setStart(
-                -320,
+                tmp_left,
                 (int) (service.getResources().getDimension(R.dimen.day_top)-((float)service.getResources().getInteger(R.integer.font_ratio)/100)*service.getResources().getDimension(R.dimen.day_font_size))
         );
         // Hide if disabled
@@ -460,8 +496,20 @@ public class MainClock extends DigitalClockWidget {
 
         // Draw month
         SlptLinearLayout monthLayout = new SlptLinearLayout();
-        monthLayout.add(new SlptMonthHView());
+        //monthLayout.add(new SlptMonthHView());
         monthLayout.add(new SlptMonthLView());
+        // Fix 00 type of month
+            // JAVA calendar get/show time library
+            Calendar calendar = Calendar.getInstance();
+            int month = calendar.get(Calendar.MONTH);
+            if(month>=9){
+                months_3let[2] = months_3let[0];
+                months_3let[0] = months_3let[10];
+                months_3let[1] = months_3let[11];
+                months[2] = months_3let[0];
+                months[0] = months_3let[10];
+                months[1] = months_3let[11];
+            }
         if(service.getResources().getBoolean(R.bool.month_as_text)) { // if as text
             if (service.getResources().getBoolean(R.bool.three_letters_month_if_text)) {
                 monthLayout.setStringPictureArrayForAll(months_3let[language]);
@@ -470,18 +518,23 @@ public class MainClock extends DigitalClockWidget {
             }
         }
         monthLayout.setTextAttrForAll(
-                service.getResources().getDimension(R.dimen.date_font_size),
+                service.getResources().getDimension(R.dimen.month_font_size),
                 service.getResources().getColor(R.color.month_colour_slpt),
                 timeTypeFace);
         // Position based on screen on
         monthLayout.alignX = 2;
-        monthLayout.alignY=0;
-        monthLayout.setRect(
-                (int) (2*service.getResources().getDimension(R.dimen.month_left)+640),
-                (int) (service.getResources().getDimension(R.dimen.month_font_size))
-        );
+        monthLayout.alignY = 0;
+        tmp_left = (int) service.getResources().getDimension(R.dimen.month_left);
+        if(!service.getResources().getBoolean(R.bool.month_left_align)) {
+            // If text is centered, set rectangle
+            monthLayout.setRect(
+                    (int) (2 * tmp_left + 640),
+                    (int) (service.getResources().getDimension(R.dimen.month_font_size))
+            );
+            tmp_left = -320;
+        }
         monthLayout.setStart(
-                -320,
+                tmp_left,
                 (int) (service.getResources().getDimension(R.dimen.month_top)-((float)service.getResources().getInteger(R.integer.font_ratio)/100)*service.getResources().getDimension(R.dimen.month_font_size))
         );
         // Hide if disabled
@@ -495,19 +548,24 @@ public class MainClock extends DigitalClockWidget {
         yearLayout.add(new SlptYear1View());
         yearLayout.add(new SlptYear0View());
         yearLayout.setTextAttrForAll(
-                service.getResources().getDimension(R.dimen.date_font_size),
+                service.getResources().getDimension(R.dimen.year_font_size),
                 service.getResources().getColor(R.color.year_colour_slpt),
                 timeTypeFace
         );
         // Position based on screen on
         yearLayout.alignX = 2;
-        yearLayout.alignY=0;
-        yearLayout.setRect(
-                (int) (2*service.getResources().getDimension(R.dimen.year_left)+640),
-                (int) (service.getResources().getDimension(R.dimen.year_font_size))
-        );
+        yearLayout.alignY = 0;
+        tmp_left = (int) service.getResources().getDimension(R.dimen.year_left);
+        if(!service.getResources().getBoolean(R.bool.year_left_align)) {
+            // If text is centered, set rectangle
+            yearLayout.setRect(
+                    (int) (2 * tmp_left + 640),
+                    (int) (service.getResources().getDimension(R.dimen.year_font_size))
+            );
+            tmp_left = -320;
+        }
         yearLayout.setStart(
-                -320,
+                tmp_left,
                 (int) (service.getResources().getDimension(R.dimen.year_top)-((float)service.getResources().getInteger(R.integer.font_ratio)/100)*service.getResources().getDimension(R.dimen.year_font_size))
         );
         // Hide if disabled
@@ -525,19 +583,25 @@ public class MainClock extends DigitalClockWidget {
         }else{
             WeekdayLayout.setStringPictureArrayForAll(days[language]);
         }
-        WeekdayLayout.setTextAttrForAll(service.getResources().getDimension(R.dimen.weekday_font_size),
+        WeekdayLayout.setTextAttrForAll(
+                service.getResources().getDimension(R.dimen.weekday_font_size),
                 service.getResources().getColor(R.color.weekday_colour_slpt),
                 weekfont
         );
         // Position based on screen on
         WeekdayLayout.alignX = 2;
-        WeekdayLayout.alignY=0;
-        WeekdayLayout.setRect(
-                (int) (2*service.getResources().getDimension(R.dimen.weekday_left)+640),
-                (int) (service.getResources().getDimension(R.dimen.weekday_font_size))
-        );
+        WeekdayLayout.alignY = 0;
+        tmp_left = (int) service.getResources().getDimension(R.dimen.weekday_left);
+        if(!service.getResources().getBoolean(R.bool.weekday_left_align)) {
+            // If text is centered, set rectangle
+            WeekdayLayout.setRect(
+                    (int) (2 * tmp_left + 640),
+                    (int) (service.getResources().getDimension(R.dimen.weekday_font_size))
+            );
+            tmp_left = -320;
+        }
         WeekdayLayout.setStart(
-                -320,
+                tmp_left,
                 (int) (service.getResources().getDimension(R.dimen.weekday_top)-((float)service.getResources().getInteger(R.integer.font_ratio)/100)*service.getResources().getDimension(R.dimen.weekday_font_size))
         );
         // Hide if disabled

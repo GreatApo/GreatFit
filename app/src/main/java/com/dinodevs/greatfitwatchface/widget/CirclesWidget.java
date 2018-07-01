@@ -393,7 +393,7 @@ public class CirclesWidget extends AbstractWidget {
         );
         // Position based on screen on
         power.alignX = 2;
-        power.alignY=0;
+        power.alignY = 0;
         tmp_left = (int) service.getResources().getDimension(R.dimen.battery_text_left);
         if(!service.getResources().getBoolean(R.bool.battery_left_align)) {
             // If text is centered, set rectangle
@@ -420,7 +420,7 @@ public class CirclesWidget extends AbstractWidget {
         );
         // Position based on screen on
         steps.alignX = 2;
-        steps.alignY=0;
+        steps.alignY = 0;
         tmp_left = (int) service.getResources().getDimension(R.dimen.steps_text_left);
         if(!service.getResources().getBoolean(R.bool.steps_left_align)) {
             // If text is centered, set rectangle
@@ -462,7 +462,7 @@ public class CirclesWidget extends AbstractWidget {
         );
         // Position based on screen on
         sport.alignX = 2;
-        sport.alignY=0;
+        sport.alignY = 0;
         tmp_left = (int) service.getResources().getDimension(R.dimen.today_distance_text_left);
         if(!service.getResources().getBoolean(R.bool.today_distance_left_align)) {
             // If text is centered, set rectangle
@@ -496,7 +496,7 @@ public class CirclesWidget extends AbstractWidget {
         );
         // Position based on screen on
         road.alignX = 2;
-        road.alignY=0;
+        road.alignY = 0;
         tmp_left = (int) service.getResources().getDimension(R.dimen.total_distance_text_left);
         if(!service.getResources().getBoolean(R.bool.total_distance_left_align)) {
             // If text is centered, set rectangle

@@ -27,6 +27,7 @@ public class FloorWidget extends AbstractWidget {
     private float textTop;
     private float textLeft;
     private Boolean floorsBool;
+    private Boolean floorAlignLeftBool;
     private String[] digitalNums = {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9"};
 
     @Override
@@ -34,11 +35,14 @@ public class FloorWidget extends AbstractWidget {
         this.textLeft = service.getResources().getDimension(R.dimen.floors_text_left);
         this.textTop = service.getResources().getDimension(R.dimen.floors_text_top);
 
+        // Aling left true or false (false= align center)
+        this.floorAlignLeftBool = service.getResources().getBoolean(R.bool.floor_left_align);
+
         this.textPaint = new TextPaint(TextPaint.ANTI_ALIAS_FLAG);
         this.textPaint.setColor(service.getResources().getColor(R.color.floors_colour));
         this.textPaint.setTypeface(ResourceManager.getTypeFace(service.getResources(), ResourceManager.Font.FONT_FILE));
         this.textPaint.setTextSize(service.getResources().getDimension(R.dimen.floors_font_size));
-        this.textPaint.setTextAlign(Paint.Align.CENTER);
+        this.textPaint.setTextAlign( (this.floorAlignLeftBool) ? Paint.Align.LEFT : Paint.Align.CENTER );
 
         this.floorsBool = service.getResources().getBoolean(R.bool.floor);
     }
@@ -73,13 +77,18 @@ public class FloorWidget extends AbstractWidget {
         );
         // Position based on screen on
         floors.alignX = 2;
-        floors.alignY=0;
-        floors.setRect(
-                (int) (2*service.getResources().getDimension(R.dimen.floors_text_left)+640),
-                (int) (service.getResources().getDimension(R.dimen.floors_font_size))
-        );
+        floors.alignY = 0;
+        int tmp_left = (int) service.getResources().getDimension(R.dimen.floors_text_left);
+        if(!service.getResources().getBoolean(R.bool.floor_left_align)) {
+            // If text is centered, set rectangle
+            floors.setRect(
+                    (int) (2 * tmp_left + 640),
+                    (int) (service.getResources().getDimension(R.dimen.floors_font_size))
+            );
+            tmp_left = -320;
+        }
         floors.setStart(
-                -320,
+                tmp_left,
                 (int) (service.getResources().getDimension(R.dimen.floors_text_top)-((float)service.getResources().getInteger(R.integer.font_ratio)/100)*service.getResources().getDimension(R.dimen.floors_font_size))
         );
         // Hide if disabled

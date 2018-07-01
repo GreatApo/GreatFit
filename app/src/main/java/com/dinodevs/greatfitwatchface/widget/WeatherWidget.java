@@ -43,6 +43,7 @@ public class WeatherWidget extends AbstractWidget {
     private boolean showUnits;
     private boolean temperatureBool;
     private boolean weatherBool;
+    private boolean temperatureAlignLeftBool;
 
     @Override
     public void init(Service service) {
@@ -52,11 +53,14 @@ public class WeatherWidget extends AbstractWidget {
         this.imgLeft = service.getResources().getDimension(R.dimen.weather_img_left);
         this.imgTop = service.getResources().getDimension(R.dimen.weather_img_top);
 
+        // Aling left true or false (false= align center)
+        this.temperatureAlignLeftBool = service.getResources().getBoolean(R.bool.heart_rate_left_align);
+
         this.textPaint = new TextPaint(TextPaint.ANTI_ALIAS_FLAG);
-        this.textPaint.setColor(service.getResources().getColor(R.color.calories_colour));
+        this.textPaint.setColor(service.getResources().getColor(R.color.temperature_colour));
         this.textPaint.setTypeface(ResourceManager.getTypeFace(service.getResources(), ResourceManager.Font.FONT_FILE));
         this.textPaint.setTextSize(service.getResources().getDimension(R.dimen.temperature_font_size));
-        this.textPaint.setTextAlign(Paint.Align.CENTER);
+        this.textPaint.setTextAlign( (this.temperatureAlignLeftBool) ? Paint.Align.LEFT : Paint.Align.CENTER );
 
         this.temperatureBool = service.getResources().getBoolean(R.bool.temperature);
         this.weatherBool = service.getResources().getBoolean(R.bool.weather_image);
@@ -215,13 +219,18 @@ public class WeatherWidget extends AbstractWidget {
         );
         // Position based on screen on
         temperatureLayout.alignX = 2;
-        temperatureLayout.alignY=0;
-        temperatureLayout.setRect(
-                (int) (2*service.getResources().getDimension(R.dimen.temperature_left)),
-                (int) (service.getResources().getDimension(R.dimen.temperature_font_size))
-        );
+        temperatureLayout.alignY = 0;
+        int tmp_left = (int) service.getResources().getDimension(R.dimen.temperature_left);
+        if(!service.getResources().getBoolean(R.bool.temperature_left_align)) {
+            // If text is centered, set rectangle
+            temperatureLayout.setRect(
+                    (int) (2 * tmp_left + 640),
+                    (int) (service.getResources().getDimension(R.dimen.temperature_font_size))
+            );
+            tmp_left = -320;
+        }
         temperatureLayout.setStart(
-                0,
+                tmp_left,
                 (int) (service.getResources().getDimension(R.dimen.temperature_top)-((float)service.getResources().getInteger(R.integer.font_ratio)/100)*service.getResources().getDimension(R.dimen.temperature_font_size))
         );
         if(!service.getResources().getBoolean(R.bool.temperature)){temperatureLayout.show=false;}

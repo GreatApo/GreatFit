@@ -76,11 +76,7 @@ public class CaloriesWidget extends AbstractWidget {
     // SLPT mode, screen off
     @Override
     public List<SlptViewComponent> buildSlptViewComponent(Service service) {
-        // Get bool variables
-        this.caloriesBool = service.getResources().getBoolean(R.bool.calories);
-        this.caloriesAlignLeftBool = service.getResources().getBoolean(R.bool.calories_left_align);
-
-        SlptLinearLayout caloriesLayout = new SlptLinearLayout();
+       SlptLinearLayout caloriesLayout = new SlptLinearLayout();
         caloriesLayout.add(new SlptTodayCaloriesView());
         // Show or Not Units
         if(service.getResources().getBoolean(R.bool.calories_units)) {
@@ -96,8 +92,8 @@ public class CaloriesWidget extends AbstractWidget {
         // Position based on screen on
         caloriesLayout.alignX = 2;
         caloriesLayout.alignY = 0;
-        float tmp_left = service.getResources().getDimension(R.dimen.calories_text_left);
-        if(!this.caloriesAlignLeftBool) {
+        int tmp_left = (int) service.getResources().getDimension(R.dimen.calories_text_left);
+        if(!service.getResources().getBoolean(R.bool.calories_left_align)) {
             // If text is centered, set rectangle
             caloriesLayout.setRect(
                     (int) (2 * tmp_left + 640),
@@ -109,7 +105,7 @@ public class CaloriesWidget extends AbstractWidget {
                 (int) tmp_left,
                 (int) (service.getResources().getDimension(R.dimen.calories_text_top)-((float)service.getResources().getInteger(R.integer.font_ratio)/100)*service.getResources().getDimension(R.dimen.calories_font_size))
         );
-        if(!this.caloriesBool){caloriesLayout.show=false;}
+        if(!service.getResources().getBoolean(R.bool.calories)){caloriesLayout.show=false;}
 
         return Collections.<SlptViewComponent>singletonList(caloriesLayout);
     }
