@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- Show time elements -->
-    <bool name="seconds">false</bool><!-- not working on slpt screen  -->
-    <bool name="ampm">true</bool>
+    <bool name="seconds">true</bool><!-- not working on slpt screen  -->
+    <bool name="ampm">true</bool><!-- not working on slpt screen  -->
     <bool name="indicator">false</bool>
     <!-- Show date elements -->
     <bool name="date">false</bool><!-- dd.mm.yyyy  -->
@@ -36,7 +36,7 @@
     <bool name="total_distance">false</bool>
     <bool name="calories">true</bool>
     <bool name="heart_rate">false</bool>
-    <bool name="temperature">false</bool>
+    <bool name="temperature">true</bool>
     <bool name="weather_image">false</bool>
     <bool name="floor">false</bool>
     <!-- Show icons -->

@@ -53,7 +53,7 @@ public class WeatherWidget extends AbstractWidget {
         this.imgLeft = service.getResources().getDimension(R.dimen.weather_img_left);
         this.imgTop = service.getResources().getDimension(R.dimen.weather_img_top);
 
-        // Aling left true or false (false= align center)
+        // Align left true or false (false= align center)
         this.temperatureAlignLeftBool = service.getResources().getBoolean(R.bool.heart_rate_left_align);
 
         this.textPaint = new TextPaint(TextPaint.ANTI_ALIAS_FLAG);
@@ -108,7 +108,7 @@ public class WeatherWidget extends AbstractWidget {
     public void draw(Canvas canvas, float width, float height, float centerX, float centerY) {
         // Draw Temperature
         if(this.temperatureBool) {
-            String units = (showUnits) ? "ºC" : "";
+            String units = (showUnits) ? weather.getUnits() : ""; //"ºC"
             canvas.drawText(weather.getTemperature() + units, textLeft, textTop, textPaint);
         }
 
@@ -208,7 +208,7 @@ public class WeatherWidget extends AbstractWidget {
         // Show or Not Units
         if(service.getResources().getBoolean(R.bool.temperature_units)) {
             SlptPictureView temperatureUnit = new SlptPictureView();
-            temperatureUnit.setStringPicture("ºC");
+            temperatureUnit.setStringPicture(this.weather.getUnits());
             temperatureLayout.add(temperatureUnit);
         }
         Typeface caloriesFont = ResourceManager.getTypeFace(service.getResources(), ResourceManager.Font.FONT_FILE);

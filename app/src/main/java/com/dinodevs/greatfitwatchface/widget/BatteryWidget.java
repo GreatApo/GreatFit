@@ -5,6 +5,7 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
 import android.text.TextPaint;
+import android.util.Log;
 
 import com.huami.watch.watchface.util.Util;
 import com.ingenic.iwds.slpt.view.core.SlptBatteryView;
@@ -122,8 +123,13 @@ public class BatteryWidget extends AbstractWidget {
                     this.batteryIcon90.draw(canvas);
                 }
             }
+
+            if(this.sBattery != null && this.sBattery.matches("[-+]?\\d*\\.?\\d+")) {
+                this.BatteryNum = Integer.parseInt(this.sBattery);
+            }else{
+                Log.w("DinoDevs-GreatFit", "battery value null or not a number ("+this.batteryData.getLevel()+" / "+this.batteryData.getScale()+")");
+            }
         }
-        this.BatteryNum = Integer.parseInt(this.sBattery);
     }
 
     public List<SlptViewComponent> buildSlptViewComponent(Service service) {

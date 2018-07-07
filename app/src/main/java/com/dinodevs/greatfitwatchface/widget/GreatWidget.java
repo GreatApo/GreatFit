@@ -1,11 +1,18 @@
 package com.dinodevs.greatfitwatchface.widget;
 
 import android.app.Service;
+import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.provider.Settings;
 import android.text.TextPaint;
 import android.util.Log;
 
+import com.dinodevs.greatfitwatchface.resource.SlptAnalogAmPmView;
+import com.dinodevs.greatfitwatchface.resource.SlptSecondHView;
+import com.dinodevs.greatfitwatchface.resource.SlptSecondLView;
 import com.ingenic.iwds.slpt.view.core.SlptLinearLayout;
 import com.ingenic.iwds.slpt.view.core.SlptPictureView;
 import com.ingenic.iwds.slpt.view.core.SlptViewComponent;
@@ -21,19 +28,23 @@ import com.dinodevs.greatfitwatchface.resource.ResourceManager;
 import com.dinodevs.greatfitwatchface.R;
 
 
-public class TimeWidget extends AbstractWidget {
+public class GreatWidget extends AbstractWidget {
     private TextPaint textPaint;
     private Time time;
     private String text;
+    private String wifi;
     private int textint;
     private Boolean secondsBool;
     private Boolean ampmBool;
+    private Service mService;
 
     private float textTop;
     private float textLeft;
 
     @Override
     public void init(Service service){
+        this.mService = service;
+
         this.textLeft = service.getResources().getDimension(R.dimen.ampm_left);
         this.textTop = service.getResources().getDimension(R.dimen.ampm_top);
 
@@ -48,12 +59,29 @@ public class TimeWidget extends AbstractWidget {
 
     @Override
     public List<DataType> getDataTypes() {
-        return Collections.singletonList(DataType.TIME);
+        //return Collections.singletonList(DataType.TIME);
+        return Arrays.asList(DataType.BATTERY, DataType.STEPS, DataType.DISTANCE, DataType.TOTAL_DISTANCE, DataType.TIME,  DataType.CALORIES,  DataType.DATE,  DataType.HEART_RATE,  DataType.FLOOR);
     }
 
     @Override
     public void onDataUpdate(DataType type, Object value) {
-        this.time = (Time) value;
+        Log.w("DinoDevs-GreatFit", type.toString()+" => "+value.toString() );
+        //this.time = (Time) value;
+
+        Calendar now = Calendar.getInstance();
+        int periode = (now.get(Calendar.HOUR_OF_DAY) <= 12)?0:1;
+        int seconds = now.get(Calendar.SECOND);
+
+        this.time = new Time(seconds,0,0,periode);
+
+        ConnectivityManager connManager = (ConnectivityManager) this.mService.getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo mWifi = connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+        this.wifi = mWifi.toString();
+        Log.w("DinoDevs-GreatFit", "WiFi: "+mWifi );
+        //if (mWifi.isConnected()) {
+        // Do whatever
+        //}
+
         //this.time = getSlptTime();
     }
 
@@ -73,11 +101,16 @@ public class TimeWidget extends AbstractWidget {
         int periode = (now.get(Calendar.HOUR_OF_DAY) <= 12)?0:1;
         int seconds = now.get(Calendar.SECOND);
 
-        Log.w("com.dinodevs.greatfitwatchface", String.format("Seconds= %s", seconds));
+        Log.w("DinoDevs-GreatFit", String.format("Seconds= %s", seconds));
 
         return new Time(seconds,0,0,periode);
     }
 
+    public String getSlptBluetooth(Service service) {
+        String str = Settings.System.getString(service.getApplicationContext().getContentResolver(), "wifi");
+        Log.w("DinoDevs-GreatFit", "Wifi: "+str);
+        return (str!=null)?str:"null";
+    }
 
     @Override
     public List<SlptViewComponent> buildSlptViewComponent(Service service) {
@@ -88,11 +121,15 @@ public class TimeWidget extends AbstractWidget {
         // Get Seconds & AM/PM
         this.time = getSlptTime();
 
+        // Get wifi
+        this.wifi = getSlptBluetooth(service);
+
         // Draw AM or PM
         SlptLinearLayout ampm = new SlptLinearLayout();
         SlptPictureView ampmStr = new SlptPictureView();
         ampmStr.setStringPicture( this.time.ampmStr );
         ampm.add(ampmStr);
+        //ampm.add(new SlptAnalogAmPmView());
         ampm.setTextAttrForAll(
                 service.getResources().getDimension(R.dimen.ampm_font_size),
                 service.getResources().getColor(R.color.ampm_colour_slpt),
@@ -102,7 +139,7 @@ public class TimeWidget extends AbstractWidget {
         if(!this.ampmBool) {ampm.show = false;}
         // Position based on screen on
         ampm.alignX = 2;
-        ampm.alignY=0;
+        ampm.alignY = 0;
         ampm.setRect(
                 (int) (2*service.getResources().getDimension(R.dimen.ampm_left)+640),
                 (int) (service.getResources().getDimension(R.dimen.ampm_font_size))
@@ -114,9 +151,11 @@ public class TimeWidget extends AbstractWidget {
 
         // Draw Seconds
         SlptLinearLayout secondsLayout = new SlptLinearLayout();
-        SlptPictureView secondsStr = new SlptPictureView();
-        secondsStr.setStringPicture( this.time.secondsStr );
-        secondsLayout.add(secondsStr);
+        //SlptPictureView secondsStr = new SlptPictureView();
+        //secondsStr.setStringPicture( this.time.secondsStr );
+        //secondsLayout.add(secondsStr);
+        secondsLayout.add(new SlptSecondHView());
+        secondsLayout.add(new SlptSecondLView());
         secondsLayout.setTextAttrForAll(
                 service.getResources().getDimension(R.dimen.seconds_font_size),
                 service.getResources().getColor(R.color.seconds_colour_slpt),
@@ -126,7 +165,7 @@ public class TimeWidget extends AbstractWidget {
         if(!this.secondsBool) {secondsLayout.show = false;}
         // Position based on screen on
         secondsLayout.alignX = 2;
-        secondsLayout.alignY=0;
+        secondsLayout.alignY = 0;
         secondsLayout.setRect(
                 (int) (2*service.getResources().getDimension(R.dimen.seconds_left)+640),
                 (int) (service.getResources().getDimension(R.dimen.seconds_font_size))
@@ -136,6 +175,30 @@ public class TimeWidget extends AbstractWidget {
                 (int) (service.getResources().getDimension(R.dimen.seconds_top)-((float)service.getResources().getInteger(R.integer.font_ratio)/100)*service.getResources().getDimension(R.dimen.seconds_font_size))
         );
 
-        return Arrays.asList(new SlptViewComponent[]{ampm, secondsLayout});
+        // Draw WiFi
+        SlptLinearLayout wifiLayout = new SlptLinearLayout();
+        SlptPictureView wifiStr = new SlptPictureView();
+        wifiStr.setStringPicture( this.wifi );
+        wifiLayout.add(wifiStr);
+        wifiLayout.setTextAttrForAll(
+                service.getResources().getDimension(R.dimen.ampm_font_size),
+                service.getResources().getColor(R.color.ampm_colour_slpt),
+                ResourceManager.getTypeFace(service.getResources(), ResourceManager.Font.FONT_FILE)
+        );
+        // If enabled
+        if(true) {wifiLayout.show = false;}
+        // Position based on screen on
+        wifiLayout.alignX = 2;
+        wifiLayout.alignY = 0;
+        wifiLayout.setRect(
+                (int) (2*150+640),
+                (int) (service.getResources().getDimension(R.dimen.ampm_font_size))
+        );
+        wifiLayout.setStart(
+                -320,
+                (int) (150-((float)service.getResources().getInteger(R.integer.font_ratio)/100)*service.getResources().getDimension(R.dimen.ampm_font_size))
+        );
+
+        return Arrays.asList(new SlptViewComponent[]{ampm, secondsLayout, wifiLayout});
     }
 }

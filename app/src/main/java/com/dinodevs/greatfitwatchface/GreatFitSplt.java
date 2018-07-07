@@ -8,7 +8,7 @@ import com.dinodevs.greatfitwatchface.widget.CirclesWidget;
 import com.dinodevs.greatfitwatchface.widget.FloorWidget;
 import com.dinodevs.greatfitwatchface.widget.HeartRateWidget;
 import com.dinodevs.greatfitwatchface.widget.MainClock;
-import com.dinodevs.greatfitwatchface.widget.TimeWidget;
+import com.dinodevs.greatfitwatchface.widget.GreatWidget;
 import com.dinodevs.greatfitwatchface.widget.WeatherWidget;
 import com.dinodevs.greatfitwatchface.widget.Widget;
 import com.ingenic.iwds.slpt.view.core.SlptAbsoluteLayout;
@@ -28,8 +28,9 @@ public class GreatFitSplt extends AbstractWatchFaceSlpt {
                 new HeartRateWidget(),
                 new CaloriesWidget(),
                 new FloorWidget(),
+                new BatteryWidget(),
                 new WeatherWidget(),
-                new TimeWidget()
+                new GreatWidget()
         );
     }
 
@@ -45,7 +46,7 @@ public class GreatFitSplt extends AbstractWatchFaceSlpt {
             }
         }
 
-        Log.w("DarkThanosTest", "Rebuild 26WC");
+        Log.w("DinoDevs-GreatFit", "Rebuild 26WC");
 
         return result;
     }
@@ -62,7 +63,7 @@ public class GreatFitSplt extends AbstractWatchFaceSlpt {
             }
         }
 
-        Log.w("DarkThanosTest", "Rebuild 8C");
+        Log.w("DinoDevs-GreatFit", "Rebuild 8C");
 
         return result;
     }

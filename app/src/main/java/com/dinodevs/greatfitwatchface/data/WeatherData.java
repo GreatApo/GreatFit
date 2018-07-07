@@ -25,6 +25,10 @@ public class WeatherData {
         return this.weatherType;
     }
 
+    public String getUnits() {
+        return (this.tempFlag.equals("1"))?"ºC":"ºF";
+    }
+
     public String getTemperature() {
         if(this.tempString.isEmpty() || this.weatherType==22 || this.tempString.equals("0/0")){
             return "n/a";

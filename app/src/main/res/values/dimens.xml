@@ -13,13 +13,13 @@
     <dimen name="minutes_top">178px</dimen>
 
     <!-- Seconds -->
-    <dimen name="seconds_font_size">95px</dimen>
-    <dimen name="seconds_top">160px</dimen>
-    <dimen name="seconds_left">155px</dimen>
+    <dimen name="seconds_font_size">30px</dimen>
+    <dimen name="seconds_top">100px</dimen>
+    <dimen name="seconds_left">260px</dimen>
 
     <!-- AM / PM -->
     <dimen name="ampm_font_size">30px</dimen>
-    <dimen name="ampm_top">180px</dimen>
+    <dimen name="ampm_top">110px</dimen>
     <dimen name="ampm_left">260px</dimen>
 
     <!-- indicator ":" -->
@@ -66,8 +66,8 @@
     <dimen name="heart_rate_icon_top">244px</dimen>
 
     <!-- status (ex. charging icon) -->
-    <dimen name="status_left">-350px</dimen>
-    <dimen name="status_top">-350px</dimen>
+    <dimen name="status_left">10px</dimen>
+    <dimen name="status_top">150px</dimen>
 
     <!-- battery icon -->
     <dimen name="battery_icon_left">33px</dimen>
@@ -87,9 +87,9 @@
     <dimen name="today_distance_circle_top">0px</dimen>
 
     <!-- temperature -->
-    <dimen name="temperature_font_size">21px</dimen>
+    <dimen name="temperature_font_size">28px</dimen>
     <dimen name="temperature_left">70px</dimen>
-    <dimen name="temperature_top">232px</dimen>
+    <dimen name="temperature_top">250px</dimen>
     <!-- weather icon -->
     <dimen name="weather_img_left">50px</dimen>
     <dimen name="weather_img_top">50px</dimen>

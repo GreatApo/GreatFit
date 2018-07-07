@@ -1,5 +1,5 @@
 <resources>
     <string name="app_name">Greatfit Watchfaces</string>
     <string name="watch_face">Greatfit</string>
-    <string name="watch_face_2">Goldfit</string>
+    <string name="author">GreatApo</string>
 </resources>

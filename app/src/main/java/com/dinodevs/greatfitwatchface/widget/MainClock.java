@@ -540,7 +540,6 @@ public class MainClock extends DigitalClockWidget {
         // Hide if disabled
         if(!service.getResources().getBoolean(R.bool.month)){monthLayout.show=false;}
 
-
         // Draw year number
         SlptLinearLayout yearLayout = new SlptLinearLayout();
         yearLayout.add(new SlptYear3View());

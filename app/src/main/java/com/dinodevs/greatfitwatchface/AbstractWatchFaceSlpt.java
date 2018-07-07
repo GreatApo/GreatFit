@@ -38,7 +38,6 @@ public abstract class AbstractWatchFaceSlpt extends AbstractSlptClock {
             }
         }
 
-
         Log.w("DarkThanosTest", "Rebuild Normal");
 
         return result;
