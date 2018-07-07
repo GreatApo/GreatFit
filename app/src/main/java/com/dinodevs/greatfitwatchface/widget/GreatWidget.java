@@ -57,15 +57,16 @@ public class GreatWidget extends AbstractWidget {
         this.textPaint.setTextAlign(Paint.Align.CENTER);
     }
 
+    /*
     @Override
     public List<DataType> getDataTypes() {
         //return Collections.singletonList(DataType.TIME);
         return Arrays.asList(DataType.BATTERY, DataType.STEPS, DataType.DISTANCE, DataType.TOTAL_DISTANCE, DataType.TIME,  DataType.CALORIES,  DataType.DATE,  DataType.HEART_RATE,  DataType.FLOOR);
-    }
+    }*/
 
     @Override
     public void onDataUpdate(DataType type, Object value) {
-        Log.w("DinoDevs-GreatFit", type.toString()+" => "+value.toString() );
+        //Log.w("DinoDevs-GreatFit", type.toString()+" => "+value.toString() );
         //this.time = (Time) value;
 
         Calendar now = Calendar.getInstance();
@@ -74,10 +75,10 @@ public class GreatWidget extends AbstractWidget {
 
         this.time = new Time(seconds,0,0,periode);
 
-        ConnectivityManager connManager = (ConnectivityManager) this.mService.getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo mWifi = connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
-        this.wifi = mWifi.toString();
-        Log.w("DinoDevs-GreatFit", "WiFi: "+mWifi );
+        //ConnectivityManager connManager = (ConnectivityManager) this.mService.getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        //NetworkInfo mWifi = connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+        //this.wifi = mWifi.toString();
+        //Log.w("DinoDevs-GreatFit", "WiFi: "+mWifi );
         //if (mWifi.isConnected()) {
         // Do whatever
         //}

@@ -13,13 +13,13 @@
     <dimen name="minutes_top">178px</dimen>
 
     <!-- Seconds -->
-    <dimen name="seconds_font_size">30px</dimen>
-    <dimen name="seconds_top">100px</dimen>
+    <dimen name="seconds_font_size">32px</dimen>
+    <dimen name="seconds_top">110px</dimen>
     <dimen name="seconds_left">260px</dimen>
 
     <!-- AM / PM -->
     <dimen name="ampm_font_size">30px</dimen>
-    <dimen name="ampm_top">110px</dimen>
+    <dimen name="ampm_top">180px</dimen>
     <dimen name="ampm_left">260px</dimen>
 
     <!-- indicator ":" -->
@@ -88,7 +88,7 @@
 
     <!-- temperature -->
     <dimen name="temperature_font_size">28px</dimen>
-    <dimen name="temperature_left">70px</dimen>
+    <dimen name="temperature_left">90px</dimen>
     <dimen name="temperature_top">250px</dimen>
     <!-- weather icon -->
     <dimen name="weather_img_left">50px</dimen>
