@@ -13,6 +13,10 @@ import android.util.Log;
 import com.dinodevs.greatfitwatchface.resource.SlptAnalogAmPmView;
 import com.dinodevs.greatfitwatchface.resource.SlptSecondHView;
 import com.dinodevs.greatfitwatchface.resource.SlptSecondLView;
+import com.ingenic.iwds.datatransactor.elf.HealthInfo;
+import com.ingenic.iwds.datatransactor.elf.MusicControlInfo;
+import com.ingenic.iwds.datatransactor.elf.PhoneState;
+import com.ingenic.iwds.datatransactor.elf.ScheduleInfo;
 import com.ingenic.iwds.slpt.view.core.SlptLinearLayout;
 import com.ingenic.iwds.slpt.view.core.SlptPictureView;
 import com.ingenic.iwds.slpt.view.core.SlptViewComponent;
@@ -43,6 +47,22 @@ public class GreatWidget extends AbstractWidget {
 
     @Override
     public void init(Service service){
+
+        //Tests
+        PhoneState var = new PhoneState();
+        Log.w("DinoDevs-GreatFit", var.toString());
+
+        HealthInfo var2 = new HealthInfo();
+        Log.w("DinoDevs-GreatFit", var2.toString());
+
+        MusicControlInfo var3 = new MusicControlInfo();
+        Log.w("DinoDevs-GreatFit", var3.toString());
+
+        ScheduleInfo var4 = new ScheduleInfo(0);
+        Log.w("DinoDevs-GreatFit", var4.toString());
+
+        Settings.System.getString(service.getContentResolver(), "springboard_widget_order_in");
+
         this.mService = service;
 
         this.textLeft = service.getResources().getDimension(R.dimen.ampm_left);

@@ -46,7 +46,7 @@ public class GreatFitSplt extends AbstractWatchFaceSlpt {
             }
         }
 
-        Log.w("DinoDevs-GreatFit", "Rebuild 26WC");
+        //Log.w("DinoDevs-GreatFit", "Rebuild 26WC");
 
         return result;
     }
@@ -63,7 +63,7 @@ public class GreatFitSplt extends AbstractWatchFaceSlpt {
             }
         }
 
-        Log.w("DinoDevs-GreatFit", "Rebuild 8C");
+        //Log.w("DinoDevs-GreatFit", "Rebuild 8C");
 
         return result;
     }
