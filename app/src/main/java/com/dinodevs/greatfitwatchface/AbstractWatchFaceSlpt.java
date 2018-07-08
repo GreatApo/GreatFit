@@ -27,6 +27,7 @@ public abstract class AbstractWatchFaceSlpt extends AbstractSlptClock {
         this.widgets.addAll(Arrays.asList(widgets));
     }
 
+    /*
     public final SlptLayout createClockLayout() {
         SlptAbsoluteLayout result = new SlptAbsoluteLayout();
         for (SlptViewComponent component : clock.buildSlptViewComponent(this)) {
@@ -41,5 +42,17 @@ public abstract class AbstractWatchFaceSlpt extends AbstractSlptClock {
         Log.w("DarkThanosTest", "Rebuild Normal");
 
         return result;
+    }*/
+
+    @Override
+    public boolean isClockPeriodSecond() {
+        // Check if seconds are enabled
+        if( this.getResources().getBoolean(R.bool.seconds) ){
+            //Log.w("DinoDevs-GreatFit", "Setting sec to true (1 sec slpt interval)");
+            return true;
+        }else{
+            //Log.w("DinoDevs-GreatFit", "Setting sec to false (60 sec slpt interval)");
+            return false;
+        }
     }
 }

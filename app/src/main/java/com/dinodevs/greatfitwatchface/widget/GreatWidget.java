@@ -116,7 +116,7 @@ public class GreatWidget extends AbstractWidget {
     @Override
     public List<SlptViewComponent> buildSlptViewComponent(Service service) {
         // Variables
-        this.secondsBool = service.getResources().getBoolean(R.bool.seconds);
+        //this.secondsBool = service.getResources().getBoolean(R.bool.seconds);
         this.ampmBool = service.getResources().getBoolean(R.bool.ampm);
 
         // Get Seconds & AM/PM
@@ -150,6 +150,7 @@ public class GreatWidget extends AbstractWidget {
                 (int) (service.getResources().getDimension(R.dimen.ampm_top)-((float)service.getResources().getInteger(R.integer.font_ratio)/100)*service.getResources().getDimension(R.dimen.ampm_font_size))
         );
 
+        /*
         // Draw Seconds
         SlptLinearLayout secondsLayout = new SlptLinearLayout();
         //SlptPictureView secondsStr = new SlptPictureView();
@@ -175,6 +176,7 @@ public class GreatWidget extends AbstractWidget {
                 -320,
                 (int) (service.getResources().getDimension(R.dimen.seconds_top)-((float)service.getResources().getInteger(R.integer.font_ratio)/100)*service.getResources().getDimension(R.dimen.seconds_font_size))
         );
+        */
 
         // Draw WiFi
         SlptLinearLayout wifiLayout = new SlptLinearLayout();
@@ -200,6 +202,6 @@ public class GreatWidget extends AbstractWidget {
                 (int) (150-((float)service.getResources().getInteger(R.integer.font_ratio)/100)*service.getResources().getDimension(R.dimen.ampm_font_size))
         );
 
-        return Arrays.asList(new SlptViewComponent[]{ampm, secondsLayout, wifiLayout});
+        return Arrays.asList(new SlptViewComponent[]{ampm, /*secondsLayout,*/ wifiLayout});
     }
 }

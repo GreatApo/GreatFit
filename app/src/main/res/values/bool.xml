@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- Show time elements -->
-    <bool name="seconds">true</bool><!-- not working on slpt screen  -->
-    <bool name="ampm">true</bool><!-- not working on slpt screen  -->
+    <bool name="seconds">true</bool><!-- on slpt screen, updates while moving -->
+    <bool name="ampm">true</bool><!-- not working perfect on slpt screen  -->
     <bool name="indicator">false</bool>
     <!-- Show date elements -->
     <bool name="date">false</bool><!-- dd.mm.yyyy  -->

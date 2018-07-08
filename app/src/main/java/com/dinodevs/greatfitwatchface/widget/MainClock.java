@@ -8,6 +8,8 @@ import android.graphics.drawable.Drawable;
 import android.text.TextPaint;
 
 import com.dinodevs.greatfitwatchface.GreatFit;
+import com.dinodevs.greatfitwatchface.resource.SlptSecondHView;
+import com.dinodevs.greatfitwatchface.resource.SlptSecondLView;
 import com.dinodevs.greatfitwatchface.settings.APsettings;
 import com.huami.watch.watchface.util.Util;
 import com.ingenic.iwds.slpt.view.core.SlptLinearLayout;
@@ -347,6 +349,7 @@ public class MainClock extends DigitalClockWidget {
         this.settings = new APsettings(MainClock.class.getName(), service);
         this.language = this.settings.get("lang", this.language) % this.codes.length;
         this.color = this.settings.getInt("color",this.color);
+        this.secondsBool = service.getResources().getBoolean(R.bool.seconds);
         int tmp_left;
 
         // Draw background image
@@ -423,6 +426,29 @@ public class MainClock extends DigitalClockWidget {
         );
         // Hide if disabled
         if(!service.getResources().getBoolean(R.bool.indicator)){indicatorLayout.show=false;}
+
+        // Draw Seconds
+        SlptLinearLayout secondsLayout = new SlptLinearLayout();
+        secondsLayout.add(new SlptSecondHView());
+        secondsLayout.add(new SlptSecondLView());
+        secondsLayout.setTextAttrForAll(
+                service.getResources().getDimension(R.dimen.seconds_font_size),
+                service.getResources().getColor(R.color.seconds_colour_slpt),
+                ResourceManager.getTypeFace(service.getResources(), ResourceManager.Font.FONT_FILE)
+        );
+        // If Seconds are enabled
+        if(!this.secondsBool) {secondsLayout.show = false;}
+        // Position based on screen on
+        secondsLayout.alignX = 2;
+        secondsLayout.alignY = 0;
+        secondsLayout.setRect(
+                (int) (2*service.getResources().getDimension(R.dimen.seconds_left)+640),
+                (int) (service.getResources().getDimension(R.dimen.seconds_font_size))
+        );
+        secondsLayout.setStart(
+                -320,
+                (int) (service.getResources().getDimension(R.dimen.seconds_top)-((float)service.getResources().getInteger(R.integer.font_ratio)/100)*service.getResources().getDimension(R.dimen.seconds_font_size))
+        );
 
         // Set . string
         SlptPictureView point = new SlptPictureView();
@@ -606,6 +632,6 @@ public class MainClock extends DigitalClockWidget {
         // Hide if disabled
         if(!service.getResources().getBoolean(R.bool.week_name)){WeekdayLayout.show=false;}
 
-        return Arrays.asList(background, hourLayout, minuteLayout, indicatorLayout, dateLayout, dayLayout, monthLayout, WeekdayLayout, yearLayout);
+        return Arrays.asList(background, hourLayout, minuteLayout, indicatorLayout, secondsLayout, dateLayout, dayLayout, monthLayout, WeekdayLayout, yearLayout);
     }
 }
