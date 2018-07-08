@@ -57,12 +57,12 @@ public class GreatWidget extends AbstractWidget {
         this.textPaint.setTextAlign(Paint.Align.CENTER);
     }
 
-    /*
+
     @Override
     public List<DataType> getDataTypes() {
         //return Collections.singletonList(DataType.TIME);
         return Arrays.asList(DataType.BATTERY, DataType.STEPS, DataType.DISTANCE, DataType.TOTAL_DISTANCE, DataType.TIME,  DataType.CALORIES,  DataType.DATE,  DataType.HEART_RATE,  DataType.FLOOR);
-    }*/
+    }
 
     @Override
     public void onDataUpdate(DataType type, Object value) {
