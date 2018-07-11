@@ -184,7 +184,8 @@ public class WeatherWidget extends AbstractWidget {
 
     @Override
     public List<DataType> getDataTypes() {
-        return Collections.singletonList(DataType.WEATHER);
+        //return Collections.singletonList(DataType.WEATHER);
+        return Arrays.asList(DataType.BATTERY, DataType.STEPS, DataType.DISTANCE, DataType.TOTAL_DISTANCE, DataType.TIME,  DataType.CALORIES,  DataType.DATE,  DataType.HEART_RATE,  DataType.FLOOR, DataType.WEATHER);
     }
 
     @Override
@@ -313,6 +314,8 @@ public class WeatherWidget extends AbstractWidget {
         // Variables
         this.mService = service;
         Typeface font = ResourceManager.getTypeFace(service.getResources(), ResourceManager.Font.FONT_FILE);
+
+        Log.w("DinoDevs-GreatFit", "Sltp refresh" );
 
         // Get weather data
         this.weather = getSlptWeather();
