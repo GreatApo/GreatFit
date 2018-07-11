@@ -27,6 +27,6 @@ public class MultipleWatchDataListenerAdapter implements WatchDataListener {
         DataType type = DataType.fromValue(i);
         listener.onDataUpdate(type, type.getValue(objects));
 
-        Log.w("DinoDevs-GreatFit", "Data Update: "+type.toString()+" = "+type.getValue(objects) );
+        //Log.w("DinoDevs-GreatFit", "Data Update: "+type.toString()+" = "+type.getValue(objects) );
     }
 }
