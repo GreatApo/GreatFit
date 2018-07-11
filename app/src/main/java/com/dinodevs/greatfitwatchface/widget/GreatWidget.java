@@ -122,7 +122,7 @@ public class GreatWidget extends AbstractWidget {
         int periode = (now.get(Calendar.HOUR_OF_DAY) <= 12)?0:1;
         int seconds = now.get(Calendar.SECOND);
 
-        Log.w("DinoDevs-GreatFit", String.format("Seconds= %s", seconds));
+        //Log.w("DinoDevs-GreatFit", String.format("Seconds= %s", seconds));
 
         return new Time(seconds,0,0,periode);
     }

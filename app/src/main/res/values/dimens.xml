@@ -106,7 +106,7 @@
 
     <!-- Day -->
     <dimen name="day_font_size">28px</dimen>
-    <dimen name="day_left">220px</dimen>
+    <dimen name="day_left">224px</dimen>
     <dimen name="day_top">250px</dimen>
 
     <!-- Month -->
@@ -118,4 +118,30 @@
     <dimen name="year_font_size">21px</dimen>
     <dimen name="year_left">164px</dimen>
     <dimen name="year_top">229px</dimen>
+
+    <!-- City -->
+    <dimen name="city_font_size">20px</dimen>
+    <dimen name="city_left">160px</dimen>
+    <dimen name="city_top">273px</dimen>
+
+    <!-- Humidity -->
+    <dimen name="humidity_font_size">20px</dimen>
+    <dimen name="humidity_left">35px</dimen>
+    <dimen name="humidity_top">130px</dimen>
+
+    <!-- UV rays -->
+    <dimen name="uv_font_size">20px</dimen>
+    <dimen name="uv_left">35px</dimen>
+    <dimen name="uv_top">160px</dimen>
+
+    <!-- Wind Direction -->
+    <dimen name="wind_direction_font_size">20px</dimen>
+    <dimen name="wind_direction_left">35px</dimen>
+    <dimen name="wind_direction_top">220px</dimen>
+
+    <!-- Wind Strength-->
+    <dimen name="wind_strength_font_size">21px</dimen>
+    <dimen name="wind_strength_left">35px</dimen>
+    <dimen name="wind_strength_top">190px</dimen>
+
 </resources>

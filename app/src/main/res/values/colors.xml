@@ -65,4 +65,20 @@
 
     <color name="background">#000000</color><!--Not used yet-->
     <color name="background_slpt">#000000</color><!--Not used yet-->
+
+
+    <color name="city_colour">#ffffff</color>
+    <color name="city_colour_slpt">#ffffff</color>
+
+    <color name="humidity_colour">#ffffff</color>
+    <color name="humidity_colour_slpt">#ffffff</color>
+
+    <color name="uv_colour">#ffffff</color>
+    <color name="uv_colour_slpt">#ffffff</color>
+
+    <color name="wind_direction_colour">#ffffff</color>
+    <color name="wind_direction_colour_slpt">#ffffff</color>
+
+    <color name="wind_strength_colour">#ffffff</color>
+    <color name="wind_strength_colour_slpt">#ffffff</color>
 </resources>
