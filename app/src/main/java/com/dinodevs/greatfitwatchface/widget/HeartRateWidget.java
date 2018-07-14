@@ -49,7 +49,7 @@ public class HeartRateWidget extends AbstractWidget {
         this.textPaint.setTextSize(service.getResources().getDimension(R.dimen.heart_rate_font_size));
         this.textPaint.setTextAlign( (this.heartAlignLeftBool) ? Paint.Align.LEFT : Paint.Align.CENTER );
 
-        this.flashingIconBool = service.getResources().getBoolean(R.bool.flashing_indicator);
+        this.flashingIconBool = service.getResources().getBoolean(R.bool.flashing_heart_rate_icon);
         this.heartIcon = service.getResources().getDrawable(R.drawable.flashing_heart, null);
         this.setDrawableBounds(this.heartIcon, service.getResources().getDimension(R.dimen.heart_rate_icon_left), service.getResources().getDimension(R.dimen.heart_rate_icon_top));
 
@@ -83,7 +83,7 @@ public class HeartRateWidget extends AbstractWidget {
         // Draw only on NOT even seconds (flashing heart icon)
         if(this.flashingIconBool) {
             Calendar calendar = Calendar.getInstance();
-            if (calendar.get(Calendar.SECOND) % 4 == 1) {
+            if (calendar.get(Calendar.SECOND) % 2 == 1) {
                 this.heartIcon.draw(canvas);
             }
         }

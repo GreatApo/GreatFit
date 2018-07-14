@@ -6,6 +6,7 @@ import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.text.TextPaint;
+import android.widget.Toast;
 
 import com.dinodevs.greatfitwatchface.GreatFit;
 import com.dinodevs.greatfitwatchface.resource.SlptSecondHView;
@@ -181,6 +182,10 @@ public class MainClock extends DigitalClockWidget {
 
     @Override
     public void init(Service service) {
+
+        // Please do not change the following line
+        Toast.makeText(service, "Code by GreatApo, style by "+service.getResources().getString(R.string.author), Toast.LENGTH_SHORT).show();
+
         this.settings = new APsettings(MainClock.class.getName(), service);
         this.language = this.settings.get("lang", this.language) % this.codes.length;
         this.color = this.settings.getInt("color",this.color);

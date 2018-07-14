@@ -184,8 +184,8 @@ public class WeatherWidget extends AbstractWidget {
 
     @Override
     public List<DataType> getDataTypes() {
-        //return Collections.singletonList(DataType.WEATHER);
-        return Arrays.asList(DataType.BATTERY, DataType.STEPS, DataType.DISTANCE, DataType.TOTAL_DISTANCE, DataType.TIME,  DataType.CALORIES,  DataType.DATE,  DataType.HEART_RATE,  DataType.FLOOR, DataType.WEATHER);
+        return Collections.singletonList(DataType.WEATHER);
+        //return Arrays.asList(DataType.BATTERY, DataType.STEPS, DataType.DISTANCE, DataType.TOTAL_DISTANCE, DataType.TIME,  DataType.CALORIES,  DataType.DATE,  DataType.HEART_RATE,  DataType.FLOOR, DataType.WEATHER);
     }
 
     @Override
@@ -353,20 +353,27 @@ public class WeatherWidget extends AbstractWidget {
 
         // Draw temperature
         SlptLinearLayout temperatureLayout = new SlptLinearLayout();
-        SlptPictureView temperatureNum = new SlptPictureView();
-        temperatureNum.setStringPicture( this.weather.tempString );
-        temperatureLayout.add(temperatureNum);
-        // Show or Not Units
-        if(service.getResources().getBoolean(R.bool.temperature_units)) {
-            SlptPictureView temperatureUnit = new SlptPictureView();
-            temperatureUnit.setStringPicture(this.weather.getUnits());
-            temperatureLayout.add(temperatureUnit);
+        // Show or Not icon
+        if(service.getResources().getBoolean(R.bool.temperature_icon)) {
+            SlptPictureView temperatureIcon = new SlptPictureView();
+            temperatureIcon.setStringPicture( (char)Integer.parseInt("F2CB", 16) );
+            temperatureIcon.setTextAttr(
+                    service.getResources().getDimension(R.dimen.temperature_font_size),
+                    service.getResources().getColor(R.color.temperature_colour_slpt),
+                    ResourceManager.getTypeFace(service.getResources(), ResourceManager.Font.ICONS_FONT)
+            );
+            temperatureLayout.add(temperatureIcon);
         }
-        temperatureLayout.setTextAttrForAll(
+        // Show temperature with units or not
+        SlptPictureView temperatureNum = new SlptPictureView();
+        temperatureNum.setStringPicture( this.weather.tempString + ((service.getResources().getBoolean(R.bool.temperature_units))?this.weather.getUnits():"") );
+        temperatureNum.setTextAttr(
                 service.getResources().getDimension(R.dimen.temperature_font_size),
                 service.getResources().getColor(R.color.temperature_colour_slpt),
                 font
         );
+        temperatureLayout.add(temperatureNum);
+
         // Position based on screen on
         temperatureLayout.alignX = 2;
         temperatureLayout.alignY = 0;
@@ -374,14 +381,14 @@ public class WeatherWidget extends AbstractWidget {
         if(!service.getResources().getBoolean(R.bool.temperature_left_align)) {
             // If text is centered, set rectangle
             temperatureLayout.setRect(
-                    (int) (2 * tmp_left + 640),
-                    (int) (service.getResources().getDimension(R.dimen.temperature_font_size))
+                (int) (2 * tmp_left + 640),
+                (int) (service.getResources().getDimension(R.dimen.temperature_font_size))
             );
             tmp_left = -320;
         }
         temperatureLayout.setStart(
-                tmp_left,
-                (int) (service.getResources().getDimension(R.dimen.temperature_top)-((float)service.getResources().getInteger(R.integer.font_ratio)/100)*service.getResources().getDimension(R.dimen.temperature_font_size))
+            tmp_left,
+            (int) (service.getResources().getDimension(R.dimen.temperature_top)-((float)service.getResources().getInteger(R.integer.font_ratio)/100)*service.getResources().getDimension(R.dimen.temperature_font_size))
         );
         if(!service.getResources().getBoolean(R.bool.temperature)){temperatureLayout.show=false;}
 
@@ -389,8 +396,8 @@ public class WeatherWidget extends AbstractWidget {
         SlptPictureView weatherLayout = new SlptPictureView();
         weatherLayout.setImagePicture( SimpleFile.readFileFromAssets(service, String.format("slpt_weather/clock_skin_weather_%s.png", weatherImageStrList.get(this.weather.weatherType))) );
         weatherLayout.setStart(
-                (int) service.getResources().getDimension(R.dimen.weather_img_left),
-                (int) service.getResources().getDimension(R.dimen.weather_img_top)
+            (int) service.getResources().getDimension(R.dimen.weather_img_left),
+            (int) service.getResources().getDimension(R.dimen.weather_img_top)
         );
         if(!service.getResources().getBoolean(R.bool.weather_image)){weatherLayout.show=false;}
 
@@ -400,9 +407,9 @@ public class WeatherWidget extends AbstractWidget {
         cityText.setStringPicture( this.weather.city );
         cityLayout.add(cityText);
         cityLayout.setTextAttrForAll(
-                service.getResources().getDimension(R.dimen.city_font_size),
-                service.getResources().getColor(R.color.city_colour_slpt),
-                font
+            service.getResources().getDimension(R.dimen.city_font_size),
+            service.getResources().getColor(R.color.city_colour_slpt),
+            font
         );
         // Position based on screen on
         cityLayout.alignX = 2;
@@ -411,14 +418,14 @@ public class WeatherWidget extends AbstractWidget {
         if(!service.getResources().getBoolean(R.bool.city_left_align)) {
             // If text is centered, set rectangle
             cityLayout.setRect(
-                    (int) (2 * tmp_left + 640),
-                    (int) (service.getResources().getDimension(R.dimen.city_font_size))
+                (int) (2 * tmp_left + 640),
+                (int) (service.getResources().getDimension(R.dimen.city_font_size))
             );
             tmp_left = -320;
         }
         cityLayout.setStart(
-                tmp_left,
-                (int) (service.getResources().getDimension(R.dimen.city_top)-((float)service.getResources().getInteger(R.integer.font_ratio)/100)*service.getResources().getDimension(R.dimen.city_font_size))
+            tmp_left,
+            (int) (service.getResources().getDimension(R.dimen.city_top)-((float)service.getResources().getInteger(R.integer.font_ratio)/100)*service.getResources().getDimension(R.dimen.city_font_size))
         );
         if(!service.getResources().getBoolean(R.bool.city)){cityLayout.show=false;}
 
@@ -428,9 +435,9 @@ public class WeatherWidget extends AbstractWidget {
         humidityText.setStringPicture( this.weather.humidity );
         humidityLayout.add(humidityText);
         humidityLayout.setTextAttrForAll(
-                service.getResources().getDimension(R.dimen.humidity_font_size),
-                service.getResources().getColor(R.color.humidity_colour_slpt),
-                font
+            service.getResources().getDimension(R.dimen.humidity_font_size),
+            service.getResources().getColor(R.color.humidity_colour_slpt),
+            font
         );
         // Position based on screen on
         humidityLayout.alignX = 2;
@@ -439,14 +446,14 @@ public class WeatherWidget extends AbstractWidget {
         if(!service.getResources().getBoolean(R.bool.humidity_left_align)) {
             // If text is centered, set rectangle
             humidityLayout.setRect(
-                    (int) (2 * tmp_left + 640),
-                    (int) (service.getResources().getDimension(R.dimen.humidity_font_size))
+                (int) (2 * tmp_left + 640),
+                (int) (service.getResources().getDimension(R.dimen.humidity_font_size))
             );
             tmp_left = -320;
         }
         humidityLayout.setStart(
-                tmp_left,
-                (int) (service.getResources().getDimension(R.dimen.humidity_top)-((float)service.getResources().getInteger(R.integer.font_ratio)/100)*service.getResources().getDimension(R.dimen.humidity_font_size))
+            tmp_left,
+            (int) (service.getResources().getDimension(R.dimen.humidity_top)-((float)service.getResources().getInteger(R.integer.font_ratio)/100)*service.getResources().getDimension(R.dimen.humidity_font_size))
         );
         if(!service.getResources().getBoolean(R.bool.humidity)){humidityLayout.show=false;}
 
@@ -456,9 +463,9 @@ public class WeatherWidget extends AbstractWidget {
         uvText.setStringPicture( this.weather.uv );
         uvLayout.add(uvText);
         uvLayout.setTextAttrForAll(
-                service.getResources().getDimension(R.dimen.uv_font_size),
-                service.getResources().getColor(R.color.uv_colour_slpt),
-                font
+            service.getResources().getDimension(R.dimen.uv_font_size),
+            service.getResources().getColor(R.color.uv_colour_slpt),
+            font
         );
         // Position based on screen on
         uvLayout.alignX = 2;
@@ -467,14 +474,14 @@ public class WeatherWidget extends AbstractWidget {
         if(!service.getResources().getBoolean(R.bool.uv_left_align)) {
             // If text is centered, set rectangle
             uvLayout.setRect(
-                    (int) (2 * tmp_left + 640),
-                    (int) (service.getResources().getDimension(R.dimen.uv_font_size))
+                (int) (2 * tmp_left + 640),
+                (int) (service.getResources().getDimension(R.dimen.uv_font_size))
             );
             tmp_left = -320;
         }
         uvLayout.setStart(
-                tmp_left,
-                (int) (service.getResources().getDimension(R.dimen.uv_top)-((float)service.getResources().getInteger(R.integer.font_ratio)/100)*service.getResources().getDimension(R.dimen.uv_font_size))
+            tmp_left,
+            (int) (service.getResources().getDimension(R.dimen.uv_top)-((float)service.getResources().getInteger(R.integer.font_ratio)/100)*service.getResources().getDimension(R.dimen.uv_font_size))
         );
         if(!service.getResources().getBoolean(R.bool.uv)){uvLayout.show=false;}
 
@@ -484,9 +491,9 @@ public class WeatherWidget extends AbstractWidget {
         windDirectionText.setStringPicture( (service.getResources().getBoolean(R.bool.wind_direction_as_arrows))? this.weather.windArrow : this.weather.windDirection );
         windDirectionLayout.add(windDirectionText);
         windDirectionLayout.setTextAttrForAll(
-                service.getResources().getDimension(R.dimen.wind_direction_font_size),
-                service.getResources().getColor(R.color.wind_direction_colour_slpt),
-                font
+            service.getResources().getDimension(R.dimen.wind_direction_font_size),
+            service.getResources().getColor(R.color.wind_direction_colour_slpt),
+            font
         );
         // Position based on screen on
         windDirectionLayout.alignX = 2;
@@ -495,14 +502,14 @@ public class WeatherWidget extends AbstractWidget {
         if(!service.getResources().getBoolean(R.bool.wind_direction_left_align)) {
             // If text is centered, set rectangle
             windDirectionLayout.setRect(
-                    (int) (2 * tmp_left + 640),
-                    (int) (service.getResources().getDimension(R.dimen.wind_direction_font_size))
+                (int) (2 * tmp_left + 640),
+                (int) (service.getResources().getDimension(R.dimen.wind_direction_font_size))
             );
             tmp_left = -320;
         }
         windDirectionLayout.setStart(
-                tmp_left,
-                (int) (service.getResources().getDimension(R.dimen.wind_direction_top)-((float)service.getResources().getInteger(R.integer.font_ratio)/100)*service.getResources().getDimension(R.dimen.wind_direction_font_size))
+            tmp_left,
+            (int) (service.getResources().getDimension(R.dimen.wind_direction_top)-((float)service.getResources().getInteger(R.integer.font_ratio)/100)*service.getResources().getDimension(R.dimen.wind_direction_font_size))
         );
         if(!service.getResources().getBoolean(R.bool.wind_direction)){windDirectionLayout.show=false;}
 
@@ -512,9 +519,9 @@ public class WeatherWidget extends AbstractWidget {
         windStrengthText.setStringPicture( this.weather.windStrength );
         windStrengthLayout.add(windStrengthText);
         windStrengthLayout.setTextAttrForAll(
-                service.getResources().getDimension(R.dimen.uv_font_size),
-                service.getResources().getColor(R.color.uv_colour_slpt),
-                font
+            service.getResources().getDimension(R.dimen.uv_font_size),
+            service.getResources().getColor(R.color.uv_colour_slpt),
+            font
         );
         // Position based on screen on
         windStrengthLayout.alignX = 2;
@@ -523,14 +530,14 @@ public class WeatherWidget extends AbstractWidget {
         if(!service.getResources().getBoolean(R.bool.wind_strength_left_align)) {
             // If text is centered, set rectangle
             windStrengthLayout.setRect(
-                    (int) (2 * tmp_left + 640),
-                    (int) (service.getResources().getDimension(R.dimen.wind_strength_font_size))
+                (int) (2 * tmp_left + 640),
+                (int) (service.getResources().getDimension(R.dimen.wind_strength_font_size))
             );
             tmp_left = -320;
         }
         windStrengthLayout.setStart(
-                tmp_left,
-                (int) (service.getResources().getDimension(R.dimen.wind_strength_top)-((float)service.getResources().getInteger(R.integer.font_ratio)/100)*service.getResources().getDimension(R.dimen.wind_strength_font_size))
+            tmp_left,
+            (int) (service.getResources().getDimension(R.dimen.wind_strength_top)-((float)service.getResources().getInteger(R.integer.font_ratio)/100)*service.getResources().getDimension(R.dimen.wind_strength_font_size))
         );
         if(!service.getResources().getBoolean(R.bool.wind_strength)){windStrengthLayout.show=false;}
 

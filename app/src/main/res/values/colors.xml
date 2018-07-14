@@ -9,8 +9,8 @@
     <color name="minute_colour">#fff</color>
     <color name="minute_colour_slpt">#fff</color>
 
-    <color name="seconds_colour">#ff0000</color>
-    <color name="seconds_colour_slpt">#ff0000</color><!--Not used yet-->
+    <color name="seconds_colour">#000</color>
+    <color name="seconds_colour_slpt">#000</color>
 
     <color name="ampm_colour">#ff0000</color>
     <color name="ampm_colour_slpt">#ff0000</color>
@@ -51,13 +51,13 @@
     <color name="date_colour">#ffffff</color>
     <color name="date_colour_slpt">#ffffff</color>
 
-    <color name="day_colour">#ffffff</color><!--Not used yet-->
+    <color name="day_colour">#ffffff</color>
     <color name="day_colour_slpt">#ffffff</color>
 
-    <color name="month_colour">#ffffff</color><!--Not used yet-->
+    <color name="month_colour">#ffffff</color>
     <color name="month_colour_slpt">#ffffff</color>
 
-    <color name="year_colour">#ffffff</color><!--Not used yet-->
+    <color name="year_colour">#ffffff</color>
     <color name="year_colour_slpt">#ffffff</color>
 
     <color name="weekday_colour">#ffffff</color>

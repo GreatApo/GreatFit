@@ -58,12 +58,12 @@
     <dimen name="total_distance_text_top">188px</dimen>
 
     <!-- heart rate -->
-    <dimen name="heart_rate_font_size">31px</dimen>
-    <dimen name="heart_rate_text_left">257px</dimen>
-    <dimen name="heart_rate_text_top">234px</dimen>
+    <dimen name="heart_rate_font_size">24px</dimen>
+    <dimen name="heart_rate_text_left">250px</dimen>
+    <dimen name="heart_rate_text_top">217px</dimen>
     <!-- heart rate flashing icon  -->
-    <dimen name="heart_rate_icon_left">228px</dimen>
-    <dimen name="heart_rate_icon_top">244px</dimen>
+    <dimen name="heart_rate_icon_left">227px</dimen>
+    <dimen name="heart_rate_icon_top">199px</dimen>
 
     <!-- status (ex. charging icon) -->
     <dimen name="status_left">10px</dimen>
@@ -87,9 +87,9 @@
     <dimen name="today_distance_circle_top">0px</dimen>
 
     <!-- temperature -->
-    <dimen name="temperature_font_size">28px</dimen>
-    <dimen name="temperature_left">118px</dimen>
-    <dimen name="temperature_top">250px</dimen>
+    <dimen name="temperature_font_size">24px</dimen>
+    <dimen name="temperature_left">76px</dimen>
+    <dimen name="temperature_top">248px</dimen>
     <!-- weather icon -->
     <dimen name="weather_img_left">50px</dimen>
     <dimen name="weather_img_top">50px</dimen>
@@ -121,13 +121,13 @@
 
     <!-- City -->
     <dimen name="city_font_size">20px</dimen>
-    <dimen name="city_left">160px</dimen>
+    <dimen name="city_left">94px</dimen>
     <dimen name="city_top">273px</dimen>
 
     <!-- Humidity -->
     <dimen name="humidity_font_size">20px</dimen>
-    <dimen name="humidity_left">35px</dimen>
-    <dimen name="humidity_top">130px</dimen>
+    <dimen name="humidity_left">142px</dimen>
+    <dimen name="humidity_top">248px</dimen>
 
     <!-- UV rays -->
     <dimen name="uv_font_size">20px</dimen>
@@ -136,8 +136,8 @@
 
     <!-- Wind Direction -->
     <dimen name="wind_direction_font_size">20px</dimen>
-    <dimen name="wind_direction_left">35px</dimen>
-    <dimen name="wind_direction_top">220px</dimen>
+    <dimen name="wind_direction_left">30px</dimen>
+    <dimen name="wind_direction_top">170px</dimen>
 
     <!-- Wind Strength-->
     <dimen name="wind_strength_font_size">21px</dimen>

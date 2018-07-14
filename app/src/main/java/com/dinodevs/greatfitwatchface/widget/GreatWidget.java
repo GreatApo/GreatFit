@@ -47,7 +47,6 @@ public class GreatWidget extends AbstractWidget {
 
     @Override
     public void init(Service service){
-
         //Tests
         PhoneState var = new PhoneState();
         Log.w("DinoDevs-GreatFit", var.toString());
