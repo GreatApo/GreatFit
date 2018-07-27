@@ -81,4 +81,7 @@
 
     <color name="wind_strength_colour">#ffffff</color>
     <color name="wind_strength_colour_slpt">#ffffff</color>
+
+    <color name="alarm_colour">#ffffff</color>
+    <color name="alarm_colour_slpt">#ffffff</color>
 </resources>

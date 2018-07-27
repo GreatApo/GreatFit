@@ -139,9 +139,13 @@
     <dimen name="wind_direction_left">30px</dimen>
     <dimen name="wind_direction_top">170px</dimen>
 
-    <!-- Wind Strength-->
+    <!-- Wind Strength -->
     <dimen name="wind_strength_font_size">21px</dimen>
     <dimen name="wind_strength_left">35px</dimen>
     <dimen name="wind_strength_top">190px</dimen>
 
+    <!-- Alarm -->
+    <dimen name="alarm_font_size">20px</dimen>
+    <dimen name="alarm_left">94px</dimen>
+    <dimen name="alarm_top">273px</dimen>
 </resources>

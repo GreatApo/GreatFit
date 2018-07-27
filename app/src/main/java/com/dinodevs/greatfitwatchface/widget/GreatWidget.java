@@ -33,54 +33,89 @@ import com.dinodevs.greatfitwatchface.R;
 
 
 public class GreatWidget extends AbstractWidget {
-    private TextPaint textPaint;
+    private TextPaint ampmPaint;
+    private TextPaint alarmPaint;
     private Time time;
     private String text;
     private String wifi;
+    private String alarm;
     private int textint;
-    private Boolean secondsBool;
+    private Boolean alarmBool;
+    private Boolean alarmAlignLeftBool;
     private Boolean ampmBool;
+    private Boolean ampmAlignLeftBool;
     private Service mService;
 
-    private float textTop;
-    private float textLeft;
+    private float ampmTop;
+    private float ampmLeft;
+    private float alarmTop;
+    private float alarmLeft;
 
     @Override
     public void init(Service service){
-        //Tests
-        PhoneState var = new PhoneState();
-        Log.w("DinoDevs-GreatFit", var.toString());
-
-        HealthInfo var2 = new HealthInfo();
-        Log.w("DinoDevs-GreatFit", var2.toString());
-
-        MusicControlInfo var3 = new MusicControlInfo();
-        Log.w("DinoDevs-GreatFit", var3.toString());
-
-        ScheduleInfo var4 = new ScheduleInfo(0);
-        Log.w("DinoDevs-GreatFit", var4.toString());
-
-        Settings.System.getString(service.getContentResolver(), "springboard_widget_order_in");
-
+        // This service
         this.mService = service;
 
-        this.textLeft = service.getResources().getDimension(R.dimen.ampm_left);
-        this.textTop = service.getResources().getDimension(R.dimen.ampm_top);
+        //Tests
+        //PhoneState var = new PhoneState();
+        //Log.w("DinoDevs-GreatFit", var.toString());
+        //HealthInfo var2 = new HealthInfo();
+        //Log.w("DinoDevs-GreatFit", var2.toString());
+        //MusicControlInfo var3 = new MusicControlInfo();
+        //Log.w("DinoDevs-GreatFit", var3.toString());
+        //ScheduleInfo var4 = new ScheduleInfo(0);
+        //Log.w("DinoDevs-GreatFit", var4.toString());
+        // Settings.System.getString(service.getContentResolver(), "springboard_widget_order_in");
+
+        // Get AM/PM
+        this.time = getSlptTime();
+
+        // Get next alarm
+        this.alarm = getAlarm(); // ex: Fri 10:30
+        //Log.w("DinoDevs-GreatFit", "Alarm: "+alarm );
+
+        this.ampmLeft = service.getResources().getDimension(R.dimen.ampm_left);
+        this.ampmTop = service.getResources().getDimension(R.dimen.ampm_top);
+        this.alarmLeft = service.getResources().getDimension(R.dimen.alarm_left);
+        this.alarmTop = service.getResources().getDimension(R.dimen.alarm_top);
 
         this.ampmBool = service.getResources().getBoolean(R.bool.ampm);
+        this.ampmAlignLeftBool = service.getResources().getBoolean(R.bool.ampm_left_align);
+        this.alarmBool = service.getResources().getBoolean(R.bool.alarm);
+        this.alarmAlignLeftBool = service.getResources().getBoolean(R.bool.alarm_left_align);
 
-        this.textPaint = new TextPaint(TextPaint.ANTI_ALIAS_FLAG);
-        this.textPaint.setColor(service.getResources().getColor(R.color.ampm_colour));
-        this.textPaint.setTypeface(ResourceManager.getTypeFace(service.getResources(), ResourceManager.Font.FONT_FILE));
-        this.textPaint.setTextSize(service.getResources().getDimension(R.dimen.ampm_font_size));
-        this.textPaint.setTextAlign(Paint.Align.CENTER);
+        this.ampmPaint = new TextPaint(TextPaint.ANTI_ALIAS_FLAG);
+        this.ampmPaint.setColor(service.getResources().getColor(R.color.ampm_colour));
+        this.ampmPaint.setTypeface(ResourceManager.getTypeFace(service.getResources(), ResourceManager.Font.FONT_FILE));
+        this.ampmPaint.setTextSize(service.getResources().getDimension(R.dimen.ampm_font_size));
+        this.ampmPaint.setTextAlign( (this.ampmAlignLeftBool) ? Paint.Align.LEFT : Paint.Align.CENTER );
+
+        this.alarmPaint = new TextPaint(TextPaint.ANTI_ALIAS_FLAG);
+        this.alarmPaint.setColor(service.getResources().getColor(R.color.alarm_colour));
+        this.alarmPaint.setTypeface(ResourceManager.getTypeFace(service.getResources(), ResourceManager.Font.FONT_FILE));
+        this.alarmPaint.setTextSize(service.getResources().getDimension(R.dimen.alarm_font_size));
+        this.alarmPaint.setTextAlign( (this.alarmAlignLeftBool) ? Paint.Align.LEFT : Paint.Align.CENTER );
     }
 
+    @Override
+    public void draw(Canvas canvas, float width, float height, float centerX, float centerY) {
+        // Draw AM or PM, if enabled
+        if(this.ampmBool) {
+            //Calendar now = Calendar.getInstance();
+            //String periode = (now.get(Calendar.AM_PM) == Calendar.AM) ? "AM" : "PM";
+            this.text = String.format("%S", this.time.ampmStr);//Capitalize
+            canvas.drawText(text, ampmLeft, ampmTop, ampmPaint);
+        }
+        // Draw Alarm, if enabled
+        if(this.alarmBool) {
+            canvas.drawText(this.alarm, alarmLeft, alarmTop, alarmPaint);
+        }
+    }
 
     @Override
     public List<DataType> getDataTypes() {
-        //return Collections.singletonList(DataType.TIME);
-        return Arrays.asList(DataType.BATTERY, DataType.STEPS, DataType.DISTANCE, DataType.TOTAL_DISTANCE, DataType.TIME,  DataType.CALORIES,  DataType.DATE,  DataType.HEART_RATE,  DataType.FLOOR);
+        // For many refreshes
+        return Arrays.asList(DataType.BATTERY, DataType.STEPS, DataType.DISTANCE, DataType.TOTAL_DISTANCE, DataType.TIME,  DataType.CALORIES,  DataType.DATE,  DataType.HEART_RATE,  DataType.FLOOR, DataType.WEATHER);
     }
 
     @Override
@@ -88,11 +123,16 @@ public class GreatWidget extends AbstractWidget {
         //Log.w("DinoDevs-GreatFit", type.toString()+" => "+value.toString() );
         //this.time = (Time) value;
 
-        Calendar now = Calendar.getInstance();
-        int periode = (now.get(Calendar.HOUR_OF_DAY) <= 12)?0:1;
-        int seconds = now.get(Calendar.SECOND);
+        switch (type) {
+            case TIME:
+                // Get AM/PM
+                this.time = (Time) value;
+                break;
+        }
 
-        this.time = new Time(seconds,0,0,periode);
+        this.alarm = getAlarm();
+
+        //this.time = getSlptTime();
 
         //ConnectivityManager connManager = (ConnectivityManager) this.mService.getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
         //NetworkInfo mWifi = connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
@@ -105,25 +145,11 @@ public class GreatWidget extends AbstractWidget {
         //this.time = getSlptTime();
     }
 
-    @Override
-    public void draw(Canvas canvas, float width, float height, float centerX, float centerY) {
-        // Draw AM or PM, if enabled
-        if(this.ampmBool) {
-            Calendar now = Calendar.getInstance();
-            String periode = (now.get(Calendar.AM_PM) == Calendar.AM) ? "AM" : "PM";
-            this.text = String.format("%S", periode);//Capitalize
-            canvas.drawText(text, textLeft, textTop, textPaint);
-        }
-    }
 
     public Time getSlptTime() {
         Calendar now = Calendar.getInstance();
         int periode = (now.get(Calendar.HOUR_OF_DAY) <= 12)?0:1;
-        int seconds = now.get(Calendar.SECOND);
-
-        //Log.w("DinoDevs-GreatFit", String.format("Seconds= %s", seconds));
-
-        return new Time(seconds,0,0,periode);
+        return new Time(periode);
     }
 
     public String getSlptBluetooth(Service service) {
@@ -132,14 +158,23 @@ public class GreatWidget extends AbstractWidget {
         return (str!=null)?str:"null";
     }
 
+    public String getAlarm() {
+        String str = Settings.System.getString(this.mService.getContentResolver(), Settings.System.NEXT_ALARM_FORMATTED);
+        return (str!=null)?str:"-";
+    }
+
     @Override
     public List<SlptViewComponent> buildSlptViewComponent(Service service) {
         // Variables
-        //this.secondsBool = service.getResources().getBoolean(R.bool.seconds);
+        // This service
+        this.mService = service;
         this.ampmBool = service.getResources().getBoolean(R.bool.ampm);
 
-        // Get Seconds & AM/PM
+        // Get AM/PM
         this.time = getSlptTime();
+
+        // Get next alarm
+        this.alarm = getAlarm();
 
         // Get wifi
         this.wifi = getSlptBluetooth(service);
@@ -155,47 +190,55 @@ public class GreatWidget extends AbstractWidget {
                 service.getResources().getColor(R.color.ampm_colour_slpt),
                 ResourceManager.getTypeFace(service.getResources(), ResourceManager.Font.FONT_FILE)
         );
-        // If AM/PM is enabled
-        if(!this.ampmBool) {ampm.show = false;}
         // Position based on screen on
         ampm.alignX = 2;
         ampm.alignY = 0;
-        ampm.setRect(
-                (int) (2*service.getResources().getDimension(R.dimen.ampm_left)+640),
-                (int) (service.getResources().getDimension(R.dimen.ampm_font_size))
-        );
+        int tmp_left = (int) service.getResources().getDimension(R.dimen.ampm_left);
+        if(!service.getResources().getBoolean(R.bool.ampm_left_align)) {
+            // If text is centered, set rectangle
+            ampm.setRect(
+                    (int) (2 * tmp_left + 640),
+                    (int) (service.getResources().getDimension(R.dimen.ampm_font_size))
+            );
+            tmp_left = -320;
+        }
         ampm.setStart(
-                -320,
+                (int) tmp_left,
                 (int) (service.getResources().getDimension(R.dimen.ampm_top)-((float)service.getResources().getInteger(R.integer.font_ratio)/100)*service.getResources().getDimension(R.dimen.ampm_font_size))
         );
+        // Hide if disabled
+        if(!this.ampmBool){ampm.show=false;}
 
-        /*
-        // Draw Seconds
-        SlptLinearLayout secondsLayout = new SlptLinearLayout();
-        //SlptPictureView secondsStr = new SlptPictureView();
-        //secondsStr.setStringPicture( this.time.secondsStr );
-        //secondsLayout.add(secondsStr);
-        secondsLayout.add(new SlptSecondHView());
-        secondsLayout.add(new SlptSecondLView());
-        secondsLayout.setTextAttrForAll(
-                service.getResources().getDimension(R.dimen.seconds_font_size),
-                service.getResources().getColor(R.color.seconds_colour_slpt),
+
+        // Draw Alarm
+        SlptLinearLayout alarmLayout = new SlptLinearLayout();
+        SlptPictureView alarmStr = new SlptPictureView();
+        alarmStr.setStringPicture( this.alarm );
+        alarmLayout.add(alarmStr);
+        alarmLayout.setTextAttrForAll(
+                service.getResources().getDimension(R.dimen.alarm_font_size),
+                service.getResources().getColor(R.color.alarm_colour_slpt),
                 ResourceManager.getTypeFace(service.getResources(), ResourceManager.Font.FONT_FILE)
         );
-        // If Seconds are enabled
-        if(!this.secondsBool) {secondsLayout.show = false;}
         // Position based on screen on
-        secondsLayout.alignX = 2;
-        secondsLayout.alignY = 0;
-        secondsLayout.setRect(
-                (int) (2*service.getResources().getDimension(R.dimen.seconds_left)+640),
-                (int) (service.getResources().getDimension(R.dimen.seconds_font_size))
+        alarmLayout.alignX = 2;
+        alarmLayout.alignY = 0;
+        tmp_left = (int) service.getResources().getDimension(R.dimen.alarm_left);
+        if(!service.getResources().getBoolean(R.bool.alarm_left_align)) {
+            // If text is centered, set rectangle
+            alarmLayout.setRect(
+                    (int) (2 * tmp_left + 640),
+                    (int) (service.getResources().getDimension(R.dimen.alarm_font_size))
+            );
+            tmp_left = -320;
+        }
+        alarmLayout.setStart(
+                (int) tmp_left,
+                (int) (service.getResources().getDimension(R.dimen.alarm_top)-((float)service.getResources().getInteger(R.integer.font_ratio)/100)*service.getResources().getDimension(R.dimen.alarm_font_size))
         );
-        secondsLayout.setStart(
-                -320,
-                (int) (service.getResources().getDimension(R.dimen.seconds_top)-((float)service.getResources().getInteger(R.integer.font_ratio)/100)*service.getResources().getDimension(R.dimen.seconds_font_size))
-        );
-        */
+        // Hide if disabled
+        if(!service.getResources().getBoolean(R.bool.alarm)){alarmLayout.show=false;}
+
 
         // Draw WiFi
         SlptLinearLayout wifiLayout = new SlptLinearLayout();
@@ -221,6 +264,6 @@ public class GreatWidget extends AbstractWidget {
                 (int) (150-((float)service.getResources().getInteger(R.integer.font_ratio)/100)*service.getResources().getDimension(R.dimen.ampm_font_size))
         );
 
-        return Arrays.asList(new SlptViewComponent[]{ampm, /*secondsLayout,*/ wifiLayout});
+        return Arrays.asList(new SlptViewComponent[]{ampm, alarmLayout, wifiLayout});
     }
 }

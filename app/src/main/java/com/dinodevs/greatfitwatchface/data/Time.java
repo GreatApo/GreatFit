@@ -23,6 +23,11 @@ public class Time {
         this.ampmStr = (defaultAmPmTranslation.length>ampm && ampm>=0)?defaultAmPmTranslation[ampm]:"n/a";
     }
 
+    public Time(int ampm) {
+        this.ampm = ampm;
+        this.ampmStr = (defaultAmPmTranslation.length>ampm && ampm>=0)?defaultAmPmTranslation[ampm]:"n/a";
+    }
+
     public int getSeconds() {
         return seconds;
     }
