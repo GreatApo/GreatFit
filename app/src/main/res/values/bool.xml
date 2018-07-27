@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- Show time elements -->
-    <bool name="seconds">false</bool><!-- on slpt screen, updates while moving -->
-    <bool name="ampm">true</bool><!-- not working perfect on slpt screen  -->
+    <bool name="seconds">false</bool>
+    <bool name="ampm">true</bool>
     <bool name="indicator">false</bool>
     <!-- Show date elements -->
     <bool name="date">false</bool><!-- dd.mm.yyyy  -->
@@ -61,7 +61,7 @@
     <bool name="city_left_align">true</bool>
     <bool name="humidity_left_align">true</bool>
     <bool name="uv_left_align">true</bool>
-    <bool name="wind_direction_left_align">true</bool>
+    <bool name="wind_direction_left_align">false</bool>
     <bool name="wind_strength_left_align">true</bool>
     <bool name="alarm_left_align">true</bool>
     <!-- widgets icons -->

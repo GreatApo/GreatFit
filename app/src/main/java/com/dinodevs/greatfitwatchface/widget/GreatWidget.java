@@ -78,6 +78,9 @@ public class GreatWidget extends AbstractWidget {
         this.alarm = getAlarm(); // ex: Fri 10:30
         //Log.w("DinoDevs-GreatFit", "Alarm: "+alarm );
 
+        // Get wifi status
+        //this.wifi = getWifi();
+
         this.ampmLeft = service.getResources().getDimension(R.dimen.ampm_left);
         this.ampmTop = service.getResources().getDimension(R.dimen.ampm_top);
         this.alarmLeft = service.getResources().getDimension(R.dimen.alarm_left);
@@ -110,10 +113,16 @@ public class GreatWidget extends AbstractWidget {
             this.text = String.format("%S", this.time.ampmStr);//Capitalize
             canvas.drawText(text, ampmLeft, ampmTop, ampmPaint);
         }
+
         // Draw Alarm, if enabled
         if(this.alarmBool) {
             canvas.drawText(this.alarm, alarmLeft, alarmTop, alarmPaint);
         }
+
+        // Draw wifi, if enabled
+        /*if(true) {
+            canvas.drawText(getWifi(), ampmLeft, ampmTop, ampmPaint);
+        }*/
     }
 
     @Override
@@ -139,10 +148,18 @@ public class GreatWidget extends AbstractWidget {
         }
 
         // Update Alarm
-        if( !this.alarm.equals(getAlarm()) ){
-            this.alarm = getAlarm();
+        String temp = getAlarm();
+        if( !this.alarm.equals(temp) ){
+            this.alarm = temp;
             refreshSlpt = true;
         }
+
+        // Update wifi
+        /*temp = getWifi();
+        if( !this.wifi.equals(temp) ){
+            this.wifi = temp;
+            refreshSlpt = true;
+        }*/
 
         // Refresh Slpt
         if(refreshSlpt){
@@ -167,8 +184,8 @@ public class GreatWidget extends AbstractWidget {
         return new Time(periode);
     }
 
-    public String getSlptBluetooth(Service service) {
-        String str = Settings.System.getString(service.getApplicationContext().getContentResolver(), "wifi");
+    public String getWifi() {
+        String str = Settings.System.getString(this.mService.getApplicationContext().getContentResolver(), "wifi");
         Log.w("DinoDevs-GreatFit", "Wifi: "+str);
         return (str!=null)?str:"null";
     }
@@ -193,7 +210,7 @@ public class GreatWidget extends AbstractWidget {
         this.alarm = getAlarm();
 
         // Get wifi
-        this.wifi = getSlptBluetooth(service);
+        //this.wifi = getWifi();
 
         // Draw AM or PM
         SlptLinearLayout ampm = new SlptLinearLayout();
@@ -257,6 +274,7 @@ public class GreatWidget extends AbstractWidget {
 
 
         // Draw WiFi
+        /*
         SlptLinearLayout wifiLayout = new SlptLinearLayout();
         SlptPictureView wifiStr = new SlptPictureView();
         wifiStr.setStringPicture( this.wifi );
@@ -267,7 +285,7 @@ public class GreatWidget extends AbstractWidget {
                 ResourceManager.getTypeFace(service.getResources(), ResourceManager.Font.FONT_FILE)
         );
         // If enabled
-        if(true) {wifiLayout.show = false;}
+        if(false) {wifiLayout.show = false;}
         // Position based on screen on
         wifiLayout.alignX = 2;
         wifiLayout.alignY = 0;
@@ -279,7 +297,8 @@ public class GreatWidget extends AbstractWidget {
                 -320,
                 (int) (150-((float)service.getResources().getInteger(R.integer.font_ratio)/100)*service.getResources().getDimension(R.dimen.ampm_font_size))
         );
+        */
 
-        return Arrays.asList(new SlptViewComponent[]{ampm, alarmLayout, wifiLayout});
+        return Arrays.asList(new SlptViewComponent[]{ampm, alarmLayout/*, wifiLayout*/});
     }
 }
