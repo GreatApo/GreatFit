@@ -175,7 +175,7 @@ public class GreatWidget extends AbstractWidget {
 
     public String getAlarm() {
         String str = Settings.System.getString(this.mService.getContentResolver(), Settings.System.NEXT_ALARM_FORMATTED);
-        return (str!=null)?str:"--";
+        return (str!=null && !str.equals(""))?str:"--";
     }
 
     @Override
