@@ -7,9 +7,11 @@ import android.graphics.Paint;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.provider.Settings;
+import android.support.wearable.watchface.CanvasWatchFaceService;
 import android.text.TextPaint;
 import android.util.Log;
 
+import com.dinodevs.greatfitwatchface.AbstractWatchFace;
 import com.dinodevs.greatfitwatchface.resource.SlptAnalogAmPmView;
 import com.dinodevs.greatfitwatchface.resource.SlptSecondHView;
 import com.dinodevs.greatfitwatchface.resource.SlptSecondLView;
@@ -36,6 +38,7 @@ public class GreatWidget extends AbstractWidget {
     private TextPaint ampmPaint;
     private TextPaint alarmPaint;
     private Time time;
+    private String tempAMPM;
     private String text;
     private String wifi;
     private String alarm;
@@ -69,6 +72,7 @@ public class GreatWidget extends AbstractWidget {
 
         // Get AM/PM
         this.time = getSlptTime();
+        this.tempAMPM = this.time.ampmStr;
 
         // Get next alarm
         this.alarm = getAlarm(); // ex: Fri 10:30
@@ -120,19 +124,30 @@ public class GreatWidget extends AbstractWidget {
 
     @Override
     public void onDataUpdate(DataType type, Object value) {
-        //Log.w("DinoDevs-GreatFit", type.toString()+" => "+value.toString() );
-        //this.time = (Time) value;
+        boolean refreshSlpt = false;
 
+        // On each Data updated
+        //Log.w("DinoDevs-GreatFit", type.toString()+" => "+value.toString() );
         switch (type) {
             case TIME:
-                // Get AM/PM
+                // Update AM/PM
                 this.time = (Time) value;
+                if(!this.tempAMPM.equals(this.time.ampmStr)){
+                    refreshSlpt = true;
+                }
                 break;
         }
 
-        this.alarm = getAlarm();
+        // Update Alarm
+        if( !this.alarm.equals(getAlarm()) ){
+            this.alarm = getAlarm();
+            refreshSlpt = true;
+        }
 
-        //this.time = getSlptTime();
+        // Refresh Slpt
+        if(refreshSlpt){
+            ((AbstractWatchFace) this.mService).restartSlpt();
+        }
 
         //ConnectivityManager connManager = (ConnectivityManager) this.mService.getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
         //NetworkInfo mWifi = connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
@@ -160,7 +175,7 @@ public class GreatWidget extends AbstractWidget {
 
     public String getAlarm() {
         String str = Settings.System.getString(this.mService.getContentResolver(), Settings.System.NEXT_ALARM_FORMATTED);
-        return (str!=null)?str:"-";
+        return (str!=null)?str:"--";
     }
 
     @Override
@@ -172,6 +187,7 @@ public class GreatWidget extends AbstractWidget {
 
         // Get AM/PM
         this.time = getSlptTime();
+        this.tempAMPM = this.time.ampmStr;
 
         // Get next alarm
         this.alarm = getAlarm();
@@ -182,7 +198,7 @@ public class GreatWidget extends AbstractWidget {
         // Draw AM or PM
         SlptLinearLayout ampm = new SlptLinearLayout();
         SlptPictureView ampmStr = new SlptPictureView();
-        ampmStr.setStringPicture( this.time.ampmStr );
+        ampmStr.setStringPicture( this.tempAMPM );
         ampm.add(ampmStr);
         //ampm.add(new SlptAnalogAmPmView());
         ampm.setTextAttrForAll(

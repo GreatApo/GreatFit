@@ -1,5 +1,9 @@
 package com.dinodevs.greatfitwatchface.data;
 
+import android.util.Log;
+
+import java.util.Calendar;
+
 /**
  * Time data
  */
@@ -19,8 +23,14 @@ public class Time {
         this.minutes = minutes;
         this.hours = hours;
         this.ampm = ampm;
+        // Fix am/pm if not given
+        if(this.ampm < 0 || this.ampm > 1){
+            Calendar now = Calendar.getInstance();
+            this.ampm = (now.get(Calendar.HOUR_OF_DAY) <= 12)?0:1;
+        }
         this.secondsStr = getStrSeconds(seconds);
-        this.ampmStr = (defaultAmPmTranslation.length>ampm && ampm>=0)?defaultAmPmTranslation[ampm]:"n/a";
+
+        this.ampmStr = defaultAmPmTranslation[this.ampm];
     }
 
     public Time(int ampm) {

@@ -1,7 +1,9 @@
 package com.dinodevs.greatfitwatchface;
 
+import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Canvas;
+import android.util.Log;
 
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -22,6 +24,7 @@ public abstract class AbstractWatchFace extends com.huami.watch.watchface.Abstra
 
     final ClockWidget clock;
     final LinkedList<Widget> widgets = new LinkedList<>();
+    private Intent slptIntent;
 
     private class DigitalEngine extends com.huami.watch.watchface.AbstractWatchFace.DigitalEngine {
 
@@ -102,5 +105,15 @@ public abstract class AbstractWatchFace extends com.huami.watch.watchface.Abstra
         }
 
         return AnalogClockWidget.class.isInstance(this.clock) ? new AnalogEngine((AnalogClockWidget) this.clock) : new DigitalEngine((DigitalClockWidget) this.clock);
+    }
+
+    public void onCreate() {
+        super.onCreate();
+        this.slptIntent = new Intent(this, this.slptClockClass());
+    }
+
+    public void restartSlpt(){
+        this.startService(this.slptIntent);
+        Log.w("DinoDevs-GreatFit", "Slpt service restarted" );
     }
 }
