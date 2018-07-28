@@ -46,6 +46,7 @@
     <bool name="wind_direction_as_arrows">false</bool> <!-- false = W, S, E, N, SW etc  , true =  ↖ ↑ ↗ ← → ↙ ↓ ↘ -->
     <bool name="wind_strength">false</bool>
     <bool name="alarm">true</bool>
+    <bool name="xdrip">true</bool> <!-- You need to have Xdrip installed on the watch -->
     <!-- Show icons -->
     <bool name="battery_icon">false</bool>
     <!-- widgets text align -->
@@ -64,6 +65,7 @@
     <bool name="wind_direction_left_align">false</bool>
     <bool name="wind_strength_left_align">true</bool>
     <bool name="alarm_left_align">true</bool>
+    <bool name="xdrip_left_align">true</bool>
     <!-- widgets icons -->
     <bool name="temperature_icon">false</bool><!-- working on sltp only -->
     <!-- time text align -->

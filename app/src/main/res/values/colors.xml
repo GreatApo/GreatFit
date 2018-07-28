@@ -84,4 +84,7 @@
 
     <color name="alarm_colour">#ffffff</color>
     <color name="alarm_colour_slpt">#ffffff</color>
+
+    <color name="xdrip_colour">#ffffff</color>
+    <color name="xdrip_colour_slpt">#ffffff</color>
 </resources>

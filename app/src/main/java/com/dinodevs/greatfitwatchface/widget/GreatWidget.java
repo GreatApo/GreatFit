@@ -37,22 +37,28 @@ import com.dinodevs.greatfitwatchface.R;
 public class GreatWidget extends AbstractWidget {
     private TextPaint ampmPaint;
     private TextPaint alarmPaint;
+    private TextPaint xdripPaint;
     private Time time;
     private String tempAMPM;
     private String text;
-    private String wifi;
+    //private String wifi;
     private String alarm;
+    private String xdrip;
     private int textint;
     private Boolean alarmBool;
     private Boolean alarmAlignLeftBool;
     private Boolean ampmBool;
     private Boolean ampmAlignLeftBool;
+    private Boolean xdripBool;
+    private Boolean xdripAlignLeftBool;
     private Service mService;
 
     private float ampmTop;
     private float ampmLeft;
     private float alarmTop;
     private float alarmLeft;
+    private float xdripTop;
+    private float xdripLeft;
 
     @Override
     public void init(Service service){
@@ -78,6 +84,9 @@ public class GreatWidget extends AbstractWidget {
         this.alarm = getAlarm(); // ex: Fri 10:30
         //Log.w("DinoDevs-GreatFit", "Alarm: "+alarm );
 
+        // Get xdrip
+        this.xdrip = getXdrip();
+
         // Get wifi status
         //this.wifi = getWifi();
 
@@ -85,11 +94,15 @@ public class GreatWidget extends AbstractWidget {
         this.ampmTop = service.getResources().getDimension(R.dimen.ampm_top);
         this.alarmLeft = service.getResources().getDimension(R.dimen.alarm_left);
         this.alarmTop = service.getResources().getDimension(R.dimen.alarm_top);
+        this.xdripLeft = service.getResources().getDimension(R.dimen.xdrip_left);
+        this.xdripTop = service.getResources().getDimension(R.dimen.xdrip_top);
 
         this.ampmBool = service.getResources().getBoolean(R.bool.ampm);
         this.ampmAlignLeftBool = service.getResources().getBoolean(R.bool.ampm_left_align);
         this.alarmBool = service.getResources().getBoolean(R.bool.alarm);
         this.alarmAlignLeftBool = service.getResources().getBoolean(R.bool.alarm_left_align);
+        this.xdripBool = service.getResources().getBoolean(R.bool.xdrip);
+        this.xdripAlignLeftBool = service.getResources().getBoolean(R.bool.xdrip_left_align);
 
         this.ampmPaint = new TextPaint(TextPaint.ANTI_ALIAS_FLAG);
         this.ampmPaint.setColor(service.getResources().getColor(R.color.ampm_colour));
@@ -102,6 +115,12 @@ public class GreatWidget extends AbstractWidget {
         this.alarmPaint.setTypeface(ResourceManager.getTypeFace(service.getResources(), ResourceManager.Font.FONT_FILE));
         this.alarmPaint.setTextSize(service.getResources().getDimension(R.dimen.alarm_font_size));
         this.alarmPaint.setTextAlign( (this.alarmAlignLeftBool) ? Paint.Align.LEFT : Paint.Align.CENTER );
+
+        this.xdripPaint = new TextPaint(TextPaint.ANTI_ALIAS_FLAG);
+        this.xdripPaint.setColor(service.getResources().getColor(R.color.xdrip_colour));
+        this.xdripPaint.setTypeface(ResourceManager.getTypeFace(service.getResources(), ResourceManager.Font.FONT_FILE));
+        this.xdripPaint.setTextSize(service.getResources().getDimension(R.dimen.xdrip_font_size));
+        this.xdripPaint.setTextAlign( (this.xdripAlignLeftBool) ? Paint.Align.LEFT : Paint.Align.CENTER );
     }
 
     @Override
@@ -117,6 +136,11 @@ public class GreatWidget extends AbstractWidget {
         // Draw Alarm, if enabled
         if(this.alarmBool) {
             canvas.drawText(this.alarm, alarmLeft, alarmTop, alarmPaint);
+        }
+
+        // Draw Alarm, if enabled
+        if(this.xdripBool) {
+            canvas.drawText(this.xdrip, xdripLeft, xdripTop, xdripPaint);
         }
 
         // Draw wifi, if enabled
@@ -151,6 +175,13 @@ public class GreatWidget extends AbstractWidget {
         String temp = getAlarm();
         if( !this.alarm.equals(temp) ){
             this.alarm = temp;
+            refreshSlpt = true;
+        }
+
+        // Update Xdrip
+        temp = getXdrip();
+        if( !this.xdrip.equals(temp) ){
+            this.xdrip = temp;
             refreshSlpt = true;
         }
 
@@ -195,6 +226,11 @@ public class GreatWidget extends AbstractWidget {
         return (str!=null && !str.equals(""))?str:"--";
     }
 
+    public String getXdrip(){
+        String str = Settings.System.getString(this.mService.getContentResolver(), "sgv");
+        return (str!=null && !str.equals(""))?str:"--";
+    }
+
     @Override
     public List<SlptViewComponent> buildSlptViewComponent(Service service) {
         // Variables
@@ -208,6 +244,9 @@ public class GreatWidget extends AbstractWidget {
 
         // Get next alarm
         this.alarm = getAlarm();
+
+        // Get xDrip
+        this.xdrip = getXdrip();
 
         // Get wifi
         //this.wifi = getWifi();
@@ -273,6 +312,36 @@ public class GreatWidget extends AbstractWidget {
         if(!service.getResources().getBoolean(R.bool.alarm)){alarmLayout.show=false;}
 
 
+        // Draw Xdrip
+        SlptLinearLayout xdripLayout = new SlptLinearLayout();
+        SlptPictureView xdripStr = new SlptPictureView();
+        xdripStr.setStringPicture( this.xdrip );
+        xdripLayout.add(xdripStr);
+        xdripLayout.setTextAttrForAll(
+                service.getResources().getDimension(R.dimen.xdrip_font_size),
+                service.getResources().getColor(R.color.xdrip_colour_slpt),
+                ResourceManager.getTypeFace(service.getResources(), ResourceManager.Font.FONT_FILE)
+        );
+        // Position based on screen on
+        xdripLayout.alignX = 2;
+        xdripLayout.alignY = 0;
+        tmp_left = (int) service.getResources().getDimension(R.dimen.xdrip_left);
+        if(!service.getResources().getBoolean(R.bool.xdrip_left_align)) {
+            // If text is centered, set rectangle
+            xdripLayout.setRect(
+                    (int) (2 * tmp_left + 640),
+                    (int) (service.getResources().getDimension(R.dimen.xdrip_font_size))
+            );
+            tmp_left = -320;
+        }
+        xdripLayout.setStart(
+                (int) tmp_left,
+                (int) (service.getResources().getDimension(R.dimen.xdrip_top)-((float)service.getResources().getInteger(R.integer.font_ratio)/100)*service.getResources().getDimension(R.dimen.xdrip_font_size))
+        );
+        // Hide if disabled
+        if(!service.getResources().getBoolean(R.bool.xdrip)){xdripLayout.show=false;}
+
+
         // Draw WiFi
         /*
         SlptLinearLayout wifiLayout = new SlptLinearLayout();
@@ -299,6 +368,6 @@ public class GreatWidget extends AbstractWidget {
         );
         */
 
-        return Arrays.asList(new SlptViewComponent[]{ampm, alarmLayout/*, wifiLayout*/});
+        return Arrays.asList(new SlptViewComponent[]{ampm, alarmLayout/*, wifiLayout*/, xdripLayout});
     }
 }
