@@ -153,4 +153,10 @@
     <dimen name="xdrip_font_size">21px</dimen>
     <dimen name="xdrip_left">35px</dimen>
     <dimen name="xdrip_top">190px</dimen>
+
+    <!-- Air Pressure -->
+    <dimen name="air_pressure_font_size">20px</dimen>
+    <dimen name="air_pressure_left">20px</dimen>
+    <dimen name="air_pressure_top">170px</dimen>
+
 </resources>

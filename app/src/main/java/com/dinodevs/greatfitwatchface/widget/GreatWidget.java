@@ -4,6 +4,10 @@ import android.app.Service;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.provider.Settings;
@@ -38,12 +42,14 @@ public class GreatWidget extends AbstractWidget {
     private TextPaint ampmPaint;
     private TextPaint alarmPaint;
     private TextPaint xdripPaint;
+    private TextPaint airPressurePaint;
     private Time time;
     private String tempAMPM;
     private String text;
     //private String wifi;
     private String alarm;
     private String xdrip;
+    private String airPressure;
     private int textint;
     private Boolean alarmBool;
     private Boolean alarmAlignLeftBool;
@@ -51,6 +57,9 @@ public class GreatWidget extends AbstractWidget {
     private Boolean ampmAlignLeftBool;
     private Boolean xdripBool;
     private Boolean xdripAlignLeftBool;
+    private Boolean airPressureBool;
+    private Boolean showAirPressureUnits;
+    private Boolean airPressureAlignLeftBool;
     private Service mService;
 
     private float ampmTop;
@@ -59,6 +68,8 @@ public class GreatWidget extends AbstractWidget {
     private float alarmLeft;
     private float xdripTop;
     private float xdripLeft;
+    private float airPressureTop;
+    private float airPressureLeft;
 
     @Override
     public void init(Service service){
@@ -87,6 +98,13 @@ public class GreatWidget extends AbstractWidget {
         // Get xdrip
         this.xdrip = getXdrip();
 
+        // Get AirPressure in hPa
+        this.airPressureBool = service.getResources().getBoolean(R.bool.air_pressure);
+        if(this.airPressureBool){
+            updateAirPressure();
+        }
+        this.airPressure = getAirPressure();
+
         // Get wifi status
         //this.wifi = getWifi();
 
@@ -96,6 +114,8 @@ public class GreatWidget extends AbstractWidget {
         this.alarmTop = service.getResources().getDimension(R.dimen.alarm_top);
         this.xdripLeft = service.getResources().getDimension(R.dimen.xdrip_left);
         this.xdripTop = service.getResources().getDimension(R.dimen.xdrip_top);
+        this.airPressureLeft = service.getResources().getDimension(R.dimen.air_pressure_left);
+        this.airPressureTop = service.getResources().getDimension(R.dimen.air_pressure_top);
 
         this.ampmBool = service.getResources().getBoolean(R.bool.ampm);
         this.ampmAlignLeftBool = service.getResources().getBoolean(R.bool.ampm_left_align);
@@ -103,6 +123,8 @@ public class GreatWidget extends AbstractWidget {
         this.alarmAlignLeftBool = service.getResources().getBoolean(R.bool.alarm_left_align);
         this.xdripBool = service.getResources().getBoolean(R.bool.xdrip);
         this.xdripAlignLeftBool = service.getResources().getBoolean(R.bool.xdrip_left_align);
+        this.showAirPressureUnits = service.getResources().getBoolean(R.bool.air_pressure_units);
+        this.airPressureAlignLeftBool = service.getResources().getBoolean(R.bool.air_pressure_left_align);
 
         this.ampmPaint = new TextPaint(TextPaint.ANTI_ALIAS_FLAG);
         this.ampmPaint.setColor(service.getResources().getColor(R.color.ampm_colour));
@@ -121,6 +143,12 @@ public class GreatWidget extends AbstractWidget {
         this.xdripPaint.setTypeface(ResourceManager.getTypeFace(service.getResources(), ResourceManager.Font.FONT_FILE));
         this.xdripPaint.setTextSize(service.getResources().getDimension(R.dimen.xdrip_font_size));
         this.xdripPaint.setTextAlign( (this.xdripAlignLeftBool) ? Paint.Align.LEFT : Paint.Align.CENTER );
+
+        this.airPressurePaint = new TextPaint(TextPaint.ANTI_ALIAS_FLAG);
+        this.airPressurePaint.setColor(service.getResources().getColor(R.color.air_pressure_colour));
+        this.airPressurePaint.setTypeface(ResourceManager.getTypeFace(service.getResources(), ResourceManager.Font.FONT_FILE));
+        this.airPressurePaint.setTextSize(service.getResources().getDimension(R.dimen.air_pressure_font_size));
+        this.airPressurePaint.setTextAlign( (this.airPressureAlignLeftBool) ? Paint.Align.LEFT : Paint.Align.CENTER );
     }
 
     @Override
@@ -138,9 +166,15 @@ public class GreatWidget extends AbstractWidget {
             canvas.drawText(this.alarm, alarmLeft, alarmTop, alarmPaint);
         }
 
-        // Draw Alarm, if enabled
+        // Draw Xdrip, if enabled
         if(this.xdripBool) {
             canvas.drawText(this.xdrip, xdripLeft, xdripTop, xdripPaint);
+        }
+
+        // Draw AirPressure, if enabled
+        if(this.airPressureBool) {
+            String units = (showAirPressureUnits) ? " hPa" : "";
+            canvas.drawText(this.airPressure+units, airPressureLeft, airPressureTop, airPressurePaint);
         }
 
         // Draw wifi, if enabled
@@ -158,6 +192,7 @@ public class GreatWidget extends AbstractWidget {
     @Override
     public void onDataUpdate(DataType type, Object value) {
         boolean refreshSlpt = false;
+        String temp;
 
         // On each Data updated
         //Log.w("DinoDevs-GreatFit", type.toString()+" => "+value.toString() );
@@ -170,9 +205,15 @@ public class GreatWidget extends AbstractWidget {
                 }
                 break;
         }
+        // Update AirPressure
+        temp = getAirPressure();
+        if( !this.airPressure.equals(temp) ){
+            this.airPressure = temp;
+            refreshSlpt = true;
+        }
 
         // Update Alarm
-        String temp = getAlarm();
+        temp = getAlarm();
         if( !this.alarm.equals(temp) ){
             this.alarm = temp;
             refreshSlpt = true;
@@ -231,6 +272,34 @@ public class GreatWidget extends AbstractWidget {
         return (str!=null && !str.equals(""))?str:"--";
     }
 
+    public void updateAirPressure(){
+        // WearCompass.jar!\com\huami\watch\compass\logic\GeographicManager.class
+        final SensorManager mManager = (SensorManager) this.mService.getApplicationContext().getSystemService(Context.SENSOR_SERVICE);
+        Sensor mPressureSensor = mManager.getDefaultSensor(6);
+        SensorEventListener mListener = new SensorEventListener() {
+            public void onAccuracyChanged(Sensor parameter1, int parameter2) {}
+
+            public void onSensorChanged(SensorEvent parameters) {
+                //mManager.unregisterListener(this);
+                float[] pressure = parameters.values;
+                if (pressure != null && pressure.length > 0) {
+                    int value = ((int) pressure[0]);
+                    if (value > 0 && !(value+"").equals(GreatWidget.this.airPressure)) {
+                        GreatWidget.this.airPressure = value+"";
+                        Log.w("DinoDevs-GreatFit", "AirPressure: "+value);
+                        Settings.System.putString(GreatWidget.this.mService.getContentResolver(), "GreatFit_AirPressure",value+"");
+                    }
+                }
+            }
+        };
+        mManager.registerListener(mListener, mPressureSensor, 0);
+    }
+
+    public String getAirPressure(){
+        String str = Settings.System.getString(this.mService.getContentResolver(), "GreatFit_AirPressure");
+        return (str!=null && !str.equals(""))?str:"--";
+    }
+
     @Override
     public List<SlptViewComponent> buildSlptViewComponent(Service service) {
         // Variables
@@ -247,6 +316,9 @@ public class GreatWidget extends AbstractWidget {
 
         // Get xDrip
         this.xdrip = getXdrip();
+
+        // Get AirPressure in hPa
+        this.airPressure = getAirPressure();
 
         // Get wifi
         //this.wifi = getWifi();
@@ -342,32 +414,42 @@ public class GreatWidget extends AbstractWidget {
         if(!service.getResources().getBoolean(R.bool.xdrip)){xdripLayout.show=false;}
 
 
-        // Draw WiFi
-        /*
-        SlptLinearLayout wifiLayout = new SlptLinearLayout();
-        SlptPictureView wifiStr = new SlptPictureView();
-        wifiStr.setStringPicture( this.wifi );
-        wifiLayout.add(wifiStr);
-        wifiLayout.setTextAttrForAll(
-                service.getResources().getDimension(R.dimen.ampm_font_size),
-                service.getResources().getColor(R.color.ampm_colour_slpt),
+        // Draw AirPressure
+        SlptLinearLayout airPressureLayout = new SlptLinearLayout();
+        SlptPictureView airPressureStr = new SlptPictureView();
+        airPressureStr.setStringPicture( this.airPressure );
+        airPressureLayout.add(airPressureStr);
+        // Show or Not Units
+        if(service.getResources().getBoolean(R.bool.air_pressure_units)) {
+            SlptPictureView airPressureUnit = new SlptPictureView();
+            airPressureUnit.setStringPicture(" hPa");
+            airPressureLayout.add(airPressureUnit);
+        }
+        airPressureLayout.setTextAttrForAll(
+                service.getResources().getDimension(R.dimen.air_pressure_font_size),
+                service.getResources().getColor(R.color.air_pressure_colour_slpt),
                 ResourceManager.getTypeFace(service.getResources(), ResourceManager.Font.FONT_FILE)
         );
-        // If enabled
-        if(false) {wifiLayout.show = false;}
         // Position based on screen on
-        wifiLayout.alignX = 2;
-        wifiLayout.alignY = 0;
-        wifiLayout.setRect(
-                (int) (2*150+640),
-                (int) (service.getResources().getDimension(R.dimen.ampm_font_size))
+        airPressureLayout.alignX = 2;
+        airPressureLayout.alignY = 0;
+        tmp_left = (int) service.getResources().getDimension(R.dimen.air_pressure_left);
+        if(!service.getResources().getBoolean(R.bool.air_pressure_left_align)) {
+            // If text is centered, set rectangle
+            airPressureLayout.setRect(
+                    (int) (2 * tmp_left + 640),
+                    (int) (service.getResources().getDimension(R.dimen.air_pressure_font_size))
+            );
+            tmp_left = -320;
+        }
+        airPressureLayout.setStart(
+                (int) tmp_left,
+                (int) (service.getResources().getDimension(R.dimen.air_pressure_top)-((float)service.getResources().getInteger(R.integer.font_ratio)/100)*service.getResources().getDimension(R.dimen.air_pressure_font_size))
         );
-        wifiLayout.setStart(
-                -320,
-                (int) (150-((float)service.getResources().getInteger(R.integer.font_ratio)/100)*service.getResources().getDimension(R.dimen.ampm_font_size))
-        );
-        */
+        // Hide if disabled
+        if(!service.getResources().getBoolean(R.bool.air_pressure)){airPressureLayout.show=false;}
 
-        return Arrays.asList(new SlptViewComponent[]{ampm, alarmLayout/*, wifiLayout*/, xdripLayout});
+
+        return Arrays.asList(new SlptViewComponent[]{ampm, alarmLayout, xdripLayout, airPressureLayout});
     }
 }

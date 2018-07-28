@@ -87,4 +87,7 @@
 
     <color name="xdrip_colour">#ffffff</color>
     <color name="xdrip_colour_slpt">#ffffff</color>
+
+    <color name="air_pressure_colour">#ffffff</color>
+    <color name="air_pressure_colour_slpt">#ffffff</color>
 </resources>
