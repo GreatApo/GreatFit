@@ -45,7 +45,7 @@
     <bool name="wind_direction">true</bool> <!-- Show text widgets -->
     <bool name="wind_direction_as_arrows">false</bool> <!-- false = W, S, E, N, SW etc  , true =  ↖ ↑ ↗ ← → ↙ ↓ ↘ -->
     <bool name="wind_strength">false</bool>
-    <bool name="alarm">true</bool>
+    <bool name="alarm">true</bool>  <!-- Shows watch's next alarm -->
     <bool name="xdrip">true</bool> <!-- You need to have Xdrip installed on the watch -->
     <!-- Show icons -->
     <bool name="battery_icon">false</bool>
