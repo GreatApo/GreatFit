@@ -50,7 +50,7 @@ public class MainClock extends DigitalClockWidget {
     private TextPaint monthFont;
     private TextPaint yearFont;
 
-    private boolean secondsBool ;//= GreatFit.bool_settings[0];
+    private boolean secondsBool;//= GreatFit.bool_settings[0];
     private boolean indicatorBool;
     private boolean indicatorFlashBool;
     private boolean dateBool;

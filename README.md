@@ -1,3 +1,4 @@
 # Watchface for Amazfit smartwatch
 
-Soon
+Tutorial/Documentation:
+https://forum.xda-developers.com/smartwatch/amazfit/tutorial-create-apk-watchfaces-coding-t3822221

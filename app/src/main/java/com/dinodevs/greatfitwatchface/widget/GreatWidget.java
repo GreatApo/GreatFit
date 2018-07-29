@@ -71,6 +71,10 @@ public class GreatWidget extends AbstractWidget {
     private float airPressureTop;
     private float airPressureLeft;
 
+    private SensorManager mManager;
+    private Sensor mPressureSensor;
+    private SensorEventListener mListener;
+
     @Override
     public void init(Service service){
         // This service
@@ -101,6 +105,28 @@ public class GreatWidget extends AbstractWidget {
         // Get AirPressure in hPa
         this.airPressureBool = service.getResources().getBoolean(R.bool.air_pressure);
         if(this.airPressureBool){
+            // WearCompass.jar!\com\huami\watch\compass\logic\GeographicManager.class
+            this.mManager = (SensorManager) this.mService.getApplicationContext().getSystemService(Context.SENSOR_SERVICE);
+            this.mPressureSensor = this.mManager.getDefaultSensor(6);
+            this.mListener = new SensorEventListener() {
+                public void onAccuracyChanged(Sensor parameter1, int parameter2) {}
+
+                public void onSensorChanged(SensorEvent parameters) {
+                    Log.w("DinoDevs-GreatFit", "Air pressure sensor started...");
+                    GreatWidget.this.mManager.unregisterListener(this);
+                    float[] pressure = parameters.values;
+                    if (pressure != null && pressure.length > 0) {
+                        float value = pressure[0];
+                        if (value > 0 && !(value+"").equals(GreatWidget.this.airPressure)) {
+                            Calendar now = Calendar.getInstance();
+                            GreatWidget.this.airPressure = value+"";//+now.get(Calendar.HOUR_OF_DAY)+":"+now.get(Calendar.MINUTE);
+                            Log.w("DinoDevs-GreatFit", "AirPressure: "+value);
+                            Settings.System.putString(GreatWidget.this.mService.getContentResolver(), "GreatFit_AirPressure",GreatWidget.this.airPressure);
+                            //((AbstractWatchFace) GreatWidget.this.mService).restartSlpt();
+                        }
+                    }
+                }
+            };
             updateAirPressure();
         }
         this.airPressure = getAirPressure();
@@ -195,7 +221,7 @@ public class GreatWidget extends AbstractWidget {
         String temp;
 
         // On each Data updated
-        //Log.w("DinoDevs-GreatFit", type.toString()+" => "+value.toString() );
+        Log.w("DinoDevs-GreatFit", type.toString()+" => "+value.toString() );
         switch (type) {
             case TIME:
                 // Update AM/PM
@@ -205,11 +231,13 @@ public class GreatWidget extends AbstractWidget {
                 }
                 break;
         }
+
         // Update AirPressure
+        updateAirPressure();
         temp = getAirPressure();
         if( !this.airPressure.equals(temp) ){
             this.airPressure = temp;
-            refreshSlpt = true;
+            //refreshSlpt = true;
         }
 
         // Update Alarm
@@ -273,26 +301,8 @@ public class GreatWidget extends AbstractWidget {
     }
 
     public void updateAirPressure(){
-        // WearCompass.jar!\com\huami\watch\compass\logic\GeographicManager.class
-        final SensorManager mManager = (SensorManager) this.mService.getApplicationContext().getSystemService(Context.SENSOR_SERVICE);
-        Sensor mPressureSensor = mManager.getDefaultSensor(6);
-        SensorEventListener mListener = new SensorEventListener() {
-            public void onAccuracyChanged(Sensor parameter1, int parameter2) {}
-
-            public void onSensorChanged(SensorEvent parameters) {
-                //mManager.unregisterListener(this);
-                float[] pressure = parameters.values;
-                if (pressure != null && pressure.length > 0) {
-                    int value = ((int) pressure[0]);
-                    if (value > 0 && !(value+"").equals(GreatWidget.this.airPressure)) {
-                        GreatWidget.this.airPressure = value+"";
-                        Log.w("DinoDevs-GreatFit", "AirPressure: "+value);
-                        Settings.System.putString(GreatWidget.this.mService.getContentResolver(), "GreatFit_AirPressure",value+"");
-                    }
-                }
-            }
-        };
-        mManager.registerListener(mListener, mPressureSensor, 0);
+        Log.w("DinoDevs-GreatFit", "Update air pressure started...");
+        mManager.registerListener(this.mListener, this.mPressureSensor, 1*60*1000);
     }
 
     public String getAirPressure(){
