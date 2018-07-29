@@ -69,6 +69,12 @@ public enum DataType {
         protected <E> E getValue(Object... args) {
             return (E) new WeatherData((String) args[0], (String) args[1], ((Integer) args[2]).intValue());
         }
+    },
+
+    CUSTOM(100) {
+        protected <E> E getValue(Object... args) {
+            return (E) new CustomData();
+        }
     };
 
     private final int dataType;

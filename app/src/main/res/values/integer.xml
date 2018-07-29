@@ -21,4 +21,7 @@
 
     <!-- slpt position compartibility -->
     <integer name="font_ratio">75</integer><!-- /100, font height center point ratio -->
+
+    <!-- Slpt refresh rate for custom widgets (air pressure, Xdrip) -->
+    <integer name="custom_refresh_rate">5</integer><!-- in minutes -->
 </resources>

@@ -8,34 +8,26 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
+import android.os.Handler;
 import android.provider.Settings;
-import android.support.wearable.watchface.CanvasWatchFaceService;
 import android.text.TextPaint;
 import android.util.Log;
 
 import com.dinodevs.greatfitwatchface.AbstractWatchFace;
-import com.dinodevs.greatfitwatchface.resource.SlptAnalogAmPmView;
-import com.dinodevs.greatfitwatchface.resource.SlptSecondHView;
-import com.dinodevs.greatfitwatchface.resource.SlptSecondLView;
-import com.ingenic.iwds.datatransactor.elf.HealthInfo;
-import com.ingenic.iwds.datatransactor.elf.MusicControlInfo;
-import com.ingenic.iwds.datatransactor.elf.PhoneState;
-import com.ingenic.iwds.datatransactor.elf.ScheduleInfo;
 import com.ingenic.iwds.slpt.view.core.SlptLinearLayout;
 import com.ingenic.iwds.slpt.view.core.SlptPictureView;
 import com.ingenic.iwds.slpt.view.core.SlptViewComponent;
 
 import java.util.Arrays;
 import java.util.Calendar;
-import java.util.Collections;
 import java.util.List;
 
 import com.dinodevs.greatfitwatchface.data.DataType;
 import com.dinodevs.greatfitwatchface.data.Time;
 import com.dinodevs.greatfitwatchface.resource.ResourceManager;
 import com.dinodevs.greatfitwatchface.R;
+
+import static com.dinodevs.greatfitwatchface.data.DataType.CUSTOM;
 
 
 public class GreatWidget extends AbstractWidget {
@@ -75,6 +67,10 @@ public class GreatWidget extends AbstractWidget {
     private Sensor mPressureSensor;
     private SensorEventListener mListener;
 
+    // Custom data updater
+    private Handler mHandler = new Handler();
+    private Integer custom_refresh_rate;
+
     @Override
     public void init(Service service){
         // This service
@@ -97,7 +93,6 @@ public class GreatWidget extends AbstractWidget {
 
         // Get next alarm
         this.alarm = getAlarm(); // ex: Fri 10:30
-        //Log.w("DinoDevs-GreatFit", "Alarm: "+alarm );
 
         // Get xdrip
         this.xdrip = getXdrip();
@@ -112,17 +107,16 @@ public class GreatWidget extends AbstractWidget {
                 public void onAccuracyChanged(Sensor parameter1, int parameter2) {}
 
                 public void onSensorChanged(SensorEvent parameters) {
-                    Log.w("DinoDevs-GreatFit", "Air pressure sensor started...");
                     GreatWidget.this.mManager.unregisterListener(this);
                     float[] pressure = parameters.values;
                     if (pressure != null && pressure.length > 0) {
                         float value = pressure[0];
                         if (value > 0 && !(value+"").equals(GreatWidget.this.airPressure)) {
                             Calendar now = Calendar.getInstance();
-                            GreatWidget.this.airPressure = value+"";//+now.get(Calendar.HOUR_OF_DAY)+":"+now.get(Calendar.MINUTE);
-                            Log.w("DinoDevs-GreatFit", "AirPressure: "+value);
-                            Settings.System.putString(GreatWidget.this.mService.getContentResolver(), "GreatFit_AirPressure",GreatWidget.this.airPressure);
-                            //((AbstractWatchFace) GreatWidget.this.mService).restartSlpt();
+                            //GreatWidget.this.airPressure = value+"";
+                            //Log.w("DinoDevs-GreatFit", "AirPressure sensor: "+value);
+                            Settings.System.putString(GreatWidget.this.mService.getContentResolver(), "GreatFit_AirPressure",value+"");
+                            ((AbstractWatchFace) GreatWidget.this.mService).restartSlpt();
                         }
                     }
                 }
@@ -175,6 +169,9 @@ public class GreatWidget extends AbstractWidget {
         this.airPressurePaint.setTypeface(ResourceManager.getTypeFace(service.getResources(), ResourceManager.Font.FONT_FILE));
         this.airPressurePaint.setTextSize(service.getResources().getDimension(R.dimen.air_pressure_font_size));
         this.airPressurePaint.setTextAlign( (this.airPressureAlignLeftBool) ? Paint.Align.LEFT : Paint.Align.CENTER );
+
+        this.custom_refresh_rate = service.getResources().getInteger(R.integer.custom_refresh_rate);
+        customRefresher.run();
     }
 
     @Override
@@ -212,7 +209,8 @@ public class GreatWidget extends AbstractWidget {
     @Override
     public List<DataType> getDataTypes() {
         // For many refreshes
-        return Arrays.asList(DataType.BATTERY, DataType.STEPS, DataType.DISTANCE, DataType.TOTAL_DISTANCE, DataType.TIME,  DataType.CALORIES,  DataType.DATE,  DataType.HEART_RATE,  DataType.FLOOR, DataType.WEATHER);
+        //return Arrays.asList(DataType.BATTERY, DataType.STEPS, DataType.DISTANCE, DataType.TOTAL_DISTANCE, DataType.TIME,  DataType.CALORIES,  DataType.DATE,  DataType.HEART_RATE,  DataType.FLOOR, DataType.WEATHER);
+        return Arrays.asList(DataType.TIME);
     }
 
     @Override
@@ -221,7 +219,7 @@ public class GreatWidget extends AbstractWidget {
         String temp;
 
         // On each Data updated
-        Log.w("DinoDevs-GreatFit", type.toString()+" => "+value.toString() );
+        //Log.w("DinoDevs-GreatFit", type.toString()+" => "+value.toString() );
         switch (type) {
             case TIME:
                 // Update AM/PM
@@ -229,53 +227,55 @@ public class GreatWidget extends AbstractWidget {
                 if(!this.tempAMPM.equals(this.time.ampmStr)){
                     refreshSlpt = true;
                 }
+
+                // Update Alarm
+                temp = getAlarm();
+                if( !this.alarm.equals(temp) ){
+                    this.alarm = temp;
+                    refreshSlpt = true;
+                }
+                break;
+            case CUSTOM:
+                // Update AirPressure
+                updateAirPressure();
+                /*
+                temp = getAirPressure();
+                if( !this.airPressure.equals(temp) ){
+                    this.airPressure = temp;
+                    refreshSlpt = true;
+                }*/
+
+                // Update Xdrip
+                temp = getXdrip();
+                if( !this.xdrip.equals(temp) ){
+                    this.xdrip = temp;
+                    refreshSlpt = true;
+                }
+
+                // Update wifi
+                /*temp = getWifi();
+                if( !this.wifi.equals(temp) ){
+                    this.wifi = temp;
+                    refreshSlpt = true;
+                }*/
                 break;
         }
-
-        // Update AirPressure
-        updateAirPressure();
-        temp = getAirPressure();
-        if( !this.airPressure.equals(temp) ){
-            this.airPressure = temp;
-            //refreshSlpt = true;
-        }
-
-        // Update Alarm
-        temp = getAlarm();
-        if( !this.alarm.equals(temp) ){
-            this.alarm = temp;
-            refreshSlpt = true;
-        }
-
-        // Update Xdrip
-        temp = getXdrip();
-        if( !this.xdrip.equals(temp) ){
-            this.xdrip = temp;
-            refreshSlpt = true;
-        }
-
-        // Update wifi
-        /*temp = getWifi();
-        if( !this.wifi.equals(temp) ){
-            this.wifi = temp;
-            refreshSlpt = true;
-        }*/
 
         // Refresh Slpt
         if(refreshSlpt){
             ((AbstractWatchFace) this.mService).restartSlpt();
         }
-
-        //ConnectivityManager connManager = (ConnectivityManager) this.mService.getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
-        //NetworkInfo mWifi = connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
-        //this.wifi = mWifi.toString();
-        //Log.w("DinoDevs-GreatFit", "WiFi: "+mWifi );
-        //if (mWifi.isConnected()) {
-        // Do whatever
-        //}
-
-        //this.time = getSlptTime();
     }
+
+    // Custom data updater
+    Runnable customRefresher = new Runnable(){
+        @Override
+        public void run() {
+            onDataUpdate(CUSTOM, null);
+            mHandler.postDelayed(customRefresher, custom_refresh_rate);
+        }
+    };
+
 
 
     public Time getSlptTime() {
@@ -301,7 +301,7 @@ public class GreatWidget extends AbstractWidget {
     }
 
     public void updateAirPressure(){
-        Log.w("DinoDevs-GreatFit", "Update air pressure started...");
+        //Log.w("DinoDevs-GreatFit", "Update air pressure started...");
         mManager.registerListener(this.mListener, this.mPressureSensor, 1*60*1000);
     }
 
@@ -338,7 +338,6 @@ public class GreatWidget extends AbstractWidget {
         SlptPictureView ampmStr = new SlptPictureView();
         ampmStr.setStringPicture( this.tempAMPM );
         ampm.add(ampmStr);
-        //ampm.add(new SlptAnalogAmPmView());
         ampm.setTextAttrForAll(
                 service.getResources().getDimension(R.dimen.ampm_font_size),
                 service.getResources().getColor(R.color.ampm_colour_slpt),
