@@ -170,7 +170,7 @@ public class GreatWidget extends AbstractWidget {
         this.airPressurePaint.setTextSize(service.getResources().getDimension(R.dimen.air_pressure_font_size));
         this.airPressurePaint.setTextAlign( (this.airPressureAlignLeftBool) ? Paint.Align.LEFT : Paint.Align.CENTER );
 
-        this.custom_refresh_rate = service.getResources().getInteger(R.integer.custom_refresh_rate);
+        this.custom_refresh_rate = service.getResources().getInteger(R.integer.custom_refresh_rate)*60*1000;
         customRefresher.run();
     }
 

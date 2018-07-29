@@ -259,7 +259,6 @@ public class WeatherWidget extends AbstractWidget {
 
         // Get ALL data from system
         String str = Settings.System.getString(this.mService.getApplicationContext().getContentResolver(), "WeatherInfo");
-        //Log.w("DinoDevs-GreatFit", str);
 
         // WeatherInfo
         // {"isAlert":true, "isNotification":true,
@@ -314,8 +313,6 @@ public class WeatherWidget extends AbstractWidget {
         // Variables
         this.mService = service;
         Typeface font = ResourceManager.getTypeFace(service.getResources(), ResourceManager.Font.FONT_FILE);
-
-        Log.w("DinoDevs-GreatFit", "Sltp refresh" );
 
         // Get weather data
         this.weather = getSlptWeather();

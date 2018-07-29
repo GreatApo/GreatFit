@@ -350,6 +350,8 @@ public class MainClock extends DigitalClockWidget {
     // Screen locked/closed watch mode (Slpt mode)
     @Override
     public List<SlptViewComponent> buildSlptViewComponent(Service service) {
+        //Log.w("DinoDevs-GreatFit", "Running slpt mainclock..." );
+
         //Load Settings
         this.settings = new APsettings(MainClock.class.getName(), service);
         this.language = this.settings.get("lang", this.language) % this.codes.length;

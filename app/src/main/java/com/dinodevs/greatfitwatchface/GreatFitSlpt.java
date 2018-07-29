@@ -19,9 +19,9 @@ import com.ingenic.iwds.slpt.view.core.SlptViewComponent;
  * Splt version of the watch.
  */
 
-public class GreatFitSplt extends AbstractWatchFaceSlpt {
+public class GreatFitSlpt extends AbstractWatchFaceSlpt {
 
-    public GreatFitSplt() {
+    public GreatFitSlpt() {
         super(
                 new MainClock(),
                 new CirclesWidget(),

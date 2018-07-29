@@ -33,6 +33,6 @@ public class GreatFit extends AbstractWatchFace {
 
     @Override
     protected Class<? extends AbstractSlptClock> slptClockClass() {
-        return GreatFitSplt.class;
+        return GreatFitSlpt.class;
     }
 }

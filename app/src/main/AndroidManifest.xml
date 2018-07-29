@@ -14,7 +14,7 @@
         <activity android:exported="true" android:launchMode="singleTask" android:name="com.huami.watch.watchface.custom.ui.WatchFaceSettingsActivity" android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
         <activity android:launchMode="singleTask" android:name="com.huami.watch.watchface.custom.ui.WatchFaceCustomActivity"/>
         <activity android:exported="true" android:launchMode="singleTask" android:name="com.dinodevs.greatfitwatchface.settings.Settings" android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
-        <service android:name="com.dinodevs.greatfitwatchface.GreatFitSplt"/>
+        <service android:name="com.dinodevs.greatfitwatchface.GreatFitSlpt"/>
         <service android:name="com.dinodevs.greatfitwatchface.GreatFit" android:label="@string/watch_face" android:permission="android.permission.BIND_WALLPAPER">
             <meta-data android:name="android.service.wallpaper" android:resource="@xml/custom_watch_face" />
             <meta-data android:name="com.google.android.wearable.watchface.preview" android:resource="@drawable/preview" />
