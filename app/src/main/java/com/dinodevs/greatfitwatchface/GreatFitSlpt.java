@@ -1,5 +1,6 @@
 package com.dinodevs.greatfitwatchface;
 
+import android.content.Context;
 import android.util.Log;
 
 import com.dinodevs.greatfitwatchface.widget.BatteryWidget;
@@ -11,6 +12,7 @@ import com.dinodevs.greatfitwatchface.widget.MainClock;
 import com.dinodevs.greatfitwatchface.widget.GreatWidget;
 import com.dinodevs.greatfitwatchface.widget.WeatherWidget;
 import com.dinodevs.greatfitwatchface.widget.Widget;
+import com.huami.watch.watchface.util.Util;
 import com.ingenic.iwds.slpt.view.core.SlptAbsoluteLayout;
 import com.ingenic.iwds.slpt.view.core.SlptLayout;
 import com.ingenic.iwds.slpt.view.core.SlptViewComponent;
@@ -20,6 +22,10 @@ import com.ingenic.iwds.slpt.view.core.SlptViewComponent;
  */
 
 public class GreatFitSlpt extends AbstractWatchFaceSlpt {
+    // Class variables
+    private Context context;
+    private boolean needRefreshSecond;
+    public String greatfitParameters;
 
     public GreatFitSlpt() {
         super(
@@ -66,5 +72,19 @@ public class GreatFitSlpt extends AbstractWatchFaceSlpt {
         //Log.w("DinoDevs-GreatFit", "Rebuild 8C");
 
         return result;
+    }
+
+
+    protected void initWatchFaceConfig() {
+        Log.w("DinoDevs-GreatFit", "Initiating watchface");
+
+        this.greatfitParameters = "";
+        //this.getResources().getBoolean(R.bool.seconds)
+
+        this.context = this.getApplicationContext();
+        this.needRefreshSecond = Util.needSlptRefreshSecond(this.context);
+        if (this.needRefreshSecond) {
+            this.setClockPeriodSecond(true);
+        }
     }
 }

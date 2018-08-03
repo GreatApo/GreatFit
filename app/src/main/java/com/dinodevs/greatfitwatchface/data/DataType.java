@@ -71,9 +71,21 @@ public enum DataType {
         }
     },
 
-    CUSTOM(100) {
+    CUSTOM(13) {
         protected <E> E getValue(Object... args) {
-            return (E) new CustomData();
+            return (E) new CustomData((String) args[0]);
+        }
+    },
+
+    ALARM(14) {
+        protected <E> E getValue(Object... args) {
+            return (E) new Alarm((String) args[0]);
+        }
+    },
+
+    XDRIP(15) {
+        protected <E> E getValue(Object... args) {
+            return (E) new Xdrip((String) args[0]);
         }
     };
 

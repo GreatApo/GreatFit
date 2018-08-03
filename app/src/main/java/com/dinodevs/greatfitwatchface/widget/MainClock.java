@@ -14,6 +14,7 @@ import com.dinodevs.greatfitwatchface.resource.SlptSecondLView;
 import com.dinodevs.greatfitwatchface.settings.APsettings;
 import com.huami.watch.watchface.util.Util;
 import com.ingenic.iwds.slpt.view.core.SlptLinearLayout;
+import com.ingenic.iwds.slpt.view.core.SlptNumView;
 import com.ingenic.iwds.slpt.view.core.SlptPictureView;
 import com.ingenic.iwds.slpt.view.core.SlptViewComponent;
 import com.ingenic.iwds.slpt.view.digital.SlptDayHView;
@@ -36,6 +37,7 @@ import java.util.List;
 
 import com.dinodevs.greatfitwatchface.R;
 import com.dinodevs.greatfitwatchface.resource.ResourceManager;
+import com.ingenic.iwds.slpt.view.utils.SimpleFile;
 
 
 public class MainClock extends DigitalClockWidget {
@@ -50,7 +52,7 @@ public class MainClock extends DigitalClockWidget {
     private TextPaint monthFont;
     private TextPaint yearFont;
 
-    private boolean secondsBool;//= GreatFit.bool_settings[0];
+    private boolean secondsBool;
     private boolean indicatorBool;
     private boolean indicatorFlashBool;
     private boolean dateBool;
@@ -66,6 +68,7 @@ public class MainClock extends DigitalClockWidget {
     private boolean dayAlignLeftBool;
     private boolean monthAlignLeftBool;
     private boolean yearAlignLeftBool;
+    private boolean no_0_on_hour_first_digit;
 
     private Drawable background;
     private float leftHour;
@@ -88,6 +91,7 @@ public class MainClock extends DigitalClockWidget {
     private float topYear;
 
     private String[] digitalNums = {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9"};
+    private String[] digitalNumsNo0 = {"", "1", "2", "3", "4", "5", "6", "7", "8", "9"};//no 0 on first digit
 
     public static String[] colors = {"#ff0000", "#00ffff","#00ff00","#ff00ff","#ffffff","#ffff00"};
     public int color = 3;
@@ -281,6 +285,8 @@ public class MainClock extends DigitalClockWidget {
         this.yearFont.setTextSize(service.getResources().getDimension(R.dimen.year_font_size));
         this.yearFont.setColor(service.getResources().getColor(R.color.year_colour));
         this.yearFont.setTextAlign( (this.yearAlignLeftBool) ? Paint.Align.LEFT : Paint.Align.CENTER );
+
+        this.no_0_on_hour_first_digit = service.getResources().getBoolean(R.bool.no_0_on_hour_first_digit);
     }
 
     // Screen open watch mode
@@ -290,7 +296,7 @@ public class MainClock extends DigitalClockWidget {
         this.background.draw(canvas);
 
         // Draw hours
-        canvas.drawText(Util.formatTime(hours), this.leftHour, this.topHour, this.hourFont);
+        canvas.drawText( (this.no_0_on_hour_first_digit)?hours+"":Util.formatTime(hours), this.leftHour, this.topHour, this.hourFont);
 
         // Draw minutes
         canvas.drawText(Util.formatTime(minutes), this.leftMinute, this.topMinute, this.minutesFont);
@@ -301,13 +307,13 @@ public class MainClock extends DigitalClockWidget {
 
         // Draw Date
         if(this.dateBool) {
-            String date = String.format("%02d.%02d.%02d", day, month, year);
+            String date = Util.formatTime(day)+"."+Util.formatTime(month)+"."+Integer.toString(year);//String.format("%02d.%02d.%02d", day, month, year);
             canvas.drawText(date, leftDate, topDate, this.dateFont);
         }
 
         // Draw Day
         if(this.dayBool) {
-            String dayText = String.format("%02d", day);
+            String dayText = Util.formatTime(day);
             canvas.drawText(dayText, leftDay, topDay, this.dayFont);
         }
 
@@ -327,18 +333,17 @@ public class MainClock extends DigitalClockWidget {
 
         // Draw Year
         if(this.yearBool) {
-            String yearText = String.format("%04d", year);
-            canvas.drawText(yearText, leftYear, topYear, this.yearFont);
+            canvas.drawText(Integer.toString(year), leftYear, topYear, this.yearFont);
         }
 
         // Draw Seconds
         if(this.secondsBool) {
-            canvas.drawText(String.format("%02d", seconds), leftSeconds, topSeconds, this.secondsFont);
+            canvas.drawText(Util.formatTime(seconds), leftSeconds, topSeconds, this.secondsFont);
         }
 
         // : indicator Draw + Flashing
         if(this.indicatorBool) {
-            String indicator = String.format(":");
+            String indicator = ":";
             if (seconds % 2 == 0 || !this.indicatorFlashBool) { // Draw only on even seconds (flashing : symbol)
                 canvas.drawText(indicator, this.leftIndicator, this.topIndicator, this.indicatorFont);
             }
@@ -350,8 +355,6 @@ public class MainClock extends DigitalClockWidget {
     // Screen locked/closed watch mode (Slpt mode)
     @Override
     public List<SlptViewComponent> buildSlptViewComponent(Service service) {
-        //Log.w("DinoDevs-GreatFit", "Running slpt mainclock..." );
-
         //Load Settings
         this.settings = new APsettings(MainClock.class.getName(), service);
         this.language = this.settings.get("lang", this.language) % this.codes.length;
@@ -361,16 +364,25 @@ public class MainClock extends DigitalClockWidget {
 
         // Draw background image
         SlptPictureView background = new SlptPictureView();
-        background.setImagePicture(Util.assetToBytes(service, "background_splt.png"));
+        background.setImagePicture(SimpleFile.readFileFromAssets(service, "background_splt.png"));
 
         // Set font
         Typeface timeTypeFace = ResourceManager.getTypeFace(service.getResources(), ResourceManager.Font.FONT_FILE);
 
         // Draw hours
         SlptLinearLayout hourLayout = new SlptLinearLayout();
-        hourLayout.add(new SlptHourHView());
-        hourLayout.add(new SlptHourLView());
-        hourLayout.setStringPictureArrayForAll(this.digitalNums);
+        if(service.getResources().getBoolean(R.bool.no_0_on_hour_first_digit)) {// No 0 on first digit
+            SlptViewComponent firstDigit = new SlptHourHView();
+            ((SlptNumView) firstDigit).setStringPictureArray(digitalNumsNo0);
+            hourLayout.add(firstDigit);
+            SlptViewComponent secondDigit = new SlptHourLView();
+            ((SlptNumView) secondDigit).setStringPictureArray(digitalNums);
+            hourLayout.add(secondDigit);
+        }else{
+            hourLayout.add(new SlptHourHView());
+            hourLayout.add(new SlptHourLView());
+            hourLayout.setStringPictureArrayForAll(this.digitalNums);
+        }
         hourLayout.setTextAttrForAll(
                 service.getResources().getDimension(R.dimen.hours_font_size),
                 service.getResources().getColor(R.color.hour_colour_slpt),

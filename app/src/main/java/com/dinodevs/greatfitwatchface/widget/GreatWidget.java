@@ -1,23 +1,24 @@
 package com.dinodevs.greatfitwatchface.widget;
 
 import android.app.Service;
-import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.hardware.Sensor;
-import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
-import android.os.Handler;
 import android.provider.Settings;
 import android.text.TextPaint;
 import android.util.Log;
 
 import com.dinodevs.greatfitwatchface.AbstractWatchFace;
+import com.dinodevs.greatfitwatchface.data.Alarm;
+import com.dinodevs.greatfitwatchface.data.CustomData;
+import com.dinodevs.greatfitwatchface.data.Xdrip;
 import com.ingenic.iwds.slpt.view.core.SlptLinearLayout;
 import com.ingenic.iwds.slpt.view.core.SlptPictureView;
 import com.ingenic.iwds.slpt.view.core.SlptViewComponent;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
@@ -27,31 +28,37 @@ import com.dinodevs.greatfitwatchface.data.Time;
 import com.dinodevs.greatfitwatchface.resource.ResourceManager;
 import com.dinodevs.greatfitwatchface.R;
 
-import static com.dinodevs.greatfitwatchface.data.DataType.CUSTOM;
-
 
 public class GreatWidget extends AbstractWidget {
+    private Time time;
+    private CustomData customData;
+    private Alarm alarmData;
+    private Xdrip xdripData;
+
     private TextPaint ampmPaint;
     private TextPaint alarmPaint;
     private TextPaint xdripPaint;
     private TextPaint airPressurePaint;
-    private Time time;
+    private TextPaint altitudePaint;
+
     private String tempAMPM;
     private String text;
     //private String wifi;
     private String alarm;
-    private String xdrip;
-    private String airPressure;
-    private int textint;
     private Boolean alarmBool;
     private Boolean alarmAlignLeftBool;
     private Boolean ampmBool;
     private Boolean ampmAlignLeftBool;
     private Boolean xdripBool;
     private Boolean xdripAlignLeftBool;
+
     private Boolean airPressureBool;
     private Boolean showAirPressureUnits;
     private Boolean airPressureAlignLeftBool;
+    private Boolean altitudeBool;
+    private Boolean showAltitudeUnits;
+    private Boolean altitudeAlignLeftBool;
+
     private Service mService;
 
     private float ampmTop;
@@ -62,68 +69,32 @@ public class GreatWidget extends AbstractWidget {
     private float xdripLeft;
     private float airPressureTop;
     private float airPressureLeft;
+    private float altitudeTop;
+    private float altitudeLeft;
 
-    private SensorManager mManager;
-    private Sensor mPressureSensor;
-    private SensorEventListener mListener;
-
-    // Custom data updater
-    private Handler mHandler = new Handler();
-    private Integer custom_refresh_rate;
 
     @Override
     public void init(Service service){
         // This service
         this.mService = service;
 
-        //Tests
-        //PhoneState var = new PhoneState();
-        //Log.w("DinoDevs-GreatFit", var.toString());
-        //HealthInfo var2 = new HealthInfo();
-        //Log.w("DinoDevs-GreatFit", var2.toString());
-        //MusicControlInfo var3 = new MusicControlInfo();
-        //Log.w("DinoDevs-GreatFit", var3.toString());
-        //ScheduleInfo var4 = new ScheduleInfo(0);
-        //Log.w("DinoDevs-GreatFit", var4.toString());
-        // Settings.System.getString(service.getContentResolver(), "springboard_widget_order_in");
-
         // Get AM/PM
         this.time = getSlptTime();
         this.tempAMPM = this.time.ampmStr;
 
         // Get next alarm
-        this.alarm = getAlarm(); // ex: Fri 10:30
+        this.alarmData = getAlarm();
+        this.alarm = this.alarmData.alarm; // ex: Fri 10:30
 
         // Get xdrip
-        this.xdrip = getXdrip();
+        this.xdripData = getXdrip();
 
+        // CustomData
+        this.customData = getCustomData();
         // Get AirPressure in hPa
         this.airPressureBool = service.getResources().getBoolean(R.bool.air_pressure);
-        if(this.airPressureBool){
-            // WearCompass.jar!\com\huami\watch\compass\logic\GeographicManager.class
-            this.mManager = (SensorManager) this.mService.getApplicationContext().getSystemService(Context.SENSOR_SERVICE);
-            this.mPressureSensor = this.mManager.getDefaultSensor(6);
-            this.mListener = new SensorEventListener() {
-                public void onAccuracyChanged(Sensor parameter1, int parameter2) {}
-
-                public void onSensorChanged(SensorEvent parameters) {
-                    GreatWidget.this.mManager.unregisterListener(this);
-                    float[] pressure = parameters.values;
-                    if (pressure != null && pressure.length > 0) {
-                        float value = pressure[0];
-                        if (value > 0 && !(value+"").equals(GreatWidget.this.airPressure)) {
-                            Calendar now = Calendar.getInstance();
-                            //GreatWidget.this.airPressure = value+"";
-                            //Log.w("DinoDevs-GreatFit", "AirPressure sensor: "+value);
-                            Settings.System.putString(GreatWidget.this.mService.getContentResolver(), "GreatFit_AirPressure",value+"");
-                            ((AbstractWatchFace) GreatWidget.this.mService).restartSlpt();
-                        }
-                    }
-                }
-            };
-            updateAirPressure();
-        }
-        this.airPressure = getAirPressure();
+        // Get Altitude in hPa
+       this.altitudeBool = service.getResources().getBoolean(R.bool.altitude);
 
         // Get wifi status
         //this.wifi = getWifi();
@@ -136,6 +107,8 @@ public class GreatWidget extends AbstractWidget {
         this.xdripTop = service.getResources().getDimension(R.dimen.xdrip_top);
         this.airPressureLeft = service.getResources().getDimension(R.dimen.air_pressure_left);
         this.airPressureTop = service.getResources().getDimension(R.dimen.air_pressure_top);
+        this.altitudeLeft = service.getResources().getDimension(R.dimen.altitude_left);
+        this.altitudeTop = service.getResources().getDimension(R.dimen.altitude_top);
 
         this.ampmBool = service.getResources().getBoolean(R.bool.ampm);
         this.ampmAlignLeftBool = service.getResources().getBoolean(R.bool.ampm_left_align);
@@ -145,6 +118,8 @@ public class GreatWidget extends AbstractWidget {
         this.xdripAlignLeftBool = service.getResources().getBoolean(R.bool.xdrip_left_align);
         this.showAirPressureUnits = service.getResources().getBoolean(R.bool.air_pressure_units);
         this.airPressureAlignLeftBool = service.getResources().getBoolean(R.bool.air_pressure_left_align);
+        this.showAltitudeUnits = service.getResources().getBoolean(R.bool.altitude_units);
+        this.altitudeAlignLeftBool = service.getResources().getBoolean(R.bool.altitude_left_align);
 
         this.ampmPaint = new TextPaint(TextPaint.ANTI_ALIAS_FLAG);
         this.ampmPaint.setColor(service.getResources().getColor(R.color.ampm_colour));
@@ -170,8 +145,11 @@ public class GreatWidget extends AbstractWidget {
         this.airPressurePaint.setTextSize(service.getResources().getDimension(R.dimen.air_pressure_font_size));
         this.airPressurePaint.setTextAlign( (this.airPressureAlignLeftBool) ? Paint.Align.LEFT : Paint.Align.CENTER );
 
-        this.custom_refresh_rate = service.getResources().getInteger(R.integer.custom_refresh_rate)*60*1000;
-        customRefresher.run();
+        this.altitudePaint = new TextPaint(TextPaint.ANTI_ALIAS_FLAG);
+        this.altitudePaint.setColor(service.getResources().getColor(R.color.altitude_colour));
+        this.altitudePaint.setTypeface(ResourceManager.getTypeFace(service.getResources(), ResourceManager.Font.FONT_FILE));
+        this.altitudePaint.setTextSize(service.getResources().getDimension(R.dimen.altitude_font_size));
+        this.altitudePaint.setTextAlign( (this.altitudeAlignLeftBool) ? Paint.Align.LEFT : Paint.Align.CENTER );
     }
 
     @Override
@@ -186,18 +164,24 @@ public class GreatWidget extends AbstractWidget {
 
         // Draw Alarm, if enabled
         if(this.alarmBool) {
-            canvas.drawText(this.alarm, alarmLeft, alarmTop, alarmPaint);
+            canvas.drawText(this.alarmData.alarm, alarmLeft, alarmTop, alarmPaint);
         }
 
         // Draw Xdrip, if enabled
         if(this.xdripBool) {
-            canvas.drawText(this.xdrip, xdripLeft, xdripTop, xdripPaint);
+            canvas.drawText(this.xdripData.sgv, xdripLeft, xdripTop, xdripPaint);
         }
 
         // Draw AirPressure, if enabled
         if(this.airPressureBool) {
             String units = (showAirPressureUnits) ? " hPa" : "";
-            canvas.drawText(this.airPressure+units, airPressureLeft, airPressureTop, airPressurePaint);
+            canvas.drawText(this.customData.airPressure+units, airPressureLeft, airPressureTop, airPressurePaint);
+        }
+
+        // Draw Altitude, if enabled
+        if(this.altitudeBool) {
+            String units = (showAltitudeUnits) ? " m" : "";
+            canvas.drawText(this.customData.altitude+units, altitudeLeft, altitudeTop, altitudePaint);
         }
 
         // Draw wifi, if enabled
@@ -210,47 +194,41 @@ public class GreatWidget extends AbstractWidget {
     public List<DataType> getDataTypes() {
         // For many refreshes
         //return Arrays.asList(DataType.BATTERY, DataType.STEPS, DataType.DISTANCE, DataType.TOTAL_DISTANCE, DataType.TIME,  DataType.CALORIES,  DataType.DATE,  DataType.HEART_RATE,  DataType.FLOOR, DataType.WEATHER);
-        return Arrays.asList(DataType.TIME);
+        //return Arrays.asList(DataType.TIME, DataType.CUSTOM, DataType.ALARM, DataType.XDRIP);
+        List<DataType> dataTypes = new ArrayList<>();
+        dataTypes.add(DataType.TIME);
+        dataTypes.add(DataType.CUSTOM);
+        dataTypes.add(DataType.ALARM);
+        dataTypes.add(DataType.XDRIP);
+        return dataTypes;
     }
 
     @Override
     public void onDataUpdate(DataType type, Object value) {
+        //Log.w("DinoDevs-GreatFit", type.toString()+" => "+value.toString() );
         boolean refreshSlpt = false;
-        String temp;
 
         // On each Data updated
-        //Log.w("DinoDevs-GreatFit", type.toString()+" => "+value.toString() );
         switch (type) {
             case TIME:
                 // Update AM/PM
                 this.time = (Time) value;
                 if(!this.tempAMPM.equals(this.time.ampmStr)){
-                    refreshSlpt = true;
-                }
-
-                // Update Alarm
-                temp = getAlarm();
-                if( !this.alarm.equals(temp) ){
-                    this.alarm = temp;
+                    this.tempAMPM = this.time.ampmStr;
                     refreshSlpt = true;
                 }
                 break;
-            case CUSTOM:
-                // Update AirPressure
-                updateAirPressure();
-                /*
-                temp = getAirPressure();
-                if( !this.airPressure.equals(temp) ){
-                    this.airPressure = temp;
-                    refreshSlpt = true;
-                }*/
-
+            case ALARM:
+                // Update Alarm
+                this.alarmData = (Alarm) value;
+                break;
+            case XDRIP:
                 // Update Xdrip
-                temp = getXdrip();
-                if( !this.xdrip.equals(temp) ){
-                    this.xdrip = temp;
-                    refreshSlpt = true;
-                }
+                this.xdripData = (Xdrip) value;
+                break;
+            case CUSTOM:
+                this.customData = (CustomData) value;
+                //Log.w("DinoDevs-GreatFit", type.toString()+" => "+value.toString() );
 
                 // Update wifi
                 /*temp = getWifi();
@@ -267,16 +245,6 @@ public class GreatWidget extends AbstractWidget {
         }
     }
 
-    // Custom data updater
-    Runnable customRefresher = new Runnable(){
-        @Override
-        public void run() {
-            onDataUpdate(CUSTOM, null);
-            mHandler.postDelayed(customRefresher, custom_refresh_rate);
-        }
-    };
-
-
 
     public Time getSlptTime() {
         Calendar now = Calendar.getInstance();
@@ -290,24 +258,19 @@ public class GreatWidget extends AbstractWidget {
         return (str!=null)?str:"null";
     }
 
-    public String getAlarm() {
+    public Alarm getAlarm() {
         String str = Settings.System.getString(this.mService.getContentResolver(), Settings.System.NEXT_ALARM_FORMATTED);
-        return (str!=null && !str.equals(""))?str:"--";
+        return new Alarm(str);
     }
 
-    public String getXdrip(){
-        String str = Settings.System.getString(this.mService.getContentResolver(), "sgv");
-        return (str!=null && !str.equals(""))?str:"--";
+    public Xdrip getXdrip(){
+        String str = Settings.System.getString(this.mService.getContentResolver(), "xdrip");
+        return new Xdrip(str);
     }
 
-    public void updateAirPressure(){
-        //Log.w("DinoDevs-GreatFit", "Update air pressure started...");
-        mManager.registerListener(this.mListener, this.mPressureSensor, 1*60*1000);
-    }
-
-    public String getAirPressure(){
-        String str = Settings.System.getString(this.mService.getContentResolver(), "GreatFit_AirPressure");
-        return (str!=null && !str.equals(""))?str:"--";
+    public CustomData getCustomData(){
+        String str = Settings.System.getString(this.mService.getContentResolver(), "CustomWatchfaceData");
+        return new CustomData(str);
     }
 
     @Override
@@ -315,150 +278,195 @@ public class GreatWidget extends AbstractWidget {
         // Variables
         // This service
         this.mService = service;
+        List<SlptViewComponent> slpt_objects = new ArrayList<>();
         this.ampmBool = service.getResources().getBoolean(R.bool.ampm);
+        int tmp_left;
 
         // Get AM/PM
         this.time = getSlptTime();
-        this.tempAMPM = this.time.ampmStr;
 
         // Get next alarm
-        this.alarm = getAlarm();
+        this.alarmData = getAlarm();
+        this.alarm = alarmData.alarm;
 
-        // Get xDrip
-        this.xdrip = getXdrip();
+        // Get xdrip
+        this.xdripData = getXdrip();
 
-        // Get AirPressure in hPa
-        this.airPressure = getAirPressure();
+        // CustomData
+        this.customData = getCustomData();
 
         // Get wifi
         //this.wifi = getWifi();
 
         // Draw AM or PM
-        SlptLinearLayout ampm = new SlptLinearLayout();
-        SlptPictureView ampmStr = new SlptPictureView();
-        ampmStr.setStringPicture( this.tempAMPM );
-        ampm.add(ampmStr);
-        ampm.setTextAttrForAll(
-                service.getResources().getDimension(R.dimen.ampm_font_size),
-                service.getResources().getColor(R.color.ampm_colour_slpt),
-                ResourceManager.getTypeFace(service.getResources(), ResourceManager.Font.FONT_FILE)
-        );
-        // Position based on screen on
-        ampm.alignX = 2;
-        ampm.alignY = 0;
-        int tmp_left = (int) service.getResources().getDimension(R.dimen.ampm_left);
-        if(!service.getResources().getBoolean(R.bool.ampm_left_align)) {
-            // If text is centered, set rectangle
-            ampm.setRect(
-                    (int) (2 * tmp_left + 640),
-                    (int) (service.getResources().getDimension(R.dimen.ampm_font_size))
+        if(this.ampmBool){
+            SlptLinearLayout ampm = new SlptLinearLayout();
+            SlptPictureView ampmStr = new SlptPictureView();
+            ampmStr.setStringPicture( this.time.ampmStr );
+            ampm.add(ampmStr);
+            ampm.setTextAttrForAll(
+                    service.getResources().getDimension(R.dimen.ampm_font_size),
+                    service.getResources().getColor(R.color.ampm_colour_slpt),
+                    ResourceManager.getTypeFace(service.getResources(), ResourceManager.Font.FONT_FILE)
             );
-            tmp_left = -320;
+            // Position based on screen on
+            ampm.alignX = 2;
+            ampm.alignY = 0;
+            tmp_left = (int) service.getResources().getDimension(R.dimen.ampm_left);
+            if(!service.getResources().getBoolean(R.bool.ampm_left_align)) {
+                // If text is centered, set rectangle
+                ampm.setRect(
+                        (int) (2 * tmp_left + 640),
+                        (int) (service.getResources().getDimension(R.dimen.ampm_font_size))
+                );
+                tmp_left = -320;
+            }
+            ampm.setStart(
+                    (int) tmp_left,
+                    (int) (service.getResources().getDimension(R.dimen.ampm_top)-((float)service.getResources().getInteger(R.integer.font_ratio)/100)*service.getResources().getDimension(R.dimen.ampm_font_size))
+            );
+            slpt_objects.add(ampm);
         }
-        ampm.setStart(
-                (int) tmp_left,
-                (int) (service.getResources().getDimension(R.dimen.ampm_top)-((float)service.getResources().getInteger(R.integer.font_ratio)/100)*service.getResources().getDimension(R.dimen.ampm_font_size))
-        );
-        // Hide if disabled
-        if(!this.ampmBool){ampm.show=false;}
 
 
         // Draw Alarm
-        SlptLinearLayout alarmLayout = new SlptLinearLayout();
-        SlptPictureView alarmStr = new SlptPictureView();
-        alarmStr.setStringPicture( this.alarm );
-        alarmLayout.add(alarmStr);
-        alarmLayout.setTextAttrForAll(
-                service.getResources().getDimension(R.dimen.alarm_font_size),
-                service.getResources().getColor(R.color.alarm_colour_slpt),
-                ResourceManager.getTypeFace(service.getResources(), ResourceManager.Font.FONT_FILE)
-        );
-        // Position based on screen on
-        alarmLayout.alignX = 2;
-        alarmLayout.alignY = 0;
-        tmp_left = (int) service.getResources().getDimension(R.dimen.alarm_left);
-        if(!service.getResources().getBoolean(R.bool.alarm_left_align)) {
-            // If text is centered, set rectangle
-            alarmLayout.setRect(
-                    (int) (2 * tmp_left + 640),
-                    (int) (service.getResources().getDimension(R.dimen.alarm_font_size))
+        if(service.getResources().getBoolean(R.bool.alarm)){
+            SlptLinearLayout alarmLayout = new SlptLinearLayout();
+            SlptPictureView alarmStr = new SlptPictureView();
+            alarmStr.setStringPicture( this.alarm );
+            alarmLayout.add(alarmStr);
+            alarmLayout.setTextAttrForAll(
+                    service.getResources().getDimension(R.dimen.alarm_font_size),
+                    service.getResources().getColor(R.color.alarm_colour_slpt),
+                    ResourceManager.getTypeFace(service.getResources(), ResourceManager.Font.FONT_FILE)
             );
-            tmp_left = -320;
+            // Position based on screen on
+            alarmLayout.alignX = 2;
+            alarmLayout.alignY = 0;
+            tmp_left = (int) service.getResources().getDimension(R.dimen.alarm_left);
+            if(!service.getResources().getBoolean(R.bool.alarm_left_align)) {
+                // If text is centered, set rectangle
+                alarmLayout.setRect(
+                        (int) (2 * tmp_left + 640),
+                        (int) (service.getResources().getDimension(R.dimen.alarm_font_size))
+                );
+                tmp_left = -320;
+            }
+            alarmLayout.setStart(
+                    (int) tmp_left,
+                    (int) (service.getResources().getDimension(R.dimen.alarm_top)-((float)service.getResources().getInteger(R.integer.font_ratio)/100)*service.getResources().getDimension(R.dimen.alarm_font_size))
+            );
+            //Add it to the list
+            slpt_objects.add(alarmLayout);
         }
-        alarmLayout.setStart(
-                (int) tmp_left,
-                (int) (service.getResources().getDimension(R.dimen.alarm_top)-((float)service.getResources().getInteger(R.integer.font_ratio)/100)*service.getResources().getDimension(R.dimen.alarm_font_size))
-        );
-        // Hide if disabled
-        if(!service.getResources().getBoolean(R.bool.alarm)){alarmLayout.show=false;}
 
 
         // Draw Xdrip
-        SlptLinearLayout xdripLayout = new SlptLinearLayout();
-        SlptPictureView xdripStr = new SlptPictureView();
-        xdripStr.setStringPicture( this.xdrip );
-        xdripLayout.add(xdripStr);
-        xdripLayout.setTextAttrForAll(
-                service.getResources().getDimension(R.dimen.xdrip_font_size),
-                service.getResources().getColor(R.color.xdrip_colour_slpt),
-                ResourceManager.getTypeFace(service.getResources(), ResourceManager.Font.FONT_FILE)
-        );
-        // Position based on screen on
-        xdripLayout.alignX = 2;
-        xdripLayout.alignY = 0;
-        tmp_left = (int) service.getResources().getDimension(R.dimen.xdrip_left);
-        if(!service.getResources().getBoolean(R.bool.xdrip_left_align)) {
-            // If text is centered, set rectangle
-            xdripLayout.setRect(
-                    (int) (2 * tmp_left + 640),
-                    (int) (service.getResources().getDimension(R.dimen.xdrip_font_size))
+        if(service.getResources().getBoolean(R.bool.xdrip)){
+            SlptLinearLayout xdripLayout = new SlptLinearLayout();
+            SlptPictureView xdripStr = new SlptPictureView();
+            xdripStr.setStringPicture( this.xdripData.sgv );
+            xdripLayout.add(xdripStr);
+            xdripLayout.setTextAttrForAll(
+                    service.getResources().getDimension(R.dimen.xdrip_font_size),
+                    service.getResources().getColor(R.color.xdrip_colour_slpt),
+                    ResourceManager.getTypeFace(service.getResources(), ResourceManager.Font.FONT_FILE)
             );
-            tmp_left = -320;
+            // Position based on screen on
+            xdripLayout.alignX = 2;
+            xdripLayout.alignY = 0;
+            tmp_left = (int) service.getResources().getDimension(R.dimen.xdrip_left);
+            if(!service.getResources().getBoolean(R.bool.xdrip_left_align)) {
+                // If text is centered, set rectangle
+                xdripLayout.setRect(
+                        (int) (2 * tmp_left + 640),
+                        (int) (service.getResources().getDimension(R.dimen.xdrip_font_size))
+                );
+                tmp_left = -320;
+            }
+            xdripLayout.setStart(
+                    (int) tmp_left,
+                    (int) (service.getResources().getDimension(R.dimen.xdrip_top)-((float)service.getResources().getInteger(R.integer.font_ratio)/100)*service.getResources().getDimension(R.dimen.xdrip_font_size))
+            );
+            //Add it to the list
+            slpt_objects.add(xdripLayout);
         }
-        xdripLayout.setStart(
-                (int) tmp_left,
-                (int) (service.getResources().getDimension(R.dimen.xdrip_top)-((float)service.getResources().getInteger(R.integer.font_ratio)/100)*service.getResources().getDimension(R.dimen.xdrip_font_size))
-        );
-        // Hide if disabled
-        if(!service.getResources().getBoolean(R.bool.xdrip)){xdripLayout.show=false;}
 
 
         // Draw AirPressure
-        SlptLinearLayout airPressureLayout = new SlptLinearLayout();
-        SlptPictureView airPressureStr = new SlptPictureView();
-        airPressureStr.setStringPicture( this.airPressure );
-        airPressureLayout.add(airPressureStr);
-        // Show or Not Units
-        if(service.getResources().getBoolean(R.bool.air_pressure_units)) {
-            SlptPictureView airPressureUnit = new SlptPictureView();
-            airPressureUnit.setStringPicture(" hPa");
-            airPressureLayout.add(airPressureUnit);
-        }
-        airPressureLayout.setTextAttrForAll(
-                service.getResources().getDimension(R.dimen.air_pressure_font_size),
-                service.getResources().getColor(R.color.air_pressure_colour_slpt),
-                ResourceManager.getTypeFace(service.getResources(), ResourceManager.Font.FONT_FILE)
-        );
-        // Position based on screen on
-        airPressureLayout.alignX = 2;
-        airPressureLayout.alignY = 0;
-        tmp_left = (int) service.getResources().getDimension(R.dimen.air_pressure_left);
-        if(!service.getResources().getBoolean(R.bool.air_pressure_left_align)) {
-            // If text is centered, set rectangle
-            airPressureLayout.setRect(
-                    (int) (2 * tmp_left + 640),
-                    (int) (service.getResources().getDimension(R.dimen.air_pressure_font_size))
+        if(service.getResources().getBoolean(R.bool.air_pressure)){
+            SlptLinearLayout airPressureLayout = new SlptLinearLayout();
+            SlptPictureView airPressureStr = new SlptPictureView();
+            airPressureStr.setStringPicture( this.customData.airPressure );
+            airPressureLayout.add(airPressureStr);
+            // Show or Not Units
+            if(service.getResources().getBoolean(R.bool.air_pressure_units)) {
+                SlptPictureView airPressureUnit = new SlptPictureView();
+                airPressureUnit.setStringPicture(" hPa");
+                airPressureLayout.add(airPressureUnit);
+            }
+            airPressureLayout.setTextAttrForAll(
+                    service.getResources().getDimension(R.dimen.air_pressure_font_size),
+                    service.getResources().getColor(R.color.air_pressure_colour_slpt),
+                    ResourceManager.getTypeFace(service.getResources(), ResourceManager.Font.FONT_FILE)
             );
-            tmp_left = -320;
+            // Position based on screen on
+            airPressureLayout.alignX = 2;
+            airPressureLayout.alignY = 0;
+            tmp_left = (int) service.getResources().getDimension(R.dimen.air_pressure_left);
+            if(!service.getResources().getBoolean(R.bool.air_pressure_left_align)) {
+                // If text is centered, set rectangle
+                airPressureLayout.setRect(
+                        (int) (2 * tmp_left + 640),
+                        (int) (service.getResources().getDimension(R.dimen.air_pressure_font_size))
+                );
+                tmp_left = -320;
+            }
+            airPressureLayout.setStart(
+                    (int) tmp_left,
+                    (int) (service.getResources().getDimension(R.dimen.air_pressure_top)-((float)service.getResources().getInteger(R.integer.font_ratio)/100)*service.getResources().getDimension(R.dimen.air_pressure_font_size))
+            );
+            //Add it to the list
+            slpt_objects.add(airPressureLayout);
         }
-        airPressureLayout.setStart(
-                (int) tmp_left,
-                (int) (service.getResources().getDimension(R.dimen.air_pressure_top)-((float)service.getResources().getInteger(R.integer.font_ratio)/100)*service.getResources().getDimension(R.dimen.air_pressure_font_size))
-        );
-        // Hide if disabled
-        if(!service.getResources().getBoolean(R.bool.air_pressure)){airPressureLayout.show=false;}
 
+        // Draw Altitude
+        if(service.getResources().getBoolean(R.bool.altitude)){
+            SlptLinearLayout altitudeLayout = new SlptLinearLayout();
+            SlptPictureView altitudeStr = new SlptPictureView();
+            altitudeStr.setStringPicture( this.customData.altitude );
+            altitudeLayout.add(altitudeStr);
+            // Show or Not Units
+            if(service.getResources().getBoolean(R.bool.altitude_units)) {
+                SlptPictureView altitudeUnit = new SlptPictureView();
+                altitudeUnit.setStringPicture(" m");
+                altitudeLayout.add(altitudeUnit);
+            }
+            altitudeLayout.setTextAttrForAll(
+                    service.getResources().getDimension(R.dimen.altitude_font_size),
+                    service.getResources().getColor(R.color.altitude_colour_slpt),
+                    ResourceManager.getTypeFace(service.getResources(), ResourceManager.Font.FONT_FILE)
+            );
+            // Position based on screen on
+            altitudeLayout.alignX = 2;
+            altitudeLayout.alignY = 0;
+            tmp_left = (int) service.getResources().getDimension(R.dimen.altitude_left);
+            if(!service.getResources().getBoolean(R.bool.altitude_left_align)) {
+                // If text is centered, set rectangle
+                altitudeLayout.setRect(
+                        (int) (2 * tmp_left + 640),
+                        (int) (service.getResources().getDimension(R.dimen.altitude_font_size))
+                );
+                tmp_left = -320;
+            }
+            altitudeLayout.setStart(
+                    (int) tmp_left,
+                    (int) (service.getResources().getDimension(R.dimen.altitude_top)-((float)service.getResources().getInteger(R.integer.font_ratio)/100)*service.getResources().getDimension(R.dimen.altitude_font_size))
+            );
+            //Add it to the list
+            slpt_objects.add(altitudeLayout);
+        }
 
-        return Arrays.asList(new SlptViewComponent[]{ampm, alarmLayout, xdripLayout, airPressureLayout});
+        return slpt_objects;
     }
 }

@@ -1,7 +1,7 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 22
+    compileSdkVersion 24
     buildToolsVersion '27.0.3'
     defaultConfig {
         applicationId 'com.dinodevs.greatfitwatchface'
@@ -28,11 +28,8 @@ android {
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
-    implementation('com.android.support:appcompat-v7:21.0.3') {
-        exclude module: 'support-v4'
-    }
-    implementation 'com.android.support.constraint:constraint-layout:1.1.0'
-    implementation files('libs/HuamiWatchFaces.jar')
+    implementation 'com.android.support.constraint:constraint-layout:1.1.2'
+    implementation files('libs/HuamiWatchFacesWOS2.8.jar')
 }
 
 

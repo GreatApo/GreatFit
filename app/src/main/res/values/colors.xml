@@ -90,4 +90,7 @@
 
     <color name="air_pressure_colour">#ffffff</color>
     <color name="air_pressure_colour_slpt">#ffffff</color>
+
+    <color name="altitude_colour">#ffffff</color>
+    <color name="altitude_colour_slpt">#ffffff</color>
 </resources>

@@ -159,4 +159,8 @@
     <dimen name="air_pressure_left">20px</dimen>
     <dimen name="air_pressure_top">170px</dimen>
 
+    <!-- Altitude -->
+    <dimen name="altitude_font_size">20px</dimen>
+    <dimen name="altitude_left">20px</dimen>
+    <dimen name="altitude_top">170px</dimen>
 </resources>
