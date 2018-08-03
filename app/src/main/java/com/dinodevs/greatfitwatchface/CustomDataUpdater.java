@@ -28,8 +28,8 @@ public class CustomDataUpdater extends Service {
     private Boolean update = false;
 
     private String airPressure="--";
-    private String phoneBattery="--";
-    private String phoneAlarm="--";
+    //private String phoneBattery="--";
+    //private String phoneAlarm="--";
 
     public void onCreate() {
 
@@ -97,12 +97,12 @@ public class CustomDataUpdater extends Service {
             // Extract data from JSON
             JSONObject json_data = new JSONObject(data);
             json_data.put("airPressure",this.airPressure);
-            json_data.put("phoneBattery",this.phoneBattery);
-            json_data.put("phoneAlarm",this.phoneAlarm);
+            //json_data.put("phoneBattery",this.phoneBattery);
+            //json_data.put("phoneAlarm",this.phoneAlarm);
 
             Settings.System.putString(getContentResolver(), "CustomWatchfaceData",json_data.toString());
         }catch (JSONException e) {
-            Settings.System.putString(getContentResolver(), "CustomWatchfaceData","{\"airPressure\":\""+this.airPressure+"\",\"phoneBattery\":\""+this.phoneBattery+"\",\"phoneAlarm\":\""+this.phoneAlarm+"\"}");//default
+            Settings.System.putString(getContentResolver(), "CustomWatchfaceData","{\"airPressure\":\""+this.airPressure+"\"}");//,\"phoneBattery\":\""+this.phoneBattery+"\",\"phoneAlarm\":\""+this.phoneAlarm+"\"}");//default
         }
     }
 }

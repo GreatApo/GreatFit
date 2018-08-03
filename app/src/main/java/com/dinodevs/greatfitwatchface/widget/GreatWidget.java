@@ -40,6 +40,7 @@ public class GreatWidget extends AbstractWidget {
     private TextPaint xdripPaint;
     private TextPaint airPressurePaint;
     private TextPaint altitudePaint;
+    private TextPaint phoneBatteryPaint;
 
     private String tempAMPM;
     private String text;
@@ -56,8 +57,10 @@ public class GreatWidget extends AbstractWidget {
     private Boolean showAirPressureUnits;
     private Boolean airPressureAlignLeftBool;
     private Boolean altitudeBool;
+    private Boolean phoneBatteryBool;
     private Boolean showAltitudeUnits;
     private Boolean altitudeAlignLeftBool;
+    private Boolean phoneBatteryAlignLeftBool;
 
     private Service mService;
 
@@ -71,6 +74,8 @@ public class GreatWidget extends AbstractWidget {
     private float airPressureLeft;
     private float altitudeTop;
     private float altitudeLeft;
+    private float phoneBatteryTop;
+    private float phoneBatteryLeft;
 
 
     @Override
@@ -93,8 +98,10 @@ public class GreatWidget extends AbstractWidget {
         this.customData = getCustomData();
         // Get AirPressure in hPa
         this.airPressureBool = service.getResources().getBoolean(R.bool.air_pressure);
-        // Get Altitude in hPa
-       this.altitudeBool = service.getResources().getBoolean(R.bool.altitude);
+        // Get Altitude in m
+        this.altitudeBool = service.getResources().getBoolean(R.bool.altitude);
+        // Get phone's battery %
+        this.phoneBatteryBool = service.getResources().getBoolean(R.bool.phoneBattery);
 
         // Get wifi status
         //this.wifi = getWifi();
@@ -109,6 +116,8 @@ public class GreatWidget extends AbstractWidget {
         this.airPressureTop = service.getResources().getDimension(R.dimen.air_pressure_top);
         this.altitudeLeft = service.getResources().getDimension(R.dimen.altitude_left);
         this.altitudeTop = service.getResources().getDimension(R.dimen.altitude_top);
+        this.phoneBatteryLeft = service.getResources().getDimension(R.dimen.phoneBattery_left);
+        this.phoneBatteryTop = service.getResources().getDimension(R.dimen.phoneBattery_top);
 
         this.ampmBool = service.getResources().getBoolean(R.bool.ampm);
         this.ampmAlignLeftBool = service.getResources().getBoolean(R.bool.ampm_left_align);
@@ -120,6 +129,7 @@ public class GreatWidget extends AbstractWidget {
         this.airPressureAlignLeftBool = service.getResources().getBoolean(R.bool.air_pressure_left_align);
         this.showAltitudeUnits = service.getResources().getBoolean(R.bool.altitude_units);
         this.altitudeAlignLeftBool = service.getResources().getBoolean(R.bool.altitude_left_align);
+        this.phoneBatteryAlignLeftBool = service.getResources().getBoolean(R.bool.phoneBattery_left_align);
 
         this.ampmPaint = new TextPaint(TextPaint.ANTI_ALIAS_FLAG);
         this.ampmPaint.setColor(service.getResources().getColor(R.color.ampm_colour));
@@ -150,6 +160,12 @@ public class GreatWidget extends AbstractWidget {
         this.altitudePaint.setTypeface(ResourceManager.getTypeFace(service.getResources(), ResourceManager.Font.FONT_FILE));
         this.altitudePaint.setTextSize(service.getResources().getDimension(R.dimen.altitude_font_size));
         this.altitudePaint.setTextAlign( (this.altitudeAlignLeftBool) ? Paint.Align.LEFT : Paint.Align.CENTER );
+
+        this.phoneBatteryPaint = new TextPaint(TextPaint.ANTI_ALIAS_FLAG);
+        this.phoneBatteryPaint.setColor(service.getResources().getColor(R.color.phoneBattery_colour));
+        this.phoneBatteryPaint.setTypeface(ResourceManager.getTypeFace(service.getResources(), ResourceManager.Font.FONT_FILE));
+        this.phoneBatteryPaint.setTextSize(service.getResources().getDimension(R.dimen.phoneBattery_font_size));
+        this.phoneBatteryPaint.setTextAlign( (this.phoneBatteryAlignLeftBool) ? Paint.Align.LEFT : Paint.Align.CENTER );
     }
 
     @Override
@@ -182,6 +198,11 @@ public class GreatWidget extends AbstractWidget {
         if(this.altitudeBool) {
             String units = (showAltitudeUnits) ? " m" : "";
             canvas.drawText(this.customData.altitude+units, altitudeLeft, altitudeTop, altitudePaint);
+        }
+
+        // Draw Phone's Battery
+        if(this.phoneBatteryBool) {
+            canvas.drawText(this.customData.phoneBattery+"%", phoneBatteryLeft, phoneBatteryTop, phoneBatteryPaint);
         }
 
         // Draw wifi, if enabled
@@ -465,6 +486,37 @@ public class GreatWidget extends AbstractWidget {
             );
             //Add it to the list
             slpt_objects.add(altitudeLayout);
+        }
+
+        // Draw Phone's Battery
+        if(service.getResources().getBoolean(R.bool.phoneBattery)){
+            SlptLinearLayout phoneBatteryLayout = new SlptLinearLayout();
+            SlptPictureView phoneBatteryStr = new SlptPictureView();
+            phoneBatteryStr.setStringPicture( this.customData.phoneBattery+"%" );
+            phoneBatteryLayout.add(phoneBatteryStr);
+            phoneBatteryLayout.setTextAttrForAll(
+                    service.getResources().getDimension(R.dimen.phoneBattery_font_size),
+                    service.getResources().getColor(R.color.phoneBattery_colour_slpt),
+                    ResourceManager.getTypeFace(service.getResources(), ResourceManager.Font.FONT_FILE)
+            );
+            // Position based on screen on
+            phoneBatteryLayout.alignX = 2;
+            phoneBatteryLayout.alignY = 0;
+            tmp_left = (int) service.getResources().getDimension(R.dimen.phoneBattery_left);
+            if(!service.getResources().getBoolean(R.bool.phoneBattery_left_align)) {
+                // If text is centered, set rectangle
+                phoneBatteryLayout.setRect(
+                        (int) (2 * tmp_left + 640),
+                        (int) (service.getResources().getDimension(R.dimen.phoneBattery_font_size))
+                );
+                tmp_left = -320;
+            }
+            phoneBatteryLayout.setStart(
+                    (int) tmp_left,
+                    (int) (service.getResources().getDimension(R.dimen.phoneBattery_top)-((float)service.getResources().getInteger(R.integer.font_ratio)/100)*service.getResources().getDimension(R.dimen.phoneBattery_font_size))
+            );
+            //Add it to the list
+            slpt_objects.add(phoneBatteryLayout);
         }
 
         return slpt_objects;

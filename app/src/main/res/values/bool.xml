@@ -51,7 +51,8 @@
     <bool name="alarm">true</bool>  <!-- Shows watch's next alarm -->
     <bool name="xdrip">false</bool> <!-- You need to have Xdrip installed on the watch -->
     <bool name="air_pressure">false</bool>
-    <bool name="altitude">true</bool>
+    <bool name="altitude">false</bool>
+    <bool name="phoneBattery">true</bool>
     <!-- Show icons -->
     <bool name="battery_icon">false</bool>
     <!-- widgets text align -->
@@ -73,6 +74,7 @@
     <bool name="xdrip_left_align">true</bool>
     <bool name="air_pressure_left_align">true</bool>
     <bool name="altitude_left_align">true</bool>
+    <bool name="phoneBattery_left_align">true</bool>
     <!-- widgets icons -->
     <bool name="temperature_icon">false</bool><!-- working on sltp only -->
     <!-- time text align -->

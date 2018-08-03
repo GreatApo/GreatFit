@@ -93,4 +93,7 @@
 
     <color name="altitude_colour">#ffffff</color>
     <color name="altitude_colour_slpt">#ffffff</color>
+
+    <color name="phoneBattery_colour">#ffffff</color>
+    <color name="phoneBattery_colour_slpt">#ffffff</color>
 </resources>

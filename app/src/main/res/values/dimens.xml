@@ -163,4 +163,9 @@
     <dimen name="altitude_font_size">20px</dimen>
     <dimen name="altitude_left">20px</dimen>
     <dimen name="altitude_top">170px</dimen>
+
+    <!-- Phone's Battery -->
+    <dimen name="phoneBattery_font_size">20px</dimen>
+    <dimen name="phoneBattery_left">20px</dimen>
+    <dimen name="phoneBattery_top">170px</dimen>
 </resources>
