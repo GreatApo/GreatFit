@@ -14,6 +14,7 @@ import com.dinodevs.greatfitwatchface.AbstractWatchFace;
 import com.dinodevs.greatfitwatchface.data.Alarm;
 import com.dinodevs.greatfitwatchface.data.CustomData;
 import com.dinodevs.greatfitwatchface.data.Xdrip;
+import com.dinodevs.greatfitwatchface.settings.LoadSettings;
 import com.ingenic.iwds.slpt.view.core.SlptLinearLayout;
 import com.ingenic.iwds.slpt.view.core.SlptPictureView;
 import com.ingenic.iwds.slpt.view.core.SlptViewComponent;
@@ -76,7 +77,11 @@ public class GreatWidget extends AbstractWidget {
     private float altitudeLeft;
     private float phoneBatteryTop;
     private float phoneBatteryLeft;
+    private LoadSettings settings;
 
+    public GreatWidget(LoadSettings settings) {
+        this.settings = settings;
+    }
 
     @Override
     public void init(Service service){

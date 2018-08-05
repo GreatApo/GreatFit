@@ -2,13 +2,12 @@ package com.dinodevs.greatfitwatchface.widget;
 
 import android.app.Service;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 
-import com.huami.watch.watchface.util.Util;
+import com.dinodevs.greatfitwatchface.settings.LoadSettings;
 import com.ingenic.iwds.slpt.view.arc.SlptPowerArcAnglePicView;
 import com.ingenic.iwds.slpt.view.arc.SlptTodayDistanceArcAnglePicView;
 import com.ingenic.iwds.slpt.view.arc.SlptTodayStepArcAnglePicView;
@@ -23,6 +22,7 @@ import com.ingenic.iwds.slpt.view.sport.SlptTotalDistanceFView;
 import com.ingenic.iwds.slpt.view.sport.SlptTotalDistanceLView;
 import com.ingenic.iwds.slpt.view.utils.SimpleFile;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -36,103 +36,40 @@ import com.dinodevs.greatfitwatchface.resource.ResourceManager;
 
 public class CirclesWidget extends AbstractWidget {
 
-    private Paint ring;
-    private Paint circle;
+
+    private Battery batteryData;
+    private Steps stepsData;
+    private TodayDistance sportData;
+    private TotalDistance roadData;
+    private Float batterySweepAngle = null;
+    private Float stepsSweepAngle = null;
+    private Float sportSweepAngle = null;
 
     private Paint batteryPaint;
     private Paint stepsPaint;
     private Paint sportPaint;
     private Paint roadPaint;
-    private int backgroundColour;
-    private boolean circlesBackgroundBool;
-    private boolean batteryBool;
-    private boolean stepsBool;
-    private boolean todayDistanceBool;
-    private boolean totalDistanceBool;
-    private boolean batteryAlignLeftBool;
-    private boolean stepsAlignLeftBool;
-    private boolean todayDistanceAlignLeftBool;
-    private boolean totalDistanceAlignLeftBool;
+    private Paint ring;
+    private Paint circle;
 
-    private int batteryColour;
-    private int stepsColour;
-    private int sportColour;
-    private int thickness;
-    private int padding;
+    private Drawable overlay;
 
-    private Battery batteryData;
-    private Float batterySweepAngle = null;
+    private LoadSettings settings;
 
-    private Steps stepsData;
-    private Float stepsSweepAngle = null;
-
-    private TodayDistance sportData;
-    private Float sportSweepAngle = null;
-
-    private TotalDistance roadData;
-
-    private float startAngleBattery = 30;
-    private float arcSizeBattery = 360 - startAngleBattery - startAngleBattery;
-
-    private float startAngleSteps = startAngleBattery + 3;
-    private float arcSizeSteps = 360 - startAngleSteps - startAngleSteps;
-
-    private float startAngleSport = 30;
-    private float arcSizeSport = 360 - 2*startAngleSport;
-
-    private boolean batteryCircleBool;
-    private boolean stepCircleBool;
-    private boolean todayDistanceCircleBool;
-
-    private float batteryTextLeft;
-    private float batteryTextTop;
-    private float stepsTextLeft;
-    private float stepsTextTop;
-    private float sportTextLeft;
-    private float sportTextTop;
-    private float roadTextLeft;
-    private float roadTextTop;
-
-    private boolean showUnits;
-    private Drawable background;
+    public CirclesWidget(LoadSettings settings) {
+        this.settings = settings;
+    }
 
     @Override
     public void init(Service service) {
-        // Get widget text show/hide booleans
-        this.batteryBool = service.getResources().getBoolean(R.bool.battery);
-        this.stepsBool = service.getResources().getBoolean(R.bool.steps);
-        this.todayDistanceBool = service.getResources().getBoolean(R.bool.today_distance);
-        this.totalDistanceBool = service.getResources().getBoolean(R.bool.total_distance);
-
-        // Get circles show/hide booleans
-        this.batteryCircleBool = service.getResources().getBoolean(R.bool.battery_circle);
-        this.stepCircleBool = service.getResources().getBoolean(R.bool.steps_circle);
-        this.todayDistanceCircleBool = service.getResources().getBoolean(R.bool.today_distance_circle);
-        this.circlesBackgroundBool = service.getResources().getBoolean(R.bool.circles_background);
-
-        // Circles variables
-        this.startAngleBattery = service.getResources().getInteger(R.integer.battery_circle_start_angle) - 180;
-        this.arcSizeBattery = service.getResources().getInteger(R.integer.battery_circle_full_angle);
-
-        this.startAngleSteps = service.getResources().getInteger(R.integer.steps_circle_start_angle) - 180;
-        this.arcSizeSteps = service.getResources().getInteger(R.integer.steps_circle_full_angle);
-
-        this.startAngleSport = service.getResources().getInteger(R.integer.today_distance_circle_start_angle) - 180;
-        this.arcSizeSport = service.getResources().getInteger(R.integer.today_distance_circle_full_angle);
-
-        this.thickness = (int) service.getResources().getDimension(R.dimen.circles_thickness);
-        this.padding = (int) service.getResources().getDimension(R.dimen.circles_padding);
-
-        // Get circles colors
-        this.backgroundColour = service.getResources().getColor(R.color.circles_background);
-        this.batteryColour = service.getResources().getColor(R.color.battery_circle_colour);
-        this.stepsColour = service.getResources().getColor(R.color.steps_circle_colour);
-        this.sportColour = service.getResources().getColor(R.color.today_distance_circle_colour);
+        settings.startAngleBattery = settings.startAngleBattery - 180;
+        settings.startAngleSteps = settings.startAngleSteps - 180;
+        settings.startAngleSport = settings.startAngleSport - 180;
 
         this.ring = new Paint(Paint.ANTI_ALIAS_FLAG);
         this.ring.setStrokeCap(Paint.Cap.ROUND);
         this.ring.setStyle(Paint.Style.STROKE);
-        this.ring.setStrokeWidth(this.thickness);
+        this.ring.setStrokeWidth(settings.thickness);
         /* // Malvares small circles
         this.circle = new Paint(Paint.ANTI_ALIAS_FLAG);
         this.circle.setColor(Color.BLACK);
@@ -140,67 +77,48 @@ public class CirclesWidget extends AbstractWidget {
         this.circle.setStyle(Paint.Style.STROKE);
         */
 
-        // Aling left true or false (false= align center)
-        this.batteryAlignLeftBool = service.getResources().getBoolean(R.bool.battery_left_align);
-        this.stepsAlignLeftBool = service.getResources().getBoolean(R.bool.steps_left_align);
-        this.todayDistanceAlignLeftBool = service.getResources().getBoolean(R.bool.today_distance_left_align);
-        this.totalDistanceAlignLeftBool = service.getResources().getBoolean(R.bool.total_distance_left_align);
-
         // Widgets text colors
         this.batteryPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         this.batteryPaint.setTypeface(ResourceManager.getTypeFace(service.getResources(), ResourceManager.Font.FONT_FILE));
-        this.batteryPaint.setTextSize(service.getResources().getDimension(R.dimen.steps_font_size));
-        this.batteryPaint.setColor(service.getResources().getColor(R.color.battery_colour));
-        this.batteryPaint.setTextAlign( (this.batteryAlignLeftBool) ? Paint.Align.LEFT : Paint.Align.CENTER );
+        this.batteryPaint.setTextSize(settings.batteryFontSize);
+        this.batteryPaint.setColor(settings.batteryTextColor);
+        this.batteryPaint.setTextAlign( (settings.batteryAlignLeftBool) ? Paint.Align.LEFT : Paint.Align.CENTER );
 
         this.stepsPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         this.stepsPaint.setTypeface(ResourceManager.getTypeFace(service.getResources(), ResourceManager.Font.FONT_FILE));
-        this.stepsPaint.setTextSize(service.getResources().getDimension(R.dimen.steps_font_size));
-        this.stepsPaint.setColor(service.getResources().getColor(R.color.steps_colour));
-        this.stepsPaint.setTextAlign( (this.stepsAlignLeftBool) ? Paint.Align.LEFT : Paint.Align.CENTER );
+        this.stepsPaint.setTextSize(settings.stepsFontSize);
+        this.stepsPaint.setColor(settings.stepsTextColor);
+        this.stepsPaint.setTextAlign( (settings.stepsAlignLeftBool) ? Paint.Align.LEFT : Paint.Align.CENTER );
 
         this.sportPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         this.sportPaint.setTypeface(ResourceManager.getTypeFace(service.getResources(), ResourceManager.Font.FONT_FILE));
-        this.sportPaint.setTextSize(service.getResources().getDimension(R.dimen.today_distance_font_size));
-        this.sportPaint.setColor(service.getResources().getColor(R.color.today_distance_colour));
-        this.sportPaint.setTextAlign( (this.todayDistanceAlignLeftBool) ? Paint.Align.LEFT : Paint.Align.CENTER );
+        this.sportPaint.setTextSize(settings.todayDistanceFontSize);
+        this.sportPaint.setColor(settings.todayDistanceTextColor);
+        this.sportPaint.setTextAlign( (settings.todayDistanceAlignLeftBool) ? Paint.Align.LEFT : Paint.Align.CENTER );
 
         this.roadPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         this.roadPaint.setTypeface(ResourceManager.getTypeFace(service.getResources(), ResourceManager.Font.FONT_FILE));
-        this.roadPaint.setTextSize(service.getResources().getDimension(R.dimen.total_distance_font_size));
-        this.roadPaint.setColor(service.getResources().getColor(R.color.total_distance_colour));
-        this.roadPaint.setTextAlign( (this.totalDistanceAlignLeftBool) ? Paint.Align.LEFT : Paint.Align.CENTER );
-
-        // Text positions
-        this.batteryTextLeft = service.getResources().getDimension(R.dimen.battery_text_left);
-        this.batteryTextTop = service.getResources().getDimension(R.dimen.battery_text_top);
-        this.stepsTextLeft = service.getResources().getDimension(R.dimen.steps_text_left);
-        this.stepsTextTop = service.getResources().getDimension(R.dimen.steps_text_top);
-        this.sportTextLeft = service.getResources().getDimension(R.dimen.today_distance_text_left);
-        this.sportTextTop = service.getResources().getDimension(R.dimen.today_distance_text_top);
-        this.roadTextLeft = service.getResources().getDimension(R.dimen.total_distance_text_left);
-        this.roadTextTop = service.getResources().getDimension(R.dimen.total_distance_text_top);
-
-        // Show units boolean
-        this.showUnits = service.getResources().getBoolean(R.bool.distance_units);
+        this.roadPaint.setTextSize(settings.totalDistanceFontSize);
+        this.roadPaint.setColor(settings.totalDistanceTextColor);
+        this.roadPaint.setTextAlign( (settings.totalDistanceAlignLeftBool) ? Paint.Align.LEFT : Paint.Align.CENTER );
 
         // Over circles layout
-        this.background = service.getResources().getDrawable(R.drawable.over_circles_layout);
-        this.background.setBounds(0, 0, 320, 300);
+        this.overlay = service.getResources().getDrawable(R.drawable.over_circles_layout);
+        this.overlay.setBounds(0, 0, 320, 300);
 
         // Fix angles
-        if(this.batteryCircleBool){
+        if(settings.batteryCircleBool){
             // Steps
-            startAngleSteps = startAngleSteps+3;
-            arcSizeSteps = arcSizeSteps - 6;
+            settings.startAngleSteps = settings.startAngleSteps+3;
+            settings.fullAngleSteps = settings.fullAngleSteps - 6;
             // Sports
-            startAngleSport = startAngleSport+3;
-            arcSizeSport = arcSizeSport - 6;
+            settings.startAngleSport = settings.startAngleSport+3;
+            settings.fullAngleSport = settings.fullAngleSport - 6;
         }
-        if(this.stepCircleBool){
+        if(settings.stepCircleBool){
             // Sports
-            startAngleSport = startAngleSport+3;
-            arcSizeSport = arcSizeSport - 6;
+            settings.startAngleSport = settings.startAngleSport+3;
+            settings.fullAngleSport = settings.fullAngleSport - 6;
         }
     }
 
@@ -217,30 +135,30 @@ public class CirclesWidget extends AbstractWidget {
         canvas.rotate(90, centerX, centerY);
 
         // Draw full length circle (as a background/empty circle)
-        if(this.circlesBackgroundBool) {
-            this.ring.setColor(this.backgroundColour);
-            if (this.batteryCircleBool) {
-                radius = radius - this.padding - this.thickness;
+        if(settings.circlesBackgroundBool) {
+            this.ring.setColor(settings.backgroundColour);
+            if (settings.batteryCircleBool) {
+                radius = radius - settings.padding - settings.thickness;
                 oval = new RectF(centerX - radius, centerY - radius, centerX + radius, centerY + radius);
-                canvas.drawArc(oval, startAngleBattery, arcSizeBattery, false, ring);
+                canvas.drawArc(oval, settings.startAngleBattery, settings.fullAngleBattery, false, ring);
             }
-            if (this.stepCircleBool) {
-                radius = radius - this.padding - this.thickness;
+            if (settings.stepCircleBool) {
+                radius = radius - settings.padding - settings.thickness;
                 oval2 = new RectF(centerX - radius, centerY - radius, centerX + radius, centerY + radius);
-                canvas.drawArc(oval2, startAngleSteps, arcSizeSteps, false, ring);
+                canvas.drawArc(oval2, settings.startAngleSteps, settings.fullAngleSteps, false, ring);
             }
-            if (this.todayDistanceCircleBool) {
-                radius = radius - this.padding - this.thickness;
+            if (settings.todayDistanceCircleBool) {
+                radius = radius - settings.padding - settings.thickness;
                 oval3 = new RectF(centerX - radius, centerY - radius, centerX + radius, centerY + radius);
-                canvas.drawArc(oval3, startAngleSport, arcSizeSport, false, ring);
+                canvas.drawArc(oval3, settings.startAngleSport, settings.fullAngleSport, false, ring);
             }
         }
 
         // Draw circle up to the point we want
         // Battery
-        if (this.batterySweepAngle != null && this.batteryCircleBool) {
-            this.ring.setColor(this.batteryColour);
-            canvas.drawArc(oval, startAngleBattery, batterySweepAngle, false, ring);
+        if (this.batterySweepAngle != null && settings.batteryCircleBool) {
+            this.ring.setColor(settings.batteryColour);
+            canvas.drawArc(oval, settings.startAngleBattery, batterySweepAngle, false, ring);
             /*
             //Malvarez small circles at the end
             float px = getPointX(oval, centerX, startAngleBattery, batterySweepAngle);
@@ -250,48 +168,48 @@ public class CirclesWidget extends AbstractWidget {
             */
         }
         // Steps
-        if (this.stepsSweepAngle != null && this.stepCircleBool) {
-            this.ring.setColor(this.stepsColour);
-            canvas.drawArc(oval2, startAngleSteps, stepsSweepAngle, false, ring);
+        if (this.stepsSweepAngle != null && settings.stepCircleBool) {
+            this.ring.setColor(settings.stepsColour);
+            canvas.drawArc(oval2, settings.startAngleSteps, stepsSweepAngle, false, ring);
         }
         // Today distance
-        if (this.sportSweepAngle != null && this.todayDistanceCircleBool) {
-            this.ring.setColor(this.sportColour);
-            canvas.drawArc(oval3, startAngleSport, sportSweepAngle, false, ring);
+        if (this.sportSweepAngle != null && settings.todayDistanceCircleBool) {
+            this.ring.setColor(settings.sportColour);
+            canvas.drawArc(oval3, settings.startAngleSport, sportSweepAngle, false, ring);
         }
         canvas.restoreToCount(count);
 
         // Over circles layout
-        this.background.draw(canvas);
+        this.overlay.draw(canvas);
 
         // Show battery
-        if (this.batteryData != null && this.batteryBool) {
+        if (this.batteryData != null && settings.batteryBool) {
             String text = String.format("%02d%%", this.batteryData.getLevel() * 100 / this.batteryData.getScale());
-            canvas.drawText(text, batteryTextLeft, batteryTextTop, batteryPaint);
+            canvas.drawText(text, settings.batteryTextLeft, settings.batteryTextTop, batteryPaint);
         }
 
         // Show steps
-        if (this.stepsData != null && this.stepsBool) {
+        if (this.stepsData != null && settings.stepsBool) {
             String text = String.format("%s", this.stepsData.getSteps());
-            canvas.drawText(text, stepsTextLeft, stepsTextTop, stepsPaint);
+            canvas.drawText(text, settings.stepsTextLeft, settings.stepsTextTop, stepsPaint);
         }
 
         // Show today distance
-        if (this.sportData != null && this.todayDistanceBool) {
-            String units = (showUnits)?" km":"";
+        if (this.sportData != null && settings.todayDistanceBool) {
+            String units = (settings.showDistanceUnits)?" km":"";
             String text = String.format("%.2f", this.sportData.getDistance());
-            canvas.drawText(text+units, sportTextLeft, sportTextTop, sportPaint);
+            canvas.drawText(text+units, settings.todayDistanceTextLeft, settings.todayDistanceTextTop, sportPaint);
         }
 
         // Show total distance
-        if(this.totalDistanceBool){
-            String units = (showUnits)?" km":"";
+        if(settings.totalDistanceBool){
+            String units = (settings.showDistanceUnits)?" km":"";
             if (this.roadData != null) {
                 String text = String.format("%.2f", this.roadData.getDistance());
-                canvas.drawText(text+units, roadTextLeft, roadTextTop, roadPaint);
+                canvas.drawText(text+units, settings.totalDistanceTextLeft, settings.totalDistanceTextTop, roadPaint);
             }else{
                 //String text = String.format("0.00 km");
-                canvas.drawText("0.00"+units, roadTextLeft, roadTextTop, roadPaint);
+                canvas.drawText("0.00"+units, settings.totalDistanceTextLeft, settings.totalDistanceTextTop, roadPaint);
             }
         }
     }
@@ -325,7 +243,7 @@ public class CirclesWidget extends AbstractWidget {
         if (stepsData == null || stepsData.getTarget() == 0) {
             this.stepsSweepAngle = 0f;
         } else {
-            this.stepsSweepAngle = Math.min(arcSizeSteps, arcSizeSteps * (stepsData.getSteps() / (float) stepsData.getTarget()));
+            this.stepsSweepAngle = Math.min(settings.fullAngleSteps, settings.fullAngleSteps * (stepsData.getSteps() / (float) stepsData.getTarget()));
         }
     }
 
@@ -336,7 +254,7 @@ public class CirclesWidget extends AbstractWidget {
             this.batterySweepAngle = 0f;
         } else {
             float scale = batteryData.getLevel() / (float) batteryData.getScale();
-            this.batterySweepAngle = Math.min(arcSizeBattery, arcSizeBattery * scale);
+            this.batterySweepAngle = Math.min(settings.fullAngleBattery, settings.fullAngleBattery * scale);
         }
     }
 
@@ -347,7 +265,7 @@ public class CirclesWidget extends AbstractWidget {
             this.sportSweepAngle = 0f;
         } else {
             double scale = sportData.getDistance() / 3.0d;
-            this.sportSweepAngle = (float) Math.min(arcSizeSport, arcSizeSport * scale);
+            this.sportSweepAngle = (float) Math.min(settings.fullAngleSport, settings.fullAngleSport * scale);
         }
     }
 
@@ -371,9 +289,7 @@ public class CirclesWidget extends AbstractWidget {
     @Override
     public List<SlptViewComponent> buildSlptViewComponent(Service service) {
         // Variables
-        this.batteryCircleBool = service.getResources().getBoolean(R.bool.battery_circle);
-        this.stepCircleBool = service.getResources().getBoolean(R.bool.steps_circle);
-        this.todayDistanceCircleBool = service.getResources().getBoolean(R.bool.today_distance_circle);
+        List<SlptViewComponent> slpt_objects = new ArrayList<>();
         int sltp_circle_color = service.getResources().getInteger(R.integer.sltp_circle_color);
         int tmp_left;
 
@@ -381,61 +297,63 @@ public class CirclesWidget extends AbstractWidget {
         Typeface timeTypeFace = ResourceManager.getTypeFace(service.getResources(), ResourceManager.Font.FONT_FILE);
 
         // Show battery
-        SlptLinearLayout power = new SlptLinearLayout();
-        SlptPictureView percentage = new SlptPictureView();
-        percentage.setStringPicture("%");
-        power.add(new SlptPowerNumView());
-        power.add(percentage);
-        power.setTextAttrForAll(
-                service.getResources().getDimension(R.dimen.battery_font_size),
-                service.getResources().getColor(R.color.battery_colour_slpt),
-                timeTypeFace
-        );
-        // Position based on screen on
-        power.alignX = 2;
-        power.alignY = 0;
-        tmp_left = (int) service.getResources().getDimension(R.dimen.battery_text_left);
-        if(!service.getResources().getBoolean(R.bool.battery_left_align)) {
-            // If text is centered, set rectangle
-            power.setRect(
-                    (int) (2 * tmp_left + 640),
-                    (int) (service.getResources().getDimension(R.dimen.battery_font_size))
+        if(settings.batteryBool){
+            SlptLinearLayout power = new SlptLinearLayout();
+            SlptPictureView percentage = new SlptPictureView();
+            percentage.setStringPicture("%");
+            power.add(new SlptPowerNumView());
+            power.add(percentage);
+            power.setTextAttrForAll(
+                    settings.batteryFontSize,
+                    service.getResources().getColor(R.color.battery_colour_slpt),
+                    timeTypeFace
             );
-            tmp_left = -320;
+            // Position based on screen on
+            power.alignX = 2;
+            power.alignY = 0;
+            tmp_left = (int) settings.batteryTextLeft;
+            if(!settings.batteryAlignLeftBool) {
+                // If text is centered, set rectangle
+                power.setRect(
+                        (int) (2 * tmp_left + 640),
+                        (int) settings.batteryFontSize
+                );
+                tmp_left = -320;
+            }
+            power.setStart(
+                    tmp_left,
+                    (int) (settings.batteryTextTop-((float)settings.font_ratio/100)*settings.batteryFontSize)
+            );
+            slpt_objects.add(power);
         }
-        power.setStart(
-                tmp_left,
-                (int) (service.getResources().getDimension(R.dimen.battery_text_top)-((float)service.getResources().getInteger(R.integer.font_ratio)/100)*service.getResources().getDimension(R.dimen.battery_font_size))
-        );
-        // Hide if disabled
-        if(!service.getResources().getBoolean(R.bool.battery)){power.show=false;}
 
         // Show steps (today)
-        SlptLinearLayout steps = new SlptLinearLayout();
-        steps.add(new SlptTodayStepNumView());
-        steps.setTextAttrForAll(
-                service.getResources().getDimension(R.dimen.steps_font_size),
-                service.getResources().getColor(R.color.steps_colour_slpt),
-                timeTypeFace
-        );
-        // Position based on screen on
-        steps.alignX = 2;
-        steps.alignY = 0;
-        tmp_left = (int) service.getResources().getDimension(R.dimen.steps_text_left);
-        if(!service.getResources().getBoolean(R.bool.steps_left_align)) {
-            // If text is centered, set rectangle
-            steps.setRect(
-                    (int) (2 * tmp_left + 640),
-                    (int) (service.getResources().getDimension(R.dimen.steps_font_size))
+        if(settings.stepsBool){
+            SlptLinearLayout steps = new SlptLinearLayout();
+            steps.add(new SlptTodayStepNumView());
+            steps.setTextAttrForAll(
+                    settings.stepsFontSize,
+                    service.getResources().getColor(R.color.steps_colour_slpt),
+                    timeTypeFace
             );
-            tmp_left = -320;
+            // Position based on screen on
+            steps.alignX = 2;
+            steps.alignY = 0;
+            tmp_left = (int) settings.stepsTextLeft;
+            if(!settings.stepsAlignLeftBool) {
+                // If text is centered, set rectangle
+                steps.setRect(
+                        (int) (2 * tmp_left + 640),
+                        (int) settings.stepsFontSize
+                );
+                tmp_left = -320;
+            }
+            steps.setStart(
+                    (int) tmp_left,
+                    (int) (settings.stepsTextTop-((float)settings.font_ratio/100)*settings.stepsFontSize)
+            );
+            slpt_objects.add(steps);
         }
-        steps.setStart(
-                (int) tmp_left,
-                (int) (service.getResources().getDimension(R.dimen.steps_text_top)-((float)service.getResources().getInteger(R.integer.font_ratio)/100)*service.getResources().getDimension(R.dimen.steps_font_size))
-        );
-        // Hide if disabled
-        if(!service.getResources().getBoolean(R.bool.steps)){steps.show=false;}
 
 
         // It's just a . get over it!
@@ -447,119 +365,135 @@ public class CirclesWidget extends AbstractWidget {
         kilometer.setStringPicture(" km");
 
         // Show today distance
-        SlptLinearLayout sport = new SlptLinearLayout();
-        sport.add(new SlptTodaySportDistanceFView());
-        sport.add(point);
-        sport.add(new SlptTodaySportDistanceLView());
-        // Show or Not Units
-        if(service.getResources().getBoolean(R.bool.distance_units)) {
-            sport.add(kilometer);
-        }
-        sport.setTextAttrForAll(
-                service.getResources().getDimension(R.dimen.today_distance_font_size),
-                service.getResources().getColor(R.color.today_distance_colour_slpt),
-                timeTypeFace
-        );
-        // Position based on screen on
-        sport.alignX = 2;
-        sport.alignY = 0;
-        tmp_left = (int) service.getResources().getDimension(R.dimen.today_distance_text_left);
-        if(!service.getResources().getBoolean(R.bool.today_distance_left_align)) {
-            // If text is centered, set rectangle
-            sport.setRect(
-                    (int) (2 * tmp_left + 640),
-                    (int) (service.getResources().getDimension(R.dimen.today_distance_font_size))
+        if(settings.todayDistanceBool){
+            SlptLinearLayout sport = new SlptLinearLayout();
+            sport.add(new SlptTodaySportDistanceFView());
+            sport.add(point);
+            sport.add(new SlptTodaySportDistanceLView());
+            // Show or Not Units
+            if(settings.showDistanceUnits) {
+                sport.add(kilometer);
+            }
+            sport.setTextAttrForAll(
+                    settings.todayDistanceFontSize,
+                    service.getResources().getColor(R.color.today_distance_colour_slpt),
+                    timeTypeFace
             );
-            tmp_left = -320;
+            // Position based on screen on
+            sport.alignX = 2;
+            sport.alignY = 0;
+            tmp_left = (int) settings.todayDistanceTextLeft;
+            if(!settings.todayDistanceAlignLeftBool) {
+                // If text is centered, set rectangle
+                sport.setRect(
+                        (int) (2 * tmp_left + 640),
+                        (int) settings.todayDistanceFontSize
+                );
+                tmp_left = -320;
+            }
+            sport.setStart(
+                    (int) tmp_left,
+                    (int) (settings.todayDistanceTextTop-((float)settings.font_ratio/100)*settings.todayDistanceFontSize)
+            );
+            slpt_objects.add(sport);
         }
-        sport.setStart(
-                (int) tmp_left,
-                (int) (service.getResources().getDimension(R.dimen.today_distance_text_top)-((float)service.getResources().getInteger(R.integer.font_ratio)/100)*service.getResources().getDimension(R.dimen.today_distance_font_size))
-        );
-        // Hide if disabled
-        if(!service.getResources().getBoolean(R.bool.today_distance)){sport.show=false;}
-
 
         // Show total distance
-        SlptLinearLayout road = new SlptLinearLayout();
-        road.add(new SlptTotalDistanceFView());
-        road.add(point);
-        road.add(new SlptTotalDistanceLView());
-        // Show or Not Units
-        if(service.getResources().getBoolean(R.bool.distance_units)) {
-            road.add(kilometer);
-        }
-        road.setTextAttrForAll(
-                service.getResources().getDimension(R.dimen.total_distance_font_size),
-                service.getResources().getColor(R.color.total_distance_colour_slpt),
-                timeTypeFace
-        );
-        // Position based on screen on
-        road.alignX = 2;
-        road.alignY = 0;
-        tmp_left = (int) service.getResources().getDimension(R.dimen.total_distance_text_left);
-        if(!service.getResources().getBoolean(R.bool.total_distance_left_align)) {
-            // If text is centered, set rectangle
-            road.setRect(
-                    (int) (2 * tmp_left + 640),
-                    (int) (service.getResources().getDimension(R.dimen.total_distance_font_size))
+        if(settings.totalDistanceBool){
+            SlptLinearLayout road = new SlptLinearLayout();
+            road.add(new SlptTotalDistanceFView());
+            road.add(point);
+            road.add(new SlptTotalDistanceLView());
+            // Show or Not Units
+            if(settings.showDistanceUnits) {
+                road.add(kilometer);
+            }
+            road.setTextAttrForAll(
+                    settings.totalDistanceFontSize,
+                    service.getResources().getColor(R.color.total_distance_colour_slpt),
+                    timeTypeFace
             );
-            tmp_left = -320;
+            // Position based on screen on
+            road.alignX = 2;
+            road.alignY = 0;
+            tmp_left = (int) settings.totalDistanceTextLeft;
+            if(!settings.totalDistanceAlignLeftBool) {
+                // If text is centered, set rectangle
+                road.setRect(
+                        (int) (2 * tmp_left + 640),
+                        (int) settings.totalDistanceFontSize
+                );
+                tmp_left = -320;
+            }
+            road.setStart(
+                    (int) tmp_left,
+                    (int) (settings.totalDistanceTextTop-((float)settings.font_ratio/100)*settings.totalDistanceFontSize)
+            );
+            slpt_objects.add(road);
         }
-        road.setStart(
-                (int) tmp_left,
-                (int) (service.getResources().getDimension(R.dimen.total_distance_text_top)-((float)service.getResources().getInteger(R.integer.font_ratio)/100)*service.getResources().getDimension(R.dimen.total_distance_font_size))
-        );
-        // Hide if disabled
-        if(!service.getResources().getBoolean(R.bool.total_distance)){road.show=false;}
 
-        // Circle bars
+        // CIRCLE PROGRESS BARS
         // Draw background image
+        int temp_ring = 1;
         int count_widgets = 0;
-        if(this.batteryCircleBool){count_widgets++;}
-        if(this.stepCircleBool){count_widgets++;}
-        if(this.todayDistanceCircleBool){count_widgets++;}
-
-        SlptPictureView ring_background = new SlptPictureView();
-        if(count_widgets==1) {
-            ring_background.setImagePicture(SimpleFile.readFileFromAssets(service, "slpt_circles/ring1_splt_bg.png"));
-        }else if(count_widgets==2) {
-            ring_background.setImagePicture(SimpleFile.readFileFromAssets(service, "slpt_circles/ring2_splt_bg.png"));
-        }else{
-            ring_background.setImagePicture(SimpleFile.readFileFromAssets(service, "slpt_circles/ring3_splt_bg.png"));
+        if (settings.batteryCircleBool) {
+            count_widgets++;
         }
-        if(!service.getResources().getBoolean(R.bool.circles_background)){ring_background.show=false;}
+        if (settings.stepCircleBool) {
+            count_widgets++;
+        }
+        if (settings.todayDistanceCircleBool) {
+            count_widgets++;
+        }
+        if(settings.circlesBackgroundBool) {
+            SlptPictureView ring_background = new SlptPictureView();
+            if (count_widgets == 1) {
+                ring_background.setImagePicture(SimpleFile.readFileFromAssets(service, "slpt_circles/ring1_splt_bg.png"));
+            } else if (count_widgets == 2) {
+                ring_background.setImagePicture(SimpleFile.readFileFromAssets(service, "slpt_circles/ring2_splt_bg.png"));
+            } else {
+                ring_background.setImagePicture(SimpleFile.readFileFromAssets(service, "slpt_circles/ring3_splt_bg.png"));
+            }
+            slpt_objects.add(ring_background);
+        }
 
         // Battery
-        SlptPowerArcAnglePicView localSlptPowerArcAnglePicView = new SlptPowerArcAnglePicView();
-        localSlptPowerArcAnglePicView.setImagePicture(SimpleFile.readFileFromAssets(service, "slpt_circles/ring1_splt"+sltp_circle_color+".png"));
-        localSlptPowerArcAnglePicView.setStart((int) service.getResources().getDimension(R.dimen.battery_circle_left), (int) service.getResources().getDimension(R.dimen.battery_circle_top));
-        localSlptPowerArcAnglePicView.start_angle = service.getResources().getInteger(R.integer.battery_circle_start_angle);
-        localSlptPowerArcAnglePicView.len_angle = service.getResources().getInteger(R.integer.battery_circle_len_angle);
-        localSlptPowerArcAnglePicView.full_angle = service.getResources().getInteger(R.integer.battery_circle_full_angle);
-        if(!this.batteryCircleBool){localSlptPowerArcAnglePicView.show=false;}
+        if (settings.batteryCircleBool) {
+            SlptPowerArcAnglePicView localSlptPowerArcAnglePicView = new SlptPowerArcAnglePicView();
+            localSlptPowerArcAnglePicView.setImagePicture(SimpleFile.readFileFromAssets(service, "slpt_circles/ring1_splt"+sltp_circle_color+".png"));
+            localSlptPowerArcAnglePicView.setStart((int) service.getResources().getDimension(R.dimen.battery_circle_left), (int) service.getResources().getDimension(R.dimen.battery_circle_top));
+            localSlptPowerArcAnglePicView.start_angle = settings.startAngleBattery;
+            localSlptPowerArcAnglePicView.len_angle = service.getResources().getInteger(R.integer.battery_circle_len_angle);
+            localSlptPowerArcAnglePicView.full_angle = settings.fullAngleBattery;
+            slpt_objects.add(localSlptPowerArcAnglePicView);
+            temp_ring = 2;
+        }
 
         // Steps
-        int temp_ring = 1;
-        if(this.batteryCircleBool){temp_ring = 2;}
-        SlptTodayStepArcAnglePicView localSlptTodayStepArcAnglePicView = new SlptTodayStepArcAnglePicView();
-        localSlptTodayStepArcAnglePicView.setImagePicture(SimpleFile.readFileFromAssets(service, "slpt_circles/ring"+temp_ring+"_splt"+sltp_circle_color+".png"));
-        localSlptTodayStepArcAnglePicView.setStart((int) service.getResources().getDimension(R.dimen.steps_circle_left), (int) service.getResources().getDimension(R.dimen.steps_circle_top));
-        localSlptTodayStepArcAnglePicView.start_angle = service.getResources().getInteger(R.integer.steps_circle_start_angle);
-        localSlptTodayStepArcAnglePicView.len_angle = service.getResources().getInteger(R.integer.steps_circle_len_angle);
-        localSlptTodayStepArcAnglePicView.full_angle = service.getResources().getInteger(R.integer.steps_circle_full_angle);
-        if(!this.stepCircleBool){localSlptTodayStepArcAnglePicView.show=false;}
+
+        if(settings.stepCircleBool){
+            SlptTodayStepArcAnglePicView localSlptTodayStepArcAnglePicView = new SlptTodayStepArcAnglePicView();
+            localSlptTodayStepArcAnglePicView.setImagePicture(SimpleFile.readFileFromAssets(service, "slpt_circles/ring"+temp_ring+"_splt"+sltp_circle_color+".png"));
+            localSlptTodayStepArcAnglePicView.setStart((int) service.getResources().getDimension(R.dimen.steps_circle_left), (int) service.getResources().getDimension(R.dimen.steps_circle_top));
+            localSlptTodayStepArcAnglePicView.start_angle = settings.startAngleSteps;
+            localSlptTodayStepArcAnglePicView.len_angle = service.getResources().getInteger(R.integer.steps_circle_len_angle);
+            localSlptTodayStepArcAnglePicView.full_angle = settings.fullAngleSteps;
+            slpt_objects.add(localSlptTodayStepArcAnglePicView);
+        }
 
         // Total distance
-        if(count_widgets>0){temp_ring = count_widgets;}
-        SlptTodayDistanceArcAnglePicView localSlptTodayDistanceArcAnglePicView = new SlptTodayDistanceArcAnglePicView();
-        localSlptTodayDistanceArcAnglePicView.setImagePicture(SimpleFile.readFileFromAssets(service, "slpt_circles/ring"+temp_ring+"_splt"+sltp_circle_color+".png"));
-        localSlptTodayDistanceArcAnglePicView.setStart((int) service.getResources().getDimension(R.dimen.today_distance_circle_left), (int) service.getResources().getDimension(R.dimen.today_distance_circle_top));
-        localSlptTodayDistanceArcAnglePicView.start_angle = service.getResources().getInteger(R.integer.today_distance_circle_start_angle);
-        localSlptTodayDistanceArcAnglePicView.len_angle = service.getResources().getInteger(R.integer.today_distance_circle_len_angle);
-        localSlptTodayDistanceArcAnglePicView.full_angle = service.getResources().getInteger(R.integer.today_distance_circle_full_angle);
-        if(!this.todayDistanceCircleBool){localSlptTodayDistanceArcAnglePicView.show=false;}
+        if(settings.todayDistanceCircleBool) {
+            temp_ring = count_widgets;
+            SlptTodayDistanceArcAnglePicView localSlptTodayDistanceArcAnglePicView = new SlptTodayDistanceArcAnglePicView();
+            localSlptTodayDistanceArcAnglePicView.setImagePicture(SimpleFile.readFileFromAssets(service, "slpt_circles/ring" + temp_ring + "_splt" + sltp_circle_color + ".png"));
+            localSlptTodayDistanceArcAnglePicView.setStart((int) service.getResources().getDimension(R.dimen.today_distance_circle_left), (int) service.getResources().getDimension(R.dimen.today_distance_circle_top));
+            localSlptTodayDistanceArcAnglePicView.start_angle = settings.startAngleSport;
+            localSlptTodayDistanceArcAnglePicView.len_angle = service.getResources().getInteger(R.integer.today_distance_circle_len_angle);
+            localSlptTodayDistanceArcAnglePicView.full_angle = settings.fullAngleSport;
+            slpt_objects.add(localSlptTodayDistanceArcAnglePicView);
+        }
 
-        return Arrays.asList(new SlptViewComponent[]{steps, sport, road, power, ring_background, localSlptPowerArcAnglePicView, localSlptTodayStepArcAnglePicView, localSlptTodayDistanceArcAnglePicView});
+
+        return slpt_objects;
     }
 }

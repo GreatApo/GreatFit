@@ -9,6 +9,7 @@ import android.provider.Settings;
 import android.text.TextPaint;
 import android.util.Log;
 
+import com.dinodevs.greatfitwatchface.settings.LoadSettings;
 import com.ingenic.iwds.slpt.view.core.SlptLinearLayout;
 import com.ingenic.iwds.slpt.view.core.SlptPictureView;
 import com.ingenic.iwds.slpt.view.core.SlptViewComponent;
@@ -66,6 +67,11 @@ public class WeatherWidget extends AbstractWidget {
     private float textLeft; // temperature
     private float imgTop; // weather img
     private float imgLeft; // weather img
+    private LoadSettings settings;
+
+    public WeatherWidget(LoadSettings settings) {
+        this.settings = settings;
+    }
 
     @Override
     public void init(Service service) {
@@ -283,7 +289,7 @@ public class WeatherWidget extends AbstractWidget {
         // {"tempUnit":"1","temp":"31\/21","weatherCodeFrom":0}
 
         // Extract data from JSON
-        JSONObject weather_data = new JSONObject();
+        JSONObject weather_data;
         try {
             weather_data = new JSONObject(str);
             tempUnit = weather_data.getString("tempUnit");

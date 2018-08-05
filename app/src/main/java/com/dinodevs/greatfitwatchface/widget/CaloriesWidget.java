@@ -6,6 +6,7 @@ import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.text.TextPaint;
 
+import com.dinodevs.greatfitwatchface.settings.LoadSettings;
 import com.ingenic.iwds.slpt.view.core.SlptLinearLayout;
 import com.ingenic.iwds.slpt.view.core.SlptPictureView;
 import com.ingenic.iwds.slpt.view.core.SlptViewComponent;
@@ -31,7 +32,11 @@ public class CaloriesWidget extends AbstractWidget {
     private boolean showUnits;
     private boolean caloriesBool;
     private boolean caloriesAlignLeftBool;
+    private LoadSettings settings;
 
+    public CaloriesWidget(LoadSettings settings) {
+        this.settings = settings;
+    }
 
     @Override
     public void init(Service service) {

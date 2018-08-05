@@ -6,6 +6,7 @@ import android.graphics.Paint;
 import android.text.TextPaint;
 
 
+import com.dinodevs.greatfitwatchface.settings.LoadSettings;
 import com.ingenic.iwds.slpt.view.core.SlptLinearLayout;
 import com.ingenic.iwds.slpt.view.core.SlptViewComponent;
 import com.ingenic.iwds.slpt.view.sport.SlptTodayFloorNumView;
@@ -29,6 +30,11 @@ public class FloorWidget extends AbstractWidget {
     private Boolean floorsBool;
     private Boolean floorAlignLeftBool;
     private String[] digitalNums = {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9"};
+    private LoadSettings settings;
+
+    public FloorWidget(LoadSettings settings) {
+        this.settings = settings;
+    }
 
     @Override
     public void init(Service service){

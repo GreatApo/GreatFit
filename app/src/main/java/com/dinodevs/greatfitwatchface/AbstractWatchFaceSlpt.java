@@ -26,4 +26,8 @@ public abstract class AbstractWatchFaceSlpt extends AbstractSlptClock {
         this.clock = clock;
         this.widgets.addAll(Arrays.asList(widgets));
     }
+
+    protected AbstractWatchFaceSlpt(ClockWidget clock) {
+        this.clock = clock;
+    }
 }

@@ -7,6 +7,7 @@ import android.graphics.drawable.Drawable;
 import android.text.TextPaint;
 import android.util.Log;
 
+import com.dinodevs.greatfitwatchface.settings.LoadSettings;
 import com.huami.watch.watchface.util.Util;
 import com.ingenic.iwds.slpt.view.core.SlptBatteryView;
 import com.ingenic.iwds.slpt.view.core.SlptLinearLayout;
@@ -38,20 +39,25 @@ public class BatteryWidget extends AbstractWidget {
     private Drawable batteryIcon80;
     private Drawable batteryIcon90;
     private Drawable batteryIcon100;
-    private Boolean batteryBool;
+    private Boolean batteryImgBool;
     private float leftBattery;
     private float topBattery;
     private String[] numbers = new String[]{"0", "1", "2", "3", "4", "5", "6", "7", "8", "9"};
 
     private String sBattery;
     private int BatteryNum;
+    private LoadSettings settings;
+
+    public BatteryWidget(LoadSettings settings) {
+        this.settings = settings;
+    }
 
     public void init(Service service) {
         this.leftBattery = service.getResources().getDimension(R.dimen.battery_icon_left);
         this.topBattery = service.getResources().getDimension(R.dimen.battery_icon_top);
 
-        this.batteryBool = service.getResources().getBoolean(R.bool.battery_icon);
-        if(this.batteryBool) {
+        this.batteryImgBool = service.getResources().getBoolean(R.bool.battery_icon);
+        if(this.batteryImgBool) {
             this.batteryIcon0 = service.getResources().getDrawable(R.drawable.battery0, null);
             this.batteryIcon10 = service.getResources().getDrawable(R.drawable.battery10, null);
             this.batteryIcon20 = service.getResources().getDrawable(R.drawable.battery20, null);
@@ -86,7 +92,7 @@ public class BatteryWidget extends AbstractWidget {
     }
 
     public void draw(Canvas canvas, float width, float height, float centerX, float centerY) {
-        if (this.batteryData != null && this.batteryBool) {
+        if (this.batteryData != null && this.batteryImgBool) {
             this.sBattery = String.format("%02d", new Object[]{Integer.valueOf((this.batteryData.getLevel() * 100) / this.batteryData.getScale())});
 
             if (sBattery.equals("100")) {

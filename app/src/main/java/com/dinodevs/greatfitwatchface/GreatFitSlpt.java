@@ -1,8 +1,10 @@
 package com.dinodevs.greatfitwatchface;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 
+import com.dinodevs.greatfitwatchface.settings.LoadSettings;
 import com.dinodevs.greatfitwatchface.widget.BatteryWidget;
 import com.dinodevs.greatfitwatchface.widget.CaloriesWidget;
 import com.dinodevs.greatfitwatchface.widget.CirclesWidget;
@@ -22,22 +24,41 @@ import com.ingenic.iwds.slpt.view.core.SlptViewComponent;
  */
 
 public class GreatFitSlpt extends AbstractWatchFaceSlpt {
-    // Class variables
-    private Context context;
-    private boolean needRefreshSecond;
-    public String greatfitParameters;
-
+    Context context;
     public GreatFitSlpt() {
-        super(
-                new MainClock(),
-                new CirclesWidget(),
-                new HeartRateWidget(),
-                new CaloriesWidget(),
-                new FloorWidget(),
-                new BatteryWidget(),
-                new WeatherWidget(),
-                new GreatWidget()
-        );
+        super(new MainClock());
+    }
+
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        context = this.getApplicationContext();
+
+        // Load settings
+        LoadSettings settings = new LoadSettings(context);
+
+        if(settings.isCircles()) {
+            this.widgets.add(new CirclesWidget(settings));
+        }
+        if(settings.isHeartRate()) {
+            this.widgets.add(new HeartRateWidget(settings));
+        }
+        if(settings.isCalories()) {
+            this.widgets.add(new CaloriesWidget(settings));
+        }
+        if(settings.isFloor()) {
+            this.widgets.add(new FloorWidget(settings));
+        }
+        if(settings.isBattery()) {
+            this.widgets.add(new BatteryWidget(settings));
+        }
+        if(settings.isWeather()) {
+            this.widgets.add(new WeatherWidget(settings));
+        }
+        if(settings.isGreat()) {
+            this.widgets.add(new GreatWidget(settings));
+        }
+
+        return super.onStartCommand(intent, flags, startId);
     }
 
     @Override
@@ -78,12 +99,11 @@ public class GreatFitSlpt extends AbstractWatchFaceSlpt {
     protected void initWatchFaceConfig() {
         Log.w("DinoDevs-GreatFit", "Initiating watchface");
 
-        this.greatfitParameters = "";
         //this.getResources().getBoolean(R.bool.seconds)
 
-        this.context = this.getApplicationContext();
-        this.needRefreshSecond = Util.needSlptRefreshSecond(this.context);
-        if (this.needRefreshSecond) {
+        Context context = this.getApplicationContext();
+        boolean needRefreshSecond = Util.needSlptRefreshSecond(context);
+        if (needRefreshSecond) {
             this.setClockPeriodSecond(true);
         }
     }

@@ -90,7 +90,8 @@ public class CustomDataUpdater extends Service {
         String data = Settings.System.getString(getContentResolver(), "CustomWatchfaceData");
 
         if(data==null || data.equals("")){
-            Settings.System.putString(getContentResolver(), "CustomWatchfaceData","{}");//default
+            //Settings.System.putString(getContentResolver(), "CustomWatchfaceData","{}");//default
+            data="{}";
         }
 
         try {

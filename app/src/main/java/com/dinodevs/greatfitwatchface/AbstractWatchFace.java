@@ -97,6 +97,10 @@ public abstract class AbstractWatchFace extends com.huami.watch.watchface.Abstra
         this.widgets.addAll(Arrays.asList(widgets));
     }
 
+    protected AbstractWatchFace(ClockWidget clock) {
+        this.clock = clock;
+    }
+
     // Status bar (ex.battery charging)
     public final Engine onCreateEngine() {
         // Show it or... show it off screen :P
