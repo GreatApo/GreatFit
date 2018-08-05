@@ -19,7 +19,7 @@ import com.dinodevs.greatfitwatchface.widget.Widget;
 
 public abstract class AbstractWatchFaceSlpt extends AbstractSlptClock {
 
-    final ClockWidget clock;
+    public ClockWidget clock;
     final LinkedList<Widget> widgets = new LinkedList<>();
 
     protected AbstractWatchFaceSlpt(final ClockWidget clock, final Widget... widgets) {
@@ -27,7 +27,7 @@ public abstract class AbstractWatchFaceSlpt extends AbstractSlptClock {
         this.widgets.addAll(Arrays.asList(widgets));
     }
 
-    protected AbstractWatchFaceSlpt(ClockWidget clock) {
-        this.clock = clock;
+    protected AbstractWatchFaceSlpt() {
+
     }
 }

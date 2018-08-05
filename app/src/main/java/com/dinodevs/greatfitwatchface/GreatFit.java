@@ -24,7 +24,7 @@ import com.dinodevs.greatfitwatchface.widget.WeatherWidget;
 public class GreatFit extends AbstractWatchFace {
     Context context;
     public GreatFit() {
-        super(new MainClock());
+        super();
     }
 
     @Override
@@ -33,6 +33,8 @@ public class GreatFit extends AbstractWatchFace {
 
         // Load settings
         LoadSettings settings = new LoadSettings(context);
+
+        this.clock = new MainClock(settings);
 
         if(settings.isCircles()) {
             this.widgets.add(new CirclesWidget(settings));

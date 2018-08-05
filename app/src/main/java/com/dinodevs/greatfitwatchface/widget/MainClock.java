@@ -12,6 +12,7 @@ import com.dinodevs.greatfitwatchface.GreatFit;
 import com.dinodevs.greatfitwatchface.resource.SlptSecondHView;
 import com.dinodevs.greatfitwatchface.resource.SlptSecondLView;
 import com.dinodevs.greatfitwatchface.settings.APsettings;
+import com.dinodevs.greatfitwatchface.settings.LoadSettings;
 import com.huami.watch.watchface.util.Util;
 import com.ingenic.iwds.slpt.view.core.SlptLinearLayout;
 import com.ingenic.iwds.slpt.view.core.SlptNumView;
@@ -97,7 +98,7 @@ public class MainClock extends DigitalClockWidget {
     public int color = 3;
     public int language = 0;
     // Load settings
-    public APsettings settings;
+    //public APsettings settings;
 
     // Languages
     public static String[] codes = {
@@ -184,15 +185,23 @@ public class MainClock extends DigitalClockWidget {
             {"ARA", "OCA", "ŞUB", "MAR", "NIS", "MAY", "HAZ", "TEM", "AĞU", "EYL", "EKI", "KAS"},
     };
 
+    private LoadSettings settings;
+
+    public MainClock(LoadSettings settings) {
+        this.settings = settings;
+    }
+
     @Override
     public void init(Service service) {
 
         // Please do not change the following line
-        Toast.makeText(service, "Code by GreatApo, style by "+service.getResources().getString(R.string.author), Toast.LENGTH_SHORT).show();
+        Toast.makeText(service, "Code by GreatApo, style by "+service.getResources().getString(R.string.author), Toast.LENGTH_LONG).show();
 
+        /*
         this.settings = new APsettings(MainClock.class.getName(), service);
         this.language = this.settings.get("lang", this.language) % this.codes.length;
         this.color = this.settings.getInt("color",this.color);
+        */
 
         this.background = service.getResources().getDrawable(R.drawable.background);
         this.background.setBounds(0, 0, 320, 300);
@@ -356,9 +365,11 @@ public class MainClock extends DigitalClockWidget {
     @Override
     public List<SlptViewComponent> buildSlptViewComponent(Service service) {
         //Load Settings
+        /*
         this.settings = new APsettings(MainClock.class.getName(), service);
         this.language = this.settings.get("lang", this.language) % this.codes.length;
         this.color = this.settings.getInt("color",this.color);
+        */
         this.secondsBool = service.getResources().getBoolean(R.bool.seconds);
         int tmp_left;
 

@@ -27,7 +27,7 @@ import org.json.JSONObject;
 public abstract class AbstractWatchFace extends com.huami.watch.watchface.AbstractWatchFace {
 
 
-    final ClockWidget clock;
+    public ClockWidget clock;
     final LinkedList<Widget> widgets = new LinkedList<>();
     private Intent slptIntent;
 
@@ -97,8 +97,8 @@ public abstract class AbstractWatchFace extends com.huami.watch.watchface.Abstra
         this.widgets.addAll(Arrays.asList(widgets));
     }
 
-    protected AbstractWatchFace(ClockWidget clock) {
-        this.clock = clock;
+    protected AbstractWatchFace() {
+        //this.clock = clock;
     }
 
     // Status bar (ex.battery charging)

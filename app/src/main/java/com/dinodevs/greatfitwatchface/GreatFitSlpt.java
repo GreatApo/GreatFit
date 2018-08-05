@@ -26,7 +26,7 @@ import com.ingenic.iwds.slpt.view.core.SlptViewComponent;
 public class GreatFitSlpt extends AbstractWatchFaceSlpt {
     Context context;
     public GreatFitSlpt() {
-        super(new MainClock());
+        super();
     }
 
     @Override
@@ -35,6 +35,8 @@ public class GreatFitSlpt extends AbstractWatchFaceSlpt {
 
         // Load settings
         LoadSettings settings = new LoadSettings(context);
+
+        this.clock = new MainClock(settings);
 
         if(settings.isCircles()) {
             this.widgets.add(new CirclesWidget(settings));
