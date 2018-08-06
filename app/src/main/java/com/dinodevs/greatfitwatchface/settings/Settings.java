@@ -79,6 +79,9 @@ public class Settings extends FragmentActivity {
             public void onClick(View view) {
                 sharedPreferences.edit().clear().apply();
                 Toast.makeText(view.getContext(), "Settings reset", Toast.LENGTH_SHORT).show();
+                Settings.this.sendBroadcast(new Intent("com.huami.intent.action.WATCHFACE_CONFIG_CHANGED"));
+                Settings.this.setResult(-1);
+                Settings.this.finish();
             }
         }));
 

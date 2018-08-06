@@ -158,7 +158,7 @@ public class CirclesWidget extends AbstractWidget {
         // Draw circle up to the point we want
         // Battery
         if (this.batterySweepAngle != null && settings.batteryCircleBool) {
-            this.ring.setColor((settings.sltp_circle_color>=0)?settings.colorCodes[settings.sltp_circle_color-1]:settings.batteryColour);
+            this.ring.setColor((settings.sltp_circle_color>0)?settings.colorCodes[settings.sltp_circle_color-1]:settings.batteryColour);
             canvas.drawArc(oval, settings.startAngleBattery, batterySweepAngle, false, ring);
             /*
             //Malvarez small circles at the end
@@ -170,12 +170,12 @@ public class CirclesWidget extends AbstractWidget {
         }
         // Steps
         if (this.stepsSweepAngle != null && settings.stepCircleBool) {
-            this.ring.setColor((settings.sltp_circle_color>=0)?settings.colorCodes[settings.sltp_circle_color-1]:settings.stepsColour);
+            this.ring.setColor((settings.sltp_circle_color>0)?settings.colorCodes[settings.sltp_circle_color-1]:settings.stepsColour);
             canvas.drawArc(oval2, settings.startAngleSteps, stepsSweepAngle, false, ring);
         }
         // Today distance
         if (this.sportSweepAngle != null && settings.todayDistanceCircleBool) {
-            this.ring.setColor((settings.sltp_circle_color>=0)?settings.colorCodes[settings.sltp_circle_color-1]:settings.sportColour);
+            this.ring.setColor((settings.sltp_circle_color>0)?settings.colorCodes[settings.sltp_circle_color-1]:settings.sportColour);
             canvas.drawArc(oval3, settings.startAngleSport, sportSweepAngle, false, ring);
         }
         canvas.restoreToCount(count);

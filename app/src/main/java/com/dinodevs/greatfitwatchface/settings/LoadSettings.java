@@ -33,7 +33,7 @@ public class LoadSettings {
             this.watchface = context.getResources().getString(R.string.watch_face);
             this.author = context.getResources().getString(R.string.author);
             this.language = sharedPreferences.getInt( "language", 0);
-            this.color = sharedPreferences.getInt( "sltp_circle_color", -1);
+            this.color = sharedPreferences.getInt( "sltp_circle_color", 0);
 
         // Circles Widget
             this.batteryBool = context.getResources().getBoolean(R.bool.battery);

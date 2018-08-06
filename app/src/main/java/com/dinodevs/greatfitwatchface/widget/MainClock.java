@@ -229,7 +229,7 @@ public class MainClock extends DigitalClockWidget {
         this.hourFont.setTypeface(ResourceManager.getTypeFace(service.getResources(), ResourceManager.Font.FONT_FILE));
         this.hourFont.setTextSize(service.getResources().getDimension(R.dimen.hours_font_size));
         //this.hourFont.setColor(service.getResources().getColor(R.color.hour_colour));
-        this.hourFont.setColor((settings.sltp_circle_color>=0)?settings.colorCodes[settings.sltp_circle_color-1]:service.getResources().getColor(R.color.hour_colour));
+        this.hourFont.setColor((settings.sltp_circle_color>0)?settings.colorCodes[settings.sltp_circle_color-1]:service.getResources().getColor(R.color.hour_colour));
         this.hourFont.setTextAlign(Paint.Align.CENTER);
 
         this.minutesFont = new TextPaint(TextPaint.ANTI_ALIAS_FLAG);
@@ -397,7 +397,7 @@ public class MainClock extends DigitalClockWidget {
         }
         hourLayout.setTextAttrForAll(
                 service.getResources().getDimension(R.dimen.hours_font_size),
-                (settings.sltp_circle_color>=0)?settings.colorCodes[settings.sltp_circle_color-1]:service.getResources().getColor(R.color.hour_colour_slpt),
+                (settings.sltp_circle_color>0)?settings.colorCodes[settings.sltp_circle_color-1]:service.getResources().getColor(R.color.hour_colour_slpt),
                 timeTypeFace
         );
         // Position based on screen on
