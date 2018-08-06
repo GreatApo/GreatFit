@@ -1,5 +1,80 @@
 <resources>
-    <string name="app_name">Greatfit Watchface</string>
-    <string name="watch_face">Greatfit</string>
+    <string name="app_name">GreatFit Watchface</string>
+    <string name="watch_face">GreatFit</string>
     <string name="author">GreatApo</string>
+
+    <!-- Settings -->
+    <string name="settings">Settings</string>
+    <string name="save">Save</string>
+    <string name="reset">Reset</string>
+    <string name="main_color">Main color</string>
+    <string name="main_color_c">Select watchface color</string>
+    <string name="elements">Elements</string>
+    <string name="elements_c">Enable/Disable elements of the watchface</string>
+    <string name="language">Language</string>
+    <string name="language_c">Select display language</string>
+
+    <string name="set_elements">Set elements</string>
+    <string name="set_color">Set color</string>
+    <string name="set_language">Set language</string>
+
+    <!-- Widgets -->
+    <string name="seconds">seconds</string>
+    <string name="calories">calories</string>
+    <string name="heart_rate">heart_rate</string>
+    <string name="battery">battery</string>
+    <string name="steps">steps</string>
+    <string name="floors">floor</string>
+    <string name="total_distance">total_distance</string>
+    <string name="today_distance">today_distance</string>
+    <string name="temperature">temperature</string>
+    <string name="city">city</string>
+    <string name="air_pressure">air_pressure</string>
+    <string name="altitude">altitude</string>
+    <string name="weather">weather_image</string>
+    <string name="humidity">humidity</string>
+    <string name="uv">uv</string>
+    <string name="wind_direction">wind_direction</string>
+    <string name="wind_strength">wind_strength</string>
+    <string name="phoneBattery">phoneBattery</string>
+    <string name="alarm">alarm</string>
+
+    <!-- Days of week -->
+    <string name="sunday">Sunday</string>
+    <string name="monday">Monday</string>
+    <string name="tuesday">Tuesday</string>
+    <string name="wednesday">Wednesday</string>
+    <string name="thursday">Thursday</string>
+    <string name="friday">Friday</string>
+    <string name="saturday">Saturday</string>
+
+    <!-- Colors -->
+    <string name="red">Red</string>
+    <string name="light_blue">Light blue</string>
+    <string name="green">Green</string>
+    <string name="purple">Purple</string>
+    <string name="white">White</string>
+    <string name="yellow">Yellow</string>
+    <string name="black">Black</string>
+    <string name="grey">Grey</string>
+
+    <!-- languages -->
+    <string name="English">English</string>
+    <string name="Chinese">中文</string>
+    <string name="Czech">Czech</string>
+    <string name="Dutch">Nederlands</string>
+    <string name="French">Français</string>
+    <string name="German">Deutsch</string>
+    <string name="Greek">Ελληνικά</string>
+    <string name="Hebrew">עברית</string>
+    <string name="Hungarian">Magyar</string>
+    <string name="Italian">Italiano</string>
+    <string name="Japanese">日本語</string>
+    <string name="Korean">한국어</string>
+    <string name="Polish">Polski</string>
+    <string name="Portuguese">Português</string>
+    <string name="Russian">Русский</string>
+    <string name="Slovak">Slovenčina</string>
+    <string name="Spanish">Español</string>
+    <string name="Turkish">Türkçe</string>
 </resources>

@@ -59,16 +59,16 @@ public class BatteryWidget extends AbstractWidget {
         this.batteryImgBool = service.getResources().getBoolean(R.bool.battery_icon);
         if(this.batteryImgBool) {
             this.batteryIcon0 = service.getResources().getDrawable(R.drawable.battery0, null);
-            this.batteryIcon10 = service.getResources().getDrawable(R.drawable.battery10, null);
-            this.batteryIcon20 = service.getResources().getDrawable(R.drawable.battery20, null);
-            this.batteryIcon30 = service.getResources().getDrawable(R.drawable.battery30, null);
-            this.batteryIcon40 = service.getResources().getDrawable(R.drawable.battery40, null);
-            this.batteryIcon50 = service.getResources().getDrawable(R.drawable.battery50, null);
-            this.batteryIcon60 = service.getResources().getDrawable(R.drawable.battery60, null);
-            this.batteryIcon70 = service.getResources().getDrawable(R.drawable.battery70, null);
-            this.batteryIcon80 = service.getResources().getDrawable(R.drawable.battery80, null);
-            this.batteryIcon90 = service.getResources().getDrawable(R.drawable.battery90, null);
-            this.batteryIcon100 = service.getResources().getDrawable(R.drawable.battery100, null);
+            this.batteryIcon10 = service.getResources().getDrawable(R.drawable.battery1, null);
+            this.batteryIcon20 = service.getResources().getDrawable(R.drawable.battery2, null);
+            this.batteryIcon30 = service.getResources().getDrawable(R.drawable.battery3, null);
+            this.batteryIcon40 = service.getResources().getDrawable(R.drawable.battery4, null);
+            this.batteryIcon50 = service.getResources().getDrawable(R.drawable.battery5, null);
+            this.batteryIcon60 = service.getResources().getDrawable(R.drawable.battery6, null);
+            this.batteryIcon70 = service.getResources().getDrawable(R.drawable.battery7, null);
+            this.batteryIcon80 = service.getResources().getDrawable(R.drawable.battery8, null);
+            this.batteryIcon90 = service.getResources().getDrawable(R.drawable.battery9, null);
+            this.batteryIcon100 = service.getResources().getDrawable(R.drawable.battery10, null);
             this.batteryIcon0.setBounds((int) this.leftBattery, (int) this.topBattery, ((int) this.leftBattery) + batteryIcon0.getIntrinsicWidth(), ((int) this.topBattery) + batteryIcon0.getIntrinsicHeight());
             this.batteryIcon10.setBounds((int) this.leftBattery, (int) this.topBattery, ((int) this.leftBattery) + batteryIcon10.getIntrinsicWidth(), ((int) this.topBattery) + batteryIcon10.getIntrinsicHeight());
             this.batteryIcon20.setBounds((int) this.leftBattery, (int) this.topBattery, ((int) this.leftBattery) + batteryIcon20.getIntrinsicWidth(), ((int) this.topBattery) + batteryIcon20.getIntrinsicHeight());

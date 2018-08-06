@@ -96,4 +96,11 @@
 
     <color name="phoneBattery_colour">#ffffff</color>
     <color name="phoneBattery_colour_slpt">#ffffff</color>
+
+    <!-- Settings -->
+    <color name="primary">#2196F3</color>
+    <color name="primary_dark">#1976D2</color>
+    <color name="accent">#03A9F4</color>
+    <color name="primary_text">#212121</color>
+    <color name="secondary_text">#757575</color>
 </resources>

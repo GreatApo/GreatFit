@@ -44,6 +44,9 @@
                 <category android:name="android.intent.category.HOME" />
             </intent-filter>
         </receiver>
+        <activity android:name="com.dinodevs.greatfitwatchface.settings.WidgetsActivity"></activity>
+        <activity android:name="com.dinodevs.greatfitwatchface.settings.ColorActivity"></activity>
+        <activity android:name="com.dinodevs.greatfitwatchface.settings.LanguageActivity"></activity>
     </application>
 
 </manifest>

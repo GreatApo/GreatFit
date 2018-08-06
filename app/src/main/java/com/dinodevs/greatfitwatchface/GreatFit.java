@@ -1,10 +1,8 @@
 package com.dinodevs.greatfitwatchface;
 
 import android.content.Context;
-import android.content.Intent;
 
 import com.dinodevs.greatfitwatchface.settings.LoadSettings;
-import com.dinodevs.greatfitwatchface.widget.Widget;
 import com.huami.watch.watchface.AbstractSlptClock;
 
 import com.dinodevs.greatfitwatchface.widget.BatteryWidget;

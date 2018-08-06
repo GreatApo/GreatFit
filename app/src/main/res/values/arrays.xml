@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="days">
+        <item>@string/sunday</item>
+        <item>@string/monday</item>
+        <item>@string/tuesday</item>
+        <item>@string/wednesday</item>
+        <item>@string/thursday</item>
+        <item>@string/friday</item>
+        <item>@string/saturday</item>
+    </string-array>
+
+    <string-array name="elements">
+        <item>@string/seconds</item>
+        <item>@string/calories</item>
+        <item>@string/battery</item>
+        <item>@string/heart_rate</item>
+        <item>@string/steps</item>
+        <item>@string/floors</item>
+        <item>@string/total_distance</item>
+        <item>@string/today_distance</item>
+        <item>@string/temperature</item>
+        <item>@string/city</item>
+        <item>@string/air_pressure</item>
+        <item>@string/altitude</item>
+        <item>@string/weather</item>
+        <item>@string/humidity</item>
+        <item>@string/uv</item>
+        <item>@string/wind_direction</item>
+        <item>@string/wind_strength</item>
+        <item>@string/phoneBattery</item>
+        <item>@string/alarm</item>
+    </string-array>
+
+    <!-- 1=red, 2=light blue, 3=green, 4=purple, 5=white, 6=yellow, 7=black, 8=grey -->
+    <string-array name="colors">
+        <item>@string/red</item>
+        <item>@string/light_blue</item>
+        <item>@string/green</item>
+        <item>@string/purple</item>
+        <item>@string/white</item>
+        <item>@string/yellow</item>
+        <item>@string/black</item>
+        <!-- <item>@string/grey</item>-->
+    </string-array>
+
+    <!-- languages -->
+    <string-array name="language">
+        <item>@string/English</item>
+        <item>@string/Chinese</item>
+        <item>@string/Czech</item>
+        <item>@string/Dutch</item>
+        <item>@string/French</item>
+        <item>@string/German</item>
+        <item>@string/Greek</item>
+        <item>@string/Hebrew</item>
+        <item>@string/Hungarian</item>
+        <item>@string/Italian</item>
+        <item>@string/Japanese</item>
+        <item>@string/Korean</item>
+        <item>@string/Polish</item>
+        <item>@string/Portuguese</item>
+        <item>@string/Russian</item>
+        <item>@string/Slovak</item>
+        <item>@string/Spanish</item>
+        <item>@string/Turkish</item>
+    </string-array>
+</resources>

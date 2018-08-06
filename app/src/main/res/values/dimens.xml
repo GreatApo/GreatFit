@@ -27,6 +27,7 @@
     <dimen name="indicator_left">158px</dimen>
     <dimen name="indicator_top">139px</dimen>
 
+
     <!-- battery -->
     <dimen name="battery_font_size">24px</dimen>
     <dimen name="battery_text_left">160px</dimen>
@@ -168,4 +169,9 @@
     <dimen name="phoneBattery_font_size">20px</dimen>
     <dimen name="phoneBattery_left">20px</dimen>
     <dimen name="phoneBattery_top">170px</dimen>
+
+    <!-- Settings -->
+    <dimen name="padding_round">16dp</dimen>
+    <dimen name="padding_round_small">8dp</dimen>
+    <dimen name="padding_round_large">24dp</dimen>
 </resources>

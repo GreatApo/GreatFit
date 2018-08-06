@@ -137,7 +137,7 @@ public class GreatWidget extends AbstractWidget {
         this.phoneBatteryAlignLeftBool = service.getResources().getBoolean(R.bool.phoneBattery_left_align);
 
         this.ampmPaint = new TextPaint(TextPaint.ANTI_ALIAS_FLAG);
-        this.ampmPaint.setColor(service.getResources().getColor(R.color.ampm_colour));
+        this.ampmPaint.setColor((settings.sltp_circle_color>=0)?settings.colorCodes[settings.sltp_circle_color-1]:service.getResources().getColor(R.color.ampm_colour));
         this.ampmPaint.setTypeface(ResourceManager.getTypeFace(service.getResources(), ResourceManager.Font.FONT_FILE));
         this.ampmPaint.setTextSize(service.getResources().getDimension(R.dimen.ampm_font_size));
         this.ampmPaint.setTextAlign( (this.ampmAlignLeftBool) ? Paint.Align.LEFT : Paint.Align.CENTER );
@@ -332,7 +332,7 @@ public class GreatWidget extends AbstractWidget {
             ampm.add(ampmStr);
             ampm.setTextAttrForAll(
                     service.getResources().getDimension(R.dimen.ampm_font_size),
-                    service.getResources().getColor(R.color.ampm_colour_slpt),
+                    (settings.sltp_circle_color>=0)?settings.colorCodes[settings.sltp_circle_color-1]:service.getResources().getColor(R.color.ampm_colour_slpt),
                     ResourceManager.getTypeFace(service.getResources(), ResourceManager.Font.FONT_FILE)
             );
             // Position based on screen on

@@ -1,6 +1,8 @@
 package com.dinodevs.greatfitwatchface.settings;
 
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.provider.Settings;
 
 import com.dinodevs.greatfitwatchface.R;
@@ -11,9 +13,12 @@ import org.json.JSONObject;
 public class LoadSettings {
 
     private Context context;
+    private SharedPreferences sharedPreferences;
 
     public LoadSettings(Context context){
         this.context = context;
+
+        sharedPreferences = context.getSharedPreferences(context.getPackageName()+"_settings", Context.MODE_PRIVATE);
 
         // Default Parameters
         defaultParameters();
@@ -25,6 +30,10 @@ public class LoadSettings {
     private void defaultParameters(){
         // All
             this.font_ratio = context.getResources().getInteger(R.integer.font_ratio);
+            this.watchface = context.getResources().getString(R.string.watch_face);
+            this.author = context.getResources().getString(R.string.author);
+            this.language = sharedPreferences.getInt( "language", 0);
+            this.color = sharedPreferences.getInt( "sltp_circle_color", -1);
 
         // Circles Widget
             this.batteryBool = context.getResources().getBoolean(R.bool.battery);
@@ -53,11 +62,12 @@ public class LoadSettings {
             this.thickness = (int) context.getResources().getDimension(R.dimen.circles_thickness);
             this.padding = (int) context.getResources().getDimension(R.dimen.circles_padding);
             this.circlesBackgroundBool = context.getResources().getBoolean(R.bool.circles_background);;
-            // Get circles colors
+            // Get colors
             this.backgroundColour = context.getResources().getColor(R.color.circles_background);
             this.batteryColour = context.getResources().getColor(R.color.battery_circle_colour);
             this.stepsColour = context.getResources().getColor(R.color.steps_circle_colour);
             this.sportColour = context.getResources().getColor(R.color.today_distance_circle_colour);
+            this.sltp_circle_color = this.color;//context.getResources().getInteger(R.integer.sltp_circle_color);
             // Text colors and fonts
             this.batteryFontSize = context.getResources().getDimension(R.dimen.battery_font_size);
             this.batteryTextColor = context.getResources().getColor(R.color.battery_colour);
@@ -89,35 +99,35 @@ public class LoadSettings {
 
         // WEATHER WIDGET
             this.temperatureBool = context.getResources().getBoolean(R.bool.temperature);
-            //context.getResources().getColor(R.color.temperature_colour)
+            //context.getResources().getColor(R.palette.temperature_colour)
             //context.getResources().getDimension(R.dimen.temperature_font_size)
             this.cityBool = context.getResources().getBoolean(R.bool.city);
-            //context.getResources().getColor(R.color.city_colour)
+            //context.getResources().getColor(R.palette.city_colour)
             //context.getResources().getDimension(R.dimen.city_font_size)
             //context.getResources().getBoolean(R.bool.city_left_align)
             this.cityLeft = context.getResources().getDimension(R.dimen.city_left);
             this.cityTop = context.getResources().getDimension(R.dimen.city_top);
             this.humidityBool = context.getResources().getBoolean(R.bool.humidity);
-            //context.getResources().getColor(R.color.humidity_colour)
+            //context.getResources().getColor(R.palette.humidity_colour)
             //context.getResources().getDimension(R.dimen.humidity_font_size)
             //context.getResources().getBoolean(R.bool.humidity_left_align)
             this.humidityLeft = context.getResources().getDimension(R.dimen.humidity_left);
             this.humidityTop = context.getResources().getDimension(R.dimen.humidity_top);
             this.uvBool = context.getResources().getBoolean(R.bool.uv);
-            //context.getResources().getColor(R.color.uv_colour)
+            //context.getResources().getColor(R.palette.uv_colour)
             //context.getResources().getDimension(R.dimen.uv_font_size)
             //context.getResources().getBoolean(R.bool.uv_left_align)
             this.uvLeft = context.getResources().getDimension(R.dimen.uv_left);
             this.uvTop = context.getResources().getDimension(R.dimen.uv_top);
             this.windDirectionBool = context.getResources().getBoolean(R.bool.wind_direction);
-            //context.getResources().getColor(R.color.wind_direction_colour)
+            //context.getResources().getColor(R.palette.wind_direction_colour)
             //context.getResources().getDimension(R.dimen.wind_direction_font_size)
             //context.getResources().getBoolean(R.bool.wind_direction_left_align)
             this.windDirectionLeft = context.getResources().getDimension(R.dimen.wind_direction_left);
             this.windDirectionTop = context.getResources().getDimension(R.dimen.wind_direction_top);
             this.windDirectionAsArrowBool = context.getResources().getBoolean(R.bool.wind_direction_as_arrows);
             this.windStrengthBool = context.getResources().getBoolean(R.bool.wind_strength);
-            //context.getResources().getColor(R.color.wind_strength_colour)
+            //context.getResources().getColor(R.palette.wind_strength_colour)
             //context.getResources().getDimension(R.dimen.wind_strength_font_size)
             //context.getResources().getBoolean(R.bool.wind_strength_left_align)
             this.windStrengthLeft = context.getResources().getDimension(R.dimen.wind_strength_left);
@@ -156,7 +166,7 @@ public class LoadSettings {
 
     // Overwrite parameters with settings parameters
     private void settingsParameters(){
-        String settings = Settings.System.getString(context.getContentResolver(), "GreatFitSettings");
+        String settings = Settings.System.getString(context.getContentResolver(), this.watchface+"Settings");
         if (settings == null || settings.equals("")) {settings = "{}";}
 
         // Extract data from JSON
@@ -181,12 +191,25 @@ public class LoadSettings {
             }
 
         } catch (JSONException e) {
-            //Settings.System.putString(getContentResolver(), "GreatFitSettings", "{}");//reset wrong settings data
+            //Settings.System.putString(getContentResolver(), this.watchface+"Settings", "{}");//reset wrong settings data
         }
     }
 
     // All
     public int font_ratio;
+    public String watchface;
+    public String author;
+    public int language;
+    public int color;
+    public Integer[] colorCodes = {
+        Color.parseColor("#ff0000"),
+        Color.parseColor("#00ffff"),
+        Color.parseColor("#00ff00"),
+        Color.parseColor("#ff00ff"),
+        Color.parseColor("#ffffff"),
+        Color.parseColor("#ffff00"),
+        Color.parseColor("#111111")
+    };
 
     // CIRCLE WIDGET
     // Get widget text show/hide booleans
@@ -230,6 +253,7 @@ public class LoadSettings {
     public int todayDistanceTextColor;
     public float totalDistanceFontSize;
     public int totalDistanceTextColor;
+    public int sltp_circle_color;
     // Align
     public boolean batteryAlignLeftBool;
     public boolean stepsAlignLeftBool;
