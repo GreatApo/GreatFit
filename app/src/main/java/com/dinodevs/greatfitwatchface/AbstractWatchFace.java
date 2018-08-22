@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.database.ContentObserver;
 import android.graphics.Canvas;
+import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 
@@ -122,7 +123,24 @@ public abstract class AbstractWatchFace extends com.huami.watch.watchface.Abstra
     }
 
     public void restartSlpt(){
-        this.startService(this.slptIntent);
-        Log.w("DinoDevs-GreatFit", "Slpt service restarted" );
+
+        // Sent some stuff
+        //Bundle b = new Bundle();
+        //b.putSerializable("key", this.widgets);
+        //this.slptIntent.putExtras(b); //Put your id to your next Intent
+
+        // Start Slpt
+        try {
+            this.stopService(this.slptIntent);
+            this.startService(this.slptIntent);
+            Log.w("DinoDevs-GreatFit", "Slpt service restarted" );
+        }catch(Exception e){
+            Log.w("DinoDevs-GreatFit", "Problem restarting slpt: "+e.toString() );
+        }
+    }
+
+    public void restartWatchface(){
+        AbstractWatchFace.this.finish();
+        stopService(new Intent(this, GreatFit.class));
     }
 }

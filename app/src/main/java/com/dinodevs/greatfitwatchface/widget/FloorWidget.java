@@ -1,105 +1,129 @@
 package com.dinodevs.greatfitwatchface.widget;
 
 import android.app.Service;
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.text.TextPaint;
 
-
-import com.dinodevs.greatfitwatchface.settings.LoadSettings;
-import com.ingenic.iwds.slpt.view.core.SlptLinearLayout;
-import com.ingenic.iwds.slpt.view.core.SlptViewComponent;
-import com.ingenic.iwds.slpt.view.sport.SlptTodayFloorNumView;
-
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-
 import com.dinodevs.greatfitwatchface.R;
+import com.dinodevs.greatfitwatchface.data.Calories;
 import com.dinodevs.greatfitwatchface.data.DataType;
 import com.dinodevs.greatfitwatchface.data.TodayFloor;
 import com.dinodevs.greatfitwatchface.resource.ResourceManager;
+import com.dinodevs.greatfitwatchface.settings.LoadSettings;
+import com.huami.watch.watchface.util.Util;
+import com.ingenic.iwds.slpt.view.core.SlptLinearLayout;
+import com.ingenic.iwds.slpt.view.core.SlptPictureView;
+import com.ingenic.iwds.slpt.view.core.SlptViewComponent;
+import com.ingenic.iwds.slpt.view.sport.SlptTodayCaloriesView;
+import com.ingenic.iwds.slpt.view.sport.SlptTodayFloorNumView;
+import com.ingenic.iwds.slpt.view.utils.SimpleFile;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 
 public class FloorWidget extends AbstractWidget {
     private TextPaint textPaint;
     private TodayFloor todayFloor;
-    private String text;
-    private float textTop;
-    private float textLeft;
-    private Boolean floorsBool;
-    private Boolean floorAlignLeftBool;
-    private String[] digitalNums = {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9"};
     private LoadSettings settings;
+    private Bitmap icon;
+    private String[] digitalNums = {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9"};
 
+    // Constructor
     public FloorWidget(LoadSettings settings) {
         this.settings = settings;
     }
 
+    // Screen-on init (runs once)
     @Override
-    public void init(Service service){
-        this.textLeft = service.getResources().getDimension(R.dimen.floors_text_left);
-        this.textTop = service.getResources().getDimension(R.dimen.floors_text_top);
-
-        // Aling left true or false (false= align center)
-        this.floorAlignLeftBool = service.getResources().getBoolean(R.bool.floor_left_align);
-
+    public void init(Service service) {
+        // Font
         this.textPaint = new TextPaint(TextPaint.ANTI_ALIAS_FLAG);
-        this.textPaint.setColor(service.getResources().getColor(R.color.floors_colour));
+        this.textPaint.setColor(settings.floorsColor);
         this.textPaint.setTypeface(ResourceManager.getTypeFace(service.getResources(), ResourceManager.Font.FONT_FILE));
-        this.textPaint.setTextSize(service.getResources().getDimension(R.dimen.floors_font_size));
-        this.textPaint.setTextAlign( (this.floorAlignLeftBool) ? Paint.Align.LEFT : Paint.Align.CENTER );
+        this.textPaint.setTextSize(settings.floorsFontSize);
+        this.textPaint.setTextAlign( (settings.floorsAlignLeft) ? Paint.Align.LEFT : Paint.Align.CENTER );
 
-        this.floorsBool = service.getResources().getBoolean(R.bool.floor);
+        if(settings.floorsIcon){
+            this.icon = Util.decodeImage(service.getResources(),"icons/floors.png");
+        }
     }
 
+    // Register floors counter
     @Override
     public List<DataType> getDataTypes() {
         return Collections.singletonList(DataType.FLOOR);
     }
 
+    // floors updater
     @Override
-    public void onDataUpdate (DataType type, Object value) {this.todayFloor = (TodayFloor) value;}
+    public void onDataUpdate(DataType type, Object value) { this.todayFloor = (TodayFloor) value; }
 
+    // Screen on
     @Override
     public void draw(Canvas canvas, float width, float height, float centerX, float centerY) {
-        // Draw floors
-        if(this.floorsBool) {
-            this.text = String.format("%s", todayFloor.getFloor());
-            canvas.drawText(text, textLeft, textTop, textPaint);
+        if(settings.floors>0) {
+            if(settings.floorsIcon){
+                canvas.drawBitmap(this.icon, settings.floorsIconLeft, settings.floorsIconTop, settings.mGPaint);
+            }
+
+            canvas.drawText(Integer.toString(todayFloor.getFloor()) , settings.floorsLeft, settings.floorsTop, textPaint);
         }
+
     }
 
+    // SLPT mode, screen off
     @Override
     public List<SlptViewComponent> buildSlptViewComponent(Service service) {
-        // Draw floors
-        SlptLinearLayout floors = new SlptLinearLayout();
-        floors.add(new SlptTodayFloorNumView());
-        floors.setStringPictureArrayForAll(this.digitalNums);
-        floors.setTextAttrForAll(
-                service.getResources().getDimension(R.dimen.floors_font_size),
-                service.getResources().getColor(R.color.floors_colour_slpt),
-                ResourceManager.getTypeFace(service.getResources(), ResourceManager.Font.FONT_FILE)
-        );
-        // Position based on screen on
-        floors.alignX = 2;
-        floors.alignY = 0;
-        int tmp_left = (int) service.getResources().getDimension(R.dimen.floors_text_left);
-        if(!service.getResources().getBoolean(R.bool.floor_left_align)) {
-            // If text is centered, set rectangle
-            floors.setRect(
-                    (int) (2 * tmp_left + 640),
-                    (int) (service.getResources().getDimension(R.dimen.floors_font_size))
-            );
-            tmp_left = -320;
-        }
-        floors.setStart(
-                tmp_left,
-                (int) (service.getResources().getDimension(R.dimen.floors_text_top)-((float)service.getResources().getInteger(R.integer.font_ratio)/100)*service.getResources().getDimension(R.dimen.floors_font_size))
-        );
-        // Hide if disabled
-        if(!service.getResources().getBoolean(R.bool.floor)){floors.show=false;}
+        return buildSlptViewComponent(service, false);
+    }
 
-        return Arrays.asList(new SlptViewComponent[]{floors});
+    public List<SlptViewComponent> buildSlptViewComponent(Service service, boolean better_resolution) {
+        //better_resolution = better_resolution && settings.better_resolution_when_raising_hand;
+        List<SlptViewComponent> slpt_objects = new ArrayList<>();
+
+        if(settings.floors>0){
+            // Show or Not icon
+            if (settings.floorsIcon) {
+                SlptPictureView floorsIcon = new SlptPictureView();
+                floorsIcon.setImagePicture( SimpleFile.readFileFromAssets(service, ( (better_resolution)?"":"slpt_" )+"icons/floors.png") );
+                floorsIcon.setStart(
+                        (int) settings.floorsIconLeft,
+                        (int) settings.floorsIconTop
+                );
+                slpt_objects.add(floorsIcon);
+            }
+
+            SlptLinearLayout floorsLayout = new SlptLinearLayout();
+            floorsLayout.add(new SlptTodayFloorNumView());
+            floorsLayout.setStringPictureArrayForAll(this.digitalNums);
+            floorsLayout.setTextAttrForAll(
+                    settings.floorsFontSize,
+                    settings.floorsColor,
+                    ResourceManager.getTypeFace(service.getResources(), ResourceManager.Font.FONT_FILE)
+            );
+            // Position based on screen on
+            floorsLayout.alignX = 2;
+            floorsLayout.alignY = 0;
+            int tmp_left = (int) settings.floorsLeft;
+            if(!settings.floorsAlignLeft) {
+                // If text is centered, set rectangle
+                floorsLayout.setRect(
+                        (int) (2 * tmp_left + 640),
+                        (int) (settings.floorsFontSize)
+                );
+                tmp_left = -320;
+            }
+            floorsLayout.setStart(
+                    (int) tmp_left,
+                    (int) (settings.floorsTop-((float)settings.font_ratio/100)*settings.floorsFontSize)
+            );
+            slpt_objects.add(floorsLayout);
+        }
+
+        return slpt_objects;
     }
 }

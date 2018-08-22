@@ -7,11 +7,13 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.View;
 import android.widget.CompoundButton;
 
 import com.dinodevs.greatfitwatchface.R;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class WidgetsActivity extends FragmentActivity {
@@ -28,23 +30,31 @@ public class WidgetsActivity extends FragmentActivity {
         List<BaseSetting> settings = new ArrayList<>();
         settings.add(new HeaderSetting(getString(R.string.set_elements)));
         //Setup items for each day
-        String[] elements = getResources().getStringArray(R.array.elements);
+        String[] elements = getResources().getStringArray(R.array.supported_widgets);
         final SharedPreferences sharedPreferences = getSharedPreferences(getPackageName()+"_settings", Context.MODE_PRIVATE);
-        for(String element : elements){
-            //Each item needs a SwitchSetting with a value
 
-            if( !getDefaultSetting(element)){
-                // Go to the next if it is disabled from resources
+        // Get Widgets
+        String widgetsAsText = sharedPreferences.getString("widgets", null);
+        String text = widgetsAsText.replaceAll("(\\[|\\]| )",""); // Replace "[", "]" and "spaces"
+        List <String> widgets_list = Arrays.asList(text.split(","));
+
+        int current = sharedPreferences.getInt("temp_widget", 0);
+        String currentAsText = widgets_list.get(current);
+        for(String element : elements){
+            // Go to next if already a widget
+            if(widgets_list.indexOf(element)>=0 && !element.equals(currentAsText)){
                 continue;
             }
-
-            final String tempElm = element;
-            settings.add(new SwitchSetting(null, element, null, new CompoundButton.OnCheckedChangeListener() {
+            // Create the setting
+            widgets_list.set(current,element);
+            final String finalWidgets = widgets_list.toString();
+            settings.add(new IconSetting( (element.equals(currentAsText))?getDrawable(R.drawable.check):getDrawable(R.drawable.circle_icon), prepareTitle(element), prepareSubtitle(element), new View.OnClickListener() {
                 @Override
-                public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                    sharedPreferences.edit().putBoolean( tempElm, b).apply();
+                public void onClick(View view) {
+                    sharedPreferences.edit().putString("widgets", finalWidgets).apply();
+                    WidgetsActivity.this.finish();
                 }
-            }, getSetting(element, sharedPreferences)));
+            }, null));
         }
         //Setup layout
         root.setBackgroundResource(R.drawable.settings_background);
@@ -55,11 +65,54 @@ public class WidgetsActivity extends FragmentActivity {
         setContentView(root);
     }
 
-    private boolean getSetting(String element, SharedPreferences sharedPreferences) {
-        return sharedPreferences.getBoolean(element, true);
+    private String prepareTitle(String title){
+        if(title.equals("altitude")){
+            title = "altitude/Dive";
+        }else if(title.equals("weather_img")){
+            title = "weather icon";
+        }
+        // Replace _ with spaces
+        title = title.replaceAll("_"," ");
+        // Capitalize first letter
+        title = title.substring(0, 1).toUpperCase() + title.substring(1);
+        return title;
     }
 
-    private boolean getDefaultSetting(String element) {
-        return getResources().getBoolean(getResources().getIdentifier(element, "bool", getPackageName() ));
+    private String prepareSubtitle(String element){
+        String subtitle = null;
+
+        switch (element) {
+            case "air_pressure":
+            case "altitude":
+                subtitle = getString(R.string.moreBattery);
+                break;
+            case "phone_battery":
+            case "phone_alarm":
+                subtitle = getString(R.string.needAmazmod);
+                break;
+            case "xdrip":
+                subtitle = getString(R.string.needXdrip);
+                break;
+            case "none":
+                subtitle = getString(R.string.emptyWidget);
+                break;
+            case "total_distance":
+                subtitle = getString(R.string.totalSportDistance);
+                break;
+            case "today_distance":
+                subtitle = getString(R.string.todaySportDistance);
+                break;
+            case "heart_rate":
+                subtitle = getString(R.string.needsContinueHeartRate);
+                break;
+            case "date":
+                subtitle = getString(R.string.dateFormat);
+                break;
+            case "watch_alarm":
+                subtitle = getString(R.string.nextWatchAlarm);
+                break;
+        }
+
+        return subtitle;
     }
 }

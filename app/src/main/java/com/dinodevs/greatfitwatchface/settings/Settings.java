@@ -1,16 +1,27 @@
 package com.dinodevs.greatfitwatchface.settings;
 
+import android.app.WallpaperInfo;
+import android.app.WallpaperManager;
+import android.content.ActivityNotFoundException;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.PowerManager;
+import android.os.RemoteException;
+import android.os.SystemClock;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import com.dinodevs.greatfitwatchface.GreatFit;
+import com.dinodevs.greatfitwatchface.GreatFitSlpt;
 import com.dinodevs.greatfitwatchface.R;
+import com.huami.watch.watchface.receiver.LocalChangedReceiver;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,12 +40,22 @@ public class Settings extends FragmentActivity {
         RecyclerView root = new RecyclerView(this);
         final SharedPreferences sharedPreferences = getSharedPreferences(getPackageName()+"_settings", Context.MODE_PRIVATE);
 
+        // Load settings
+        LoadSettings watchface_settings = new LoadSettings(getApplicationContext());
+        if(sharedPreferences.getString("widgets", null)==null) {
+            sharedPreferences.edit().putString("widgets", watchface_settings.widgets_list.toString()).apply();
+        }
+        if(sharedPreferences.getString("progress_bars", null)==null) {
+            sharedPreferences.edit().putString("progress_bars", watchface_settings.circle_bars_list.toString()).apply();
+        }
+
         //Add header to a list of settings
         List<BaseSetting> settings = new ArrayList<>();
 
-        //Add IconSettings for each sub-setting. They contain an icon, title and subtitle, as well as a click action to launch the sub-setting's activity
+        // Add IconSettings for each sub-setting. They contain an icon, title and subtitle, as well as a click action to launch the sub-setting's activity
         settings.add(new HeaderSetting(getString(R.string.settings)));
 
+        // Add color selection
         settings.add(new IconSetting(getDrawable(R.drawable.palette), getString(R.string.main_color), getString(R.string.main_color_c), new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -42,13 +63,40 @@ public class Settings extends FragmentActivity {
             }
         }, null));
 
-        settings.add(new IconSetting(getDrawable(R.drawable.widgets), getString(R.string.elements), getString(R.string.elements_c), new View.OnClickListener() {
+        // Add other features
+        settings.add(new IconSetting(getDrawable(R.drawable.gear), getString(R.string.other_features), getString(R.string.other_features_c), new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(Settings.this, WidgetsActivity.class));
+                startActivity(new Intent(Settings.this, OthersActivity.class));
             }
         }, null));
 
+        // One for each widget
+        for (int i=0; i<watchface_settings.widgets_list.size(); i++) {
+            final int j = i;
+            settings.add(new IconSetting(getDrawable(R.drawable.widgets), getString(R.string.widget)+" "+(i+1), getString(R.string.widget_c), new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    sharedPreferences.edit().putInt( "temp_widget", j).apply();
+                    startActivity(new Intent(Settings.this, WidgetsActivity.class));
+                }
+            }, null));
+        }
+
+        // One for each progress widget
+        for (int i=0; i<watchface_settings.circle_bars_list.size(); i++) {
+            final int j = i;
+
+            settings.add(new IconSetting(getDrawable(R.drawable.progress), getString(R.string.progress_widget)+" "+(i+1), getString(R.string.progress_widget_c), new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    sharedPreferences.edit().putInt( "temp_progress_bars", j).apply();
+                    startActivity(new Intent(Settings.this, ProgressWidgetsActivity.class));
+                }
+            }, null));
+        }
+
+        // Add language
         settings.add(new IconSetting(getDrawable(R.drawable.language), getString(R.string.language), getString(R.string.language_c), new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -63,10 +111,10 @@ public class Settings extends FragmentActivity {
                 // Do settings stuff here
 
                 // Set watchface
-                //Intent intent = new Intent("com.dinodevs.greatfitwatchface.GreatFitSlpt");
-                //finish();
-                //Settings.this.sendBroadcast(new Intent("com.dinodevs.greatfitwatchface.GreatFitSlpt"));
-                Settings.this.sendBroadcast(new Intent("com.huami.intent.action.WATCHFACE_CONFIG_CHANGED"));
+                sharedPreferences.edit().putBoolean("restart_watchface", true).apply();
+                //restartWatchFace();
+                //Settings.this.sendBroadcast(new Intent("com.huami.intent.action.WATCHFACE_CONFIG_CHANGED"));
+                //LocalChangedReceiver.restartWatchFace(getApplicationContext());
 
                 Settings.this.setResult(-1);
                 Settings.this.finish();
@@ -81,6 +129,7 @@ public class Settings extends FragmentActivity {
                 Toast.makeText(view.getContext(), "Settings reset", Toast.LENGTH_SHORT).show();
                 Settings.this.sendBroadcast(new Intent("com.huami.intent.action.WATCHFACE_CONFIG_CHANGED"));
                 Settings.this.setResult(-1);
+
                 Settings.this.finish();
             }
         }));
@@ -92,5 +141,32 @@ public class Settings extends FragmentActivity {
         root.setPadding((int) getResources().getDimension(R.dimen.padding_round_small), 0, (int) getResources().getDimension(R.dimen.padding_round_small), (int) getResources().getDimension(R.dimen.padding_round_large));
         root.setClipToPadding(false);
         setContentView(root);
+    }
+
+    private void restartWatchFace(){
+        Log.w("DinoDevs-GreatFit", "Settigns, restarting watchface");
+
+        //stopService(new Intent(this, GreatFit.class));
+        //startService(new Intent(this, GreatFit.class));
+
+        //stopService(new Intent(this, GreatFitSlpt.class));
+        //startService(new Intent(this, GreatFitSlpt.class));
+
+
+        //Intent intent = new Intent("com.dinodevs.greatfitwatchface.GreatFit");
+        Intent intent = new Intent(getApplicationContext(), GreatFit.class);
+        intent.setPackage(getPackageName());
+        stopService(intent);
+        startService(intent);
+
+        //intent = new Intent("com.dinodevs.greatfitwatchface.GreatFitSlpt");
+        //intent = new Intent(getApplicationContext(), GreatFitSlpt.class);
+        //intent.setPackage(getPackageName());
+        //stopService(intent);
+        //startService(intent);
+
+        //Settings.this.sendBroadcast(new Intent("com.dinodevs.greatfitwatchface.GreatFit"));
+        //Settings.this.sendBroadcast(new Intent("com.dinodevs.greatfitwatchface.GreatFitSlpt"));
+
     }
 }

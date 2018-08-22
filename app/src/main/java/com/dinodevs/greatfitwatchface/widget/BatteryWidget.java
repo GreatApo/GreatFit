@@ -1,20 +1,26 @@
 package com.dinodevs.greatfitwatchface.widget;
 
 import android.app.Service;
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
 import android.text.TextPaint;
 import android.util.Log;
 
 import com.dinodevs.greatfitwatchface.settings.LoadSettings;
 import com.huami.watch.watchface.util.Util;
+import com.ingenic.iwds.slpt.view.arc.SlptPowerArcAnglePicView;
 import com.ingenic.iwds.slpt.view.core.SlptBatteryView;
 import com.ingenic.iwds.slpt.view.core.SlptLinearLayout;
+import com.ingenic.iwds.slpt.view.core.SlptPictureView;
 import com.ingenic.iwds.slpt.view.core.SlptViewComponent;
 import com.ingenic.iwds.slpt.view.sport.SlptPowerNumView;
 import com.ingenic.iwds.slpt.view.utils.SimpleFile;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -27,130 +33,220 @@ import com.dinodevs.greatfitwatchface.resource.ResourceManager;
 
 public class BatteryWidget extends AbstractWidget {
     private Battery batteryData;
-    private TextPaint batteryFont;
-    private Drawable batteryIcon0;
-    private Drawable batteryIcon10;
-    private Drawable batteryIcon20;
-    private Drawable batteryIcon30;
-    private Drawable batteryIcon40;
-    private Drawable batteryIcon50;
-    private Drawable batteryIcon60;
-    private Drawable batteryIcon70;
-    private Drawable batteryIcon80;
-    private Drawable batteryIcon90;
-    private Drawable batteryIcon100;
-    private Boolean batteryImgBool;
-    private float leftBattery;
-    private float topBattery;
-    private String[] numbers = new String[]{"0", "1", "2", "3", "4", "5", "6", "7", "8", "9"};
+    private Paint batteryPaint;
+    private Paint ring;
 
-    private String sBattery;
-    private int BatteryNum;
+    private Float batterySweepAngle = 0f;
+    private Integer angleLength;
+
+    private Bitmap batteryIcon;
+    private Bitmap icon;
+
+    private Integer tempBattery=0;
+
     private LoadSettings settings;
+    private Service mService;
 
+    // Constructor
     public BatteryWidget(LoadSettings settings) {
         this.settings = settings;
-    }
 
-    public void init(Service service) {
-        this.leftBattery = service.getResources().getDimension(R.dimen.battery_icon_left);
-        this.topBattery = service.getResources().getDimension(R.dimen.battery_icon_top);
-
-        this.batteryImgBool = service.getResources().getBoolean(R.bool.battery_icon);
-        if(this.batteryImgBool) {
-            this.batteryIcon0 = service.getResources().getDrawable(R.drawable.battery0, null);
-            this.batteryIcon10 = service.getResources().getDrawable(R.drawable.battery1, null);
-            this.batteryIcon20 = service.getResources().getDrawable(R.drawable.battery2, null);
-            this.batteryIcon30 = service.getResources().getDrawable(R.drawable.battery3, null);
-            this.batteryIcon40 = service.getResources().getDrawable(R.drawable.battery4, null);
-            this.batteryIcon50 = service.getResources().getDrawable(R.drawable.battery5, null);
-            this.batteryIcon60 = service.getResources().getDrawable(R.drawable.battery6, null);
-            this.batteryIcon70 = service.getResources().getDrawable(R.drawable.battery7, null);
-            this.batteryIcon80 = service.getResources().getDrawable(R.drawable.battery8, null);
-            this.batteryIcon90 = service.getResources().getDrawable(R.drawable.battery9, null);
-            this.batteryIcon100 = service.getResources().getDrawable(R.drawable.battery10, null);
-            this.batteryIcon0.setBounds((int) this.leftBattery, (int) this.topBattery, ((int) this.leftBattery) + batteryIcon0.getIntrinsicWidth(), ((int) this.topBattery) + batteryIcon0.getIntrinsicHeight());
-            this.batteryIcon10.setBounds((int) this.leftBattery, (int) this.topBattery, ((int) this.leftBattery) + batteryIcon10.getIntrinsicWidth(), ((int) this.topBattery) + batteryIcon10.getIntrinsicHeight());
-            this.batteryIcon20.setBounds((int) this.leftBattery, (int) this.topBattery, ((int) this.leftBattery) + batteryIcon20.getIntrinsicWidth(), ((int) this.topBattery) + batteryIcon20.getIntrinsicHeight());
-            this.batteryIcon30.setBounds((int) this.leftBattery, (int) this.topBattery, ((int) this.leftBattery) + batteryIcon30.getIntrinsicWidth(), ((int) this.topBattery) + batteryIcon30.getIntrinsicHeight());
-            this.batteryIcon40.setBounds((int) this.leftBattery, (int) this.topBattery, ((int) this.leftBattery) + batteryIcon40.getIntrinsicWidth(), ((int) this.topBattery) + batteryIcon40.getIntrinsicHeight());
-            this.batteryIcon50.setBounds((int) this.leftBattery, (int) this.topBattery, ((int) this.leftBattery) + batteryIcon50.getIntrinsicWidth(), ((int) this.topBattery) + batteryIcon50.getIntrinsicHeight());
-            this.batteryIcon60.setBounds((int) this.leftBattery, (int) this.topBattery, ((int) this.leftBattery) + batteryIcon60.getIntrinsicWidth(), ((int) this.topBattery) + batteryIcon60.getIntrinsicHeight());
-            this.batteryIcon70.setBounds((int) this.leftBattery, (int) this.topBattery, ((int) this.leftBattery) + batteryIcon70.getIntrinsicWidth(), ((int) this.topBattery) + batteryIcon70.getIntrinsicHeight());
-            this.batteryIcon80.setBounds((int) this.leftBattery, (int) this.topBattery, ((int) this.leftBattery) + batteryIcon80.getIntrinsicWidth(), ((int) this.topBattery) + batteryIcon80.getIntrinsicHeight());
-            this.batteryIcon90.setBounds((int) this.leftBattery, (int) this.topBattery, ((int) this.leftBattery) + batteryIcon90.getIntrinsicWidth(), ((int) this.topBattery) + batteryIcon90.getIntrinsicHeight());
-            this.batteryIcon100.setBounds((int) this.leftBattery, (int) this.topBattery, ((int) this.leftBattery) + batteryIcon100.getIntrinsicWidth(), ((int) this.topBattery) + batteryIcon100.getIntrinsicHeight());
+        if(!(settings.batteryProg>0 && settings.batteryProgType==0)){return;}
+        if(settings.batteryProgClockwise==1) {
+            this.angleLength = (settings.batteryProgEndAngle < settings.batteryProgStartAngle) ? 360 - (settings.batteryProgStartAngle - settings.batteryProgEndAngle) : settings.batteryProgEndAngle - settings.batteryProgStartAngle;
+        }else{
+            this.angleLength = (settings.batteryProgEndAngle > settings.batteryProgStartAngle) ? 360 - (settings.batteryProgStartAngle - settings.batteryProgEndAngle) : settings.batteryProgEndAngle - settings.batteryProgStartAngle;
         }
     }
 
-    public void onDataUpdate(DataType type, Object value) {
-        this.batteryData = (Battery) value;
+    // Screen-on init (runs once)
+    public void init(Service service) {
+        this.mService = service;
+
+        // Battery percent element
+        if(settings.battery_percent>0){
+            if(settings.battery_percentIcon){
+                this.icon = Util.decodeImage(mService.getResources(),"icons/battery.png");
+            }
+
+            this.batteryPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+            this.batteryPaint.setTypeface(ResourceManager.getTypeFace(service.getResources(), ResourceManager.Font.FONT_FILE));
+            this.batteryPaint.setTextSize(settings.battery_percentFontSize);
+            this.batteryPaint.setColor(settings.battery_percentColor);
+            this.batteryPaint.setTextAlign( (settings.battery_percentAlignLeft) ? Paint.Align.LEFT : Paint.Align.CENTER );
+        }
+
+        // Battery as images
+        if(settings.batteryProg>0 && settings.batteryProgType==1) {
+            this.batteryIcon = Util.decodeImage(mService.getResources(),"battery/battery0.png");
+        }
+
+        // Progress Bar Circle
+        if(settings.batteryProg>0 && settings.batteryProgType==0){
+            this.ring = new Paint(Paint.ANTI_ALIAS_FLAG);
+            this.ring.setStrokeCap(Paint.Cap.ROUND);
+            this.ring.setStyle(Paint.Style.STROKE);
+            this.ring.setStrokeWidth(settings.batteryProgThickness);
+        }
     }
 
+    // Value updater
+    public void onDataUpdate(DataType type, Object value) {
+        // Battery class
+        this.batteryData = (Battery) value;
+
+        if(this.batteryData == null){
+            return;
+        }
+
+        // Bar angle
+        if(settings.batteryProg>0 && settings.batteryProgType==0) {
+            this.batterySweepAngle = this.angleLength * (this.batteryData.getLevel() / (float) this.batteryData.getScale());
+        }
+
+        // Battery Image
+        if( this.tempBattery == this.batteryData.getLevel()/10 || !(settings.batteryProg>0 && settings.batteryProgType==1)){
+            return;
+        }
+        this.tempBattery = this.batteryData.getLevel()/10;
+
+        this.batteryIcon = Util.decodeImage(mService.getResources(),"battery/battery"+this.tempBattery+".png");
+    }
+
+    // Register update listeners
     public List<DataType> getDataTypes() {
         return Collections.singletonList(DataType.BATTERY);
     }
 
+    // Draw screen-on
     public void draw(Canvas canvas, float width, float height, float centerX, float centerY) {
-        if (this.batteryData != null && this.batteryImgBool) {
-            this.sBattery = String.format("%02d", new Object[]{Integer.valueOf((this.batteryData.getLevel() * 100) / this.batteryData.getScale())});
+        if (this.batteryData == null) {return;}
 
-            if (sBattery.equals("100")) {
-                this.batteryIcon100.draw(canvas);
-            } else {
-                if (sBattery.substring(0, 1).equals("0")) {
-                    this.batteryIcon0.draw(canvas);
-                }
-                if (sBattery.substring(0, 1).equals("1")) {
-                    this.batteryIcon10.draw(canvas);
-                }
-                if (sBattery.substring(0, 1).equals("2")) {
-                    this.batteryIcon20.draw(canvas);
-                }
-                if (sBattery.substring(0, 1).equals("3")) {
-                    this.batteryIcon30.draw(canvas);
-                }
-                if (sBattery.substring(0, 1).equals("4")) {
-                    this.batteryIcon40.draw(canvas);
-                }
-                if (sBattery.substring(0, 1).equals("5")) {
-                    this.batteryIcon50.draw(canvas);
-                }
-                if (sBattery.substring(0, 1).equals("6")) {
-                    this.batteryIcon60.draw(canvas);
-                }
-                if (sBattery.substring(0, 1).equals("7")) {
-                    this.batteryIcon70.draw(canvas);
-                }
-                if (sBattery.substring(0, 1).equals("8")) {
-                    this.batteryIcon80.draw(canvas);
-                }
-                if (sBattery.substring(0, 1).equals("9")) {
-                    this.batteryIcon90.draw(canvas);
-                }
+        // Battery % widget
+        if(settings.battery_percent>0){
+            if(settings.battery_percentIcon){
+                canvas.drawBitmap(this.icon, settings.battery_percentIconLeft, settings.battery_percentIconTop, settings.mGPaint);
             }
 
-            if(this.sBattery != null && this.sBattery.matches("[-+]?\\d*\\.?\\d+")) {
-                this.BatteryNum = Integer.parseInt(this.sBattery);
-            }else{
-                Log.w("DinoDevs-GreatFit", "battery value null or not a number ("+this.batteryData.getLevel()+" / "+this.batteryData.getScale()+")");
+            String text = Integer.toString(this.batteryData.getLevel() * 100 / this.batteryData.getScale())+"%";
+            canvas.drawText(text, settings.battery_percentLeft, settings.battery_percentTop, batteryPaint);
+        }
+
+        // Battery Progress Image
+        if(settings.batteryProg>0 && settings.batteryProgType==1) {
+            canvas.drawBitmap(this.batteryIcon, settings.batteryProgLeft, settings.batteryProgTop, settings.mGPaint);
+        }
+
+        // Battery bar
+        if(settings.batteryProg>0 && settings.batteryProgType==0) {
+            int count = canvas.save();
+
+            // Rotate canvas to 0 degrees = 12 o'clock
+            canvas.rotate(-90, centerX, centerY);
+
+            // Define circle
+            float radius = settings.batteryProgRadius - settings.batteryProgThickness;
+            RectF oval = new RectF(settings.batteryProgLeft - radius, settings.batteryProgTop - radius, settings.batteryProgLeft + radius, settings.batteryProgTop + radius);
+
+            // Background
+            if(settings.batteryProgBgBool) {
+                this.ring.setColor(Color.parseColor("#999999"));
+                canvas.drawArc(oval, settings.batteryProgStartAngle, this.angleLength, false, ring);
             }
+
+            this.ring.setColor(settings.colorCodes[settings.batteryProgColorIndex]);
+            canvas.drawArc(oval, settings.batteryProgStartAngle, this.batterySweepAngle, false, ring);
+
+            canvas.restoreToCount(count);
         }
     }
 
+    // Screen-off (SLPT)
     public List<SlptViewComponent> buildSlptViewComponent(Service service) {
-        int battery_steps = service.getResources().getInteger(R.integer.battery_steps);
-        byte[][] arrayOfByte = new byte[battery_steps][];
-        for (int i=0; i<arrayOfByte.length; i++){
-            arrayOfByte[i] = SimpleFile.readFileFromAssets(service, String.format("slpt_battery/battery%d.png", i));
+        return buildSlptViewComponent(service, false);
+    }
+
+    // Screen-off (SLPT) - Better screen quality
+    public List<SlptViewComponent> buildSlptViewComponent(Service service, boolean better_resolution) {
+        better_resolution = better_resolution && settings.better_resolution_when_raising_hand;
+        List<SlptViewComponent> slpt_objects = new ArrayList<>();
+        int tmp_left;
+
+        // Show battery
+        if(settings.battery_percent>0){
+            // Show or Not icon
+            if (settings.battery_percentIcon) {
+                SlptPictureView battery_percentIcon = new SlptPictureView();
+                battery_percentIcon.setImagePicture( SimpleFile.readFileFromAssets(service, ( (better_resolution)?"":"slpt_" )+"icons/battery.png") );
+                battery_percentIcon.setStart(
+                        (int) settings.battery_percentIconLeft,
+                        (int) settings.battery_percentIconTop
+                );
+                slpt_objects.add(battery_percentIcon);
+            }
+
+            SlptLinearLayout power = new SlptLinearLayout();
+            SlptPictureView percentage = new SlptPictureView();
+            percentage.setStringPicture("%");
+            power.add(new SlptPowerNumView());
+            power.add(percentage);
+            power.setTextAttrForAll(
+                    settings.battery_percentFontSize,
+                    settings.battery_percentColor,
+                    ResourceManager.getTypeFace(service.getResources(), ResourceManager.Font.FONT_FILE)
+            );
+            // Position based on screen on
+            power.alignX = 2;
+            power.alignY = 0;
+            tmp_left = (int) settings.battery_percentLeft;
+            if(!settings.battery_percentAlignLeft) {
+                // If text is centered, set rectangle
+                power.setRect(
+                        (int) (2 * tmp_left + 640),
+                        (int) settings.battery_percentFontSize
+                );
+                tmp_left = -320;
+            }
+            power.setStart(
+                    tmp_left,
+                    (int) (settings.battery_percentTop-((float)settings.font_ratio/100)*settings.battery_percentFontSize)
+            );
+            slpt_objects.add(power);
         }
 
-        SlptBatteryView localSlptBatteryView = new SlptBatteryView(battery_steps);
-        localSlptBatteryView.setImagePictureArray(arrayOfByte);
-        localSlptBatteryView.setStart((int) service.getResources().getDimension(R.dimen.battery_icon_left), (int) service.getResources().getDimension(R.dimen.battery_icon_top));
+        // Battery as images
+        if(settings.batteryProg>0 && settings.batteryProgType==1) {
+            int battery_steps = 11;
+            byte[][] arrayOfByte = new byte[battery_steps][];
+            for (int i = 0; i < arrayOfByte.length; i++) {
+                arrayOfByte[i] = SimpleFile.readFileFromAssets(service, String.format(((better_resolution) ? "" : "slpt_") + "battery/battery%d.png", i));
+            }
+            SlptBatteryView localSlptBatteryView = new SlptBatteryView(battery_steps);
+            localSlptBatteryView.setImagePictureArray(arrayOfByte);
+            localSlptBatteryView.setStart((int) settings.batteryProgLeft, (int) settings.batteryProgTop);
+            slpt_objects.add(localSlptBatteryView);
+        }
 
-        if(!service.getResources().getBoolean(R.bool.battery_icon)){localSlptBatteryView.show=false;}
+        // Battery bar
+        if(settings.batteryProg>0 && settings.batteryProgType==0){
+            // Draw background image
+            if(settings.batteryProgBgBool) {
+                SlptPictureView ring_background = new SlptPictureView();
+                ring_background.setImagePicture(SimpleFile.readFileFromAssets(service, ( (better_resolution)?"":"slpt_" )+"circles/ring1_bg.png"));
+                ring_background.setStart((int) (settings.batteryProgLeft-settings.batteryProgRadius), (int) (settings.batteryProgTop-settings.batteryProgRadius));
+                slpt_objects.add(ring_background);
+            }
 
-        return Arrays.asList(new SlptViewComponent[]{localSlptBatteryView});
+            SlptPowerArcAnglePicView localSlptPowerArcAnglePicView = new SlptPowerArcAnglePicView();
+            localSlptPowerArcAnglePicView.setImagePicture(SimpleFile.readFileFromAssets(service, ( (better_resolution)?"":"slpt_" )+settings.batteryProgSlptImage));
+            localSlptPowerArcAnglePicView.setStart((int) (settings.batteryProgLeft-settings.batteryProgRadius), (int) (settings.batteryProgTop-settings.batteryProgRadius));
+            localSlptPowerArcAnglePicView.start_angle = (settings.batteryProgClockwise==1)? settings.batteryProgStartAngle : settings.batteryProgEndAngle;
+            localSlptPowerArcAnglePicView.len_angle = 0;
+            localSlptPowerArcAnglePicView.full_angle = (settings.batteryProgClockwise==1)? this.angleLength : -this.angleLength;
+            localSlptPowerArcAnglePicView.draw_clockwise = settings.batteryProgClockwise;
+            slpt_objects.add(localSlptPowerArcAnglePicView);
+        }
+
+        return slpt_objects;
     }
 }

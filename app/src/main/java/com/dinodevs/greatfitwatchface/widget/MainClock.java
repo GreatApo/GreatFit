@@ -1,6 +1,9 @@
 package com.dinodevs.greatfitwatchface.widget;
 
 import android.app.Service;
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Typeface;
@@ -8,6 +11,7 @@ import android.graphics.drawable.Drawable;
 import android.text.TextPaint;
 import android.widget.Toast;
 
+import com.dinodevs.greatfitwatchface.AbstractWatchFace;
 import com.dinodevs.greatfitwatchface.resource.SlptSecondHView;
 import com.dinodevs.greatfitwatchface.resource.SlptSecondLView;
 import com.dinodevs.greatfitwatchface.settings.LoadSettings;
@@ -30,6 +34,7 @@ import com.ingenic.iwds.slpt.view.digital.SlptYear1View;
 import com.ingenic.iwds.slpt.view.digital.SlptYear2View;
 import com.ingenic.iwds.slpt.view.digital.SlptYear3View;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
@@ -51,43 +56,10 @@ public class MainClock extends DigitalClockWidget {
     private TextPaint monthFont;
     private TextPaint yearFont;
 
-    private boolean secondsBool;
-    private boolean indicatorBool;
-    private boolean indicatorFlashBool;
-    private boolean dateBool;
-    private boolean weekdayBool;
-    private boolean dayBool;
-    private boolean monthBool;
-    private boolean month_as_textBool;
-    private boolean three_letters_month_if_textBool;
-    private boolean yearBool;
-    private boolean three_letters_day_if_textBool;
-    private boolean dateAlignLeftBool;
-    private boolean weekdayAlignLeftBool;
-    private boolean dayAlignLeftBool;
-    private boolean monthAlignLeftBool;
-    private boolean yearAlignLeftBool;
-    private boolean no_0_on_hour_first_digit;
+    private Bitmap dateIcon;
 
-    private Drawable background;
-    private float leftHour;
-    private float topHour;
-    private float leftMinute;
-    private float topMinute;
-    private float leftSeconds;
-    private float topSeconds;
-    private float leftIndicator;
-    private float topIndicator;
-    private float leftDate;
-    private float topDate;
-    private float leftDay;
-    private float topDay;
-    private float leftMonth;
-    private float topMonth;
-    private float leftWeekday;
-    private float topWeekday;
-    private float leftYear;
-    private float topYear;
+    //private Drawable background;
+    private Bitmap background;
 
     private String[] digitalNums = {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9"};
     private String[] digitalNumsNo0 = {"", "1", "2", "3", "4", "5", "6", "7", "8", "9"};//no 0 on first digit
@@ -186,6 +158,7 @@ public class MainClock extends DigitalClockWidget {
     };
 
     private LoadSettings settings;
+    private Service mService;
 
     public MainClock(LoadSettings settings) {
         this.settings = settings;
@@ -193,476 +166,481 @@ public class MainClock extends DigitalClockWidget {
 
     @Override
     public void init(Service service) {
+        this.mService = service;
 
         // Please do not change the following line
-        Toast.makeText(service, "Code by GreatApo, style by "+service.getResources().getString(R.string.author), Toast.LENGTH_LONG).show();
+        Toast.makeText(service, "Source code by GreatApo, style by "+service.getResources().getString(R.string.author), Toast.LENGTH_LONG).show();
 
-        /*
-        this.settings = new APsettings(MainClock.class.getName(), service);
-        this.language = this.settings.get("lang", this.language) % this.codes.length;
-        this.palette = this.settings.getInt("palette",this.palette);
-        */
-
-        this.background = service.getResources().getDrawable(R.drawable.background);
-        this.background.setBounds(0, 0, 320, 300);
-
-        this.leftHour = service.getResources().getDimension(R.dimen.hours_left);
-        this.topHour = service.getResources().getDimension(R.dimen.hours_top);
-        this.leftMinute = service.getResources().getDimension(R.dimen.minutes_left);
-        this.topMinute = service.getResources().getDimension(R.dimen.minutes_top);
-        this.leftSeconds = service.getResources().getDimension(R.dimen.seconds_left);
-        this.topSeconds = service.getResources().getDimension(R.dimen.seconds_top);
-        this.leftIndicator = service.getResources().getDimension(R.dimen.indicator_left);
-        this.topIndicator = service.getResources().getDimension(R.dimen.indicator_top);
-        this.leftDate = service.getResources().getDimension(R.dimen.date_left);
-        this.topDate = service.getResources().getDimension(R.dimen.date_top);
-        this.leftDay = service.getResources().getDimension(R.dimen.day_left);
-        this.topDay = service.getResources().getDimension(R.dimen.day_top);
-        this.leftMonth = service.getResources().getDimension(R.dimen.month_left);
-        this.topMonth = service.getResources().getDimension(R.dimen.month_top);
-        this.leftWeekday = service.getResources().getDimension(R.dimen.weekday_left);
-        this.topWeekday = service.getResources().getDimension(R.dimen.weekday_top);
-        this.leftYear = service.getResources().getDimension(R.dimen.year_left);
-        this.topYear = service.getResources().getDimension(R.dimen.year_top);
+        //this.background = service.getResources().getDrawable(R.drawable.background); //todo
+        //this.background.setBounds(0, 0, 320, 300);
+        this.background = Util.decodeImage(service.getResources(),"background.png");
 
         this.hourFont = new TextPaint(TextPaint.ANTI_ALIAS_FLAG);
         this.hourFont.setTypeface(ResourceManager.getTypeFace(service.getResources(), ResourceManager.Font.FONT_FILE));
-        this.hourFont.setTextSize(service.getResources().getDimension(R.dimen.hours_font_size));
-        //this.hourFont.setColor(service.getResources().getColor(R.color.hour_colour));
-        this.hourFont.setColor((settings.sltp_circle_color>0)?settings.colorCodes[settings.sltp_circle_color-1]:service.getResources().getColor(R.color.hour_colour));
-        this.hourFont.setTextAlign(Paint.Align.CENTER);
+        this.hourFont.setTextSize(settings.hoursFontSize);
+        this.hourFont.setColor(settings.hoursColor);
+        this.hourFont.setTextAlign((settings.hoursAlignLeft)? Paint.Align.LEFT : Paint.Align.CENTER);
 
         this.minutesFont = new TextPaint(TextPaint.ANTI_ALIAS_FLAG);
         this.minutesFont.setTypeface(ResourceManager.getTypeFace(service.getResources(), ResourceManager.Font.FONT_FILE));
-        this.minutesFont.setTextSize(service.getResources().getDimension(R.dimen.minutes_font_size));
-        this.minutesFont.setColor(service.getResources().getColor(R.color.minute_colour));
-        this.minutesFont.setTextAlign(Paint.Align.CENTER);
+        this.minutesFont.setTextSize(settings.minutesFontSize);
+        this.minutesFont.setColor(settings.minutesColor);
+        this.minutesFont.setTextAlign((settings.minutesAlignLeft)? Paint.Align.LEFT : Paint.Align.CENTER);
 
-        this.secondsBool = service.getResources().getBoolean(R.bool.seconds);
         this.secondsFont = new TextPaint(TextPaint.ANTI_ALIAS_FLAG);
         this.secondsFont.setTypeface(ResourceManager.getTypeFace(service.getResources(), ResourceManager.Font.FONT_FILE));
-        this.secondsFont.setTextSize(service.getResources().getDimension(R.dimen.seconds_font_size));
-        this.secondsFont.setColor(service.getResources().getColor(R.color.seconds_colour));
-        this.secondsFont.setTextAlign(Paint.Align.CENTER);
+        this.secondsFont.setTextSize(settings.secondsFontSize);
+        this.secondsFont.setColor(settings.secondsColor);
+        this.secondsFont.setTextAlign((settings.secondsAlignLeft)? Paint.Align.LEFT : Paint.Align.CENTER);
 
-        this.indicatorBool = service.getResources().getBoolean(R.bool.indicator);
-        this.indicatorFlashBool = service.getResources().getBoolean(R.bool.flashing_indicator);
         this.indicatorFont = new TextPaint(TextPaint.ANTI_ALIAS_FLAG);
         this.indicatorFont.setTypeface(ResourceManager.getTypeFace(service.getResources(), ResourceManager.Font.FONT_FILE));
-        this.indicatorFont.setTextSize(service.getResources().getDimension(R.dimen.indicator_font_size));
-        this.indicatorFont.setColor(service.getResources().getColor(R.color.indicator_colour));
-        this.indicatorFont.setTextAlign(Paint.Align.CENTER);
+        this.indicatorFont.setTextSize(settings.indicatorFontSize);
+        this.indicatorFont.setColor(settings.indicatorColor);
+        this.indicatorFont.setTextAlign((settings.indicatorAlignLeft)? Paint.Align.LEFT : Paint.Align.CENTER);
 
-        this.dateBool = service.getResources().getBoolean(R.bool.date);
-        this.dateAlignLeftBool = service.getResources().getBoolean(R.bool.date_left_align);
-        this.dateFont = new TextPaint(TextPaint.ANTI_ALIAS_FLAG);
-        this.dateFont.setTypeface(ResourceManager.getTypeFace(service.getResources(), ResourceManager.Font.FONT_FILE));
-        this.dateFont.setTextSize(service.getResources().getDimension(R.dimen.date_font_size));
-        this.dateFont.setColor(service.getResources().getColor(R.color.date_colour));
-        this.dateFont.setTextAlign( (this.dateAlignLeftBool) ? Paint.Align.LEFT : Paint.Align.CENTER );
+        if(settings.date>0) {
+            this.dateFont = new TextPaint(TextPaint.ANTI_ALIAS_FLAG);
+            this.dateFont.setTypeface(ResourceManager.getTypeFace(service.getResources(), ResourceManager.Font.FONT_FILE));
+            this.dateFont.setTextSize(settings.dateFontSize);
+            this.dateFont.setColor(settings.dateColor);
+            this.dateFont.setTextAlign((settings.dateAlignLeft) ? Paint.Align.LEFT : Paint.Align.CENTER);
+            if (settings.dateIcon) {
+                this.dateIcon = Util.decodeImage(service.getResources(), "icons/date.png");
+            }
+        }
 
-        this.weekdayBool = service.getResources().getBoolean(R.bool.week_name);
-        this.three_letters_day_if_textBool = service.getResources().getBoolean(R.bool.three_letters_day_if_text);
-        this.weekdayAlignLeftBool = service.getResources().getBoolean(R.bool.weekday_left_align);
         this.weekdayFont = new TextPaint(TextPaint.ANTI_ALIAS_FLAG);
         this.weekdayFont.setTypeface(ResourceManager.getTypeFace(service.getResources(), ResourceManager.Font.FONT_FILE));
-        this.weekdayFont.setTextSize(service.getResources().getDimension(R.dimen.weekday_font_size));
-        this.weekdayFont.setColor(service.getResources().getColor(R.color.weekday_colour));
-        this.weekdayFont.setTextAlign( (this.weekdayAlignLeftBool) ? Paint.Align.LEFT : Paint.Align.CENTER );
+        this.weekdayFont.setTextSize(settings.weekdayFontSize);
+        this.weekdayFont.setColor(settings.weekdayColor);
+        this.weekdayFont.setTextAlign( (settings.weekdayAlignLeft) ? Paint.Align.LEFT : Paint.Align.CENTER );
 
-        this.dayBool = service.getResources().getBoolean(R.bool.day);
-        this.dayAlignLeftBool = service.getResources().getBoolean(R.bool.day_left_align);
         this.dayFont = new TextPaint(TextPaint.ANTI_ALIAS_FLAG);
         this.dayFont.setTypeface(ResourceManager.getTypeFace(service.getResources(), ResourceManager.Font.FONT_FILE));
-        this.dayFont.setTextSize(service.getResources().getDimension(R.dimen.day_font_size));
-        this.dayFont.setColor(service.getResources().getColor(R.color.day_colour));
-        this.dayFont.setTextAlign( (this.dayAlignLeftBool) ? Paint.Align.LEFT : Paint.Align.CENTER );
+        this.dayFont.setTextSize(settings.dayFontSize);
+        this.dayFont.setColor(settings.dayColor);
+        this.dayFont.setTextAlign( (settings.dayAlignLeft) ? Paint.Align.LEFT : Paint.Align.CENTER );
 
-        this.monthBool = service.getResources().getBoolean(R.bool.month);
-        this.month_as_textBool = service.getResources().getBoolean(R.bool.month_as_text);
-        this.three_letters_month_if_textBool = service.getResources().getBoolean(R.bool.three_letters_month_if_text);
-        this.monthAlignLeftBool = service.getResources().getBoolean(R.bool.month_left_align);
         this.monthFont = new TextPaint(TextPaint.ANTI_ALIAS_FLAG);
         this.monthFont.setTypeface(ResourceManager.getTypeFace(service.getResources(), ResourceManager.Font.FONT_FILE));
-        this.monthFont.setTextSize(service.getResources().getDimension(R.dimen.month_font_size));
-        this.monthFont.setColor(service.getResources().getColor(R.color.month_colour));
-        this.monthFont.setTextAlign( (this.monthAlignLeftBool) ? Paint.Align.LEFT : Paint.Align.CENTER );
+        this.monthFont.setTextSize(settings.monthFontSize);
+        this.monthFont.setColor(settings.monthColor);
+        this.monthFont.setTextAlign( (settings.monthAlignLeft) ? Paint.Align.LEFT : Paint.Align.CENTER );
 
-        this.yearBool = service.getResources().getBoolean(R.bool.year);
-        this.yearAlignLeftBool = service.getResources().getBoolean(R.bool.year_left_align);
         this.yearFont = new TextPaint(TextPaint.ANTI_ALIAS_FLAG);
         this.yearFont.setTypeface(ResourceManager.getTypeFace(service.getResources(), ResourceManager.Font.FONT_FILE));
-        this.yearFont.setTextSize(service.getResources().getDimension(R.dimen.year_font_size));
-        this.yearFont.setColor(service.getResources().getColor(R.color.year_colour));
-        this.yearFont.setTextAlign( (this.yearAlignLeftBool) ? Paint.Align.LEFT : Paint.Align.CENTER );
-
-        this.no_0_on_hour_first_digit = service.getResources().getBoolean(R.bool.no_0_on_hour_first_digit);
+        this.yearFont.setTextSize(settings.yearFontSize);
+        this.yearFont.setColor(settings.yearColor);
+        this.yearFont.setTextAlign( (settings.yearAlignLeft) ? Paint.Align.LEFT : Paint.Align.CENTER );
     }
 
     // Screen open watch mode
     @Override
     public void onDrawDigital(Canvas canvas, float width, float height, float centerX, float centerY, int seconds, int minutes, int hours, int year, int month, int day, int week, int ampm) {
+        // Check if watchface needs to be restarted
+        SharedPreferences sharedPreferences = mService.getSharedPreferences(mService.getPackageName()+"_settings", Context.MODE_PRIVATE);
+        if(sharedPreferences.getBoolean("restart_watchface", false)){
+            sharedPreferences.edit().putBoolean("restart_watchface", false).apply();
+            ((AbstractWatchFace) this.mService).restartWatchface();
+        }
+
         // Draw background image
-        this.background.draw(canvas);
+        //this.background.draw(canvas);
+        canvas.drawBitmap(this.background, 0f, 0f, settings.mGPaint);
 
         // Draw hours
-        canvas.drawText( (this.no_0_on_hour_first_digit)?hours+"":Util.formatTime(hours), this.leftHour, this.topHour, this.hourFont);
+        canvas.drawText( (settings.no_0_on_hour_first_digit)?hours+"":Util.formatTime(hours), settings.hoursLeft, settings.hoursTop, this.hourFont);
 
         // Draw minutes
-        canvas.drawText(Util.formatTime(minutes), this.leftMinute, this.topMinute, this.minutesFont);
+        canvas.drawText(Util.formatTime(minutes), settings.minutesLeft, settings.minutesTop, this.minutesFont);
 
         // JAVA calendar get/show time library
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.DAY_OF_WEEK, week);
 
         // Draw Date
-        if(this.dateBool) {
-            String date = Util.formatTime(day)+"."+Util.formatTime(month)+"."+Integer.toString(year);//String.format("%02d.%02d.%02d", day, month, year);
-            canvas.drawText(date, leftDate, topDate, this.dateFont);
+        if(settings.date>0) {
+            if(settings.dateIcon){
+                canvas.drawBitmap(this.dateIcon, settings.dateIconLeft, settings.dateIconTop, settings.mGPaint);
+            }
+
+            String date = Util.formatTime(day)+"."+Util.formatTime(month)+"."+Integer.toString(year);
+            canvas.drawText(date, settings.dateLeft, settings.dateTop, this.dateFont);
         }
 
         // Draw Day
-        if(this.dayBool) {
+        if(settings.dayBool) {
             String dayText = Util.formatTime(day);
-            canvas.drawText(dayText, leftDay, topDay, this.dayFont);
+            canvas.drawText(dayText, settings.dayLeft, settings.dayTop, this.dayFont);
         }
 
         // Get + Draw WeekDay (using JAVA)
-        if(this.weekdayBool) {
+        if(settings.weekdayBool) {
             //String weekday = String.format("%S", new SimpleDateFormat("EE").format(calendar.getTime()));
             int weekdaynum = calendar.get(Calendar.DAY_OF_WEEK)-1;
-            String weekday = (this.three_letters_day_if_textBool)? days_3let[settings.language][weekdaynum] : days[settings.language][weekdaynum] ;
-            canvas.drawText(weekday, leftWeekday, topWeekday, this.weekdayFont);
+            String weekday = (settings.three_letters_day_if_text)? days_3let[settings.language][weekdaynum] : days[settings.language][weekdaynum] ;
+            canvas.drawText(weekday, settings.weekdayLeft, settings.weekdayTop, this.weekdayFont);
         }
 
         // Draw Month
-        if(this.monthBool) {
-            String monthText = (this.month_as_textBool)? ( (this.three_letters_month_if_textBool)? months_3let[settings.language][month] : months[settings.language][month] ) : String.format("%02d", month) ;
-            canvas.drawText(monthText, leftMonth, topMonth, this.monthFont);
+        if(settings.monthBool) {
+            String monthText = (settings.month_as_text)? ( (settings.three_letters_month_if_text)? months_3let[settings.language][month] : months[settings.language][month] ) : String.format("%02d", month) ;
+            canvas.drawText(monthText, settings.monthLeft, settings.monthTop, this.monthFont);
         }
 
         // Draw Year
-        if(this.yearBool) {
-            canvas.drawText(Integer.toString(year), leftYear, topYear, this.yearFont);
+        if(settings.yearBool) {
+            canvas.drawText(Integer.toString(year), settings.yearLeft, settings.yearTop, this.yearFont);
         }
 
         // Draw Seconds
-        if(this.secondsBool) {
-            canvas.drawText(Util.formatTime(seconds), leftSeconds, topSeconds, this.secondsFont);
+        if(settings.secondsBool) {
+            canvas.drawText(Util.formatTime(seconds), settings.secondsLeft, settings.secondsTop, this.secondsFont);
         }
 
         // : indicator Draw + Flashing
-        if(this.indicatorBool) {
+        if(settings.indicatorBool) {
             String indicator = ":";
-            if (seconds % 2 == 0 || !this.indicatorFlashBool) { // Draw only on even seconds (flashing : symbol)
-                canvas.drawText(indicator, this.leftIndicator, this.topIndicator, this.indicatorFont);
+            if (seconds % 2 == 0 || !settings.flashing_indicator) { // Draw only on even seconds (flashing : symbol)
+                canvas.drawText(indicator, settings.indicatorLeft, settings.indicatorTop, this.indicatorFont);
             }
         }
     }
 
 
-
     // Screen locked/closed watch mode (Slpt mode)
     @Override
     public List<SlptViewComponent> buildSlptViewComponent(Service service) {
-        //Load Settings
-        /*
-        this.settings = new APsettings(MainClock.class.getName(), service);
-        this.language = this.settings.get("lang", this.language) % this.codes.length;
-        this.palette = this.settings.getInt("palette",this.palette);
-        */
-        this.secondsBool = service.getResources().getBoolean(R.bool.seconds);
+        return buildSlptViewComponent(service, false);
+    }
+
+    public List<SlptViewComponent> buildSlptViewComponent(Service service, boolean better_resolution) {
+        better_resolution = better_resolution && settings.better_resolution_when_raising_hand;
+
         int tmp_left;
+        List<SlptViewComponent> slpt_objects = new ArrayList<>();
 
         // Draw background image
         SlptPictureView background = new SlptPictureView();
-        background.setImagePicture(SimpleFile.readFileFromAssets(service, "background_splt.png"));
+        background.setImagePicture(SimpleFile.readFileFromAssets(service, "background"+ ((better_resolution)?"_better":"") +"_slpt.png"));
+        slpt_objects.add(background);
 
         // Set font
         Typeface timeTypeFace = ResourceManager.getTypeFace(service.getResources(), ResourceManager.Font.FONT_FILE);
 
         // Draw hours
-        SlptLinearLayout hourLayout = new SlptLinearLayout();
-        if(service.getResources().getBoolean(R.bool.no_0_on_hour_first_digit)) {// No 0 on first digit
-            SlptViewComponent firstDigit = new SlptHourHView();
-            ((SlptNumView) firstDigit).setStringPictureArray(digitalNumsNo0);
-            hourLayout.add(firstDigit);
-            SlptViewComponent secondDigit = new SlptHourLView();
-            ((SlptNumView) secondDigit).setStringPictureArray(digitalNums);
-            hourLayout.add(secondDigit);
-        }else{
-            hourLayout.add(new SlptHourHView());
-            hourLayout.add(new SlptHourLView());
-            hourLayout.setStringPictureArrayForAll(this.digitalNums);
+        if(settings.hoursBool){
+            SlptLinearLayout hourLayout = new SlptLinearLayout();
+            if(settings.no_0_on_hour_first_digit) {// No 0 on first digit
+                SlptViewComponent firstDigit = new SlptHourHView();
+                ((SlptNumView) firstDigit).setStringPictureArray(this.digitalNumsNo0);
+                hourLayout.add(firstDigit);
+                SlptViewComponent secondDigit = new SlptHourLView();
+                ((SlptNumView) secondDigit).setStringPictureArray(this.digitalNums);
+                hourLayout.add(secondDigit);
+            }else{
+                hourLayout.add(new SlptHourHView());
+                hourLayout.add(new SlptHourLView());
+                hourLayout.setStringPictureArrayForAll(this.digitalNums);
+            }
+            hourLayout.setTextAttrForAll(
+                    settings.hoursFontSize,
+                    settings.hoursColor,
+                    timeTypeFace
+            );
+            // Position based on screen on
+            hourLayout.alignX = 2;
+            hourLayout.alignY=0;
+            hourLayout.setRect(
+                    (int) (2*settings.hoursLeft+640),
+                    (int) (settings.hoursFontSize)
+            );
+            hourLayout.setStart(
+                    -320,
+                    (int) (settings.hoursTop-((float)settings.font_ratio/100)*settings.hoursFontSize)
+            );
+            //Add it to the list
+            slpt_objects.add(hourLayout);
         }
-        hourLayout.setTextAttrForAll(
-                service.getResources().getDimension(R.dimen.hours_font_size),
-                (settings.sltp_circle_color>0)?settings.colorCodes[settings.sltp_circle_color-1]:service.getResources().getColor(R.color.hour_colour_slpt),
-                timeTypeFace
-        );
-        // Position based on screen on
-        hourLayout.alignX = 2;
-        hourLayout.alignY=0;
-        hourLayout.setRect(
-                (int) (2*service.getResources().getDimension(R.dimen.hours_left)+640),
-                (int) (service.getResources().getDimension(R.dimen.hours_font_size))
-        );
-        hourLayout.setStart(
-                -320,
-                (int) (service.getResources().getDimension(R.dimen.hours_top)-((float)service.getResources().getInteger(R.integer.font_ratio)/100)*service.getResources().getDimension(R.dimen.hours_font_size))
-        );
 
         // Draw minutes
-        SlptLinearLayout minuteLayout = new SlptLinearLayout();
-        minuteLayout.add(new SlptMinuteHView());
-        minuteLayout.add(new SlptMinuteLView());
-        minuteLayout.setStringPictureArrayForAll(this.digitalNums);
-        minuteLayout.setTextAttrForAll(
-                service.getResources().getDimension(R.dimen.minutes_font_size),
-                service.getResources().getColor(R.color.minute_colour_slpt),
-                timeTypeFace
-        );
-        // Position based on screen on
-        minuteLayout.alignX = 2;
-        minuteLayout.alignY=0;
-        minuteLayout.setRect(
-                (int) (2*service.getResources().getDimension(R.dimen.minutes_left)+640),
-                (int) (service.getResources().getDimension(R.dimen.minutes_font_size))
-        );
-        minuteLayout.setStart(
-                -320,
-                (int) (service.getResources().getDimension(R.dimen.minutes_top)-((float)service.getResources().getInteger(R.integer.font_ratio)/100)*service.getResources().getDimension(R.dimen.minutes_font_size))
-        );
+        if(settings.minutesBool){
+            SlptLinearLayout minuteLayout = new SlptLinearLayout();
+            minuteLayout.add(new SlptMinuteHView());
+            minuteLayout.add(new SlptMinuteLView());
+            minuteLayout.setStringPictureArrayForAll(this.digitalNums);
+            minuteLayout.setTextAttrForAll(
+                    settings.minutesFontSize,
+                    settings.minutesColor,
+                    timeTypeFace
+            );
+            // Position based on screen on
+            minuteLayout.alignX = 2;
+            minuteLayout.alignY=0;
+            minuteLayout.setRect(
+                    (int) (2*settings.minutesLeft+640),
+                    (int) (settings.minutesFontSize)
+            );
+            minuteLayout.setStart(
+                    -320,
+                    (int) (settings.minutesTop-((float)settings.font_ratio/100)*settings.minutesFontSize)
+            );
+            //Add it to the list
+            slpt_objects.add(minuteLayout);
+        }
 
         // Draw indicator
-        SlptLinearLayout indicatorLayout = new SlptLinearLayout();
-        SlptPictureView colon = new SlptPictureView();
-        colon.setStringPicture(":");
-        indicatorLayout.add(colon);
-        indicatorLayout.setTextAttrForAll(
-                service.getResources().getDimension(R.dimen.indicator_font_size),
-                service.getResources().getColor(R.color.indicator_colour_slpt),
-                timeTypeFace
-        );
-        // Position based on screen on
-        indicatorLayout.alignX = 2;
-        indicatorLayout.alignY=0;
-        indicatorLayout.setRect(
-                (int) (2*service.getResources().getDimension(R.dimen.indicator_left)+640),
-                (int) (service.getResources().getDimension(R.dimen.indicator_font_size))
-        );
-        indicatorLayout.setStart(
-                -320,
-                (int) (service.getResources().getDimension(R.dimen.indicator_top)-((float)service.getResources().getInteger(R.integer.font_ratio)/100)*service.getResources().getDimension(R.dimen.indicator_font_size))
-        );
-        // Hide if disabled
-        if(!service.getResources().getBoolean(R.bool.indicator)){indicatorLayout.show=false;}
+        if(settings.indicatorBool){
+            SlptLinearLayout indicatorLayout = new SlptLinearLayout();
+            SlptPictureView colon = new SlptPictureView();
+            colon.setStringPicture(":");
+            indicatorLayout.add(colon);
+            indicatorLayout.setTextAttrForAll(
+                    settings.indicatorFontSize,
+                    settings.indicatorColor,
+                    timeTypeFace
+            );
+            // Position based on screen on
+            indicatorLayout.alignX = 2;
+            indicatorLayout.alignY=0;
+            indicatorLayout.setRect(
+                    (int) (2*settings.indicatorLeft+640),
+                    (int) (settings.indicatorFontSize)
+            );
+            indicatorLayout.setStart(
+                    -320,
+                    (int) (settings.indicatorTop-((float)settings.font_ratio/100)*settings.indicatorFontSize)
+            );
+            //Add it to the list
+            slpt_objects.add(indicatorLayout);
+        }
 
         // Draw Seconds
-        SlptLinearLayout secondsLayout = new SlptLinearLayout();
-        secondsLayout.add(new SlptSecondHView());
-        secondsLayout.add(new SlptSecondLView());
-        secondsLayout.setTextAttrForAll(
-                service.getResources().getDimension(R.dimen.seconds_font_size),
-                service.getResources().getColor(R.color.seconds_colour_slpt),
-                ResourceManager.getTypeFace(service.getResources(), ResourceManager.Font.FONT_FILE)
-        );
-        // If Seconds are enabled
-        if(!this.secondsBool) {secondsLayout.show = false;}
-        // Position based on screen on
-        secondsLayout.alignX = 2;
-        secondsLayout.alignY = 0;
-        secondsLayout.setRect(
-                (int) (2*service.getResources().getDimension(R.dimen.seconds_left)+640),
-                (int) (service.getResources().getDimension(R.dimen.seconds_font_size))
-        );
-        secondsLayout.setStart(
-                -320,
-                (int) (service.getResources().getDimension(R.dimen.seconds_top)-((float)service.getResources().getInteger(R.integer.font_ratio)/100)*service.getResources().getDimension(R.dimen.seconds_font_size))
-        );
-
-        // Set . string
-        SlptPictureView point = new SlptPictureView();
-        point.setStringPicture(".");
-        SlptPictureView point2 = new SlptPictureView();
-        point2.setStringPicture(".");
+        if(settings.secondsBool){
+            SlptLinearLayout secondsLayout = new SlptLinearLayout();
+            secondsLayout.add(new SlptSecondHView());
+            secondsLayout.add(new SlptSecondLView());
+            secondsLayout.setTextAttrForAll(
+                    settings.secondsFontSize,
+                    settings.secondsColor,
+                    ResourceManager.getTypeFace(service.getResources(), ResourceManager.Font.FONT_FILE)
+            );
+            // Position based on screen on
+            secondsLayout.alignX = 2;
+            secondsLayout.alignY = 0;
+            secondsLayout.setRect(
+                    (int) (2*settings.secondsLeft+640),
+                    (int) (settings.secondsFontSize)
+            );
+            secondsLayout.setStart(
+                    -320,
+                    (int) (settings.secondsTop-((float)settings.font_ratio/100)*settings.secondsFontSize)
+            );
+            //Add it to the list
+            slpt_objects.add(secondsLayout);
+        }
 
         // Draw DATE (30.12.2018)
-        SlptLinearLayout dateLayout = new SlptLinearLayout();
-        dateLayout.add(new SlptDayHView());
-        dateLayout.add(new SlptDayLView());
-        dateLayout.add(point);//add .
-        dateLayout.add(new SlptMonthHView());
-        dateLayout.add(new SlptMonthLView());
-        dateLayout.add(point2);//add .
-        dateLayout.add(new SlptYear3View());
-        dateLayout.add(new SlptYear2View());
-        dateLayout.add(new SlptYear1View());
-        dateLayout.add(new SlptYear0View());
-        dateLayout.setTextAttrForAll(
-                service.getResources().getDimension(R.dimen.date_font_size),
-                service.getResources().getColor(R.color.date_colour_slpt),
-                timeTypeFace);
-        // Position based on screen on
-        dateLayout.alignX = 2;
-        dateLayout.alignY = 0;
-        tmp_left = (int) service.getResources().getDimension(R.dimen.date_left);
-        if(!service.getResources().getBoolean(R.bool.date_left_align)) {
-            // If text is centered, set rectangle
-            dateLayout.setRect(
-                    (int) (2 * tmp_left + 640),
-                    (int) (service.getResources().getDimension(R.dimen.date_font_size))
-            );
-            tmp_left = -320;
-        }
-        dateLayout.setStart(
-                tmp_left,
-                (int) (service.getResources().getDimension(R.dimen.date_top)-((float)service.getResources().getInteger(R.integer.font_ratio)/100)*service.getResources().getDimension(R.dimen.date_font_size))
-        );
-        // Hide if disabled
-        if(!service.getResources().getBoolean(R.bool.date)){dateLayout.show=false;}
+        if(settings.date>0){
+            // Show or Not icon
+            if (settings.dateIcon) {
+                SlptPictureView dateIcon = new SlptPictureView();
+                dateIcon.setImagePicture( SimpleFile.readFileFromAssets(service, ( (better_resolution)?"":"slpt_" )+"icons/date.png") );
+                dateIcon.setStart(
+                        (int) settings.dateIconLeft,
+                        (int) settings.dateIconTop
+                );
+                slpt_objects.add(dateIcon);
+            }
 
+            // Set . string
+            SlptPictureView point = new SlptPictureView();
+            point.setStringPicture(".");
+            SlptPictureView point2 = new SlptPictureView();
+            point2.setStringPicture(".");
+
+            SlptLinearLayout dateLayout = new SlptLinearLayout();
+            dateLayout.add(new SlptDayHView());
+            dateLayout.add(new SlptDayLView());
+            dateLayout.add(point);//add .
+            dateLayout.add(new SlptMonthHView());
+            dateLayout.add(new SlptMonthLView());
+            dateLayout.add(point2);//add .
+            dateLayout.add(new SlptYear3View());
+            dateLayout.add(new SlptYear2View());
+            dateLayout.add(new SlptYear1View());
+            dateLayout.add(new SlptYear0View());
+            dateLayout.setTextAttrForAll(
+                    settings.dateFontSize,
+                    settings.dateColor,
+                    timeTypeFace);
+            // Position based on screen on
+            dateLayout.alignX = 2;
+            dateLayout.alignY = 0;
+            tmp_left = (int) settings.dateLeft;
+            if(!settings.dateAlignLeft) {
+                // If text is centered, set rectangle
+                dateLayout.setRect(
+                        (int) (2 * tmp_left + 640),
+                        (int) (settings.dateFontSize)
+                );
+                tmp_left = -320;
+            }
+            dateLayout.setStart(
+                    tmp_left,
+                    (int) (settings.dateTop-((float)settings.font_ratio/100)*settings.dateFontSize)
+            );
+            //Add it to the list
+            slpt_objects.add(dateLayout);
+        }
 
         // Draw day of month
-        SlptLinearLayout dayLayout = new SlptLinearLayout();
-        dayLayout.add(new SlptDayHView());
-        dayLayout.add(new SlptDayLView());
-        dayLayout.setTextAttrForAll(
-                service.getResources().getDimension(R.dimen.day_font_size),
-                service.getResources().getColor(R.color.day_colour_slpt),
-                timeTypeFace);
-        // Position based on screen on
-        dayLayout.alignX = 2;
-        dayLayout.alignY = 0;
-        tmp_left = (int) service.getResources().getDimension(R.dimen.day_left);
-        if(!service.getResources().getBoolean(R.bool.day_left_align)) {
-            // If text is centered, set rectangle
-            dayLayout.setRect(
-                    (int) (2 * tmp_left + 640),
-                    (int) (service.getResources().getDimension(R.dimen.day_font_size))
+        if(settings.dayBool){
+            SlptLinearLayout dayLayout = new SlptLinearLayout();
+            dayLayout.add(new SlptDayHView());
+            dayLayout.add(new SlptDayLView());
+            dayLayout.setTextAttrForAll(
+                    settings.dayFontSize,
+                    settings.dayColor,
+                    timeTypeFace);
+            // Position based on screen on
+            dayLayout.alignX = 2;
+            dayLayout.alignY = 0;
+            tmp_left = (int) settings.dayLeft;
+            if(!settings.dayAlignLeft) {
+                // If text is centered, set rectangle
+                dayLayout.setRect(
+                        (int) (2 * tmp_left + 640),
+                        (int) (settings.dayFontSize)
+                );
+                tmp_left = -320;
+            }
+            dayLayout.setStart(
+                    tmp_left,
+                    (int) (settings.dayTop-((float)settings.font_ratio/100)*settings.dayFontSize)
             );
-            tmp_left = -320;
+            //Add it to the list
+            slpt_objects.add(dayLayout);
         }
-        dayLayout.setStart(
-                tmp_left,
-                (int) (service.getResources().getDimension(R.dimen.day_top)-((float)service.getResources().getInteger(R.integer.font_ratio)/100)*service.getResources().getDimension(R.dimen.day_font_size))
-        );
-        // Hide if disabled
-        if(!service.getResources().getBoolean(R.bool.day)){dayLayout.show=false;}
-
 
         // Draw month
-        SlptLinearLayout monthLayout = new SlptLinearLayout();
-        //monthLayout.add(new SlptMonthHView());
-        monthLayout.add(new SlptMonthLView());
-        // Fix 00 type of month
-            // JAVA calendar get/show time library
-            Calendar calendar = Calendar.getInstance();
-            int month = calendar.get(Calendar.MONTH);
-            if(month>=9){
-                months_3let[2] = months_3let[0];
-                months_3let[0] = months_3let[10];
-                months_3let[1] = months_3let[11];
-                months[2] = months_3let[0];
-                months[0] = months_3let[10];
-                months[1] = months_3let[11];
+        if(settings.monthBool){
+            SlptLinearLayout monthLayout = new SlptLinearLayout();
+            //monthLayout.add(new SlptMonthHView());
+            monthLayout.add(new SlptMonthLView());
+            // Fix 00 type of month
+                // JAVA calendar get/show time library
+                Calendar calendar = Calendar.getInstance();
+                int month = calendar.get(Calendar.MONTH);
+                if(month>=9){
+                    months_3let[2] = months_3let[0];
+                    months_3let[0] = months_3let[10];
+                    months_3let[1] = months_3let[11];
+                    months[2] = months_3let[0];
+                    months[0] = months_3let[10];
+                    months[1] = months_3let[11];
+                }
+            if(settings.month_as_text) { // if as text
+                if (service.getResources().getBoolean(R.bool.three_letters_month_if_text)) {
+                    monthLayout.setStringPictureArrayForAll(months_3let[settings.language]);
+                } else {
+                    monthLayout.setStringPictureArrayForAll(months[settings.language]);
+                }
             }
-        if(service.getResources().getBoolean(R.bool.month_as_text)) { // if as text
-            if (service.getResources().getBoolean(R.bool.three_letters_month_if_text)) {
-                monthLayout.setStringPictureArrayForAll(months_3let[settings.language]);
-            } else {
-                monthLayout.setStringPictureArrayForAll(months[settings.language]);
+            monthLayout.setTextAttrForAll(
+                    settings.monthFontSize,
+                    settings.monthColor,
+                    timeTypeFace);
+            // Position based on screen on
+            monthLayout.alignX = 2;
+            monthLayout.alignY = 0;
+            tmp_left = (int) settings.monthLeft;
+            if(!settings.monthAlignLeft) {
+                // If text is centered, set rectangle
+                monthLayout.setRect(
+                        (int) (2 * tmp_left + 640),
+                        (int) (settings.monthFontSize)
+                );
+                tmp_left = -320;
             }
-        }
-        monthLayout.setTextAttrForAll(
-                service.getResources().getDimension(R.dimen.month_font_size),
-                service.getResources().getColor(R.color.month_colour_slpt),
-                timeTypeFace);
-        // Position based on screen on
-        monthLayout.alignX = 2;
-        monthLayout.alignY = 0;
-        tmp_left = (int) service.getResources().getDimension(R.dimen.month_left);
-        if(!service.getResources().getBoolean(R.bool.month_left_align)) {
-            // If text is centered, set rectangle
-            monthLayout.setRect(
-                    (int) (2 * tmp_left + 640),
-                    (int) (service.getResources().getDimension(R.dimen.month_font_size))
+            monthLayout.setStart(
+                    tmp_left,
+                    (int) (settings.monthTop-((float)settings.font_ratio/100)*settings.monthFontSize)
             );
-            tmp_left = -320;
+            //Add it to the list
+            slpt_objects.add(monthLayout);
         }
-        monthLayout.setStart(
-                tmp_left,
-                (int) (service.getResources().getDimension(R.dimen.month_top)-((float)service.getResources().getInteger(R.integer.font_ratio)/100)*service.getResources().getDimension(R.dimen.month_font_size))
-        );
-        // Hide if disabled
-        if(!service.getResources().getBoolean(R.bool.month)){monthLayout.show=false;}
 
         // Draw year number
-        SlptLinearLayout yearLayout = new SlptLinearLayout();
-        yearLayout.add(new SlptYear3View());
-        yearLayout.add(new SlptYear2View());
-        yearLayout.add(new SlptYear1View());
-        yearLayout.add(new SlptYear0View());
-        yearLayout.setTextAttrForAll(
-                service.getResources().getDimension(R.dimen.year_font_size),
-                service.getResources().getColor(R.color.year_colour_slpt),
-                timeTypeFace
-        );
-        // Position based on screen on
-        yearLayout.alignX = 2;
-        yearLayout.alignY = 0;
-        tmp_left = (int) service.getResources().getDimension(R.dimen.year_left);
-        if(!service.getResources().getBoolean(R.bool.year_left_align)) {
-            // If text is centered, set rectangle
-            yearLayout.setRect(
-                    (int) (2 * tmp_left + 640),
-                    (int) (service.getResources().getDimension(R.dimen.year_font_size))
+        if(settings.yearBool){
+            SlptLinearLayout yearLayout = new SlptLinearLayout();
+            yearLayout.add(new SlptYear3View());
+            yearLayout.add(new SlptYear2View());
+            yearLayout.add(new SlptYear1View());
+            yearLayout.add(new SlptYear0View());
+            yearLayout.setTextAttrForAll(
+                    settings.yearFontSize,
+                    settings.yearColor,
+                    timeTypeFace
             );
-            tmp_left = -320;
+            // Position based on screen on
+            yearLayout.alignX = 2;
+            yearLayout.alignY = 0;
+            tmp_left = (int) settings.yearLeft;
+            if(!settings.yearAlignLeft) {
+                // If text is centered, set rectangle
+                yearLayout.setRect(
+                        (int) (2 * tmp_left + 640),
+                        (int) (settings.yearFontSize)
+                );
+                tmp_left = -320;
+            }
+            yearLayout.setStart(
+                    tmp_left,
+                    (int) (settings.yearTop-((float)settings.font_ratio/100)*settings.yearFontSize)
+            );
+            //Add it to the list
+            slpt_objects.add(yearLayout);
         }
-        yearLayout.setStart(
-                tmp_left,
-                (int) (service.getResources().getDimension(R.dimen.year_top)-((float)service.getResources().getInteger(R.integer.font_ratio)/100)*service.getResources().getDimension(R.dimen.year_font_size))
-        );
-        // Hide if disabled
-        if(!service.getResources().getBoolean(R.bool.year)){yearLayout.show=false;}
-
 
         // Set day name font
         Typeface weekfont = ResourceManager.getTypeFace(service.getResources(), ResourceManager.Font.FONT_FILE);
 
         // Draw day name
-        SlptLinearLayout WeekdayLayout = new SlptLinearLayout();
-        WeekdayLayout.add(new SlptWeekView());
-        if(service.getResources().getBoolean(R.bool.three_letters_day_if_text)){
-            WeekdayLayout.setStringPictureArrayForAll(days_3let[settings.language]);
-        }else{
-            WeekdayLayout.setStringPictureArrayForAll(days[settings.language]);
-        }
-        WeekdayLayout.setTextAttrForAll(
-                service.getResources().getDimension(R.dimen.weekday_font_size),
-                service.getResources().getColor(R.color.weekday_colour_slpt),
-                weekfont
-        );
-        // Position based on screen on
-        WeekdayLayout.alignX = 2;
-        WeekdayLayout.alignY = 0;
-        tmp_left = (int) service.getResources().getDimension(R.dimen.weekday_left);
-        if(!service.getResources().getBoolean(R.bool.weekday_left_align)) {
-            // If text is centered, set rectangle
-            WeekdayLayout.setRect(
-                    (int) (2 * tmp_left + 640),
-                    (int) (service.getResources().getDimension(R.dimen.weekday_font_size))
+        if(settings.weekdayBool){
+            SlptLinearLayout WeekdayLayout = new SlptLinearLayout();
+            WeekdayLayout.add(new SlptWeekView());
+            if(settings.three_letters_day_if_text){
+                WeekdayLayout.setStringPictureArrayForAll(days_3let[settings.language]);
+            }else{
+                WeekdayLayout.setStringPictureArrayForAll(days[settings.language]);
+            }
+            WeekdayLayout.setTextAttrForAll(
+                    settings.weekdayFontSize,
+                    settings.weekdayColor,
+                    weekfont
             );
-            tmp_left = -320;
+            // Position based on screen on
+            WeekdayLayout.alignX = 2;
+            WeekdayLayout.alignY = 0;
+            tmp_left = (int) settings.weekdayLeft;
+            if(!settings.weekdayAlignLeft) {
+                // If text is centered, set rectangle
+                WeekdayLayout.setRect(
+                        (int) (2 * tmp_left + 640),
+                        (int) (settings.weekdayFontSize)
+                );
+                tmp_left = -320;
+            }
+            WeekdayLayout.setStart(
+                    tmp_left,
+                    (int) (settings.weekdayTop-((float)settings.font_ratio/100)*settings.weekdayFontSize)
+            );
+            //Add it to the list
+            slpt_objects.add(WeekdayLayout);
         }
-        WeekdayLayout.setStart(
-                tmp_left,
-                (int) (service.getResources().getDimension(R.dimen.weekday_top)-((float)service.getResources().getInteger(R.integer.font_ratio)/100)*service.getResources().getDimension(R.dimen.weekday_font_size))
-        );
-        // Hide if disabled
-        if(!service.getResources().getBoolean(R.bool.week_name)){WeekdayLayout.show=false;}
 
-        return Arrays.asList(background, hourLayout, minuteLayout, indicatorLayout, secondsLayout, dateLayout, dayLayout, monthLayout, WeekdayLayout, yearLayout);
+        return slpt_objects;
     }
 }

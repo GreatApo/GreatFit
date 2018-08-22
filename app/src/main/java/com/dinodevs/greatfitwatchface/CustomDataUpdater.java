@@ -74,8 +74,10 @@ public class CustomDataUpdater extends Service {
     Runnable customRefresher = new Runnable(){
         @Override
         public void run() {
-            if(airPressureBool) {
-                updateAirPressure();
+            if(android.provider.Settings.System.getString(getContentResolver(), "slptName").equals("GreatFitSlpt")) {
+                if (airPressureBool) {
+                    updateAirPressure();
+                }
             }
             mHandler.postDelayed(customRefresher, custom_refresh_rate);
         }

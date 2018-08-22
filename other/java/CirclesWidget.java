@@ -9,6 +9,7 @@ import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 
 import com.dinodevs.greatfitwatchface.settings.LoadSettings;
+import com.ingenic.iwds.slpt.view.arc.SlptArcAnglePicView;
 import com.ingenic.iwds.slpt.view.arc.SlptPowerArcAnglePicView;
 import com.ingenic.iwds.slpt.view.arc.SlptTodayDistanceArcAnglePicView;
 import com.ingenic.iwds.slpt.view.arc.SlptTodayStepArcAnglePicView;
@@ -289,6 +290,12 @@ public class CirclesWidget extends AbstractWidget {
     // SLTP mode (Screen off)
     @Override
     public List<SlptViewComponent> buildSlptViewComponent(Service service) {
+        return buildSlptViewComponent(service, false);
+    }
+
+    public List<SlptViewComponent> buildSlptViewComponent(Service service, boolean better_resolution) {
+        better_resolution = better_resolution && settings.better_resolution_when_raising_hand;
+
         // Variables
         List<SlptViewComponent> slpt_objects = new ArrayList<>();
         int tmp_left;
@@ -448,7 +455,7 @@ public class CirclesWidget extends AbstractWidget {
         if(settings.circlesBackgroundBool) {
             SlptPictureView ring_background = new SlptPictureView();
             if (count_widgets == 1) {
-                ring_background.setImagePicture(SimpleFile.readFileFromAssets(service, "slpt_circles/ring1_splt_bg.png"));
+                ring_background.setImagePicture(SimpleFile.readFileFromAssets(service, "slpt_circles/ring1"+ ((better_resolution)?"_better":"") +"_splt_bg.png"));
             } else if (count_widgets == 2) {
                 ring_background.setImagePicture(SimpleFile.readFileFromAssets(service, "slpt_circles/ring2_splt_bg.png"));
             } else {

@@ -1,23 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- battery circle -->
-    <integer name="battery_circle_start_angle">207</integer>
-    <integer name="battery_circle_len_angle">0</integer>
-    <integer name="battery_circle_full_angle">306</integer>
-    <!-- steps circle -->
-    <integer name="steps_circle_start_angle">207</integer>
-    <integer name="steps_circle_len_angle">0</integer>
-    <integer name="steps_circle_full_angle">306</integer>
-    <!-- today distance circle -->
-    <integer name="today_distance_circle_start_angle">207</integer>
-    <integer name="today_distance_circle_len_angle">0</integer>
-    <integer name="today_distance_circle_full_angle">306</integer>
-
     <!-- progress bars circle sltp palette -->
     <integer name="sltp_circle_color">1</integer><!-- 1=red, 2=light blue, 3=green, 4=purple, 5=white, 6=yellow, 7=black, 8=grey -->
-
-    <!-- slpt battery steps -->
-    <integer name="battery_steps">11</integer><!-- how many battery images in the assets folder -->
 
     <!-- slpt position compartibility -->
     <integer name="font_ratio">75</integer><!-- /100, font height center point ratio -->

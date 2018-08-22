@@ -26,7 +26,7 @@ public class Time {
         // Fix am/pm if not given
         if(this.ampm < 0 || this.ampm > 1){
             Calendar now = Calendar.getInstance();
-            this.ampm = (now.get(Calendar.HOUR_OF_DAY) <= 12)?0:1;
+            this.ampm = (now.get(Calendar.HOUR_OF_DAY) < 12)?0:1;
         }
         this.secondsStr = getStrSeconds(seconds);
 

@@ -9,14 +9,29 @@
     <string name="reset">Reset</string>
     <string name="main_color">Main color</string>
     <string name="main_color_c">Select watchface color</string>
-    <string name="elements">Elements</string>
-    <string name="elements_c">Enable/Disable elements of the watchface</string>
+    <string name="other_features">Other features</string>
+    <string name="other_features_c">Enable/Disable special features</string>
+    <string name="widget">Widget</string>
+    <string name="widget_c">Select widget to display</string>
+    <string name="progress_widget">Bar</string>
+    <string name="progress_widget_c">Select progress bar to display</string>
     <string name="language">Language</string>
     <string name="language_c">Select display language</string>
 
-    <string name="set_elements">Set elements</string>
+    <string name="set_elements">Set widget</string>
+    <string name="set_progress_bar">Set bar</string>
     <string name="set_color">Set color</string>
     <string name="set_language">Set language</string>
+
+    <string name="moreBattery">Will use more battery</string>
+    <string name="needAmazmod">Amazmod service is needed</string>
+    <string name="needXdrip">Xdrip by Klaus3d3 is needed</string>
+    <string name="emptyWidget">Leave widget position empty</string>
+    <string name="totalSportDistance">Total distance in sports</string>
+    <string name="todaySportDistance">Today distance in sports</string>
+    <string name="needsContinueHeartRate">Needs continue heart rate ON</string>
+    <string name="dateFormat">Show date as dd.mm.yyyy</string>
+    <string name="nextWatchAlarm">Next watch\'s alarm (Day-Time)</string>
 
     <!-- Widgets -->
     <string name="seconds">seconds</string>
