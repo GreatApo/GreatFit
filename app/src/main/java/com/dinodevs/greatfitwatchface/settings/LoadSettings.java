@@ -65,6 +65,9 @@ public class LoadSettings {
     public boolean three_letters_month_if_text;
     public boolean three_letters_day_if_text;
     public boolean no_0_on_hour_first_digit;
+    public boolean wind_direction_as_arrows;
+    public boolean status_bar;
+    public boolean flashing_heart_rate_icon;
     public Paint mGPaint;
     public List widgets_list;
     public List circle_bars_list;
@@ -420,6 +423,10 @@ public class LoadSettings {
             this.three_letters_month_if_text = sharedPreferences.getBoolean( "three_letters_month_if_text", context.getResources().getBoolean(R.bool.three_letters_month_if_text));
             this.three_letters_day_if_text = sharedPreferences.getBoolean( "three_letters_day_if_text", context.getResources().getBoolean(R.bool.three_letters_day_if_text));
             this.no_0_on_hour_first_digit = sharedPreferences.getBoolean( "no_0_on_hour_first_digit", context.getResources().getBoolean(R.bool.no_0_on_hour_first_digit));
+            this.wind_direction_as_arrows = sharedPreferences.getBoolean( "wind_direction_as_arrows", context.getResources().getBoolean(R.bool.wind_direction_as_arrows));
+            this.status_bar = sharedPreferences.getBoolean( "status_bar", context.getResources().getBoolean(R.bool.status_bar));
+            this.flashing_heart_rate_icon = sharedPreferences.getBoolean( "flashing_heart_rate_icon", context.getResources().getBoolean(R.bool.flashing_heart_rate_icon));
+
             //icon paint
             this.mGPaint = new Paint();
             mGPaint.setAntiAlias(false);

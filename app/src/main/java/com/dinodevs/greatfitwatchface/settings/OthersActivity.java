@@ -8,6 +8,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.widget.CompoundButton;
 import android.widget.SeekBar;
+import android.widget.Toast;
 
 import com.dinodevs.greatfitwatchface.R;
 
@@ -75,6 +76,30 @@ public class OthersActivity extends FragmentActivity {
             }
         }, no_0_on_hour_first_digit));
 
+        final boolean wind_direction_as_arrows = sharedPreferences.getBoolean( "wind_direction_as_arrows", getResources().getBoolean(R.bool.wind_direction_as_arrows));
+        settings.add(new SwitchSetting(null, "Wind as arrows", "Wind direction as arrows", new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                sharedPreferences.edit().putBoolean( "wind_direction_as_arrows", b).apply();
+            }
+        }, wind_direction_as_arrows));
+
+        final boolean status_bar = sharedPreferences.getBoolean( "status_bar", getResources().getBoolean(R.bool.status_bar));
+        settings.add(new SwitchSetting(null, "Show status bar", "Status bar (charging icon etc)", new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                sharedPreferences.edit().putBoolean( "status_bar", b).apply();
+            }
+        }, status_bar));
+
+        final boolean flashing_heart_rate_icon = sharedPreferences.getBoolean( "flashing_heart_rate_icon", getResources().getBoolean(R.bool.flashing_heart_rate_icon));
+        settings.add(new SwitchSetting(null, "Animate heart rate", "Flashing heart rate icon", new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                sharedPreferences.edit().putBoolean( "flashing_heart_rate_icon", b).apply();
+            }
+        }, flashing_heart_rate_icon));
+
         final int target_calories = sharedPreferences.getInt( "target_calories", 1000);
         settings.add(new SeekbarSetting(null, "Target calories", new SeekBar.OnSeekBarChangeListener() {
             @Override
@@ -86,6 +111,7 @@ public class OthersActivity extends FragmentActivity {
             }
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
+                Toast.makeText(seekBar.getContext(), "Target: "+seekBar.getProgress(), Toast.LENGTH_SHORT).show();
             }
         }, target_calories, 2000));
 

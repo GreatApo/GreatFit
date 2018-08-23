@@ -100,9 +100,9 @@ class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
             //Icon, setup icon, click listener and title
             SeekbarSetting seekbarSetting = (SeekbarSetting) setting;
             //holder.icon.setImageDrawable(seekbarSetting.icon);
-            holder.sb.setProgress(seekbarSetting.current);
             holder.sb.incrementProgressBy(100);
             holder.sb.setMax(seekbarSetting.max);
+            holder.sb.setProgress(seekbarSetting.current);
             holder.sb.setOnSeekBarChangeListener(seekbarSetting.onChangeListener);
             holder.title.setText(seekbarSetting.title);
             holder.subtitle.setText(seekbarSetting.subtitle);
