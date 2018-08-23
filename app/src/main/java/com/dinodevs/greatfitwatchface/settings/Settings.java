@@ -110,6 +110,7 @@ public class Settings extends FragmentActivity {
             public void onClick(View view) {
                 // Restart watchface
                 Settings.this.sendBroadcast(new Intent("com.huami.intent.action.WATCHFACE_CONFIG_CHANGED"));
+                startService(new Intent(getApplicationContext(), GreatFitSlpt.class));
                 // Kill this
                 Settings.this.setResult(-1);
                 Settings.this.finish();
