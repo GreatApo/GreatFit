@@ -1,10 +1,3 @@
-# Watchface for Amazfit smartwatch
-
-Tutorial/Documentation:
-https://forum.xda-developers.com/smartwatch/amazfit/tutorial-create-apk-watchfaces-coding-t3822221
-
-
-
 [![latest release](https://img.shields.io/badge/latest%20release-v3.0.3-green.svg?style=flat-square)](https://github.com/GreatApo/GreatFit/releases/latest)
 
 # GreatFit: Amazfit Pace/Stratos APK Watchface sources
