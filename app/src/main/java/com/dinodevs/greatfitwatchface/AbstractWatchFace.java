@@ -140,7 +140,8 @@ public abstract class AbstractWatchFace extends com.huami.watch.watchface.Abstra
     }
 
     public void restartWatchface(){
-        AbstractWatchFace.this.finish();
+        System.out.println("Greatfit AbstractWatchFace ***** restartWatchface");
+        this.restartSlpt();
         stopService(new Intent(this, GreatFit.class));
     }
 }

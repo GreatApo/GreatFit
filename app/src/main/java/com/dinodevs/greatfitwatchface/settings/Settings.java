@@ -113,7 +113,7 @@ public class Settings extends FragmentActivity {
                 // Set watchface
                 sharedPreferences.edit().putBoolean("restart_watchface", true).apply();
                 //restartWatchFace();
-                //Settings.this.sendBroadcast(new Intent("com.huami.intent.action.WATCHFACE_CONFIG_CHANGED"));
+                Settings.this.sendBroadcast(new Intent("com.huami.intent.action.WATCHFACE_CONFIG_CHANGED"));
                 //LocalChangedReceiver.restartWatchFace(getApplicationContext());
 
                 Settings.this.setResult(-1);
@@ -128,8 +128,8 @@ public class Settings extends FragmentActivity {
                 sharedPreferences.edit().clear().apply();
                 Toast.makeText(view.getContext(), "Settings reset", Toast.LENGTH_SHORT).show();
                 Settings.this.sendBroadcast(new Intent("com.huami.intent.action.WATCHFACE_CONFIG_CHANGED"));
-                Settings.this.setResult(-1);
 
+                Settings.this.setResult(-1);
                 Settings.this.finish();
             }
         }));
