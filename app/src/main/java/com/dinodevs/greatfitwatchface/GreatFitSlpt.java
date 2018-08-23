@@ -7,11 +7,12 @@ import android.util.Log;
 import com.dinodevs.greatfitwatchface.settings.LoadSettings;
 import com.dinodevs.greatfitwatchface.widget.BatteryWidget;
 import com.dinodevs.greatfitwatchface.widget.CaloriesWidget;
-import com.dinodevs.greatfitwatchface.widget.CirclesWidget;
 import com.dinodevs.greatfitwatchface.widget.FloorWidget;
 import com.dinodevs.greatfitwatchface.widget.HeartRateWidget;
 import com.dinodevs.greatfitwatchface.widget.MainClock;
 import com.dinodevs.greatfitwatchface.widget.GreatWidget;
+import com.dinodevs.greatfitwatchface.widget.SportTodayDistanceWidget;
+import com.dinodevs.greatfitwatchface.widget.StepsWidget;
 import com.dinodevs.greatfitwatchface.widget.WeatherWidget;
 import com.dinodevs.greatfitwatchface.widget.Widget;
 import com.huami.watch.watchface.util.Util;
@@ -38,11 +39,17 @@ public class GreatFitSlpt extends AbstractWatchFaceSlpt {
 
         this.clock = new MainClock(settings);
 
-        if(settings.isCircles()) {
-            this.widgets.add(new CirclesWidget(settings));
-        }
+        //if(settings.isCircles()) {
+        //    this.widgets.add(new CirclesWidget(settings));
+        //}
         if(settings.isHeartRate()) {
             this.widgets.add(new HeartRateWidget(settings));
+        }
+        if(settings.isStepsRate()) {
+            this.widgets.add(new StepsWidget(settings));
+        }
+        if(settings.isTodayDistanceRate()) {
+            this.widgets.add(new SportTodayDistanceWidget(settings));
         }
         if(settings.isCalories()) {
             this.widgets.add(new CaloriesWidget(settings));
@@ -66,16 +73,14 @@ public class GreatFitSlpt extends AbstractWatchFaceSlpt {
     @Override
     protected SlptLayout createClockLayout26WC() {
         SlptAbsoluteLayout result = new SlptAbsoluteLayout();
-        for (SlptViewComponent component : clock.buildSlptViewComponent(this)) {
+        for (SlptViewComponent component : clock.buildSlptViewComponent(this, true)) {
             result.add(component);
         }
         for (Widget widget : widgets) {
-            for (SlptViewComponent component : widget.buildSlptViewComponent(this)) {
+            for (SlptViewComponent component : widget.buildSlptViewComponent(this, true)) {
                 result.add(component);
             }
         }
-
-        //Log.w("DinoDevs-GreatFit", "Rebuild 26WC");
 
         return result;
     }
@@ -91,8 +96,6 @@ public class GreatFitSlpt extends AbstractWatchFaceSlpt {
                 result.add(component);
             }
         }
-
-        //Log.w("DinoDevs-GreatFit", "Rebuild 8C");
 
         return result;
     }

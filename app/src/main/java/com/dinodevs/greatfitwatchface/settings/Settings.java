@@ -10,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Toast;
 
+import com.dinodevs.greatfitwatchface.GreatFitSlpt;
 import com.dinodevs.greatfitwatchface.R;
 
 import java.util.ArrayList;
@@ -29,12 +30,22 @@ public class Settings extends FragmentActivity {
         RecyclerView root = new RecyclerView(this);
         final SharedPreferences sharedPreferences = getSharedPreferences(getPackageName()+"_settings", Context.MODE_PRIVATE);
 
+        // Load settings
+        LoadSettings watchface_settings = new LoadSettings(getApplicationContext());
+        if(sharedPreferences.getString("widgets", null)==null) {
+            sharedPreferences.edit().putString("widgets", watchface_settings.widgets_list.toString()).apply();
+        }
+        if(sharedPreferences.getString("progress_bars", null)==null) {
+            sharedPreferences.edit().putString("progress_bars", watchface_settings.circle_bars_list.toString()).apply();
+        }
+
         //Add header to a list of settings
         List<BaseSetting> settings = new ArrayList<>();
 
-        //Add IconSettings for each sub-setting. They contain an icon, title and subtitle, as well as a click action to launch the sub-setting's activity
+        // Add IconSettings for each sub-setting. They contain an icon, title and subtitle, as well as a click action to launch the sub-setting's activity
         settings.add(new HeaderSetting(getString(R.string.settings)));
 
+        // Add color selection
         settings.add(new IconSetting(getDrawable(R.drawable.palette), getString(R.string.main_color), getString(R.string.main_color_c), new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -42,13 +53,40 @@ public class Settings extends FragmentActivity {
             }
         }, null));
 
-        settings.add(new IconSetting(getDrawable(R.drawable.widgets), getString(R.string.elements), getString(R.string.elements_c), new View.OnClickListener() {
+        // Add other features
+        settings.add(new IconSetting(getDrawable(R.drawable.gear), getString(R.string.other_features), getString(R.string.other_features_c), new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(Settings.this, WidgetsActivity.class));
+                startActivity(new Intent(Settings.this, OthersActivity.class));
             }
         }, null));
 
+        // One for each widget
+        for (int i=0; i<watchface_settings.widgets_list.size(); i++) {
+            final int j = i;
+            settings.add(new IconSetting(getDrawable(R.drawable.widgets), getString(R.string.widget)+" "+(i+1), getString(R.string.widget_c), new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    sharedPreferences.edit().putInt( "temp_widget", j).apply();
+                    startActivity(new Intent(Settings.this, WidgetsActivity.class));
+                }
+            }, null));
+        }
+
+        // One for each progress widget
+        for (int i=0; i<watchface_settings.circle_bars_list.size(); i++) {
+            final int j = i;
+
+            settings.add(new IconSetting(getDrawable(R.drawable.progress), getString(R.string.progress_widget)+" "+(i+1), getString(R.string.progress_widget_c), new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    sharedPreferences.edit().putInt( "temp_progress_bars", j).apply();
+                    startActivity(new Intent(Settings.this, ProgressWidgetsActivity.class));
+                }
+            }, null));
+        }
+
+        // Add language
         settings.add(new IconSetting(getDrawable(R.drawable.language), getString(R.string.language), getString(R.string.language_c), new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -60,14 +98,11 @@ public class Settings extends FragmentActivity {
         settings.add(new ButtonSetting(getString(R.string.save), getDrawable(R.drawable.green_button), new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // Do settings stuff here
-
-                // Set watchface
-                //Intent intent = new Intent("com.dinodevs.greatfitwatchface.GreatFitSlpt");
-                //finish();
-                //Settings.this.sendBroadcast(new Intent("com.dinodevs.greatfitwatchface.GreatFitSlpt"));
+                // Restart watchface
                 Settings.this.sendBroadcast(new Intent("com.huami.intent.action.WATCHFACE_CONFIG_CHANGED"));
-
+                // Slpt some times doesn't run
+                startService(new Intent(getApplicationContext(), GreatFitSlpt.class));
+                // Kill this
                 Settings.this.setResult(-1);
                 Settings.this.finish();
             }
@@ -79,7 +114,11 @@ public class Settings extends FragmentActivity {
             public void onClick(View view) {
                 sharedPreferences.edit().clear().apply();
                 Toast.makeText(view.getContext(), "Settings reset", Toast.LENGTH_SHORT).show();
+                // Restart watchface
                 Settings.this.sendBroadcast(new Intent("com.huami.intent.action.WATCHFACE_CONFIG_CHANGED"));
+                // Slpt some times doesn't run
+                startService(new Intent(getApplicationContext(), GreatFitSlpt.class));
+                // Kill this
                 Settings.this.setResult(-1);
                 Settings.this.finish();
             }

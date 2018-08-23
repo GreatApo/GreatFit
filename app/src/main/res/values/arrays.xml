@@ -1,47 +1,316 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string-array name="days">
-        <item>@string/sunday</item>
-        <item>@string/monday</item>
-        <item>@string/tuesday</item>
-        <item>@string/wednesday</item>
-        <item>@string/thursday</item>
-        <item>@string/friday</item>
-        <item>@string/saturday</item>
+
+    <!-- Constant Elements -->
+    <array name="hours">
+        <item name="font_size">190px</item> <!-- font size -->
+        <item name="left">110px</item> <!-- position top -->
+        <item name="top">226px</item> <!-- position left -->
+        <item name="color">#ff0000</item> <!-- color -->
+        <item name="align_left">false</item> <!-- align left -->
+    </array>
+    <!-- ":" -->
+    <!-- <array name="indicator">
+       <item name="font_size">91px</item>
+       <item name="left">158px</item>
+       <item name="top">139px</item>
+       <item name="color">#fff</item>
+       <item name="align_left">false</item>
+    </array> -->
+    <array name="minutes">
+        <item name="font_size">130px</item>
+        <item name="left">220px</item>
+        <item name="top">184px</item>
+        <item name="color">#fff</item>
+        <item name="align_left">false</item> <!-- not supported -->
+    </array>
+    <array name="seconds">
+       <item name="font_size">32px</item>
+       <item name="left">282px</item>
+       <item name="top">140px</item>
+       <item name="color">#fff</item>
+       <item name="align_left">false</item> <!-- not supported -->
+    </array>
+    <!-- NOT SUPPORTED YET
+    <array name="analog_hours">
+        <item name="image">@drawable/hours</item> rotating img
+        <item name="left">160px</item> position top
+        <item name="top">160px</item> position left
+    </array>
+    <array name="analog_minutes">
+        <item name="image">@drawable/minutes</item>
+        <item name="left">160px</item>
+        <item name="top">160px</item>
+    </array>
+    <array name="analog_seconds">
+        <item name="image">@drawable/seconds</item>
+        <item name="left">160px</item>
+        <item name="top">160px</item>
+    </array>
+    -->
+    <array name="am_pm">
+       <item name="font_size">30px</item>
+       <item name="left">282px</item>
+       <item name="top">180px</item>
+       <item name="color">#fff</item>
+       <item name="align_left">false</item>
+    </array>
+    <array name="weekday">
+        <item name="font_size">28px</item>
+        <item name="left">182px</item>
+        <item name="top">254px</item>
+        <item name="color">#fff</item>
+        <item name="align_left">true</item>
+    </array>
+    <array name="month">
+        <item name="font_size">28px</item>
+        <item name="left">182px</item>
+        <item name="top">220px</item>
+        <item name="color">#fff</item>
+        <item name="align_left">true</item>
+    </array>
+    <array name="day">
+        <item name="font_size">28px</item>
+        <item name="left">234px</item>
+        <item name="top">254px</item>
+        <item name="color">#fff</item>
+        <item name="align_left">true</item>
+    </array>
+    <!--<array name="year">
+        <item name="font_size">28px</item>
+        <item name="left">224px</item>
+        <item name="top">250px</item>
+        <item name="color">#000000</item>
+        <item name="align_left">true</item>
+    </array>-->
+
+
+
+    <!-- Widgets -->
+    <integer-array name="widgets">
+        <item>2</item> <!-- Widget 1: type from "supported widgets" list -->
+        <item>1</item> <!-- Widget 2: type from "supported widgets" list -->
+        <item>18</item>
+        <item>7</item>
+    </integer-array>
+
+    <!-- Widget 1 -->
+    <array name="widget1">
+        <item name="font_size">24px</item> <!-- font size -->
+        <item name="left">110px</item> <!-- position top -->
+        <item name="top">77px</item> <!-- position left -->
+        <item name="color">#fff</item> <!-- color -->
+        <item name="align_left">true</item> <!-- align left -->
+        <item name="units">true</item> <!-- units (if supported) -->
+        <item name="icon">true</item> <!-- icon -->
+        <item name="iconLeft">87px</item> <!-- icon's left positioning -->
+        <item name="iconTop">58px</item> <!-- icon's top positioning -->
+    </array>
+    <!-- Widget 2 -->
+    <array name="widget2">
+        <item name="font_size">24px</item>
+        <item name="left">192px</item>
+        <item name="top">77px</item>
+        <item name="color">#fff</item>
+        <item name="align_left">true</item>
+        <item name="units">true</item>
+        <item name="icon">true</item>
+        <item name="iconLeft">170px</item>
+        <item name="iconTop">58px</item>
+    </array>
+    <!-- Widget 3 -->
+    <array name="widget3">
+        <item name="font_size">24px</item>
+        <item name="left">88px</item>
+        <item name="top">256px</item>
+        <item name="color">#fff</item>
+        <item name="align_left">true</item>
+        <item name="units">true</item>
+        <item name="icon">true</item>
+        <item name="iconLeft">66px</item>
+        <item name="iconTop">238px</item>
+    </array>
+    <!-- Widget 4 -->
+    <array name="widget4">
+        <item name="font_size">24px</item>
+        <item name="left">160px</item>
+        <item name="top">294px</item>
+        <item name="color">#fff</item>
+        <item name="align_left">false</item>
+        <item name="units">true</item>
+        <item name="icon">true</item>
+        <item name="iconLeft">120px</item>
+        <item name="iconTop">276px</item>
+    </array>
+    <!-- Add more widget here if you like, here and in the "widgets" list -->
+
+
+
+
+    <!-- Progress bars -->
+    <integer-array name="circle_bars">
+        <item>0</item> <!-- Bar 1: type from "supported progress elements" list -->
+    </integer-array>
+
+    <!-- Bar 1 -->
+    <array name="progress_element1">
+        <item name="left">160px</item>
+        <item name="top">160px</item>
+        <item name="progress_type">0</item> <!-- 0 : arc/circle bar, 1 : images as steps -->
+        <!-- parameters for type 0 -->
+        <item name="radius">160px</item>
+        <item name="thickness">9px</item>
+        <item name="start_angle">207</item>
+        <item name="end_angle">153</item>
+        <item name="clockwise">1</item> <!-- 1: clockwise, 0: anticlockwise -->
+        <item name="color">0</item> <!-- select from "colors" array -->
+        <item name="background">true</item>
+        <item name="background_color">#ff0000</item>
+        <item name="background_image_slpt">circles/ring1_bg</item>
+        <!-- screen-off images, one for each color -->
+        <item>circles/ring1_1.png</item>
+        <item>circles/ring1_2.png</item>
+        <item>circles/ring1_3.png</item>
+        <item>circles/ring1_4.png</item>
+        <item>circles/ring1_5.png</item>
+        <item>circles/ring1_6.png</item>
+        <item>circles/ring1_7.png</item>
+        <item>circles/ring1_8.png</item>
+        <item>circles/ring1_bg</item>
+    </array>
+    <!-- Bar 2 -->
+    <array name="progress_element2">
+        <item name="left">160px</item>
+        <item name="top">160px</item>
+        <item name="progress_type">0</item> <!-- 0 : arc/circle bar -->
+        <!-- parameters for type 0 -->
+        <item name="radius">100px</item>
+        <item name="thickness">9px</item>
+        <item name="start_angle">207</item>
+        <item name="end_angle">153</item>
+        <item name="clockwise">1</item>
+        <item name="color">1</item> <!-- select from "colors" array -->
+        <item name="background">true</item>
+        <item name="background_color">#ff0000</item>
+        <item name="background_image_slpt">circles/ring1_bg</item>
+        <!-- screen-off images, one for each color -->
+        <item>circles/ring1_1.png</item>
+        <item>circles/ring1_2.png</item>
+        <item>circles/ring1_3.png</item>
+        <item>circles/ring1_4.png</item>
+        <item>circles/ring1_5.png</item>
+        <item>circles/ring1_6.png</item>
+        <item>circles/ring1_7.png</item>
+        <item>circles/ring1_8.png</item>
+        <item>circles/ring1_bg</item>
+    </array>
+
+    <!-- Bar 3 -->
+    <array name="progress_element3">
+        <item name="left">160px</item>
+        <item name="top">160px</item>
+        <item name="progress_type">1</item> <!-- 0 : arc/circle bar -->
+        <!-- screen-on images for type 1 -->
+        <item>battery/battery0</item>
+        <item>battery/battery1</item>
+        <item>battery/battery2</item>
+        <item>battery/battery3</item>
+        <item>battery/battery4</item>
+        <item>battery/battery5</item>
+        <item>battery/battery6</item>
+        <item>battery/battery7</item>
+        <item>battery/battery8</item>
+        <item>battery/battery9</item>
+        <item>battery/battery10</item>
+        <!-- screen-off images for type 1 -->
+        <item>slpt_battery/battery0</item> <!-- location in assets folder -->
+        <item>slpt_battery/battery1</item>
+        <item>slpt_battery/battery2</item>
+        <item>slpt_battery/battery3</item>
+        <item>slpt_battery/battery4</item>
+        <item>slpt_battery/battery5</item>
+        <item>slpt_battery/battery6</item>
+        <item>slpt_battery/battery7</item>
+        <item>slpt_battery/battery8</item>
+        <item>slpt_battery/battery9</item>
+        <item>slpt_battery/battery10</item>
+    </array>
+
+
+    <!-- The color of the following elements will be changed from settings (all have the same color) -->
+    <string-array name="theme_elements">
+        <item>hours</item>
+        <item>am_pm</item>
+        <!-- <item>widget1</item> -->
+        <item>bar_element1</item> <!-- progress elements will change color only if they are type 0 -->
     </string-array>
 
-    <string-array name="elements">
-        <item>@string/seconds</item>
-        <item>@string/calories</item>
-        <item>@string/battery</item>
-        <item>@string/heart_rate</item>
-        <item>@string/steps</item>
-        <item>@string/floors</item>
-        <item>@string/total_distance</item>
-        <item>@string/today_distance</item>
-        <item>@string/temperature</item>
-        <item>@string/city</item>
-        <item>@string/air_pressure</item>
-        <item>@string/altitude</item>
-        <item>@string/weather</item>
-        <item>@string/humidity</item>
-        <item>@string/uv</item>
-        <item>@string/wind_direction</item>
-        <item>@string/wind_strength</item>
-        <item>@string/phoneBattery</item>
-        <item>@string/alarm</item>
+
+    <!-- Supported Widgets -->
+    <string-array name="supported_widgets">
+        <item>date</item> <!-- 0 -->
+        <item>calories</item> <!-- 1 -->
+        <item>steps</item> <!-- 2... -->
+        <item>heart_rate</item>
+        <item>total_distance</item>
+        <item>today_distance</item>
+        <item>floors</item>
+        <item>battery_percent</item>
+        <item>temperature</item>
+        <item>weather_img</item>
+        <item>city</item>
+        <item>humidity</item>
+        <item>uv</item>
+        <item>wind_direction</item>
+        <item>wind_strength</item>
+        <!-- <item>sunset</item> -->
+        <!-- <item>sunrise</item> -->
+        <item>watch_alarm</item>
+        <item>air_pressure</item> <!-- Uses a sensor which may drain a little the battery -->
+        <item>altitude</item> <!-- Calculated approximately based on air pressure -->
+        <item>phone_battery</item>
+        <item>phone_alarm</item>
+        <item>xdrip</item>
+        <item>none</item>
     </string-array>
 
-    <!-- 1=red, 2=light blue, 3=green, 4=purple, 5=white, 6=yellow, 7=black, 8=grey -->
+    <!-- Supported Progress Elements -->
+    <string-array name="supported_progress_elements">
+        <item>battery</item> <!-- 0 -->
+        <item>steps</item> <!-- 1 -->
+        <item>today_distance</item>
+        <!-- <item>heart_rate</item> --> <!-- 0-200 bpm -->
+        <item>calories</item> <!-- set target in settings -->
+        <!-- <item>humidity</item> -->
+        <!-- <item>phone_battery</item> -->
+        <!-- <item>wind_strength</item> -->
+        <!-- <item>floors</item> -->
+        <item>none</item>
+    </string-array>
+
+
+    <!-- You do not need to change the followings -->
+    <!-- Theme colors -->
     <string-array name="colors">
-        <item>@string/red</item>
-        <item>@string/light_blue</item>
-        <item>@string/green</item>
-        <item>@string/purple</item>
-        <item>@string/white</item>
-        <item>@string/yellow</item>
-        <item>@string/black</item>
-        <!-- <item>@string/grey</item>-->
+        <item>Red</item> <!-- 0 -->
+        <item>Light blue</item> <!-- 1... -->
+        <item>Green</item>
+        <item>Purple</item>
+        <item>White</item>
+        <item>Yellow</item>
+        <item>Black</item>
+        <item>Blue</item>
+    </string-array>
+
+    <string-array name="color_codes">
+        <item>#ff0000</item>
+        <item>#00ffff</item>
+        <item>#00ff00</item>
+        <item>#ff00ff</item>
+        <item>#ffffff</item>
+        <item>#ffff00</item>
+        <item>#000000</item>
+        <item>#0000ff</item>
     </string-array>
 
     <!-- languages -->
@@ -65,4 +334,16 @@
         <item>@string/Spanish</item>
         <item>@string/Turkish</item>
     </string-array>
+
+    <!--
+    <string-array name="days">
+        <item>@string/sunday</item>
+        <item>@string/monday</item>
+        <item>@string/tuesday</item>
+        <item>@string/wednesday</item>
+        <item>@string/thursday</item>
+        <item>@string/friday</item>
+        <item>@string/saturday</item>
+    </string-array>
+    -->
 </resources>

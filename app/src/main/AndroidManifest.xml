@@ -10,6 +10,11 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.DEVICE_POWER" />
+    <uses-permission android:name="android.permission.SET_WALLPAPER_COMPONENT" />
+    <uses-permission android:name="android.permission.BIND_WALLPAPER" />
+    <uses-permission android:name="android.permission.SET_WALLPAPER" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
 
     <application android:icon="@mipmap/ic_launcher" android:label="@string/app_name" android:theme="@android:style/Theme.DeviceDefault">
         <!-- Mainface -->
@@ -44,8 +49,10 @@
                 <category android:name="android.intent.category.HOME" />
             </intent-filter>
         </receiver>
-        <activity android:name="com.dinodevs.greatfitwatchface.settings.WidgetsActivity"></activity>
         <activity android:name="com.dinodevs.greatfitwatchface.settings.ColorActivity"></activity>
+        <activity android:name="com.dinodevs.greatfitwatchface.settings.OthersActivity"></activity>
+        <activity android:name="com.dinodevs.greatfitwatchface.settings.WidgetsActivity"></activity>
+        <activity android:name="com.dinodevs.greatfitwatchface.settings.ProgressWidgetsActivity"></activity>
         <activity android:name="com.dinodevs.greatfitwatchface.settings.LanguageActivity"></activity>
     </application>
 

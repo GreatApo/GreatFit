@@ -1,6 +1,7 @@
 package com.dinodevs.greatfitwatchface.widget;
 
 import android.app.Service;
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Typeface;
@@ -10,9 +11,11 @@ import android.text.TextPaint;
 import android.util.Log;
 
 import com.dinodevs.greatfitwatchface.settings.LoadSettings;
+import com.huami.watch.watchface.util.Util;
 import com.ingenic.iwds.slpt.view.core.SlptLinearLayout;
 import com.ingenic.iwds.slpt.view.core.SlptPictureView;
 import com.ingenic.iwds.slpt.view.core.SlptViewComponent;
+import com.ingenic.iwds.slpt.view.sport.SlptTodayFloorNumView;
 import com.ingenic.iwds.slpt.view.utils.SimpleFile;
 
 import org.json.JSONException;
@@ -35,223 +38,250 @@ public class WeatherWidget extends AbstractWidget {
 
     private List<Drawable> weatherImageList;
     private Drawable weatherImage;
-    private boolean weatherBool;
-    private boolean showUnits;
-    private boolean temperatureBool;
-    private TextPaint textPaint;
-    private boolean temperatureAlignLeftBool;
-    private boolean cityBool;
+    private List<String> weatherImageStrList;
+    private Bitmap weatherImageIcon;
+    private TextPaint temperaturePaint;
     private TextPaint cityPaint;
-    private boolean humidityBool;
     private TextPaint humidityPaint;
-    private boolean uvBool;
     private TextPaint uvPaint;
-    private boolean windDirectionBool;
-    private boolean windDirectionAsArrowBool;
-    private TextPaint windDirectionPaint;
-    private boolean windStrengthBool;
-    private TextPaint windStrengthPaint;
+    private TextPaint wind_directionPaint;
+    private TextPaint wind_strengthPaint;
 
-    // Positions
-    private float cityTop;
-    private float cityLeft;
-    private float humidityTop;
-    private float humidityLeft;
-    private float uvTop;
-    private float uvLeft;
-    private float windDirectionTop;
-    private float windDirectionLeft;
-    private float windStrengthTop;
-    private float windStrengthLeft;
-    private float textTop; // temperature
-    private float textLeft; // temperature
-    private float imgTop; // weather img
-    private float imgLeft; // weather img
+    private Bitmap temperatureIcon;
+    private Bitmap cityIcon;
+    private Bitmap humidityIcon;
+    private Bitmap uvIcon;
+    private Bitmap wind_directionIcon;
+    private Bitmap wind_strengthIcon;
+
     private LoadSettings settings;
 
+    // Constructor
     public WeatherWidget(LoadSettings settings) {
         this.settings = settings;
+
+        // Load weather icons
+        this.weatherImageStrList = new ArrayList<>();
+        weatherImageStrList.add("sunny"); //0
+        weatherImageStrList.add("cloudy"); //1
+        weatherImageStrList.add("overcast"); //2
+        weatherImageStrList.add("fog"); //3
+        weatherImageStrList.add("fog"); //4
+        weatherImageStrList.add("showers"); //5
+        weatherImageStrList.add("t_storm"); //6
+        weatherImageStrList.add("rain"); //7
+        weatherImageStrList.add("rain"); //8
+        weatherImageStrList.add("rainstorm"); //9
+        weatherImageStrList.add("rainstorm"); //10
+        weatherImageStrList.add("showers"); //11
+        weatherImageStrList.add("rainsnow"); //12
+        weatherImageStrList.add("rainsnow"); //13
+        weatherImageStrList.add("rainsnow"); //14
+        weatherImageStrList.add("snow"); //15
+        weatherImageStrList.add("snow"); //16
+        weatherImageStrList.add("snow"); //17
+        weatherImageStrList.add("snow"); //18
+        weatherImageStrList.add("fog"); //19
+        weatherImageStrList.add("fog"); //20
+        weatherImageStrList.add("fog"); //21
+        weatherImageStrList.add("unknow"); //22
     }
 
+    // Screen-on init (runs once)
     @Override
     public void init(Service service) {
         this.mService = service;
 
-        this.textLeft = service.getResources().getDimension(R.dimen.temperature_left);
-        this.textTop = service.getResources().getDimension(R.dimen.temperature_top);
-
-        this.imgLeft = service.getResources().getDimension(R.dimen.weather_img_left);
-        this.imgTop = service.getResources().getDimension(R.dimen.weather_img_top);
-
-        // Align left true or false (false= align center)
-        this.temperatureAlignLeftBool = service.getResources().getBoolean(R.bool.temperature_left_align);
-
         // Temperature
-        this.temperatureBool = service.getResources().getBoolean(R.bool.temperature);
-        if(this.temperatureBool) {
-            this.textPaint = new TextPaint(TextPaint.ANTI_ALIAS_FLAG);
-            this.textPaint.setColor(service.getResources().getColor(R.color.temperature_colour));
-            this.textPaint.setTypeface(ResourceManager.getTypeFace(service.getResources(), ResourceManager.Font.FONT_FILE));
-            this.textPaint.setTextSize(service.getResources().getDimension(R.dimen.temperature_font_size));
-            this.textPaint.setTextAlign((this.temperatureAlignLeftBool) ? Paint.Align.LEFT : Paint.Align.CENTER);
+        if(settings.temperature>0) {
+            this.temperaturePaint = new TextPaint(TextPaint.ANTI_ALIAS_FLAG);
+            this.temperaturePaint.setColor(settings.temperatureColor);
+            this.temperaturePaint.setTypeface(ResourceManager.getTypeFace(service.getResources(), ResourceManager.Font.FONT_FILE));
+            this.temperaturePaint.setTextSize(settings.temperatureFontSize);
+            this.temperaturePaint.setTextAlign((settings.temperatureAlignLeft) ? Paint.Align.LEFT : Paint.Align.CENTER);
+            if(settings.temperatureIcon){
+                this.temperatureIcon = Util.decodeImage(service.getResources(),"icons/temperature.png");
+            }
         }
 
         // City
-        this.cityBool = service.getResources().getBoolean(R.bool.city);
-        if(this.cityBool) {
+        if(settings.city>0) {
             this.cityPaint = new TextPaint(TextPaint.ANTI_ALIAS_FLAG);
-            this.cityPaint.setColor(service.getResources().getColor(R.color.city_colour));
+            this.cityPaint.setColor(settings.cityColor);
             this.cityPaint.setTypeface(ResourceManager.getTypeFace(service.getResources(), ResourceManager.Font.FONT_FILE));
-            this.cityPaint.setTextSize(service.getResources().getDimension(R.dimen.city_font_size));
-            this.cityPaint.setTextAlign((service.getResources().getBoolean(R.bool.city_left_align)) ? Paint.Align.LEFT : Paint.Align.CENTER);
-            this.cityLeft = service.getResources().getDimension(R.dimen.city_left);
-            this.cityTop = service.getResources().getDimension(R.dimen.city_top);
+            this.cityPaint.setTextSize(settings.cityFontSize);
+            this.cityPaint.setTextAlign((settings.cityAlignLeft) ? Paint.Align.LEFT : Paint.Align.CENTER);
+            if(settings.cityIcon){
+                this.cityIcon = Util.decodeImage(service.getResources(),"icons/city.png");
+            }
         }
 
         // Humidity
-        this.humidityBool = service.getResources().getBoolean(R.bool.humidity);
-        if(this.humidityBool) {
+        if(settings.humidity>0) {
             this.humidityPaint = new TextPaint(TextPaint.ANTI_ALIAS_FLAG);
-            this.humidityPaint.setColor(service.getResources().getColor(R.color.humidity_colour));
+            this.humidityPaint.setColor(settings.humidityColor);
             this.humidityPaint.setTypeface(ResourceManager.getTypeFace(service.getResources(), ResourceManager.Font.FONT_FILE));
-            this.humidityPaint.setTextSize(service.getResources().getDimension(R.dimen.humidity_font_size));
-            this.humidityPaint.setTextAlign((service.getResources().getBoolean(R.bool.humidity_left_align)) ? Paint.Align.LEFT : Paint.Align.CENTER);
-            this.humidityLeft = service.getResources().getDimension(R.dimen.humidity_left);
-            this.humidityTop = service.getResources().getDimension(R.dimen.humidity_top);
+            this.humidityPaint.setTextSize(settings.humidityFontSize);
+            this.humidityPaint.setTextAlign((settings.humidityAlignLeft) ? Paint.Align.LEFT : Paint.Align.CENTER);
+            if(settings.humidityIcon){
+                this.humidityIcon = Util.decodeImage(service.getResources(),"icons/humidity.png");
+            }
         }
 
         // UV
-        this.uvBool = service.getResources().getBoolean(R.bool.uv);
-        if(this.uvBool) {
+        if(settings.uv>0) {
             this.uvPaint = new TextPaint(TextPaint.ANTI_ALIAS_FLAG);
-            this.uvPaint.setColor(service.getResources().getColor(R.color.uv_colour));
+            this.uvPaint.setColor(settings.uvColor);
             this.uvPaint.setTypeface(ResourceManager.getTypeFace(service.getResources(), ResourceManager.Font.FONT_FILE));
-            this.uvPaint.setTextSize(service.getResources().getDimension(R.dimen.uv_font_size));
-            this.uvPaint.setTextAlign((service.getResources().getBoolean(R.bool.uv_left_align)) ? Paint.Align.LEFT : Paint.Align.CENTER);
-            this.uvLeft = service.getResources().getDimension(R.dimen.uv_left);
-            this.uvTop = service.getResources().getDimension(R.dimen.uv_top);
+            this.uvPaint.setTextSize(settings.uvFontSize);
+            this.uvPaint.setTextAlign((settings.uvAlignLeft) ? Paint.Align.LEFT : Paint.Align.CENTER);
+            if(settings.uvIcon){
+                this.uvIcon = Util.decodeImage(service.getResources(),"icons/uv.png");
+            }
         }
 
         // Wind Direction
-        this.windDirectionBool = service.getResources().getBoolean(R.bool.wind_direction);
-        if(this.windDirectionBool) {
-            this.windDirectionPaint = new TextPaint(TextPaint.ANTI_ALIAS_FLAG);
-            this.windDirectionPaint.setColor(service.getResources().getColor(R.color.wind_direction_colour));
-            this.windDirectionPaint.setTypeface(ResourceManager.getTypeFace(service.getResources(), ResourceManager.Font.FONT_FILE));
-            this.windDirectionPaint.setTextSize(service.getResources().getDimension(R.dimen.wind_direction_font_size));
-            this.windDirectionPaint.setTextAlign((service.getResources().getBoolean(R.bool.wind_direction_left_align)) ? Paint.Align.LEFT : Paint.Align.CENTER);
-            this.windDirectionLeft = service.getResources().getDimension(R.dimen.wind_direction_left);
-            this.windDirectionTop = service.getResources().getDimension(R.dimen.wind_direction_top);
-            this.windDirectionAsArrowBool = service.getResources().getBoolean(R.bool.wind_direction_as_arrows);
+        if(settings.wind_direction>0) {
+            this.wind_directionPaint = new TextPaint(TextPaint.ANTI_ALIAS_FLAG);
+            this.wind_directionPaint.setColor(settings.wind_directionColor);
+            this.wind_directionPaint.setTypeface(ResourceManager.getTypeFace(service.getResources(), ResourceManager.Font.FONT_FILE));
+            this.wind_directionPaint.setTextSize(settings.wind_directionFontSize);
+            this.wind_directionPaint.setTextAlign((settings.wind_directionAlignLeft) ? Paint.Align.LEFT : Paint.Align.CENTER);
+            if(settings.wind_directionIcon){
+                this.wind_directionIcon = Util.decodeImage(service.getResources(),"icons/wind_direction.png");
+            }
         }
 
         // Wind Strength
-        this.windStrengthBool = service.getResources().getBoolean(R.bool.wind_strength);
-        if(this.windStrengthBool) {
-            this.windStrengthPaint = new TextPaint(TextPaint.ANTI_ALIAS_FLAG);
-            this.windStrengthPaint.setColor(service.getResources().getColor(R.color.wind_strength_colour));
-            this.windStrengthPaint.setTypeface(ResourceManager.getTypeFace(service.getResources(), ResourceManager.Font.FONT_FILE));
-            this.windStrengthPaint.setTextSize(service.getResources().getDimension(R.dimen.wind_strength_font_size));
-            this.windStrengthPaint.setTextAlign((service.getResources().getBoolean(R.bool.wind_strength_left_align)) ? Paint.Align.LEFT : Paint.Align.CENTER);
-            this.windStrengthLeft = service.getResources().getDimension(R.dimen.wind_strength_left);
-            this.windStrengthTop = service.getResources().getDimension(R.dimen.wind_strength_top);
+        if(settings.wind_strength>0) {
+            this.wind_strengthPaint = new TextPaint(TextPaint.ANTI_ALIAS_FLAG);
+            this.wind_strengthPaint.setColor(settings.wind_strengthColor);
+            this.wind_strengthPaint.setTypeface(ResourceManager.getTypeFace(service.getResources(), ResourceManager.Font.FONT_FILE));
+            this.wind_strengthPaint.setTextSize(settings.wind_strengthFontSize);
+            this.wind_strengthPaint.setTextAlign((settings.wind_strengthAlignLeft) ? Paint.Align.LEFT : Paint.Align.CENTER);
+            if(settings.wind_strengthIcon){
+                this.wind_strengthIcon = Util.decodeImage(service.getResources(),"icons/wind_strength.png");
+            }
         }
 
-        this.weatherBool = service.getResources().getBoolean(R.bool.weather_image);
-        // Show units boolean
-        this.showUnits = service.getResources().getBoolean(R.bool.temperature_units);
-
         // Load weather icons
-        weatherImageList = new ArrayList<Drawable>();
-        weatherImageList.add(service.getResources().getDrawable(R.drawable.clock_skin_weather_sunny)); //0
-        weatherImageList.add(service.getResources().getDrawable(R.drawable.clock_skin_weather_cloudy)); //1
-        weatherImageList.add(service.getResources().getDrawable(R.drawable.clock_skin_weather_overcast)); //2
-        weatherImageList.add(service.getResources().getDrawable(R.drawable.clock_skin_weather_fog)); //3
-        weatherImageList.add(service.getResources().getDrawable(R.drawable.clock_skin_weather_fog)); //4
-        weatherImageList.add(service.getResources().getDrawable(R.drawable.clock_skin_weather_showers)); //5
-        weatherImageList.add(service.getResources().getDrawable(R.drawable.clock_skin_weather_t_storm)); //6
-        weatherImageList.add(service.getResources().getDrawable(R.drawable.clock_skin_weather_rain)); //7
-        weatherImageList.add(service.getResources().getDrawable(R.drawable.clock_skin_weather_rain)); //8
-        weatherImageList.add(service.getResources().getDrawable(R.drawable.clock_skin_weather_rainstorm)); //9
-        weatherImageList.add(service.getResources().getDrawable(R.drawable.clock_skin_weather_rainstorm)); //10
-        weatherImageList.add(service.getResources().getDrawable(R.drawable.clock_skin_weather_showers)); //11
-        weatherImageList.add(service.getResources().getDrawable(R.drawable.clock_skin_weather_rainsnow)); //12
-        weatherImageList.add(service.getResources().getDrawable(R.drawable.clock_skin_weather_rainsnow)); //13
-        weatherImageList.add(service.getResources().getDrawable(R.drawable.clock_skin_weather_rainsnow)); //14
-        weatherImageList.add(service.getResources().getDrawable(R.drawable.clock_skin_weather_snow)); //15
-        weatherImageList.add(service.getResources().getDrawable(R.drawable.clock_skin_weather_snow)); //16
-        weatherImageList.add(service.getResources().getDrawable(R.drawable.clock_skin_weather_snow)); //17
-        weatherImageList.add(service.getResources().getDrawable(R.drawable.clock_skin_weather_snow)); //18
-        weatherImageList.add(service.getResources().getDrawable(R.drawable.clock_skin_weather_fog)); //19
-        weatherImageList.add(service.getResources().getDrawable(R.drawable.clock_skin_weather_fog)); //20
-        weatherImageList.add(service.getResources().getDrawable(R.drawable.clock_skin_weather_fog)); //21
-        weatherImageList.add(service.getResources().getDrawable(R.drawable.clock_skin_weather_unknow)); //22
+        if(settings.weather_imgProg>0) {
+            // Get weather data
+            this.weather = getSlptWeather();
+            /*
+            weatherImageList = new ArrayList<>();
+            weatherImageList.add(service.getResources().getDrawable(R.drawable.clock_skin_weather_sunny)); //0
+            weatherImageList.add(service.getResources().getDrawable(R.drawable.clock_skin_weather_cloudy)); //1
+            weatherImageList.add(service.getResources().getDrawable(R.drawable.clock_skin_weather_overcast)); //2
+            weatherImageList.add(service.getResources().getDrawable(R.drawable.clock_skin_weather_fog)); //3
+            weatherImageList.add(service.getResources().getDrawable(R.drawable.clock_skin_weather_fog)); //4
+            weatherImageList.add(service.getResources().getDrawable(R.drawable.clock_skin_weather_showers)); //5
+            weatherImageList.add(service.getResources().getDrawable(R.drawable.clock_skin_weather_t_storm)); //6
+            weatherImageList.add(service.getResources().getDrawable(R.drawable.clock_skin_weather_rain)); //7
+            weatherImageList.add(service.getResources().getDrawable(R.drawable.clock_skin_weather_rain)); //8
+            weatherImageList.add(service.getResources().getDrawable(R.drawable.clock_skin_weather_rainstorm)); //9
+            weatherImageList.add(service.getResources().getDrawable(R.drawable.clock_skin_weather_rainstorm)); //10
+            weatherImageList.add(service.getResources().getDrawable(R.drawable.clock_skin_weather_showers)); //11
+            weatherImageList.add(service.getResources().getDrawable(R.drawable.clock_skin_weather_rainsnow)); //12
+            weatherImageList.add(service.getResources().getDrawable(R.drawable.clock_skin_weather_rainsnow)); //13
+            weatherImageList.add(service.getResources().getDrawable(R.drawable.clock_skin_weather_rainsnow)); //14
+            weatherImageList.add(service.getResources().getDrawable(R.drawable.clock_skin_weather_snow)); //15
+            weatherImageList.add(service.getResources().getDrawable(R.drawable.clock_skin_weather_snow)); //16
+            weatherImageList.add(service.getResources().getDrawable(R.drawable.clock_skin_weather_snow)); //17
+            weatherImageList.add(service.getResources().getDrawable(R.drawable.clock_skin_weather_snow)); //18
+            weatherImageList.add(service.getResources().getDrawable(R.drawable.clock_skin_weather_fog)); //19
+            weatherImageList.add(service.getResources().getDrawable(R.drawable.clock_skin_weather_fog)); //20
+            weatherImageList.add(service.getResources().getDrawable(R.drawable.clock_skin_weather_fog)); //21
+            weatherImageList.add(service.getResources().getDrawable(R.drawable.clock_skin_weather_unknow)); //22
+            */
+            this.weatherImageIcon = Util.decodeImage(service.getResources(),"weather/clock_skin_weather_"+this.weatherImageStrList.get(22)+".png");
+        }
     }
 
+    // Register listener
     @Override
     public List<DataType> getDataTypes() {
         return Collections.singletonList(DataType.WEATHER);
-        //return Arrays.asList(DataType.BATTERY, DataType.STEPS, DataType.DISTANCE, DataType.TOTAL_DISTANCE, DataType.TIME,  DataType.CALORIES,  DataType.DATE,  DataType.HEART_RATE,  DataType.FLOOR, DataType.WEATHER);
     }
 
+    // Updater
     @Override
     public void onDataUpdate(DataType type, Object value) {
         //this.weather = (WeatherData) value;
         // Value = weather info [tempFlag:1, tempString:29, weatherType:0
+        //Log.w("DinoDevs-GreatFit", "Data Update: "+type.toString()+" => "+value.toString() );
 
         // Get ALL weather data
         this.weather = getSlptWeather();
 
-        //Log.w("DinoDevs-GreatFit", "Data Update: "+type.toString()+" => "+value.toString() );
+        this.weatherImageIcon = Util.decodeImage(mService.getResources(),"weather/clock_skin_weather_"+this.weatherImageStrList.get(this.weather.weatherType)+".png");
     }
 
+    // Screen on
     @Override
     public void draw(Canvas canvas, float width, float height, float centerX, float centerY) {
         // Draw Temperature
-        if(this.temperatureBool) {
-            String units = (showUnits) ? weather.getUnits() : ""; //"ºC"
-            canvas.drawText(weather.getTemperature() + units, textLeft, textTop, textPaint);
+        if(settings.temperature>0) {
+            if(settings.temperatureIcon){
+                canvas.drawBitmap(this.temperatureIcon, settings.temperatureIconLeft, settings.temperatureIconTop, settings.mGPaint);
+            }
+
+            String units = (settings.temperatureUnits) ? weather.getUnits() : ""; //"ºC"
+            canvas.drawText(weather.getTemperature() + units, settings.temperatureLeft, settings.temperatureTop, temperaturePaint);
         }
 
         // Draw City
-        if(this.cityBool) {
-            canvas.drawText(weather.city, cityLeft, cityTop, cityPaint);
+        if(settings.city>0) {
+            if(settings.cityIcon){
+                canvas.drawBitmap(this.cityIcon, settings.cityIconLeft, settings.cityIconTop, settings.mGPaint);
+            }
+            canvas.drawText(weather.city, settings.cityLeft, settings.cityTop, cityPaint);
         }
 
         // Draw Humidity
-        if(this.humidityBool) {
-            canvas.drawText(weather.humidity, humidityLeft, humidityTop, humidityPaint);
+        if(settings.humidity>0) {
+            if(settings.humidityIcon){
+                canvas.drawBitmap(this.humidityIcon, settings.humidityIconLeft, settings.humidityIconTop, settings.mGPaint);
+            }
+            canvas.drawText(weather.humidity, settings.humidityLeft, settings.humidityTop, humidityPaint);
         }
 
         // Draw UV ray
-        if(this.uvBool) {
-            canvas.drawText(weather.uv, uvLeft, uvTop, uvPaint);
+        if(settings.uv>0) {
+            if(settings.uvIcon){
+                canvas.drawBitmap(this.uvIcon, settings.uvIconLeft, settings.uvIconTop, settings.mGPaint);
+            }
+            canvas.drawText(weather.uv, settings.uvLeft, settings.uvTop, uvPaint);
         }
 
         // Draw Wind Direction
-        if(this.windDirectionBool) {
-            canvas.drawText( ((windDirectionAsArrowBool)? this.weather.windArrow : this.weather.windDirection), windDirectionLeft, windDirectionTop, windDirectionPaint);
+        if(settings.wind_direction>0) {
+            if(settings.wind_directionIcon){
+                canvas.drawBitmap(this.wind_directionIcon, settings.wind_directionIconLeft, settings.wind_directionIconTop, settings.mGPaint);
+            }
+            canvas.drawText(weather.windDirection, settings.wind_directionLeft, settings.wind_directionTop, wind_directionPaint);
         }
 
         // Draw Wind Strength
-        if(this.windStrengthBool) {
-            canvas.drawText(weather.windStrength, windStrengthLeft, windStrengthTop, windStrengthPaint);
+        if(settings.wind_strength>0) {
+            if(settings.wind_strengthIcon){
+                canvas.drawBitmap(this.wind_strengthIcon, settings.wind_strengthIconLeft, settings.wind_strengthIconTop, settings.mGPaint);
+            }
+            canvas.drawText(weather.windStrength, settings.wind_strengthLeft, settings.wind_strengthTop, wind_strengthPaint);
         }
 
         // Draw Weather icon
-        if(this.weatherBool) {
+        if(settings.weather_imgProg>0) {
             if (this.weather.weatherType > 22 || this.weather.weatherType < 0) {
                 this.weather.weatherType = 22;
             }
-            this.weatherImage = weatherImageList.get(this.weather.weatherType);
-            this.weatherImage.setBounds((int) this.imgLeft, (int) this.imgTop, ((int) this.imgLeft) + this.weatherImage.getIntrinsicWidth(), ((int) this.imgTop) + this.weatherImage.getIntrinsicHeight());
-            this.weatherImage.draw(canvas);
+            canvas.drawBitmap(this.weatherImageIcon, settings.weather_imgProgLeft, settings.weather_imgProgTop, settings.mGPaint);
         }
     }
 
-    // Get Weather Data on screen off
-    // based on HuamiWatchFaces.jar!\com\huami\watch\watchface\widget\slpt\SlptWeatherWidget.class
-    // and AmazfitWeather.jar!\com\huami\watch\weather\WeatherUtil.class
+    /* Get Weather Data on screen off
+    based on HuamiWatchFaces.jar!\com\huami\watch\watchface\widget\slpt\SlptWeatherWidget.class
+    and AmazfitWeather.jar!\com\huami\watch\weather\WeatherUtil.class */
     public WeatherData getSlptWeather() {
         // Default variables
         String tempUnit = "1";
@@ -267,23 +297,12 @@ public class WeatherWidget extends AbstractWidget {
         String str = Settings.System.getString(this.mService.getApplicationContext().getContentResolver(), "WeatherInfo");
 
         // WeatherInfo
-        // {"isAlert":true, "isNotification":true,
-        // "tempFormatted":"28ºC",
-        // "tempUnit":"C",
-        // "v":1,
-        // "weatherCode":0,
-        // "aqi":-1,
-        // "aqiLevel":0,
-        // "city":"Somewhere",
+        // {"isAlert":true, "isNotification":true, "tempFormatted":"28ºC",
+        // "tempUnit":"C", "v":1, "weatherCode":0, "aqi":-1, "aqiLevel":0, "city":"Somewhere",
         // "forecasts":[{"tempFormatted":"31ºC/21ºC","tempMax":31,"tempMin":21,"weatherCodeFrom":0,"weatherCodeTo":0,"day":1,"weatherFrom":0,"weatherTo":0},{"tempFormatted":"33ºC/23ºC","tempMax":33,"tempMin":23,"weatherCodeFrom":0,"weatherCodeTo":0,"day":2,"weatherFrom":0,"weatherTo":0},{"tempFormatted":"34ºC/24ºC","tempMax":34,"tempMin":24,"weatherCodeFrom":0,"weatherCodeTo":0,"day":3,"weatherFrom":0,"weatherTo":0},{"tempFormatted":"34ºC/23ºC","tempMax":34,"tempMin":23,"weatherCodeFrom":0,"weatherCodeTo":0,"day":4,"weatherFrom":0,"weatherTo":0},{"tempFormatted":"32ºC/22ºC","tempMax":32,"tempMin":22,"weatherCodeFrom":0,"weatherCodeTo":0,"day":5,"weatherFrom":0,"weatherTo":0}],
-        // "pm25":-1,
-        // "sd":"50%", //(Humidity)
-        // "temp":28,
-        // "time":1531292274457,
-        // "uv":"Strong",
-        // "weather":0,
-        // "windDirection":"NW",
-        // "windStrength":"7.4km/h"}
+        // "pm25":-1, "sd":"50%", //(Humidity)
+        // "temp":28, "time":1531292274457, "uv":"Strong",
+        // "weather":0, "windDirection":"NW", "windStrength":"7.4km/h"}
 
         // WeatherCheckedSummary
         // {"tempUnit":"1","temp":"31\/21","weatherCodeFrom":0}
@@ -314,236 +333,304 @@ public class WeatherWidget extends AbstractWidget {
         return new WeatherData(tempUnit, temp, weatherType, city, humidity, uv, windDirection, windStrength);
     }
 
+    // Screen-off (SLPT)
     @Override
     public List<SlptViewComponent> buildSlptViewComponent(Service service) {
-        // Variables
-        this.mService = service;
-        Typeface font = ResourceManager.getTypeFace(service.getResources(), ResourceManager.Font.FONT_FILE);
+        return buildSlptViewComponent(service, false);
+    }
+
+    // Screen-off (SLPT) - Better screen quality
+    public List<SlptViewComponent> buildSlptViewComponent(Service service, boolean better_resolution) {
+        better_resolution = better_resolution && settings.better_resolution_when_raising_hand;
+        List<SlptViewComponent> slpt_objects = new ArrayList<>();
 
         // Get weather data
+        this.mService = service;
         this.weather = getSlptWeather();
 
-        // Just to be safe :P
-        if(this.weather.weatherType<0 || this.weather.weatherType>22){
-            this.weather.weatherType = 22;
-        }
-
-        // Load weather icons
-        List<String> weatherImageStrList = new ArrayList<String>();
-        weatherImageStrList.add("sunny"); //0
-        weatherImageStrList.add("cloudy"); //1
-        weatherImageStrList.add("overcast"); //2
-        weatherImageStrList.add("fog"); //3
-        weatherImageStrList.add("fog"); //4
-        weatherImageStrList.add("showers"); //5
-        weatherImageStrList.add("t_storm"); //6
-        weatherImageStrList.add("rain"); //7
-        weatherImageStrList.add("rain"); //8
-        weatherImageStrList.add("rainstorm"); //9
-        weatherImageStrList.add("rainstorm"); //10
-        weatherImageStrList.add("showers"); //11
-        weatherImageStrList.add("rainsnow"); //12
-        weatherImageStrList.add("rainsnow"); //13
-        weatherImageStrList.add("rainsnow"); //14
-        weatherImageStrList.add("snow"); //15
-        weatherImageStrList.add("snow"); //16
-        weatherImageStrList.add("snow"); //17
-        weatherImageStrList.add("snow"); //18
-        weatherImageStrList.add("fog"); //19
-        weatherImageStrList.add("fog"); //20
-        weatherImageStrList.add("fog"); //21
-        weatherImageStrList.add("unknow"); //22
 
         // Draw temperature
-        SlptLinearLayout temperatureLayout = new SlptLinearLayout();
-        // Show or Not icon
-        if(service.getResources().getBoolean(R.bool.temperature_icon)) {
-            SlptPictureView temperatureIcon = new SlptPictureView();
-            temperatureIcon.setStringPicture( (char)Integer.parseInt("F2CB", 16) );
-            temperatureIcon.setTextAttr(
-                    service.getResources().getDimension(R.dimen.temperature_font_size),
-                    service.getResources().getColor(R.color.temperature_colour_slpt),
-                    ResourceManager.getTypeFace(service.getResources(), ResourceManager.Font.ICONS_FONT)
-            );
-            temperatureLayout.add(temperatureIcon);
-        }
-        // Show temperature with units or not
-        SlptPictureView temperatureNum = new SlptPictureView();
-        temperatureNum.setStringPicture( this.weather.tempString + ((service.getResources().getBoolean(R.bool.temperature_units))?this.weather.getUnits():"") );
-        temperatureNum.setTextAttr(
-                service.getResources().getDimension(R.dimen.temperature_font_size),
-                service.getResources().getColor(R.color.temperature_colour_slpt),
-                font
-        );
-        temperatureLayout.add(temperatureNum);
+        if(settings.temperature>0){
+            // Show or Not icon
+            if (settings.temperatureIcon) {
+                SlptPictureView temperatureIcon = new SlptPictureView();
+                temperatureIcon.setImagePicture( SimpleFile.readFileFromAssets(service, ( (better_resolution)?"":"slpt_" )+"icons/temperature.png") );
+                temperatureIcon.setStart(
+                        (int) settings.temperatureIconLeft,
+                        (int) settings.temperatureIconTop
+                );
+                slpt_objects.add(temperatureIcon);
+            }
 
-        // Position based on screen on
-        temperatureLayout.alignX = 2;
-        temperatureLayout.alignY = 0;
-        int tmp_left = (int) service.getResources().getDimension(R.dimen.temperature_left);
-        if(!service.getResources().getBoolean(R.bool.temperature_left_align)) {
-            // If text is centered, set rectangle
-            temperatureLayout.setRect(
-                (int) (2 * tmp_left + 640),
-                (int) (service.getResources().getDimension(R.dimen.temperature_font_size))
+            SlptLinearLayout temperatureLayout = new SlptLinearLayout();
+            // Show temperature with units or not
+            SlptPictureView temperatureNum = new SlptPictureView();
+            temperatureNum.setStringPicture(this.weather.tempString + (settings.temperatureUnits ? this.weather.getUnits() : ""));
+            temperatureNum.setTextAttr(
+                    settings.temperatureFontSize,
+                    settings.temperatureColor,
+                    ResourceManager.getTypeFace(service.getResources(), ResourceManager.Font.FONT_FILE)
             );
-            tmp_left = -320;
+            temperatureLayout.add(temperatureNum);
+            // Position based on screen on
+            temperatureLayout.alignX = 2;
+            temperatureLayout.alignY = 0;
+            int tmp_left = (int) settings.temperatureLeft;
+            if(!settings.temperatureAlignLeft) {
+                // If text is centered, set rectangle
+                temperatureLayout.setRect(
+                        (int) (2 * tmp_left + 640),
+                        (int) (settings.temperatureFontSize)
+                );
+                tmp_left = -320;
+            }
+            temperatureLayout.setStart(
+                    (int) tmp_left,
+                    (int) (settings.temperatureTop-((float)settings.font_ratio/100)*settings.temperatureFontSize)
+            );
+            slpt_objects.add(temperatureLayout);
         }
-        temperatureLayout.setStart(
-            tmp_left,
-            (int) (service.getResources().getDimension(R.dimen.temperature_top)-((float)service.getResources().getInteger(R.integer.font_ratio)/100)*service.getResources().getDimension(R.dimen.temperature_font_size))
-        );
-        if(!service.getResources().getBoolean(R.bool.temperature)){temperatureLayout.show=false;}
 
-        // Draw weather icon
-        SlptPictureView weatherLayout = new SlptPictureView();
-        weatherLayout.setImagePicture( SimpleFile.readFileFromAssets(service, String.format("slpt_weather/clock_skin_weather_%s.png", weatherImageStrList.get(this.weather.weatherType))) );
-        weatherLayout.setStart(
-            (int) service.getResources().getDimension(R.dimen.weather_img_left),
-            (int) service.getResources().getDimension(R.dimen.weather_img_top)
-        );
-        if(!service.getResources().getBoolean(R.bool.weather_image)){weatherLayout.show=false;}
+        // Weather Icons
+        if(settings.weather_imgProg>0){
+            SlptPictureView weatherLayout = new SlptPictureView();
+            weatherLayout.setImagePicture( SimpleFile.readFileFromAssets(service, String.format(( (better_resolution)?"":"slpt_" )+"weather/clock_skin_weather_%s.png", this.weatherImageStrList.get(this.weather.weatherType))) );
+            weatherLayout.setStart(
+                    (int) settings.weather_imgProgLeft,
+                    (int) settings.weather_imgProgTop
+            );
+            slpt_objects.add(weatherLayout);
+        }
 
         // Draw City
-        SlptLinearLayout cityLayout = new SlptLinearLayout();
-        SlptPictureView cityText = new SlptPictureView();
-        cityText.setStringPicture( this.weather.city );
-        cityLayout.add(cityText);
-        cityLayout.setTextAttrForAll(
-            service.getResources().getDimension(R.dimen.city_font_size),
-            service.getResources().getColor(R.color.city_colour_slpt),
-            font
-        );
-        // Position based on screen on
-        cityLayout.alignX = 2;
-        cityLayout.alignY = 0;
-        tmp_left = (int) service.getResources().getDimension(R.dimen.city_left);
-        if(!service.getResources().getBoolean(R.bool.city_left_align)) {
-            // If text is centered, set rectangle
-            cityLayout.setRect(
-                (int) (2 * tmp_left + 640),
-                (int) (service.getResources().getDimension(R.dimen.city_font_size))
+        if(settings.city>0){
+            // Show or Not icon
+            if (settings.cityIcon) {
+                SlptPictureView cityIcon = new SlptPictureView();
+                cityIcon.setImagePicture( SimpleFile.readFileFromAssets(service, ( (better_resolution)?"":"slpt_" )+"icons/city.png") );
+                cityIcon.setStart(
+                        (int) settings.cityIconLeft,
+                        (int) settings.cityIconTop
+                );
+                slpt_objects.add(cityIcon);
+            }
+
+            SlptLinearLayout cityLayout = new SlptLinearLayout();
+            SlptPictureView cityText = new SlptPictureView();
+            cityText.setStringPicture(this.weather.city);
+            cityText.setTextAttr(
+                    settings.cityFontSize,
+                    settings.cityColor,
+                    ResourceManager.getTypeFace(service.getResources(), ResourceManager.Font.FONT_FILE)
             );
-            tmp_left = -320;
+            cityLayout.add(cityText);
+            cityLayout.setTextAttrForAll(
+                    settings.cityFontSize,
+                    settings.cityColor,
+                    ResourceManager.getTypeFace(service.getResources(), ResourceManager.Font.FONT_FILE)
+            );
+            // Position based on screen on
+            cityLayout.alignX = 2;
+            cityLayout.alignY = 0;
+            int tmp_left = (int) settings.cityLeft;
+            if(!settings.cityAlignLeft) {
+                // If text is centered, set rectangle
+                cityLayout.setRect(
+                        (int) (2 * tmp_left + 640),
+                        (int) (settings.cityFontSize)
+                );
+                tmp_left = -320;
+            }
+            cityLayout.setStart(
+                    (int) tmp_left,
+                    (int) (settings.cityTop-((float)settings.font_ratio/100)*settings.cityFontSize)
+            );
+            slpt_objects.add(cityLayout);
         }
-        cityLayout.setStart(
-            tmp_left,
-            (int) (service.getResources().getDimension(R.dimen.city_top)-((float)service.getResources().getInteger(R.integer.font_ratio)/100)*service.getResources().getDimension(R.dimen.city_font_size))
-        );
-        if(!service.getResources().getBoolean(R.bool.city)){cityLayout.show=false;}
 
         // Draw Humidity
-        SlptLinearLayout humidityLayout = new SlptLinearLayout();
-        SlptPictureView humidityText = new SlptPictureView();
-        humidityText.setStringPicture( this.weather.humidity );
-        humidityLayout.add(humidityText);
-        humidityLayout.setTextAttrForAll(
-            service.getResources().getDimension(R.dimen.humidity_font_size),
-            service.getResources().getColor(R.color.humidity_colour_slpt),
-            font
-        );
-        // Position based on screen on
-        humidityLayout.alignX = 2;
-        humidityLayout.alignY = 0;
-        tmp_left = (int) service.getResources().getDimension(R.dimen.humidity_left);
-        if(!service.getResources().getBoolean(R.bool.humidity_left_align)) {
-            // If text is centered, set rectangle
-            humidityLayout.setRect(
-                (int) (2 * tmp_left + 640),
-                (int) (service.getResources().getDimension(R.dimen.humidity_font_size))
+        if(settings.humidity>0){
+            // Show or Not icon
+            if (settings.humidityIcon) {
+                SlptPictureView humidityIcon = new SlptPictureView();
+                humidityIcon.setImagePicture( SimpleFile.readFileFromAssets(service, ( (better_resolution)?"":"slpt_" )+"icons/humidity.png") );
+                humidityIcon.setStart(
+                        (int) settings.humidityIconLeft,
+                        (int) settings.humidityIconTop
+                );
+                slpt_objects.add(humidityIcon);
+            }
+
+            SlptLinearLayout humidityLayout = new SlptLinearLayout();
+            SlptPictureView humidityNum = new SlptPictureView();
+            humidityNum.setStringPicture(this.weather.humidity);
+            humidityNum.setTextAttr(
+                    settings.humidityFontSize,
+                    settings.humidityColor,
+                    ResourceManager.getTypeFace(service.getResources(), ResourceManager.Font.FONT_FILE)
             );
-            tmp_left = -320;
+            humidityLayout.add(humidityNum);
+            humidityLayout.setTextAttrForAll(
+                    settings.humidityFontSize,
+                    settings.humidityColor,
+                    ResourceManager.getTypeFace(service.getResources(), ResourceManager.Font.FONT_FILE)
+            );
+            // Position based on screen on
+            humidityLayout.alignX = 2;
+            humidityLayout.alignY = 0;
+            int tmp_left = (int) settings.humidityLeft;
+            if(!settings.humidityAlignLeft) {
+                // If text is centered, set rectangle
+                humidityLayout.setRect(
+                        (int) (2 * tmp_left + 640),
+                        (int) (settings.humidityFontSize)
+                );
+                tmp_left = -320;
+            }
+            humidityLayout.setStart(
+                    (int) tmp_left,
+                    (int) (settings.humidityTop-((float)settings.font_ratio/100)*settings.humidityFontSize)
+            );
+            slpt_objects.add(humidityLayout);
         }
-        humidityLayout.setStart(
-            tmp_left,
-            (int) (service.getResources().getDimension(R.dimen.humidity_top)-((float)service.getResources().getInteger(R.integer.font_ratio)/100)*service.getResources().getDimension(R.dimen.humidity_font_size))
-        );
-        if(!service.getResources().getBoolean(R.bool.humidity)){humidityLayout.show=false;}
 
         // Draw UV rays (Strong)
-        SlptLinearLayout uvLayout = new SlptLinearLayout();
-        SlptPictureView uvText = new SlptPictureView();
-        uvText.setStringPicture( this.weather.uv );
-        uvLayout.add(uvText);
-        uvLayout.setTextAttrForAll(
-            service.getResources().getDimension(R.dimen.uv_font_size),
-            service.getResources().getColor(R.color.uv_colour_slpt),
-            font
-        );
-        // Position based on screen on
-        uvLayout.alignX = 2;
-        uvLayout.alignY = 0;
-        tmp_left = (int) service.getResources().getDimension(R.dimen.uv_left);
-        if(!service.getResources().getBoolean(R.bool.uv_left_align)) {
-            // If text is centered, set rectangle
-            uvLayout.setRect(
-                (int) (2 * tmp_left + 640),
-                (int) (service.getResources().getDimension(R.dimen.uv_font_size))
+        if(settings.uv>0){
+            // Show or Not icon
+            if (settings.uvIcon) {
+                SlptPictureView uvIcon = new SlptPictureView();
+                uvIcon.setImagePicture( SimpleFile.readFileFromAssets(service, ( (better_resolution)?"":"slpt_" )+"icons/uv.png") );
+                uvIcon.setStart(
+                        (int) settings.uvIconLeft,
+                        (int) settings.uvIconTop
+                );
+                slpt_objects.add(uvIcon);
+            }
+
+            SlptLinearLayout uvLayout = new SlptLinearLayout();
+            SlptPictureView uvNum = new SlptPictureView();
+            uvNum.setStringPicture(this.weather.uv);
+            uvNum.setTextAttr(
+                    settings.uvFontSize,
+                    settings.uvColor,
+                    ResourceManager.getTypeFace(service.getResources(), ResourceManager.Font.FONT_FILE)
             );
-            tmp_left = -320;
+            uvLayout.add(uvNum);
+            uvLayout.setTextAttrForAll(
+                    settings.uvFontSize,
+                    settings.uvColor,
+                    ResourceManager.getTypeFace(service.getResources(), ResourceManager.Font.FONT_FILE)
+            );
+            // Position based on screen on
+            uvLayout.alignX = 2;
+            uvLayout.alignY = 0;
+            int tmp_left = (int) settings.uvLeft;
+            if(!settings.uvAlignLeft) {
+                // If text is centered, set rectangle
+                uvLayout.setRect(
+                        (int) (2 * tmp_left + 640),
+                        (int) (settings.uvFontSize)
+                );
+                tmp_left = -320;
+            }
+            uvLayout.setStart(
+                    (int) tmp_left,
+                    (int) (settings.uvTop-((float)settings.font_ratio/100)*settings.uvFontSize)
+            );
+            slpt_objects.add(uvLayout);
         }
-        uvLayout.setStart(
-            tmp_left,
-            (int) (service.getResources().getDimension(R.dimen.uv_top)-((float)service.getResources().getInteger(R.integer.font_ratio)/100)*service.getResources().getDimension(R.dimen.uv_font_size))
-        );
-        if(!service.getResources().getBoolean(R.bool.uv)){uvLayout.show=false;}
 
         // Draw Wind Direction
-        SlptLinearLayout windDirectionLayout = new SlptLinearLayout();
-        SlptPictureView windDirectionText = new SlptPictureView();
-        windDirectionText.setStringPicture( (service.getResources().getBoolean(R.bool.wind_direction_as_arrows))? this.weather.windArrow : this.weather.windDirection );
-        windDirectionLayout.add(windDirectionText);
-        windDirectionLayout.setTextAttrForAll(
-            service.getResources().getDimension(R.dimen.wind_direction_font_size),
-            service.getResources().getColor(R.color.wind_direction_colour_slpt),
-            font
-        );
-        // Position based on screen on
-        windDirectionLayout.alignX = 2;
-        windDirectionLayout.alignY = 0;
-        tmp_left = (int) service.getResources().getDimension(R.dimen.wind_direction_left);
-        if(!service.getResources().getBoolean(R.bool.wind_direction_left_align)) {
-            // If text is centered, set rectangle
-            windDirectionLayout.setRect(
-                (int) (2 * tmp_left + 640),
-                (int) (service.getResources().getDimension(R.dimen.wind_direction_font_size))
+        if(settings.wind_direction>0){
+            // Show or Not icon
+            if (settings.wind_directionIcon) {
+                SlptPictureView wind_directionIcon = new SlptPictureView();
+                wind_directionIcon.setImagePicture( SimpleFile.readFileFromAssets(service, ( (better_resolution)?"":"slpt_" )+"icons/wind_direction.png") );
+                wind_directionIcon.setStart(
+                        (int) settings.wind_directionIconLeft,
+                        (int) settings.wind_directionIconTop
+                );
+                slpt_objects.add(wind_directionIcon);
+            }
+            SlptLinearLayout wind_directionLayout = new SlptLinearLayout();
+            SlptPictureView wind_directionText = new SlptPictureView();
+            // todo
+            wind_directionText.setStringPicture( (service.getResources().getBoolean(R.bool.wind_direction_as_arrows))? this.weather.windArrow : this.weather.windDirection );
+            wind_directionText.setTextAttr(
+                    settings.wind_directionFontSize,
+                    settings.wind_directionColor,
+                    ResourceManager.getTypeFace(service.getResources(), ResourceManager.Font.FONT_FILE)
             );
-            tmp_left = -320;
+            wind_directionLayout.add(wind_directionText);
+            wind_directionLayout.setTextAttrForAll(
+                    settings.wind_directionFontSize,
+                    settings.wind_directionColor,
+                    ResourceManager.getTypeFace(service.getResources(), ResourceManager.Font.FONT_FILE)
+            );
+            // Position based on screen on
+            wind_directionLayout.alignX = 2;
+            wind_directionLayout.alignY = 0;
+            int tmp_left = (int) settings.wind_directionLeft;
+            if(!settings.wind_directionAlignLeft) {
+                // If text is centered, set rectangle
+                wind_directionLayout.setRect(
+                        (int) (2 * tmp_left + 640),
+                        (int) (settings.wind_directionFontSize)
+                );
+                tmp_left = -320;
+            }
+            wind_directionLayout.setStart(
+                    (int) tmp_left,
+                    (int) (settings.wind_directionTop-((float)settings.font_ratio/100)*settings.wind_directionFontSize)
+            );
+            slpt_objects.add(wind_directionLayout);
         }
-        windDirectionLayout.setStart(
-            tmp_left,
-            (int) (service.getResources().getDimension(R.dimen.wind_direction_top)-((float)service.getResources().getInteger(R.integer.font_ratio)/100)*service.getResources().getDimension(R.dimen.wind_direction_font_size))
-        );
-        if(!service.getResources().getBoolean(R.bool.wind_direction)){windDirectionLayout.show=false;}
 
         // Draw Wind Strength (ex. 7.4km/h)
-        SlptLinearLayout windStrengthLayout = new SlptLinearLayout();
-        SlptPictureView windStrengthText = new SlptPictureView();
-        windStrengthText.setStringPicture( this.weather.windStrength );
-        windStrengthLayout.add(windStrengthText);
-        windStrengthLayout.setTextAttrForAll(
-            service.getResources().getDimension(R.dimen.uv_font_size),
-            service.getResources().getColor(R.color.uv_colour_slpt),
-            font
-        );
-        // Position based on screen on
-        windStrengthLayout.alignX = 2;
-        windStrengthLayout.alignY = 0;
-        tmp_left = (int) service.getResources().getDimension(R.dimen.wind_strength_left);
-        if(!service.getResources().getBoolean(R.bool.wind_strength_left_align)) {
-            // If text is centered, set rectangle
-            windStrengthLayout.setRect(
-                (int) (2 * tmp_left + 640),
-                (int) (service.getResources().getDimension(R.dimen.wind_strength_font_size))
+        if(settings.wind_strength>0){
+            // Show or Not icon
+            if (settings.wind_strengthIcon) {
+                SlptPictureView wind_strengthIcon = new SlptPictureView();
+                wind_strengthIcon.setImagePicture( SimpleFile.readFileFromAssets(service, ( (better_resolution)?"":"slpt_" )+"icons/wind_strength.png") );
+                wind_strengthIcon.setStart(
+                        (int) settings.wind_strengthIconLeft,
+                        (int) settings.wind_strengthIconTop
+                );
+                slpt_objects.add(wind_strengthIcon);
+            }
+            SlptLinearLayout wind_strengthLayout = new SlptLinearLayout();
+            SlptPictureView wind_strengthText = new SlptPictureView();
+            wind_strengthText.setStringPicture(this.weather.windStrength);
+            wind_strengthText.setTextAttr(
+                    settings.wind_strengthFontSize,
+                    settings.wind_strengthColor,
+                    ResourceManager.getTypeFace(service.getResources(), ResourceManager.Font.FONT_FILE)
             );
-            tmp_left = -320;
+            wind_strengthLayout.add(wind_strengthText);
+            wind_strengthLayout.setTextAttrForAll(
+                    settings.wind_strengthFontSize,
+                    settings.wind_strengthColor,
+                    ResourceManager.getTypeFace(service.getResources(), ResourceManager.Font.FONT_FILE)
+            );
+            // Position based on screen on
+            wind_strengthLayout.alignX = 2;
+            wind_strengthLayout.alignY = 0;
+            int tmp_left = (int) settings.wind_strengthLeft;
+            if(!settings.wind_strengthAlignLeft) {
+                // If text is centered, set rectangle
+                wind_strengthLayout.setRect(
+                        (int) (2 * tmp_left + 640),
+                        (int) (settings.wind_strengthFontSize)
+                );
+                tmp_left = -320;
+            }
+            wind_strengthLayout.setStart(
+                    (int) tmp_left,
+                    (int) (settings.wind_strengthTop-((float)settings.font_ratio/100)*settings.wind_strengthFontSize)
+            );
+            slpt_objects.add(wind_strengthLayout);
         }
-        windStrengthLayout.setStart(
-            tmp_left,
-            (int) (service.getResources().getDimension(R.dimen.wind_strength_top)-((float)service.getResources().getInteger(R.integer.font_ratio)/100)*service.getResources().getDimension(R.dimen.wind_strength_font_size))
-        );
-        if(!service.getResources().getBoolean(R.bool.wind_strength)){windStrengthLayout.show=false;}
 
-        return Arrays.asList(new SlptViewComponent[]{temperatureLayout, weatherLayout, cityLayout, humidityLayout, uvLayout, windDirectionLayout, windStrengthLayout});
+        return slpt_objects;
     }
 }

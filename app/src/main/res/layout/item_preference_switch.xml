@@ -13,9 +13,9 @@
 
     <Switch
         android:id="@+id/sw"
-        android:layout_width="72dp"
+        android:layout_width="42dp"
         android:layout_height="match_parent"
-        android:paddingLeft="16dp"
+        android:paddingLeft="12dp"
         android:paddingTop="8dp"
         android:paddingBottom="8dp"
         android:paddingRight="12dp"

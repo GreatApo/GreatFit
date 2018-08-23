@@ -10,4 +10,5 @@ import java.util.List;
 public interface HasSlptViewComponent {
 
     List<SlptViewComponent> buildSlptViewComponent(Service service);
+    List<SlptViewComponent> buildSlptViewComponent(Service service, boolean better_resolution);
 }

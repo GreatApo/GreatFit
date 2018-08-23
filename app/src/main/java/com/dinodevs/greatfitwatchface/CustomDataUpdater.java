@@ -12,6 +12,8 @@ import android.os.IBinder;
 import android.provider.Settings;
 import android.util.Log;
 
+import com.dinodevs.greatfitwatchface.settings.LoadSettings;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -42,8 +44,11 @@ public class CustomDataUpdater extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.d("DinoDevs-GreatFit", "CustomDataUpdater service started");
 
+        // Load settings
+        LoadSettings settings = new LoadSettings(getApplicationContext());
+
         // Get AirPressure in hPa
-        airPressureBool = (getResources().getBoolean(R.bool.air_pressure) || getResources().getBoolean(R.bool.altitude));
+        airPressureBool = (settings.air_pressure>0 || settings.altitude>0);
         custom_refresh_rate = getResources().getInteger(R.integer.custom_refresh_rate)*60*1000;
         // WearCompass.jar!\com\huami\watch\compass\logic\GeographicManager.class
         this.mManager = (SensorManager) getApplicationContext().getSystemService(Context.SENSOR_SERVICE);
@@ -74,8 +79,10 @@ public class CustomDataUpdater extends Service {
     Runnable customRefresher = new Runnable(){
         @Override
         public void run() {
-            if(airPressureBool) {
-                updateAirPressure();
+            if(android.provider.Settings.System.getString(getContentResolver(), "slptName").equals("GreatFitSlpt")) {
+                if (airPressureBool) {
+                    updateAirPressure();
+                }
             }
             mHandler.postDelayed(customRefresher, custom_refresh_rate);
         }

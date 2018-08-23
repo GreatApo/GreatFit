@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.SeekBar;
 import android.widget.Switch;
 import android.widget.TextView;
 
@@ -39,8 +40,11 @@ class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
             //Switch Item
             return new ViewHolder(layoutInflater.inflate(R.layout.item_preference_switch, parent, false));
         } else if (viewType == 3) {
-            //Switch Item
+            //Button Item
             return new ViewHolder(layoutInflater.inflate(R.layout.item_preference_button, parent, false));
+        } else if (viewType == 4) {
+            //Seekbar Item
+            return new ViewHolder(layoutInflater.inflate(R.layout.item_preference_seekbar, parent, false));
         }
         return null;
     }
@@ -52,7 +56,8 @@ class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
         if (setting instanceof HeaderSetting) return 0;
         if (setting instanceof IconSetting) return 1;
         if (setting instanceof SwitchSetting) return 2;
-        else return 3;
+        if (setting instanceof ButtonSetting) return 3;
+        else return 4;
     }
 
 
@@ -91,6 +96,17 @@ class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
             holder.root.setOnClickListener(buttonSetting.onClickListener);
             holder.title.setText(buttonSetting.title);
             holder.title.setBackground(buttonSetting.bg);
+        } else if (setting instanceof SeekbarSetting) {
+            //Icon, setup icon, click listener and title
+            SeekbarSetting seekbarSetting = (SeekbarSetting) setting;
+            //holder.icon.setImageDrawable(seekbarSetting.icon);
+            holder.sb.incrementProgressBy(100);
+            holder.sb.setMax(seekbarSetting.max);
+            holder.sb.setProgress(seekbarSetting.current);
+            holder.sb.setOnSeekBarChangeListener(seekbarSetting.onChangeListener);
+            holder.title.setText(seekbarSetting.title);
+            holder.subtitle.setText(seekbarSetting.subtitle);
+            holder.subtitle.setVisibility(View.VISIBLE);
         } else {
             //Icon, setup icon, click listener and title
             IconSetting iconSetting = (IconSetting) setting;
@@ -119,6 +135,7 @@ class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
         TextView title, subtitle;
         ImageView icon;
         Switch sw;
+        SeekBar sb;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -127,6 +144,7 @@ class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
             subtitle = (TextView) itemView.findViewById(R.id.subtitle);
             icon = (ImageView) itemView.findViewById(R.id.icon);
             sw = (Switch) itemView.findViewById(R.id.sw);
+            sb = (SeekBar) itemView.findViewById(R.id.seekBar);
             root = itemView;
         }
     }

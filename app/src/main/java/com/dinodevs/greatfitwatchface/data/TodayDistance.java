@@ -12,7 +12,7 @@ public class TodayDistance {
         this.distance = distance;
     }
 
-    public double getDistance() {
-        return distance;
+    public float getDistance() {
+        return (float) distance;
     }
 }
