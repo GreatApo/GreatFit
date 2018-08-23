@@ -103,7 +103,7 @@
         <item name="align_left">true</item> <!-- align left -->
         <item name="units">true</item> <!-- units (if supported) -->
         <item name="icon">true</item> <!-- icon -->
-        <item name="iconLeft">90px</item> <!-- icon's left positioning -->
+        <item name="iconLeft">87px</item> <!-- icon's left positioning -->
         <item name="iconTop">58px</item> <!-- icon's top positioning -->
     </array>
     <!-- Widget 2 -->
