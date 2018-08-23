@@ -68,6 +68,7 @@ public class LoadSettings {
     public boolean wind_direction_as_arrows;
     public boolean status_bar;
     public boolean flashing_heart_rate_icon;
+    public int target_calories;
     public Paint mGPaint;
     public List widgets_list;
     public List circle_bars_list;
@@ -403,6 +404,21 @@ public class LoadSettings {
     public int batteryProgBgColor;
     public String batteryProgBgImage;
     public String batteryProgSlptImage;
+    // Calories
+    public int caloriesProg;
+    public float caloriesProgLeft;
+    public float caloriesProgTop;
+    public int caloriesProgType;
+    public float caloriesProgRadius;
+    public float caloriesProgThickness;
+    public int caloriesProgStartAngle;
+    public int caloriesProgEndAngle;
+    public int caloriesProgClockwise;
+    public int caloriesProgColorIndex;
+    public boolean caloriesProgBgBool;
+    public int caloriesProgBgColor;
+    public String caloriesProgBgImage;
+    public String caloriesProgSlptImage;
     // Weather
     public int weather_imgProg;
     public float weather_imgProgLeft;
@@ -426,7 +442,7 @@ public class LoadSettings {
             this.wind_direction_as_arrows = sharedPreferences.getBoolean( "wind_direction_as_arrows", context.getResources().getBoolean(R.bool.wind_direction_as_arrows));
             this.status_bar = sharedPreferences.getBoolean( "status_bar", context.getResources().getBoolean(R.bool.status_bar));
             this.flashing_heart_rate_icon = sharedPreferences.getBoolean( "flashing_heart_rate_icon", context.getResources().getBoolean(R.bool.flashing_heart_rate_icon));
-
+            this.target_calories = sharedPreferences.getInt( "target_calories", 1000);
             //icon paint
             this.mGPaint = new Paint();
             mGPaint.setAntiAlias(false);
@@ -1214,6 +1230,36 @@ public class LoadSettings {
             widgetN.recycle();
         }
 
+        // caloriesProg
+        this.caloriesProg = sharedPreferences.getInt("caloriesProg", circle_bars_list.indexOf("calories")+1);
+        if(this.caloriesProg>0){
+            TypedArray widgetN = res.obtainTypedArray(res.getIdentifier("progress_element"+this.caloriesProg, "array", context.getPackageName()));
+            i = 0;
+            this.caloriesProgLeft  = sharedPreferences.getFloat("caloriesProgLeft", widgetN.getDimension(i++, 0));
+            this.caloriesProgTop  = sharedPreferences.getFloat("caloriesProgTop", widgetN.getDimension(i++, 0));
+            this.caloriesProgType = sharedPreferences.getInt("caloriesProgType", widgetN.getColor(i++, 0));
+
+            if(this.caloriesProgType==0){ // Circle bar element
+                this.caloriesProgRadius  = sharedPreferences.getFloat("caloriesProgRadius", widgetN.getDimension(i++, 0));
+                this.caloriesProgThickness  = sharedPreferences.getFloat("caloriesProgThickness", widgetN.getDimension(i++, 0));
+                this.caloriesProgStartAngle = sharedPreferences.getInt("caloriesProgStartAngle", widgetN.getInteger(i++, 0));
+                this.caloriesProgEndAngle = sharedPreferences.getInt("caloriesProgEndAngle", widgetN.getInteger(i++, 0));
+                this.caloriesProgClockwise = sharedPreferences.getInt("caloriesProgClockwise", widgetN.getInteger(i++, 1));
+                if(this.color>-1 && theme_elements.indexOf("bar_element"+this.caloriesProg)>-1){
+                    this.caloriesProgColorIndex = this.color;
+                    i++;
+                }else{
+                    this.caloriesProgColorIndex = sharedPreferences.getInt("caloriesProgColorIndex", widgetN.getInteger(i++, 0));
+                }
+                this.caloriesProgBgBool = sharedPreferences.getBoolean("caloriesProgBgBool", widgetN.getBoolean(i++, false));
+                this.caloriesProgBgColor = sharedPreferences.getInt("caloriesProgBgColor", widgetN.getInteger(i++, 0));
+                this.caloriesProgBgImage = sharedPreferences.getString("caloriesProgBgImage", widgetN.getString(i++));
+                this.caloriesProgSlptImage = sharedPreferences.getString("caloriesProgSlptImage", widgetN.getString(i+this.caloriesProgColorIndex));
+            }else{ // Progression with images
+                //this.caloriesProgSlptImages = res.obtainTypedArray(res.getIdentifier("param_progress_element_slpt"+this.caloriesProg, "array", context.getPackageName()));
+            }
+            widgetN.recycle();
+        }
     }
 
     // STEPS WIDGET
@@ -1233,7 +1279,7 @@ public class LoadSettings {
 
     // CALORIES WIDGET
     public boolean isCalories(){
-        return this.calories>0;
+        return this.calories>0 || this.caloriesProg>0;
     }
 
     // FLOOR WIDGET

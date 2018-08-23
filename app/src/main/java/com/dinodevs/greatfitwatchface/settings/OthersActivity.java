@@ -113,7 +113,7 @@ public class OthersActivity extends FragmentActivity {
             public void onStopTrackingTouch(SeekBar seekBar) {
                 Toast.makeText(seekBar.getContext(), "Target: "+seekBar.getProgress(), Toast.LENGTH_SHORT).show();
             }
-        }, target_calories, 2000));
+        }, target_calories, 3000));
 
         //Setup layout
         root.setBackgroundResource(R.drawable.settings_background);

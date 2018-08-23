@@ -90,7 +90,7 @@
     <integer-array name="widgets">
         <item>2</item> <!-- Widget 1: type from "supported widgets" list -->
         <item>1</item> <!-- Widget 2: type from "supported widgets" list -->
-        <item>0</item>
+        <item>18</item>
         <item>7</item>
     </integer-array>
 
@@ -261,6 +261,8 @@
         <item>uv</item>
         <item>wind_direction</item>
         <item>wind_strength</item>
+        <!-- <item>sunset</item> -->
+        <!-- <item>sunrise</item> -->
         <item>watch_alarm</item>
         <item>air_pressure</item> <!-- Uses a sensor which may drain a little the battery -->
         <item>altitude</item> <!-- Calculated approximately based on air pressure -->
@@ -276,7 +278,7 @@
         <item>steps</item> <!-- 1 -->
         <item>today_distance</item>
         <!-- <item>heart_rate</item> --> <!-- 0-200 bpm -->
-        <!-- <item>calories</item> --> <!-- you need to set target -->
+        <item>calories</item> <!-- set target in settings -->
         <!-- <item>humidity</item> -->
         <!-- <item>phone_battery</item> -->
         <!-- <item>wind_strength</item> -->
