@@ -43,7 +43,7 @@ adb reboot
 Reboot is required for air pressure to work.
 
 
-### Screenshots (Version 3.0.4)
+### Screenshots
 ![GreatFit v3.0.4](other/screenshots/1.png)
 ![GreatFit v3.0.4](other/screenshots/2.png)
 
