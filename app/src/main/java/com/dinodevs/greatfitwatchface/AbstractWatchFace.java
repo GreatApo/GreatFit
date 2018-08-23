@@ -2,10 +2,7 @@ package com.dinodevs.greatfitwatchface;
 
 import android.content.Intent;
 import android.content.res.Resources;
-import android.database.ContentObserver;
 import android.graphics.Canvas;
-import android.os.Bundle;
-import android.os.Handler;
 import android.util.Log;
 
 import java.util.Arrays;
@@ -17,10 +14,6 @@ import com.dinodevs.greatfitwatchface.widget.AnalogClockWidget;
 import com.dinodevs.greatfitwatchface.widget.ClockWidget;
 import com.dinodevs.greatfitwatchface.widget.DigitalClockWidget;
 import com.dinodevs.greatfitwatchface.widget.Widget;
-import com.dinodevs.greatfitwatchface.R;
-import com.huami.watch.watchface.WatchDataListener;
-
-import org.json.JSONObject;
 
 /**
  * Abstract base class for watch faces
@@ -98,9 +91,7 @@ public abstract class AbstractWatchFace extends com.huami.watch.watchface.Abstra
         this.widgets.addAll(Arrays.asList(widgets));
     }
 
-    protected AbstractWatchFace() {
-        //this.clock = clock;
-    }
+    protected AbstractWatchFace() {}
 
     // Status bar (ex.battery charging)
     public final Engine onCreateEngine() {

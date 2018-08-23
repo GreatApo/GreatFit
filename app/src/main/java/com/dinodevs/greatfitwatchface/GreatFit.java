@@ -1,8 +1,6 @@
 package com.dinodevs.greatfitwatchface;
 
 import android.content.Context;
-import android.content.Intent;
-import android.util.Log;
 
 import com.dinodevs.greatfitwatchface.settings.LoadSettings;
 import com.dinodevs.greatfitwatchface.widget.FloorWidget;

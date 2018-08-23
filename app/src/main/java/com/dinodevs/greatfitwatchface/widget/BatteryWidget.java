@@ -6,9 +6,6 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
-import android.graphics.drawable.Drawable;
-import android.text.TextPaint;
-import android.util.Log;
 
 import com.dinodevs.greatfitwatchface.settings.LoadSettings;
 import com.huami.watch.watchface.util.Util;
@@ -21,11 +18,9 @@ import com.ingenic.iwds.slpt.view.sport.SlptPowerNumView;
 import com.ingenic.iwds.slpt.view.utils.SimpleFile;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import com.dinodevs.greatfitwatchface.R;
 import com.dinodevs.greatfitwatchface.data.Battery;
 import com.dinodevs.greatfitwatchface.data.DataType;
 import com.dinodevs.greatfitwatchface.resource.ResourceManager;

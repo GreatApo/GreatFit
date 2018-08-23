@@ -1,27 +1,17 @@
 package com.dinodevs.greatfitwatchface.settings;
 
-import android.app.WallpaperInfo;
-import android.app.WallpaperManager;
-import android.content.ActivityNotFoundException;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.PowerManager;
-import android.os.RemoteException;
-import android.os.SystemClock;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
-import com.dinodevs.greatfitwatchface.GreatFit;
 import com.dinodevs.greatfitwatchface.GreatFitSlpt;
 import com.dinodevs.greatfitwatchface.R;
-import com.huami.watch.watchface.receiver.LocalChangedReceiver;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -110,6 +100,7 @@ public class Settings extends FragmentActivity {
             public void onClick(View view) {
                 // Restart watchface
                 Settings.this.sendBroadcast(new Intent("com.huami.intent.action.WATCHFACE_CONFIG_CHANGED"));
+                // Slpt some times doesn't run
                 startService(new Intent(getApplicationContext(), GreatFitSlpt.class));
                 // Kill this
                 Settings.this.setResult(-1);
@@ -125,6 +116,8 @@ public class Settings extends FragmentActivity {
                 Toast.makeText(view.getContext(), "Settings reset", Toast.LENGTH_SHORT).show();
                 // Restart watchface
                 Settings.this.sendBroadcast(new Intent("com.huami.intent.action.WATCHFACE_CONFIG_CHANGED"));
+                // Slpt some times doesn't run
+                startService(new Intent(getApplicationContext(), GreatFitSlpt.class));
                 // Kill this
                 Settings.this.setResult(-1);
                 Settings.this.finish();

@@ -6,8 +6,6 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.text.TextPaint;
 
-import com.dinodevs.greatfitwatchface.R;
-import com.dinodevs.greatfitwatchface.data.Calories;
 import com.dinodevs.greatfitwatchface.data.DataType;
 import com.dinodevs.greatfitwatchface.data.TodayFloor;
 import com.dinodevs.greatfitwatchface.resource.ResourceManager;
@@ -16,7 +14,6 @@ import com.huami.watch.watchface.util.Util;
 import com.ingenic.iwds.slpt.view.core.SlptLinearLayout;
 import com.ingenic.iwds.slpt.view.core.SlptPictureView;
 import com.ingenic.iwds.slpt.view.core.SlptViewComponent;
-import com.ingenic.iwds.slpt.view.sport.SlptTodayCaloriesView;
 import com.ingenic.iwds.slpt.view.sport.SlptTodayFloorNumView;
 import com.ingenic.iwds.slpt.view.utils.SimpleFile;
 

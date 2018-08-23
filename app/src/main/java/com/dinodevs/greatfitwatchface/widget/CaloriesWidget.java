@@ -21,7 +21,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import com.dinodevs.greatfitwatchface.R;
 import com.dinodevs.greatfitwatchface.data.Calories;
 import com.dinodevs.greatfitwatchface.data.DataType;
 import com.dinodevs.greatfitwatchface.resource.ResourceManager;

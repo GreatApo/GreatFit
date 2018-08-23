@@ -4,25 +4,14 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.os.Environment;
-import android.provider.Settings;
 import android.support.annotation.StyleableRes;
 import android.util.Log;
-import android.widget.ImageView;
 
-import com.dinodevs.greatfitwatchface.BuildConfig;
 import com.dinodevs.greatfitwatchface.R;
 import com.huami.watch.watchface.util.Util;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.File;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -31,7 +20,6 @@ public class LoadSettings {
     private Context context;
     private SharedPreferences sharedPreferences;
     private int versionCode;
-    public boolean restartwatchface = false;
     private Resources res;
 
     public LoadSettings(Context context){
