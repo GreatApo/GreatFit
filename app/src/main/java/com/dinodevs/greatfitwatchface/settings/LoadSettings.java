@@ -50,16 +50,7 @@ public class LoadSettings {
     public String author;
     public int language;
     public int color;
-    public Integer[] colorCodes = {
-            Color.parseColor("#ff0000"),
-            Color.parseColor("#00ffff"),
-            Color.parseColor("#00ff00"),
-            Color.parseColor("#ff00ff"),
-            Color.parseColor("#ffffff"),
-            Color.parseColor("#ffff00"),
-            Color.parseColor("#111111"),
-            Color.parseColor("#0000ff")
-    };
+    public Integer[] colorCodes;
     public boolean flashing_indicator;
     public boolean month_as_text;
     public boolean three_letters_month_if_text;
@@ -443,6 +434,15 @@ public class LoadSettings {
             this.status_bar = sharedPreferences.getBoolean( "status_bar", context.getResources().getBoolean(R.bool.status_bar));
             this.flashing_heart_rate_icon = sharedPreferences.getBoolean( "flashing_heart_rate_icon", context.getResources().getBoolean(R.bool.flashing_heart_rate_icon));
             this.target_calories = sharedPreferences.getInt( "target_calories", 1000);
+            // Populate color codes
+            String[] colorCodes = context.getResources().getStringArray(R.array.color_codes);
+            int x = 0;
+            this.colorCodes = new Integer[colorCodes.length];
+            for(String color : colorCodes){
+                this.colorCodes[x] = Color.parseColor(color);
+                x++;
+            }
+
             //icon paint
             this.mGPaint = new Paint();
             mGPaint.setAntiAlias(false);
