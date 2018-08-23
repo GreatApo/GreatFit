@@ -41,60 +41,8 @@ public class LoadSettings {
 
         // Default Parameters
         defaultParameters();
-        // Parameters from settings (if set)
-        //settingsParameters();
-
-        // Settings if first time
-        /*
-        this.versionCode = BuildConfig.VERSION_CODE;
-        if(sharedPreferences.getInt( "version", -1)!=this.versionCode) {
-            firstTimeSettings();
-        }
-        */
-        // Then
     }
 
-    /*
-    private void firstTimeSettings(){
-        TypedArray elements = context.getResources().obtainTypedArray(R.array.elements);
-
-
-        for (int i = 0; i < 20; i++) {
-            int id = elements.getResourceId(i, -1);
-            if(id==-1){break;}
-
-            String name = context.getResources().getResourceEntryName(id);
-            TypedArray element = context.getResources().obtainTypedArray(id);
-            if(!name.matches("widget.*") && !name.matches("progress_element.*")){
-                for (int j = 0; j < 20; j++) {
-                    id = element.getResourceId(j, -1);
-                    if(id==-1){break;}
-                    String subName = context.getResources().getResourceEntryName(id);
-                    String type = context.getResources().getResourceTypeName(id);
-
-                }
-            }else if(name.matches("widget.*")){
-
-
-            }else{
-
-
-            }
-            element.recycle();
-        }
-        elements.recycle();
-
-        sharedPreferences.edit().putInt("version", this.versionCode).apply();
-    }
-
-    private void putParamByType(String name, int id, String type){
-        String subName = context.getResources().getResourceEntryName(id);
-        String type = context.getResources().getResourceTypeName(id);
-        if(type.equals("string")){
-
-        }
-    }
-    */
     // GENERAL
     public int font_ratio;
     public boolean better_resolution_when_raising_hand;
@@ -109,14 +57,14 @@ public class LoadSettings {
             Color.parseColor("#ff00ff"),
             Color.parseColor("#ffffff"),
             Color.parseColor("#ffff00"),
-            Color.parseColor("#111111")
+            Color.parseColor("#111111"),
+            Color.parseColor("#0000ff")
     };
     public boolean flashing_indicator;
     public boolean month_as_text;
     public boolean three_letters_month_if_text;
     public boolean three_letters_day_if_text;
     public boolean no_0_on_hour_first_digit;
-    public int thickness;
     public Paint mGPaint;
     public List widgets_list;
     public List circle_bars_list;
@@ -472,7 +420,6 @@ public class LoadSettings {
             this.three_letters_month_if_text = sharedPreferences.getBoolean( "three_letters_month_if_text", context.getResources().getBoolean(R.bool.three_letters_month_if_text));
             this.three_letters_day_if_text = sharedPreferences.getBoolean( "three_letters_day_if_text", context.getResources().getBoolean(R.bool.three_letters_day_if_text));
             this.no_0_on_hour_first_digit = sharedPreferences.getBoolean( "no_0_on_hour_first_digit", context.getResources().getBoolean(R.bool.no_0_on_hour_first_digit));
-            this.thickness = (int) context.getResources().getDimension(R.dimen.circles_thickness);
             //icon paint
             this.mGPaint = new Paint();
             mGPaint.setAntiAlias(false);
@@ -1260,187 +1207,6 @@ public class LoadSettings {
             widgetN.recycle();
         }
 
-
-        /*
-        // Circles Widget
-            this.batteryBool = context.getResources().getBoolean(R.bool.battery);
-            this.stepsBool = context.getResources().getBoolean(R.bool.steps);
-            this.todayDistanceBool = context.getResources().getBoolean(R.bool.today_distance);
-            this.totalDistanceBool = context.getResources().getBoolean(R.bool.total_distance);
-            this.batteryCircleBool = context.getResources().getBoolean(R.bool.battery_circle);
-            this.stepCircleBool = context.getResources().getBoolean(R.bool.steps_circle);
-            this.todayDistanceCircleBool = context.getResources().getBoolean(R.bool.today_distance_circle);
-            // Text positions
-            this.batteryTextLeft = context.getResources().getDimension(R.dimen.battery_text_left);
-            this.batteryTextTop = context.getResources().getDimension(R.dimen.battery_text_top);
-            this.stepsTextLeft = context.getResources().getDimension(R.dimen.steps_text_left);
-            this.stepsTextTop = context.getResources().getDimension(R.dimen.steps_text_top);
-            this.todayDistanceTextLeft = context.getResources().getDimension(R.dimen.today_distance_text_left);
-            this.todayDistanceTextTop = context.getResources().getDimension(R.dimen.today_distance_text_top);
-            this.totalDistanceTextLeft = context.getResources().getDimension(R.dimen.total_distance_text_left);
-            this.totalDistanceTextTop = context.getResources().getDimension(R.dimen.total_distance_text_top);
-            // Circles variables
-            this.startAngleBattery = context.getResources().getInteger(R.integer.battery_circle_start_angle);
-            this.fullAngleBattery = context.getResources().getInteger(R.integer.battery_circle_full_angle);
-            this.startAngleSteps = context.getResources().getInteger(R.integer.steps_circle_start_angle);
-            this.fullAngleSteps = context.getResources().getInteger(R.integer.steps_circle_full_angle);
-            this.startAngleSport = context.getResources().getInteger(R.integer.today_distance_circle_start_angle);
-            this.fullAngleSport = context.getResources().getInteger(R.integer.today_distance_circle_full_angle);
-            this.thickness = (int) context.getResources().getDimension(R.dimen.circles_thickness);
-            this.padding = (int) context.getResources().getDimension(R.dimen.circles_padding);
-            this.circlesBackgroundBool = context.getResources().getBoolean(R.bool.circles_background);;
-            // Get colors
-            this.backgroundColour = context.getResources().getColor(R.color.circles_background);
-            this.batteryColour = context.getResources().getColor(R.color.battery_circle_colour);
-            this.stepsColour = context.getResources().getColor(R.color.steps_circle_colour);
-            this.sportColour = context.getResources().getColor(R.color.today_distance_circle_colour);
-            this.sltp_circle_color = this.color;//context.getResources().getInteger(R.integer.sltp_circle_color);
-            // Text colors and fonts
-            this.batteryFontSize = context.getResources().getDimension(R.dimen.battery_font_size);
-            this.batteryTextColor = context.getResources().getColor(R.color.battery_colour);
-            this.stepsFontSize = context.getResources().getDimension(R.dimen.steps_font_size);
-            this.stepsTextColor = context.getResources().getColor(R.color.steps_colour);
-            this.todayDistanceFontSize = context.getResources().getDimension(R.dimen.today_distance_font_size);
-            this.todayDistanceTextColor = context.getResources().getColor(R.color.today_distance_colour);
-            this.totalDistanceFontSize = context.getResources().getDimension(R.dimen.total_distance_font_size);
-            this.totalDistanceTextColor = context.getResources().getColor(R.color.total_distance_colour);
-            // Show units boolean
-            this.showDistanceUnits = context.getResources().getBoolean(R.bool.distance_units);
-            // Align left true or false (false= align center)
-            this.batteryAlignLeftBool = context.getResources().getBoolean(R.bool.battery_left_align);
-            this.stepsAlignLeftBool = context.getResources().getBoolean(R.bool.steps_left_align);
-            this.todayDistanceAlignLeftBool = context.getResources().getBoolean(R.bool.today_distance_left_align);
-            this.totalDistanceAlignLeftBool = context.getResources().getBoolean(R.bool.total_distance_left_align);
-
-        // HEART RATE WIDGET
-            this.heartRateBool = context.getResources().getBoolean(R.bool.heart_rate);
-
-        // CALORIES WIDGET
-            this.caloriesBool = context.getResources().getBoolean(R.bool.calories);
-
-        // FLOOR WIDGET
-            this.floorsBool = context.getResources().getBoolean(R.bool.floor);
-
-        // BATTERY IMG WIDGET
-            this.batteryImgBool = context.getResources().getBoolean(R.bool.battery_icon);
-
-        // WEATHER WIDGET
-            this.temperatureBool = context.getResources().getBoolean(R.bool.temperature);
-            //context.getResources().getColor(R.palette.temperature_colour)
-            //context.getResources().getDimension(R.dimen.temperature_font_size)
-            this.cityBool = context.getResources().getBoolean(R.bool.city);
-            //context.getResources().getColor(R.palette.city_colour)
-            //context.getResources().getDimension(R.dimen.city_font_size)
-            //context.getResources().getBoolean(R.bool.city_left_align)
-            this.cityLeft = context.getResources().getDimension(R.dimen.city_left);
-            this.cityTop = context.getResources().getDimension(R.dimen.city_top);
-            this.humidityBool = context.getResources().getBoolean(R.bool.humidity);
-            //context.getResources().getColor(R.palette.humidity_colour)
-            //context.getResources().getDimension(R.dimen.humidity_font_size)
-            //context.getResources().getBoolean(R.bool.humidity_left_align)
-            this.humidityLeft = context.getResources().getDimension(R.dimen.humidity_left);
-            this.humidityTop = context.getResources().getDimension(R.dimen.humidity_top);
-            this.uvBool = context.getResources().getBoolean(R.bool.uv);
-            //context.getResources().getColor(R.palette.uv_colour)
-            //context.getResources().getDimension(R.dimen.uv_font_size)
-            //context.getResources().getBoolean(R.bool.uv_left_align)
-            this.uvLeft = context.getResources().getDimension(R.dimen.uv_left);
-            this.uvTop = context.getResources().getDimension(R.dimen.uv_top);
-            this.windDirectionBool = context.getResources().getBoolean(R.bool.wind_direction);
-            //context.getResources().getColor(R.palette.wind_direction_colour)
-            //context.getResources().getDimension(R.dimen.wind_direction_font_size)
-            //context.getResources().getBoolean(R.bool.wind_direction_left_align)
-            this.windDirectionLeft = context.getResources().getDimension(R.dimen.wind_direction_left);
-            this.windDirectionTop = context.getResources().getDimension(R.dimen.wind_direction_top);
-            this.windDirectionAsArrowBool = context.getResources().getBoolean(R.bool.wind_direction_as_arrows);
-            this.windStrengthBool = context.getResources().getBoolean(R.bool.wind_strength);
-            //context.getResources().getColor(R.palette.wind_strength_colour)
-            //context.getResources().getDimension(R.dimen.wind_strength_font_size)
-            //context.getResources().getBoolean(R.bool.wind_strength_left_align)
-            this.windStrengthLeft = context.getResources().getDimension(R.dimen.wind_strength_left);
-            this.windStrengthTop = context.getResources().getDimension(R.dimen.wind_strength_top);
-            this.weatherBool = context.getResources().getBoolean(R.bool.weather_image);
-            this.showTemperatureUnits = context.getResources().getBoolean(R.bool.temperature_units);
-
-        // GREAT WIDGET
-            this.airPressureBool = context.getResources().getBoolean(R.bool.air_pressure);
-            this.altitudeBool = context.getResources().getBoolean(R.bool.altitude);
-            this.phoneBatteryBool = context.getResources().getBoolean(R.bool.phoneBattery);
-            this.ampmLeft = context.getResources().getDimension(R.dimen.ampm_left);
-            this.ampmTop = context.getResources().getDimension(R.dimen.ampm_top);
-            this.alarmLeft = context.getResources().getDimension(R.dimen.alarm_left);
-            this.alarmTop = context.getResources().getDimension(R.dimen.alarm_top);
-            this.xdripLeft = context.getResources().getDimension(R.dimen.xdrip_left);
-            this.xdripTop = context.getResources().getDimension(R.dimen.xdrip_top);
-            this.airPressureLeft = context.getResources().getDimension(R.dimen.air_pressure_left);
-            this.airPressureTop = context.getResources().getDimension(R.dimen.air_pressure_top);
-            this.altitudeLeft = context.getResources().getDimension(R.dimen.altitude_left);
-            this.altitudeTop = context.getResources().getDimension(R.dimen.altitude_top);
-            this.phoneBatteryLeft = context.getResources().getDimension(R.dimen.phoneBattery_left);
-            this.phoneBatteryTop = context.getResources().getDimension(R.dimen.phoneBattery_top);
-            this.ampmBool = context.getResources().getBoolean(R.bool.ampm);
-            this.ampmAlignLeftBool = context.getResources().getBoolean(R.bool.ampm_left_align);
-            this.alarmBool = context.getResources().getBoolean(R.bool.alarm);
-            this.alarmAlignLeftBool = context.getResources().getBoolean(R.bool.alarm_left_align);
-            this.xdripBool = context.getResources().getBoolean(R.bool.xdrip);
-            this.xdripAlignLeftBool = context.getResources().getBoolean(R.bool.xdrip_left_align);
-            this.showAirPressureUnits = context.getResources().getBoolean(R.bool.air_pressure_units);
-            this.airPressureAlignLeftBool = context.getResources().getBoolean(R.bool.air_pressure_left_align);
-            this.showAltitudeUnits = context.getResources().getBoolean(R.bool.altitude_units);
-            this.altitudeAlignLeftBool = context.getResources().getBoolean(R.bool.altitude_left_align);
-            this.phoneBatteryAlignLeftBool = context.getResources().getBoolean(R.bool.phoneBattery_left_align);
-        */
-    }
-
-    /*
-    public Bitmap getBitmap(String path_or_name){
-        Bitmap bmp;
-        if(!path_or_name.matches("/")){
-            File f = new File(Environment.getExternalStorageDirectory().getPath()+"/greatfit/photo.jpg");
-            bmp = BitmapFactory.decodeFile(f.getAbsolutePath());
-        }else{
-            context.getResources().getIdentifier(path_or_name, "drawable", context.getPackageName());
-        }
-
-        return bmp;
-    }*/
-
-    // Overwrite parameters with settings parameters
-    /*
-    private void settingsParameters(){
-        String settings = Settings.System.getString(context.getContentResolver(), this.watchface+"Settings");
-        if (settings == null || settings.equals("")) {settings = "{}";}
-
-        // Extract data from JSON
-        JSONObject json_settings;
-        try {
-            json_settings = new JSONObject(settings);
-
-            // Circles Widget
-            if (json_settings.has("battery")) {this.batteryBool = json_settings.getBoolean("battery");}
-            if (json_settings.has("steps")) {this.stepsBool = json_settings.getBoolean("steps");}
-            if (json_settings.has("todayDistance")) {this.todayDistanceBool = json_settings.getBoolean("todayDistance");}
-            if (json_settings.has("totalDistance")) {this.totalDistanceBool = json_settings.getBoolean("totalDistance");}
-            if (json_settings.has("batteryCircle")) {this.batteryCircleBool = json_settings.getBoolean("batteryCircle");}
-            if (json_settings.has("stepsCircle")) {this.stepCircleBool = json_settings.getBoolean("stepsCircle");}
-            if (json_settings.has("todayDistanceCircle")) {this.todayDistanceCircleBool = json_settings.getBoolean("todayDistanceCircle");}
-            if(isCircles()){
-                if(batteryBool){
-
-
-                }
-
-            }
-
-        } catch (JSONException e) {
-            //Settings.System.putString(getContentResolver(), this.watchface+"Settings", "{}");//reset wrong settings data
-        }
-    }
-    */
-
-
-    public boolean isCircles(){
-        return this.battery_percent>0 || this.steps>0 || this.today_distance>0 || this.total_distance>0 || this.stepsProg>0 || this.today_distance>0;
     }
 
     // STEPS WIDGET

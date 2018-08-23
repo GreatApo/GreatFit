@@ -112,10 +112,4 @@ public class GreatFitSlpt extends AbstractWatchFaceSlpt {
             this.setClockPeriodSecond(true);
         }
     }
-
-
-    @Override
-    public void onDestroy() {
-        Log.w("DinoDevs-GreatFit", "Destroying GreatFitSlpt");
-    }
 }

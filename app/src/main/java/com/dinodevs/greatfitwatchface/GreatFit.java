@@ -24,7 +24,6 @@ import com.dinodevs.greatfitwatchface.widget.WeatherWidget;
 
 public class GreatFit extends AbstractWatchFace {
     Context context;
-    LoadSettings settings;
     public GreatFit() {
         super();
     }
@@ -34,7 +33,7 @@ public class GreatFit extends AbstractWatchFace {
         context = this.getApplicationContext();
 
         // Load settings
-        settings = new LoadSettings(context);
+        LoadSettings settings = new LoadSettings(context);
 
         this.clock = new MainClock(settings);
 
@@ -73,14 +72,5 @@ public class GreatFit extends AbstractWatchFace {
     @Override
     protected Class<? extends AbstractSlptClock> slptClockClass() {
         return GreatFitSlpt.class;
-    }
-
-
-    @Override
-    public void onDestroy() {
-        if (settings.restartwatchface) {
-            startService(new Intent(this, GreatFit.class));
-        }
-        Log.w("DinoDevs-GreatFit", "Destroying GreatFit");
     }
 }

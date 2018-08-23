@@ -158,7 +158,6 @@ public class MainClock extends DigitalClockWidget {
     };
 
     private LoadSettings settings;
-    private Service mService;
 
     public MainClock(LoadSettings settings) {
         this.settings = settings;
@@ -166,8 +165,6 @@ public class MainClock extends DigitalClockWidget {
 
     @Override
     public void init(Service service) {
-        this.mService = service;
-
         // Please do not change the following line
         Toast.makeText(service, "Source code by GreatApo, style by "+service.getResources().getString(R.string.author), Toast.LENGTH_LONG).show();
 
@@ -238,14 +235,6 @@ public class MainClock extends DigitalClockWidget {
     // Screen open watch mode
     @Override
     public void onDrawDigital(Canvas canvas, float width, float height, float centerX, float centerY, int seconds, int minutes, int hours, int year, int month, int day, int week, int ampm) {
-        // Check if watchface needs to be restarted
-        //SharedPreferences sharedPreferences = mService.getSharedPreferences(mService.getPackageName()+"_settings", Context.MODE_PRIVATE);
-        //if(sharedPreferences.getBoolean("restart_watchface", false)){
-        //    System.out.println("Greatfit Mainclock ***** restart_watchface: " + sharedPreferences.getBoolean("restart_watchface", false));
-        //    sharedPreferences.edit().putBoolean("restart_watchface", false).apply();
-        //    ((AbstractWatchFace) this.mService).restartWatchface();
-        //}
-
         // Draw background image
         //this.background.draw(canvas);
         canvas.drawBitmap(this.background, 0f, 0f, settings.mGPaint);

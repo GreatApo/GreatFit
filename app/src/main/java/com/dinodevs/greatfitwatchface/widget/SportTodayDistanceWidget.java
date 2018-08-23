@@ -62,7 +62,7 @@ public class SportTodayDistanceWidget extends AbstractWidget {
             this.ring = new Paint(Paint.ANTI_ALIAS_FLAG);
             this.ring.setStrokeCap(Paint.Cap.ROUND);
             this.ring.setStyle(Paint.Style.STROKE);
-            this.ring.setStrokeWidth(settings.thickness);
+            this.ring.setStrokeWidth(settings.today_distanceProgThickness);
         }
     }
 
@@ -101,7 +101,7 @@ public class SportTodayDistanceWidget extends AbstractWidget {
             // Rotate from 0 to 270
             canvas.rotate(90, centerX, centerY);
 
-            radius = radius - settings.thickness;
+            radius = radius - (int) settings.today_distanceProgThickness;
             oval = new RectF(centerX - radius, centerY - radius, centerX + radius, centerY + radius);
 
             // Background

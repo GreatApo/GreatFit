@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- progress bars circle sltp palette -->
-    <integer name="sltp_circle_color">1</integer><!-- 1=red, 2=light blue, 3=green, 4=purple, 5=white, 6=yellow, 7=black, 8=grey -->
+    <integer name="sltp_circle_color">1</integer><!-- 1=red, 2=light blue, 3=green, 4=purple, 5=white, 6=yellow, 7=black, 8=blue -->
 
     <!-- slpt position compartibility -->
     <integer name="font_ratio">75</integer><!-- /100, font height center point ratio -->

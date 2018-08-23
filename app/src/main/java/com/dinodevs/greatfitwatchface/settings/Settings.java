@@ -108,14 +108,9 @@ public class Settings extends FragmentActivity {
         settings.add(new ButtonSetting(getString(R.string.save), getDrawable(R.drawable.green_button), new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // Do settings stuff here
-
-                // Set watchface
-                sharedPreferences.edit().putBoolean("restart_watchface", true).apply();
-                //restartWatchFace();
+                // Restart watchface
                 Settings.this.sendBroadcast(new Intent("com.huami.intent.action.WATCHFACE_CONFIG_CHANGED"));
-                //LocalChangedReceiver.restartWatchFace(getApplicationContext());
-
+                // Kill this
                 Settings.this.setResult(-1);
                 Settings.this.finish();
             }
@@ -127,8 +122,9 @@ public class Settings extends FragmentActivity {
             public void onClick(View view) {
                 sharedPreferences.edit().clear().apply();
                 Toast.makeText(view.getContext(), "Settings reset", Toast.LENGTH_SHORT).show();
+                // Restart watchface
                 Settings.this.sendBroadcast(new Intent("com.huami.intent.action.WATCHFACE_CONFIG_CHANGED"));
-
+                // Kill this
                 Settings.this.setResult(-1);
                 Settings.this.finish();
             }
@@ -141,32 +137,5 @@ public class Settings extends FragmentActivity {
         root.setPadding((int) getResources().getDimension(R.dimen.padding_round_small), 0, (int) getResources().getDimension(R.dimen.padding_round_small), (int) getResources().getDimension(R.dimen.padding_round_large));
         root.setClipToPadding(false);
         setContentView(root);
-    }
-
-    private void restartWatchFace(){
-        Log.w("DinoDevs-GreatFit", "Settigns, restarting watchface");
-
-        //stopService(new Intent(this, GreatFit.class));
-        //startService(new Intent(this, GreatFit.class));
-
-        //stopService(new Intent(this, GreatFitSlpt.class));
-        //startService(new Intent(this, GreatFitSlpt.class));
-
-
-        //Intent intent = new Intent("com.dinodevs.greatfitwatchface.GreatFit");
-        Intent intent = new Intent(getApplicationContext(), GreatFit.class);
-        intent.setPackage(getPackageName());
-        stopService(intent);
-        startService(intent);
-
-        //intent = new Intent("com.dinodevs.greatfitwatchface.GreatFitSlpt");
-        //intent = new Intent(getApplicationContext(), GreatFitSlpt.class);
-        //intent.setPackage(getPackageName());
-        //stopService(intent);
-        //startService(intent);
-
-        //Settings.this.sendBroadcast(new Intent("com.dinodevs.greatfitwatchface.GreatFit"));
-        //Settings.this.sendBroadcast(new Intent("com.dinodevs.greatfitwatchface.GreatFitSlpt"));
-
     }
 }
