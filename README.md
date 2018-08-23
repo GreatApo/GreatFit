@@ -44,8 +44,14 @@ Reboot is required for air pressure to work.
 
 
 ### Screenshots
-![GreatFit v3.0.4](other/screenshots/1.png)
-![GreatFit v3.0.4](other/screenshots/2.png)
+![GreatFit v3.0.4](other/images/3.jpg)
+![GreatFit v3.0.4](other/images/IMG_20180822_175102.jpg)
+![GreatFit v3.0.4](other/images/IMG_20180822_175120.jpg)
+![GreatFit v3.0.4](other/images/IMG_20180822_175128.jpg)
+![GreatFit v3.0.4](other/images/IMG_20180822_175137.jpg)
+![GreatFit v3.0.4](other/images/IMG_20180822_175200.jpg)
+![GreatFit v3.0.4](other/images/IMG_20180822_175241.jpg)
+
 
 
 ### Credit where credit is due
