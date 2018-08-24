@@ -62,6 +62,6 @@ Translations are ported from my Pace Calendar widget project (code [here](https:
 
 Special thanks to:
 - @lfom and @GramThanos for helping me out
-- Pavel Zeldin and his boss for healping out the community
+- and all those healing out the community
 
 Libraries files (*.lib) have copyrights by Huami
