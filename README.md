@@ -1,4 +1,4 @@
-[![latest release](https://img.shields.io/badge/latest%20release-v3.0.3-green.svg?style=flat-square)](https://github.com/GreatApo/GreatFit/releases/latest)
+[![latest release](https://img.shields.io/badge/latest%20release-v3.0-green.svg?style=flat-square)](https://github.com/GreatApo/GreatFit/releases/latest)
 # GreatFit: Amazfit Pace/Stratos APK Watchface sources
 ![GreatFit Watchface Banner](other/preview.jpg)
 
@@ -44,13 +44,13 @@ Reboot is required for air pressure to work.
 
 
 ### Screenshots
-![GreatFit v3.0.4](other/images/3.jpg)
-![GreatFit v3.0.4](other/images/IMG_20180822_175102.jpg)
-![GreatFit v3.0.4](other/images/IMG_20180822_175120.jpg)
-![GreatFit v3.0.4](other/images/IMG_20180822_175128.jpg)
-![GreatFit v3.0.4](other/images/IMG_20180822_175137.jpg)
-![GreatFit v3.0.4](other/images/IMG_20180822_175200.jpg)
-![GreatFit v3.0.4](other/images/IMG_20180822_175241.jpg)
+![GreatFit v3.0](other/images/3.jpg)
+![GreatFit v3.0](other/images/IMG_20180822_175102.jpg)
+![GreatFit v3.0](other/images/IMG_20180822_175120.jpg)
+![GreatFit v3.0](other/images/IMG_20180822_175128.jpg)
+![GreatFit v3.0](other/images/IMG_20180822_175137.jpg)
+![GreatFit v3.0](other/images/IMG_20180822_175200.jpg)
+![GreatFit v3.0](other/images/IMG_20180822_175241.jpg)
 
 
 
