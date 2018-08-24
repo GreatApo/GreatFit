@@ -10,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Toast;
 
+import com.dinodevs.greatfitwatchface.CustomDataUpdater;
 import com.dinodevs.greatfitwatchface.GreatFitSlpt;
 import com.dinodevs.greatfitwatchface.R;
 
@@ -100,6 +101,8 @@ public class Settings extends FragmentActivity {
             public void onClick(View view) {
                 // Restart watchface
                 Settings.this.sendBroadcast(new Intent("com.huami.intent.action.WATCHFACE_CONFIG_CHANGED"));
+                // Start CustomDataUpdater service
+                startService(new Intent(getApplicationContext(), CustomDataUpdater.class));
                 // Slpt some times doesn't run
                 startService(new Intent(getApplicationContext(), GreatFitSlpt.class));
                 // Kill this
@@ -116,6 +119,8 @@ public class Settings extends FragmentActivity {
                 Toast.makeText(view.getContext(), "Settings reset", Toast.LENGTH_SHORT).show();
                 // Restart watchface
                 Settings.this.sendBroadcast(new Intent("com.huami.intent.action.WATCHFACE_CONFIG_CHANGED"));
+                // Start CustomDataUpdater service
+                startService(new Intent(getApplicationContext(), CustomDataUpdater.class));
                 // Slpt some times doesn't run
                 startService(new Intent(getApplicationContext(), GreatFitSlpt.class));
                 // Kill this

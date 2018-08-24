@@ -115,6 +115,21 @@ public class OthersActivity extends FragmentActivity {
             }
         }, target_calories, 3000));
 
+        final int custom_refresh_rate = sharedPreferences.getInt( "custom_refresh_rate", getResources().getInteger(R.integer.custom_refresh_rate)*1000);
+        settings.add(new SeekbarSetting(null, "Custom air pressure\nrefresh rate (sec)", new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                sharedPreferences.edit().putInt( "custom_refresh_rate", progress).apply();
+            }
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+            }
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                Toast.makeText(seekBar.getContext(), "Refresh rate: "+seekBar.getProgress()+" sec", Toast.LENGTH_SHORT).show();
+            }
+        }, custom_refresh_rate, 60));
+
         //Setup layout
         root.setBackgroundResource(R.drawable.settings_background);
         root.setLayoutManager(new LinearLayoutManager(this));

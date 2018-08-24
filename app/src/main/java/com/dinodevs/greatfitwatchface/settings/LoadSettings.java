@@ -18,7 +18,7 @@ import java.util.List;
 public class LoadSettings {
 
     private Context context;
-    private SharedPreferences sharedPreferences;
+    public SharedPreferences sharedPreferences;
     private int versionCode;
     private Resources res;
 
@@ -48,6 +48,7 @@ public class LoadSettings {
     public boolean status_bar;
     public boolean flashing_heart_rate_icon;
     public int target_calories;
+    public int custom_refresh_rate;
     public Paint mGPaint;
     public List widgets_list;
     public List circle_bars_list;
@@ -422,6 +423,7 @@ public class LoadSettings {
             this.status_bar = sharedPreferences.getBoolean( "status_bar", context.getResources().getBoolean(R.bool.status_bar));
             this.flashing_heart_rate_icon = sharedPreferences.getBoolean( "flashing_heart_rate_icon", context.getResources().getBoolean(R.bool.flashing_heart_rate_icon));
             this.target_calories = sharedPreferences.getInt( "target_calories", 1000);
+            this.custom_refresh_rate = sharedPreferences.getInt( "custom_refresh_rate", context.getResources().getInteger(R.integer.custom_refresh_rate)*1000);
             // Populate color codes
             String[] colorCodes = context.getResources().getStringArray(R.array.color_codes);
             int x = 0;

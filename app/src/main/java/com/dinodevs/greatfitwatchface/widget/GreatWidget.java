@@ -127,9 +127,9 @@ public class GreatWidget extends AbstractWidget {
             }
             if(settings.altitude>0) {
                 this.altitudePaint = new TextPaint(TextPaint.ANTI_ALIAS_FLAG);
-                this.altitudePaint.setColor(settings.air_pressureColor);
+                this.altitudePaint.setColor(settings.altitudeColor);
                 this.altitudePaint.setTypeface(ResourceManager.getTypeFace(service.getResources(), ResourceManager.Font.FONT_FILE));
-                this.altitudePaint.setTextSize(settings.air_pressureFontSize);
+                this.altitudePaint.setTextSize(settings.altitudeFontSize);
                 this.altitudePaint.setTextAlign((settings.altitudeAlignLeft) ? Paint.Align.LEFT : Paint.Align.CENTER);
 
                 if(settings.altitudeIcon){
@@ -192,7 +192,7 @@ public class GreatWidget extends AbstractWidget {
                 canvas.drawBitmap(this.altitudeIcon, settings.altitudeIconLeft, settings.altitudeIconTop, settings.mGPaint);
             }
             String units = (settings.altitudeUnits) ? " m" : "";
-            canvas.drawText(this.customData.altitude+units, settings.altitudeLeft, settings.air_pressureTop, altitudePaint);
+            canvas.drawText(this.customData.altitude+units, settings.altitudeLeft, settings.altitudeTop, altitudePaint);
         }
 
         // Draw Phone's Battery
@@ -519,7 +519,7 @@ public class GreatWidget extends AbstractWidget {
             // Position based on screen on
             altitudeLayout.alignX = 2;
             altitudeLayout.alignY = 0;
-            tmp_left = (int) settings.altitudeFontSize;
+            tmp_left = (int) settings.altitudeLeft;
             if(!settings.altitudeAlignLeft) {
                 // If text is centered, set rectangle
                 altitudeLayout.setRect(

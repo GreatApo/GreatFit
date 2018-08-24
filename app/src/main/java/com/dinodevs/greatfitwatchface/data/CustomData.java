@@ -1,6 +1,7 @@
 package com.dinodevs.greatfitwatchface.data;
 
 import android.provider.Settings;
+import android.util.Log;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -30,10 +31,17 @@ public class CustomData {
                         float f = Float.parseFloat(this.airPressure);
                         this.airPressure = Integer.toString((int) f);
                         // Convert Pressure to Altitude based on data found here (https://www.mide.com/pages/air-pressure-at-altitude-calculator) (2018 08 03)
-                        double d = -7.14622816586906E-11 * Math.pow(f, 5) + 2.64853345946368E-07 * Math.pow(f, 4) - 0.000376963054203727 * Math.pow(f, 3) + 0.262320648297135 * Math.pow(f, 2) - 103.105304780369 * f + 24471.4671194641;
-                        this.altitude = Integer.toString((int) d);
+                        if(f<1200) {
+                            // Altitude mode
+                            int d = (int) (-7.14622816586906E-11 * Math.pow(f, 5) + 2.64853345946368E-07 * Math.pow(f, 4) - 0.000376963054203727 * Math.pow(f, 3) + 0.262320648297135 * Math.pow(f, 2) - 103.105304780369 * f + 24471.4671194641);
+                            this.altitude = Integer.toString(d);
+                        }else{
+                            // Dive depth mode
+                            float d = -(f-1011)/1000;
+                            this.altitude = String.format("%.2f", d); //Float.toString(d);
+                        }
                     } catch (Exception e) {
-                        // Nothing
+                        Log.d("DinoDevs-GreatFit", "Error converting pressure float to int ("+this.airPressure+")");
                     }
                 }
                 if(json_data.has("phoneBattery")) {
