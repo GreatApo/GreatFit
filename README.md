@@ -38,7 +38,7 @@ To install this watchface, you will need a PC with the ADB installed. Connect yo
 
 ```shell
 adb uninstall com.dinodevs.greatfitwatchface
-adb install -r GreatFit.X.X.X.apk
+adb install -r GreatFit.X.X.apk
 adb reboot
 ```
 Reboot is required for air pressure to work.
