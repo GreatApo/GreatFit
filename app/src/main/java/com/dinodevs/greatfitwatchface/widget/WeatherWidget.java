@@ -61,30 +61,32 @@ public class WeatherWidget extends AbstractWidget {
         this.settings = settings;
 
         // Load weather icons
-        this.weatherImageStrList = new ArrayList<>();
-        weatherImageStrList.add("sunny"); //0
-        weatherImageStrList.add("cloudy"); //1
-        weatherImageStrList.add("overcast"); //2
-        weatherImageStrList.add("fog"); //3
-        weatherImageStrList.add("fog"); //4
-        weatherImageStrList.add("showers"); //5
-        weatherImageStrList.add("t_storm"); //6
-        weatherImageStrList.add("rain"); //7
-        weatherImageStrList.add("rain"); //8
-        weatherImageStrList.add("rainstorm"); //9
-        weatherImageStrList.add("rainstorm"); //10
-        weatherImageStrList.add("showers"); //11
-        weatherImageStrList.add("rainsnow"); //12
-        weatherImageStrList.add("rainsnow"); //13
-        weatherImageStrList.add("rainsnow"); //14
-        weatherImageStrList.add("snow"); //15
-        weatherImageStrList.add("snow"); //16
-        weatherImageStrList.add("snow"); //17
-        weatherImageStrList.add("snow"); //18
-        weatherImageStrList.add("fog"); //19
-        weatherImageStrList.add("fog"); //20
-        weatherImageStrList.add("fog"); //21
-        weatherImageStrList.add("unknow"); //22
+        String[] weatherIconNames = new String[]{
+            "sunny", //0
+            "cloudy", //1
+            "overcast", //2
+            "fog", //..
+            "smog",
+            "shower",
+            "thunder_shower",
+            "light_rain",
+            "moderate_rain",
+            "heavy_rain",
+            "rainstorm",
+            "torrential_rain",
+            "sleet",
+            "freezing_rain",
+            "hail",
+            "light_snow",
+            "moderate_snow",
+            "heavy_snow",
+            "snowstorm",
+            "dust",
+            "blowing_sand", //..
+            "sand_storm", //21
+            "unknown" //22
+        };
+        this.weatherImageStrList =  Arrays.asList(weatherIconNames);
     }
 
     // Screen-on init (runs once)
@@ -168,33 +170,7 @@ public class WeatherWidget extends AbstractWidget {
         if(settings.weather_imgProg>0) {
             // Get weather data
             this.weather = getSlptWeather();
-            /*
-            weatherImageList = new ArrayList<>();
-            weatherImageList.add(service.getResources().getDrawable(R.drawable.clock_skin_weather_sunny)); //0
-            weatherImageList.add(service.getResources().getDrawable(R.drawable.clock_skin_weather_cloudy)); //1
-            weatherImageList.add(service.getResources().getDrawable(R.drawable.clock_skin_weather_overcast)); //2
-            weatherImageList.add(service.getResources().getDrawable(R.drawable.clock_skin_weather_fog)); //3
-            weatherImageList.add(service.getResources().getDrawable(R.drawable.clock_skin_weather_fog)); //4
-            weatherImageList.add(service.getResources().getDrawable(R.drawable.clock_skin_weather_showers)); //5
-            weatherImageList.add(service.getResources().getDrawable(R.drawable.clock_skin_weather_t_storm)); //6
-            weatherImageList.add(service.getResources().getDrawable(R.drawable.clock_skin_weather_rain)); //7
-            weatherImageList.add(service.getResources().getDrawable(R.drawable.clock_skin_weather_rain)); //8
-            weatherImageList.add(service.getResources().getDrawable(R.drawable.clock_skin_weather_rainstorm)); //9
-            weatherImageList.add(service.getResources().getDrawable(R.drawable.clock_skin_weather_rainstorm)); //10
-            weatherImageList.add(service.getResources().getDrawable(R.drawable.clock_skin_weather_showers)); //11
-            weatherImageList.add(service.getResources().getDrawable(R.drawable.clock_skin_weather_rainsnow)); //12
-            weatherImageList.add(service.getResources().getDrawable(R.drawable.clock_skin_weather_rainsnow)); //13
-            weatherImageList.add(service.getResources().getDrawable(R.drawable.clock_skin_weather_rainsnow)); //14
-            weatherImageList.add(service.getResources().getDrawable(R.drawable.clock_skin_weather_snow)); //15
-            weatherImageList.add(service.getResources().getDrawable(R.drawable.clock_skin_weather_snow)); //16
-            weatherImageList.add(service.getResources().getDrawable(R.drawable.clock_skin_weather_snow)); //17
-            weatherImageList.add(service.getResources().getDrawable(R.drawable.clock_skin_weather_snow)); //18
-            weatherImageList.add(service.getResources().getDrawable(R.drawable.clock_skin_weather_fog)); //19
-            weatherImageList.add(service.getResources().getDrawable(R.drawable.clock_skin_weather_fog)); //20
-            weatherImageList.add(service.getResources().getDrawable(R.drawable.clock_skin_weather_fog)); //21
-            weatherImageList.add(service.getResources().getDrawable(R.drawable.clock_skin_weather_unknow)); //22
-            */
-            this.weatherImageIcon = Util.decodeImage(service.getResources(),"weather/clock_skin_weather_"+this.weatherImageStrList.get(22)+".png");
+            this.weatherImageIcon = Util.decodeImage(service.getResources(),"weather/"+this.weatherImageStrList.get(22)+".png");
         }
     }
 
@@ -214,7 +190,7 @@ public class WeatherWidget extends AbstractWidget {
         // Get ALL weather data
         this.weather = getSlptWeather();
 
-        this.weatherImageIcon = Util.decodeImage(mService.getResources(),"weather/clock_skin_weather_"+this.weatherImageStrList.get(this.weather.weatherType)+".png");
+        this.weatherImageIcon = Util.decodeImage(mService.getResources(),"weather/"+this.weatherImageStrList.get(this.weather.weatherType)+".png");
     }
 
     // Screen on
@@ -272,9 +248,9 @@ public class WeatherWidget extends AbstractWidget {
 
         // Draw Weather icon
         if(settings.weather_imgProg>0) {
-            if (this.weather.weatherType > 22 || this.weather.weatherType < 0) {
-                this.weather.weatherType = 22;
-            }
+            //if (this.weather.weatherType > 22 || this.weather.weatherType < 0) {
+            //    this.weather.weatherType = 22;
+            //}
             canvas.drawBitmap(this.weatherImageIcon, settings.weather_imgProgLeft, settings.weather_imgProgTop, settings.mGPaint);
         }
     }
@@ -394,7 +370,7 @@ public class WeatherWidget extends AbstractWidget {
         // Weather Icons
         if(settings.weather_imgProg>0){
             SlptPictureView weatherLayout = new SlptPictureView();
-            weatherLayout.setImagePicture( SimpleFile.readFileFromAssets(service, String.format(( (better_resolution)?"":"slpt_" )+"weather/clock_skin_weather_%s.png", this.weatherImageStrList.get(this.weather.weatherType))) );
+            weatherLayout.setImagePicture( SimpleFile.readFileFromAssets(service, String.format(( (better_resolution)?"":"slpt_" )+"weather/%s.png", this.weatherImageStrList.get(this.weather.weatherType))) );
             weatherLayout.setStart(
                     (int) settings.weather_imgProgLeft,
                     (int) settings.weather_imgProgTop
