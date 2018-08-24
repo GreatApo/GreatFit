@@ -3,6 +3,7 @@
 ![GreatFit Watchface Banner](other/preview.jpg)
 
 Bla, bla, bla... will write something here later :P continue reading for now
+XDA Topic [here](https://forum.xda-developers.com/smartwatch/amazfit/app-watchface-greatfit-v1-1-settings-t3791516)
 
 
 ### Features
@@ -42,7 +43,6 @@ adb reboot
 ```
 Reboot is required for air pressure to work.
 
-
 ### Screenshots
 ![GreatFit v3.0](other/images/3.jpg)
 ![GreatFit v3.0](other/images/IMG_20180822_175102.jpg)
@@ -63,3 +63,5 @@ Translations are ported from my Pace Calendar widget project (code [here](https:
 Special thanks to:
 - @lfom and @GramThanos for helping me out
 - Pavel Zeldin and his boss for healping out the community
+
+Libraries files (*.lib) have copyrights by Huami
