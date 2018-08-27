@@ -37,7 +37,7 @@ public class CustomData {
                             this.altitude = Integer.toString(d);
                         }else{
                             // Dive depth mode
-                            float d = -(f-1011)/1000;
+                            float d = -(f-1011)/100;
                             this.altitude = String.format("%.2f", d); //Float.toString(d);
                         }
                     } catch (Exception e) {
