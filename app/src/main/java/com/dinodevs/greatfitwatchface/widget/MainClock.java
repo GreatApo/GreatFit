@@ -107,7 +107,7 @@ public class MainClock extends DigitalClockWidget {
             {"일요일", "월요일", "화요일", "수요일", "목요일", "금요일", "토요일"},
             {"NIE", "PON", "WTO", "ŚRO", "CZW", "PIĄ", "SOB"},
             {"DOM", "SEG", "TER", "QUA", "QUI", "SEX", "SÁB"},
-            {"ВОС", "ПОН", "ВТО", "СРЕ", "ЧЕТ", "ПЯТ", "СУБ"},
+            {"ВСК", "ПНД", "ВТР", "СРД", "ЧТВ", "ПТН", "СБТ"},
             {"NED", "PON", "UTO", "STR", "ŠTV", "PIA", "SOB"},
             {"DOM", "LUN", "MAR", "MIÉ", "JUE", "VIE", "SÁB"},
             {"PAZ", "PAR", "SAL", "ÇAR", "PER", "CUM", "CUR"},
