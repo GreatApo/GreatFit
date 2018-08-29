@@ -1,12 +1,21 @@
 package com.dinodevs.greatfitwatchface.widget;
 
 import android.app.Service;
+import android.content.ContentResolver;
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.text.TextPaint;
+import android.util.Log;
 
+import com.dinodevs.greatfitwatchface.AbstractWatchFace;
 import com.dinodevs.greatfitwatchface.settings.LoadSettings;
 import com.huami.watch.watchface.util.Util;
 import com.ingenic.iwds.slpt.view.arc.SlptArcAnglePicView;
@@ -31,20 +40,33 @@ public class HeartRateWidget extends AbstractWidget {
 
     private TextPaint textPaint;
     private HeartRate heartRate;
-    private Float heartRateSweepAngle;
+    private Float heart_rateSweepAngle=0f;
+    private Integer lastSlptUpdateHeart_rate = 0;
     private Integer angleLength;
-    private Integer maxHeartRate = 200;
+    private float maxHeartRate = 200f;
+    private Paint ring;
     private Bitmap heart_rateIcon;
+    private Bitmap heart_rate_flashingIcon;
     private LoadSettings settings;
+    private Service mService;
 
     // Constructor
     public HeartRateWidget(LoadSettings settings) {
         this.settings = settings;
+        
+        if(!(settings.heart_rateProg>0 && settings.heart_rateProgType==0)){return;}
+        if(settings.heart_rateProgClockwise==1) {
+            this.angleLength = (settings.heart_rateProgEndAngle < settings.heart_rateProgStartAngle) ? 360 - (settings.heart_rateProgStartAngle - settings.heart_rateProgEndAngle) : settings.heart_rateProgEndAngle - settings.heart_rateProgStartAngle;
+        }else{
+            this.angleLength = (settings.heart_rateProgEndAngle > settings.heart_rateProgStartAngle) ? 360 - (settings.heart_rateProgStartAngle - settings.heart_rateProgEndAngle) : settings.heart_rateProgEndAngle - settings.heart_rateProgStartAngle;
+        }
     }
 
     // Screen-on init (runs once)
     @Override
     public void init(Service service) {
+        this.mService = service;
+
         this.textPaint = new TextPaint(TextPaint.ANTI_ALIAS_FLAG);
         this.textPaint.setColor(settings.heart_rateColor);
         this.textPaint.setTypeface(ResourceManager.getTypeFace(service.getResources(), ResourceManager.Font.FONT_FILE));
@@ -53,6 +75,15 @@ public class HeartRateWidget extends AbstractWidget {
 
         if(settings.heart_rateIcon){
             this.heart_rateIcon = Util.decodeImage(service.getResources(),"icons/heart_rate.png");
+            this.heart_rate_flashingIcon = Util.decodeImage(service.getResources(),"icons/heart_rate_flashing.png");
+        }
+        
+        // Progress Bar Circle
+        if(settings.heart_rateProg>0 && settings.heart_rateProgType==0){
+            this.ring = new Paint(Paint.ANTI_ALIAS_FLAG);
+            this.ring.setStrokeCap(Paint.Cap.ROUND);
+            this.ring.setStyle(Paint.Style.STROKE);
+            this.ring.setStrokeWidth(settings.heart_rateProgThickness);
         }
     }
 
@@ -70,6 +101,21 @@ public class HeartRateWidget extends AbstractWidget {
 
         // Bar angle
         //this.heartRateSweepAngle = (this.heartRate == null)? 0f : Math.min( this.angleLength, this.angleLength*(heartRate.getHeartRate()/this.maxHeartRate) ) ;
+        // Bar angle
+        if(settings.heart_rateProg>0 && settings.heart_rateProgType==0 && heartRate!=null && heartRate.getHeartRate()>25 ) {
+            this.heart_rateSweepAngle = this.angleLength * Math.min(heartRate.getHeartRate()/this.maxHeartRate,1f);
+
+            //Log.w("DinoDevs-GreatFit", "Heart rate update: "+heartRate.getHeartRate()+", Sweep angle:"+ heart_rateSweepAngle+", %"+(Math.abs(heartRate.getHeartRate()-this.lastSlptUpdateHeart_rate)/this.maxHeartRate));
+
+            if(Math.abs(heartRate.getHeartRate()-this.lastSlptUpdateHeart_rate)/this.maxHeartRate>0.05){
+                this.lastSlptUpdateHeart_rate = heartRate.getHeartRate();
+                // Save the value to get it on the new slpt service
+                SharedPreferences sharedPreferences = mService.getSharedPreferences(mService.getPackageName()+"_settings", Context.MODE_PRIVATE);
+                sharedPreferences.edit().putInt( "temp_heart_rate", this.lastSlptUpdateHeart_rate).apply();
+                // Restart slpt
+                ((AbstractWatchFace) this.mService).restartSlpt();
+            }
+        }
     }
 
     // Draw screen-on
@@ -77,8 +123,19 @@ public class HeartRateWidget extends AbstractWidget {
     public void draw(Canvas canvas, float width, float height, float centerX, float centerY) {
         // Draw heart rate element
         if(settings.heart_rate>0) {
+            // Draw icon
             if(settings.heart_rateIcon){
-                canvas.drawBitmap(this.heart_rateIcon, settings.heart_rateIconLeft, settings.heart_rateIconTop, settings.mGPaint);
+                // Draw flashing heart icon
+                if(settings.flashing_heart_rate_icon) {
+                    Calendar calendar = Calendar.getInstance();
+                    if (calendar.get(Calendar.SECOND) % 2 == 1) {
+                        canvas.drawBitmap(this.heart_rate_flashingIcon, settings.heart_rateIconLeft, settings.heart_rateIconTop, settings.mGPaint);
+                    }else{
+                        canvas.drawBitmap(this.heart_rateIcon, settings.heart_rateIconLeft, settings.heart_rateIconTop, settings.mGPaint);
+                    }
+                }else{
+                    canvas.drawBitmap(this.heart_rateIcon, settings.heart_rateIconLeft, settings.heart_rateIconTop, settings.mGPaint);
+                }
             }
 
             // if units are enabled
@@ -86,24 +143,51 @@ public class HeartRateWidget extends AbstractWidget {
             // Draw Heart rate
             String text = (heartRate == null || heartRate.getHeartRate() < 25) ? "--" : heartRate.getHeartRate() + units;
             canvas.drawText(text, settings.heart_rateLeft, settings.heart_rateTop, textPaint);
-
-            // todo
-            // Draw only on NOT even seconds (flashing heart icon)
-            /*
-            if(settings.flashing_heart_rate) {
-                Calendar calendar = Calendar.getInstance();
-                if (calendar.get(Calendar.SECOND) % 2 == 1) {
-                    this.heartIcon.draw(canvas);
-                }
-            }
-            */
         }
 
-        // Draw progress element
-        //if(settings.heart_rateProg>0) {
-            // todo
-        //}
+        // heart_rate bar
+        if(settings.heart_rateProg>0 && settings.heart_rateProgType==0) {
+            int count = canvas.save();
+
+            // Rotate canvas to 0 degrees = 12 o'clock
+            canvas.rotate(-90, centerX, centerY);
+
+            // Define circle
+            float radius = settings.heart_rateProgRadius - settings.heart_rateProgThickness;
+            RectF oval = new RectF(settings.heart_rateProgLeft - radius, settings.heart_rateProgTop - radius, settings.heart_rateProgLeft + radius, settings.heart_rateProgTop + radius);
+
+            // Background
+            if(settings.heart_rateProgBgBool) {
+                this.ring.setColor(Color.parseColor("#999999"));
+                canvas.drawArc(oval, settings.heart_rateProgStartAngle, this.angleLength, false, ring);
+            }
+
+            this.ring.setColor(settings.colorCodes[settings.heart_rateProgColorIndex]);
+            canvas.drawArc(oval, settings.heart_rateProgStartAngle, this.heart_rateSweepAngle, false, ring);
+
+            canvas.restoreToCount(count);
+        }
     }
+
+    // This doesn't work. There is an error when getting the index
+    /*
+    public static final Uri CONTENT_HEART_URI = Uri.parse("content://com.huami.watch.health.heartdata");
+    private int getSlptHeartRate(){
+        Integer system_heart_rate = heartRate.getHeartRate();
+        if(system_heart_rate==0){
+            try {
+                Cursor cursor = mService.getContentResolver().query(CONTENT_HEART_URI, null, null, null, "utc_time DESC LIMIT 1");
+                //int index = cursor.getColumnIndex( "heart_rate" );
+                system_heart_rate = cursor.getInt( 0 );
+                Log.w("DinoDevs-GreatFit", "Heart rate: slpt getHertRate() = "+system_heart_rate);
+            }catch(Exception e){
+                // sth here
+                Log.w("DinoDevs-GreatFit", "Heart rate error: "+e.toString());
+            }
+        }
+        return system_heart_rate;
+    }
+    */
 
     // Screen-off (SLPT)
     @Override
@@ -114,6 +198,7 @@ public class HeartRateWidget extends AbstractWidget {
     // Screen-off (SLPT) - Better screen quality
     public List<SlptViewComponent> buildSlptViewComponent(Service service, boolean better_resolution) {
         better_resolution = better_resolution && settings.better_resolution_when_raising_hand;
+        this.mService = service;
         List<SlptViewComponent> slpt_objects = new ArrayList<>();
         int tmp_left;
 
@@ -163,24 +248,27 @@ public class HeartRateWidget extends AbstractWidget {
         }
 
         // Draw heart rate element
-        //if(settings.heart_rateProg>0) {
-            // todo
-            /*
-            SlptPictureView ring_background = new SlptPictureView();
-            ring_background.setImagePicture(SimpleFile.readFileFromAssets(service, ( (better_resolution)?"":"slpt_" )+"progress/heart_rate_bar.png"));
-            slpt_objects.add(ring_background);
+        if(settings.heart_rateProg>0 && settings.heart_rateProgType==0){
+            // Draw background image
+            if(settings.heart_rateProgBgBool) {
+                SlptPictureView ring_background = new SlptPictureView();
+                ring_background.setImagePicture(SimpleFile.readFileFromAssets(service, ( (better_resolution)?"":"slpt_" )+"circles/ring1_bg.png"));
+                ring_background.setStart((int) (settings.heart_rateProgLeft-settings.heart_rateProgRadius), (int) (settings.heart_rateProgTop-settings.heart_rateProgRadius));
+                slpt_objects.add(ring_background);
+            }
 
-            SlptArcAnglePicView localHeartRateArcAnglePicView = new SlptArcAnglePicView();
-            localHeartRateArcAnglePicView.setImagePicture(SimpleFile.readFileFromAssets(service, "slpt_circles/ring" + temp_ring + "_splt" + settings.sltp_circle_color + ".png"));
-            localHeartRateArcAnglePicView.setStart((int) service.getResources().getDimension(R.dimen.today_distance_circle_left), (int) service.getResources().getDimension(R.dimen.today_distance_circle_top));
-            localHeartRateArcAnglePicView.start_angle = settings.startAngleSport;
-            localHeartRateArcAnglePicView.len_angle = service.getResources().getInteger(R.integer.today_distance_circle_len_angle);
-            localHeartRateArcAnglePicView.full_angle = settings.fullAngleSport;
-            localHeartRateArcAnglePicView.draw_clockwise = 1;
-            localHeartRateArcAnglePicView.RegisterPictureParam = ;
-            slpt_objects.add(localHeartRateArcAnglePicView);
-            */
-        //}
+            //if(heartRate==null){heartRate = new HeartRate(0);}
+
+            SlptArcAnglePicView localSlptArcAnglePicView = new SlptArcAnglePicView();
+            localSlptArcAnglePicView.setImagePicture(SimpleFile.readFileFromAssets(service, ( (better_resolution)?"":"slpt_" )+settings.heart_rateProgSlptImage));
+            localSlptArcAnglePicView.setStart((int) (settings.heart_rateProgLeft-settings.heart_rateProgRadius), (int) (settings.heart_rateProgTop-settings.heart_rateProgRadius));
+            localSlptArcAnglePicView.start_angle = (settings.heart_rateProgClockwise==1)? settings.heart_rateProgStartAngle : settings.heart_rateProgEndAngle;
+            localSlptArcAnglePicView.len_angle = (int) (this.angleLength * Math.min(settings.temp_heart_rate/this.maxHeartRate,1));
+            //Log.w("DinoDevs-GreatFit", "Heart rate: slpt "+settings.temp_heart_rate+", Sweep angle:"+ heart_rateSweepAngle+", %"+(this.angleLength * Math.min(settings.temp_heart_rate/this.maxHeartRate,1)));
+            localSlptArcAnglePicView.full_angle = (settings.heart_rateProgClockwise==1)? this.angleLength : -this.angleLength;
+            localSlptArcAnglePicView.draw_clockwise = settings.heart_rateProgClockwise;
+            slpt_objects.add(localSlptArcAnglePicView);
+        }
 
         return slpt_objects;
     }

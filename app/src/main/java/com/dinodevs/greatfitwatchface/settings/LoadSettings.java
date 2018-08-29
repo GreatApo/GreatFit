@@ -47,8 +47,10 @@ public class LoadSettings {
     public boolean wind_direction_as_arrows;
     public boolean status_bar;
     public boolean flashing_heart_rate_icon;
-    public int target_calories;
+    public float target_calories;
     public int custom_refresh_rate;
+    public int temp_heart_rate;
+    public int temp_calories;
     public Paint mGPaint;
     public List widgets_list;
     public List circle_bars_list;
@@ -337,6 +339,11 @@ public class LoadSettings {
     public boolean xdripIcon;
     public float xdripIconLeft;
     public float xdripIconTop;
+    // Weather
+    public int weather_imgProg;
+    public float weather_imgProgLeft;
+    public float weather_imgProgTop;
+    //public int weather_imgProgType;
 
     // PROGRESS ELEMENTS
     // Steps
@@ -399,11 +406,21 @@ public class LoadSettings {
     public int caloriesProgBgColor;
     public String caloriesProgBgImage;
     public String caloriesProgSlptImage;
-    // Weather
-    public int weather_imgProg;
-    public float weather_imgProgLeft;
-    public float weather_imgProgTop;
-    //public int weather_imgProgType;
+    // Heart rate
+    public int heart_rateProg;
+    public float heart_rateProgLeft;
+    public float heart_rateProgTop;
+    public int heart_rateProgType;
+    public float heart_rateProgRadius;
+    public float heart_rateProgThickness;
+    public int heart_rateProgStartAngle;
+    public int heart_rateProgEndAngle;
+    public int heart_rateProgClockwise;
+    public int heart_rateProgColorIndex;
+    public boolean heart_rateProgBgBool;
+    public int heart_rateProgBgColor;
+    public String heart_rateProgBgImage;
+    public String heart_rateProgSlptImage;
 
     // Default Parameters
     private void defaultParameters(){
@@ -424,6 +441,9 @@ public class LoadSettings {
             this.flashing_heart_rate_icon = sharedPreferences.getBoolean( "flashing_heart_rate_icon", context.getResources().getBoolean(R.bool.flashing_heart_rate_icon));
             this.target_calories = sharedPreferences.getInt( "target_calories", 1000);
             this.custom_refresh_rate = sharedPreferences.getInt( "custom_refresh_rate", context.getResources().getInteger(R.integer.custom_refresh_rate)*1000);
+            this.temp_heart_rate = sharedPreferences.getInt( "temp_heart_rate", 0);
+            this.temp_calories = sharedPreferences.getInt( "temp_calories", 0);
+
             // Populate color codes
             String[] colorCodes = context.getResources().getStringArray(R.array.color_codes);
             int x = 0;
@@ -1250,6 +1270,38 @@ public class LoadSettings {
             }
             widgetN.recycle();
         }
+
+
+        // heart_rateProg
+        this.heart_rateProg = sharedPreferences.getInt("heart_rateProg", circle_bars_list.indexOf("heart_rate")+1);
+        if(this.heart_rateProg>0){
+            TypedArray widgetN = res.obtainTypedArray(res.getIdentifier("progress_element"+this.heart_rateProg, "array", context.getPackageName()));
+            i = 0;
+            this.heart_rateProgLeft  = sharedPreferences.getFloat("heart_rateProgLeft", widgetN.getDimension(i++, 0));
+            this.heart_rateProgTop  = sharedPreferences.getFloat("heart_rateProgTop", widgetN.getDimension(i++, 0));
+            this.heart_rateProgType = sharedPreferences.getInt("heart_rateProgType", widgetN.getColor(i++, 0));
+
+            if(this.heart_rateProgType==0){ // Circle bar element
+                this.heart_rateProgRadius  = sharedPreferences.getFloat("heart_rateProgRadius", widgetN.getDimension(i++, 0));
+                this.heart_rateProgThickness  = sharedPreferences.getFloat("heart_rateProgThickness", widgetN.getDimension(i++, 0));
+                this.heart_rateProgStartAngle = sharedPreferences.getInt("heart_rateProgStartAngle", widgetN.getInteger(i++, 0));
+                this.heart_rateProgEndAngle = sharedPreferences.getInt("heart_rateProgEndAngle", widgetN.getInteger(i++, 0));
+                this.heart_rateProgClockwise = sharedPreferences.getInt("heart_rateProgClockwise", widgetN.getInteger(i++, 1));
+                if(this.color>-1 && theme_elements.indexOf("bar_element"+this.heart_rateProg)>-1){
+                    this.heart_rateProgColorIndex = this.color;
+                    i++;
+                }else{
+                    this.heart_rateProgColorIndex = sharedPreferences.getInt("heart_rateProgColorIndex", widgetN.getInteger(i++, 0));
+                }
+                this.heart_rateProgBgBool = sharedPreferences.getBoolean("heart_rateProgBgBool", widgetN.getBoolean(i++, false));
+                this.heart_rateProgBgColor = sharedPreferences.getInt("heart_rateProgBgColor", widgetN.getInteger(i++, 0));
+                this.heart_rateProgBgImage = sharedPreferences.getString("heart_rateProgBgImage", widgetN.getString(i++));
+                this.heart_rateProgSlptImage = sharedPreferences.getString("heart_rateProgSlptImage", widgetN.getString(i+this.heart_rateProgColorIndex));
+            }else{ // Progression with images
+                //this.heart_rateProgSlptImages = res.obtainTypedArray(res.getIdentifier("param_progress_element_slpt"+this.heart_rateProg, "array", context.getPackageName()));
+            }
+            widgetN.recycle();
+        }
     }
 
     // STEPS WIDGET
@@ -1264,7 +1316,7 @@ public class LoadSettings {
 
     // HEART RATE WIDGET
     public boolean isHeartRate(){
-        return this.heart_rate>0;
+        return this.heart_rate>0 || this.heart_rateProg>0;
     }
 
     // CALORIES WIDGET

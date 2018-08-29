@@ -1,6 +1,8 @@
 package com.dinodevs.greatfitwatchface.widget;
 
 import android.app.Service;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -34,10 +36,10 @@ public class CaloriesWidget extends AbstractWidget {
     private LoadSettings settings;
 
     private Float caloriesSweepAngle = 0f;
-    private Float lastSlptUpdateCalories = 0f;
+    private Integer lastSlptUpdateCalories = 0;
     private Integer angleLength;
     private Paint ring;
-    Service mService;
+    private Service mService;
 
     // Constructor
     public CaloriesWidget(LoadSettings settings) {
@@ -93,8 +95,12 @@ public class CaloriesWidget extends AbstractWidget {
         if(settings.caloriesProg>0 && settings.caloriesProgType==0) {
             this.caloriesSweepAngle = this.angleLength * Math.min(calories.getCalories()/settings.target_calories,1f);
 
-            if((this.caloriesSweepAngle-this.lastSlptUpdateCalories)/settings.target_calories>0.05){
-                this.lastSlptUpdateCalories = this.caloriesSweepAngle;
+            if(Math.abs(calories.getCalories()-this.lastSlptUpdateCalories)/settings.target_calories>0.05){
+                this.lastSlptUpdateCalories = calories.getCalories();
+                // Save the value to get it on the new slpt service
+                SharedPreferences sharedPreferences = mService.getSharedPreferences(mService.getPackageName()+"_settings", Context.MODE_PRIVATE);
+                sharedPreferences.edit().putInt( "temp_calories", this.lastSlptUpdateCalories).apply();
+                // Restart slpt
                 ((AbstractWatchFace) this.mService).restartSlpt();
             }
         }
@@ -203,13 +209,13 @@ public class CaloriesWidget extends AbstractWidget {
                 slpt_objects.add(ring_background);
             }
 
-            if(calories==null){calories = new Calories(0);}
+            //if(calories==null){calories = new Calories(0);}
 
             SlptArcAnglePicView localSlptArcAnglePicView = new SlptArcAnglePicView();
             localSlptArcAnglePicView.setImagePicture(SimpleFile.readFileFromAssets(service, ( (better_resolution)?"":"slpt_" )+settings.caloriesProgSlptImage));
             localSlptArcAnglePicView.setStart((int) (settings.caloriesProgLeft-settings.caloriesProgRadius), (int) (settings.caloriesProgTop-settings.caloriesProgRadius));
             localSlptArcAnglePicView.start_angle = (settings.caloriesProgClockwise==1)? settings.caloriesProgStartAngle : settings.caloriesProgEndAngle;
-            localSlptArcAnglePicView.len_angle = this.angleLength * Math.min(calories.getCalories()/settings.target_calories,1);
+            localSlptArcAnglePicView.len_angle = (int) (this.angleLength * Math.min(settings.temp_calories/settings.target_calories,1));
             localSlptArcAnglePicView.full_angle = (settings.caloriesProgClockwise==1)? this.angleLength : -this.angleLength;
             localSlptArcAnglePicView.draw_clockwise = settings.caloriesProgClockwise;
             slpt_objects.add(localSlptArcAnglePicView);

@@ -279,7 +279,7 @@
         <item>battery</item> <!-- 0 -->
         <item>steps</item> <!-- 1 -->
         <item>today_distance</item>
-        <!-- <item>heart_rate</item> --> <!-- 0-200 bpm -->
+        <item>heart_rate</item> <!-- 0-200 bpm -->
         <item>calories</item> <!-- set target in settings -->
         <!-- <item>humidity</item> -->
         <!-- <item>phone_battery</item> -->
