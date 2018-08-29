@@ -42,7 +42,7 @@ public class WidgetsActivity extends FragmentActivity {
         String currentAsText = widgets_list.get(current);
         for(String element : elements){
             // Go to next if already a widget
-            if(widgets_list.indexOf(element)>=0 && !element.equals(currentAsText)){
+            if(widgets_list.indexOf(element)>=0 && !element.equals(currentAsText) && !element.equals("none")){
                 continue;
             }
             // Create the setting
