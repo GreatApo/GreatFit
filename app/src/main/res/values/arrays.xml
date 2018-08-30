@@ -92,6 +92,7 @@
         <item>1</item> <!-- Widget 2: type from "supported widgets" list -->
         <item>18</item>
         <item>7</item>
+        <item>21</item>
     </integer-array>
 
     <!-- Widget 1 -->
@@ -141,6 +142,18 @@
         <item name="icon">true</item>
         <item name="iconLeft">120px</item>
         <item name="iconTop">276px</item>
+    </array>
+    <!-- Widget 5 -->
+    <array name="widget5">
+        <item name="font_size">24px</item>
+        <item name="left">22px</item>
+        <item name="top">182px</item>
+        <item name="color">#fff</item>
+        <item name="align_left">true</item>
+        <item name="units">false</item>
+        <item name="icon">true</item>
+        <item name="iconLeft">22px</item>
+        <item name="iconTop">140px</item>
     </array>
     <!-- Add more widget here if you like, here and in the "widgets" list -->
 
@@ -271,7 +284,7 @@
         <item>phone_battery</item>
         <item>phone_alarm</item>
         <item>xdrip</item>
-        <item>none</item>
+        <item>none</item> <!-- 21 -->
     </string-array>
 
     <!-- Supported Progress Elements -->
