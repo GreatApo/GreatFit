@@ -100,6 +100,14 @@ public class OthersActivity extends FragmentActivity {
             }
         }, flashing_heart_rate_icon));
 
+        final boolean am_pm_always = sharedPreferences.getBoolean( "am_pm_always", getResources().getBoolean(R.bool.am_pm_always));
+        settings.add(new SwitchSetting(null, "Always am/pm", "Show am/pm on 24h format", new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                sharedPreferences.edit().putBoolean( "am_pm_always", b).apply();
+            }
+        }, am_pm_always));
+
         final int target_calories = sharedPreferences.getInt( "target_calories", 1000);
         settings.add(new SeekbarSetting(null, "Target calories", new SeekBar.OnSeekBarChangeListener() {
             @Override
@@ -116,7 +124,7 @@ public class OthersActivity extends FragmentActivity {
         }, target_calories, 3000));
 
         final int custom_refresh_rate = sharedPreferences.getInt( "custom_refresh_rate", getResources().getInteger(R.integer.custom_refresh_rate)*1000);
-        settings.add(new SeekbarSetting(null, "Custom air pressure\nrefresh rate (sec)", new SeekBar.OnSeekBarChangeListener() {
+        settings.add(new SeekbarSetting(null, "Air pressure refresh sec", new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 sharedPreferences.edit().putInt( "custom_refresh_rate", progress).apply();

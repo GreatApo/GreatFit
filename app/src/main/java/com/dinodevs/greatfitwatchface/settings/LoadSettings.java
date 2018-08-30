@@ -6,6 +6,7 @@ import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.provider.Settings;
 import android.support.annotation.StyleableRes;
 import android.util.Log;
 
@@ -51,6 +52,7 @@ public class LoadSettings {
     public int custom_refresh_rate;
     public int temp_heart_rate;
     public int temp_calories;
+    public boolean am_pm_always;
     public Paint mGPaint;
     public List widgets_list;
     public List circle_bars_list;
@@ -443,6 +445,7 @@ public class LoadSettings {
             this.custom_refresh_rate = sharedPreferences.getInt( "custom_refresh_rate", context.getResources().getInteger(R.integer.custom_refresh_rate)*1000);
             this.temp_heart_rate = sharedPreferences.getInt( "temp_heart_rate", 0);
             this.temp_calories = sharedPreferences.getInt( "temp_calories", 0);
+            this.am_pm_always = sharedPreferences.getBoolean( "am_pm_always", context.getResources().getBoolean(R.bool.am_pm_always));
 
             // Populate color codes
             String[] colorCodes = context.getResources().getStringArray(R.array.color_codes);
@@ -532,7 +535,12 @@ public class LoadSettings {
                 seconds.recycle();
             }
         // am_pm
-            this.am_pmBool = sharedPreferences.getBoolean("am_pmBool", res.getIdentifier("am_pm", "array", context.getPackageName())!=0);
+            String time_format = Settings.System.getString(context.getContentResolver(), "time_12_24");
+            if(time_format.equals("24") && !this.am_pm_always){
+                this.am_pmBool = false;//Hide on 24 if am/pm not always shown
+            }else {
+                this.am_pmBool = sharedPreferences.getBoolean("am_pmBool", res.getIdentifier("am_pm", "array", context.getPackageName()) != 0);
+            }
             if(this.am_pmBool) {
                 TypedArray am_pm = res.obtainTypedArray(res.getIdentifier("am_pm", "array", context.getPackageName()));
                 i = 0;

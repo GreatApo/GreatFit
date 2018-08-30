@@ -14,6 +14,8 @@
 
     <bool name="flashing_heart_rate_icon">true</bool>
 
+    <bool name="am_pm_always">true</bool> <!-- Show am/pm always (not only when 12h time format) -->
+
     <!-- Show status bar (ex. charging icon) -->
     <bool name="status_bar">false</bool>
 </resources>
