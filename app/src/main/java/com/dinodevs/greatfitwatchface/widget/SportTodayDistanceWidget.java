@@ -88,7 +88,8 @@ public class SportTodayDistanceWidget extends AbstractWidget {
             if(settings.today_distanceIcon){
                 canvas.drawBitmap(this.today_distanceIcon, settings.today_distanceIconLeft, settings.today_distanceIconTop, settings.mGPaint);
             }
-            String text = String.format("%s", this.today_distanceData.getDistance());
+            String units = (settings.today_distanceUnits) ? " km" : "";// if units are enabled
+            String text = String.format("%s", this.today_distanceData.getDistance())+units;
             canvas.drawText(text, settings.today_distanceLeft, settings.today_distanceTop, today_distancePaint);
         }
 
