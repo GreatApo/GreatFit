@@ -5,6 +5,7 @@ import android.content.Context;
 import com.dinodevs.greatfitwatchface.settings.LoadSettings;
 import com.dinodevs.greatfitwatchface.widget.FloorWidget;
 import com.dinodevs.greatfitwatchface.widget.SportTodayDistanceWidget;
+import com.dinodevs.greatfitwatchface.widget.SportTotalDistanceWidget;
 import com.dinodevs.greatfitwatchface.widget.StepsWidget;
 import com.huami.watch.watchface.AbstractSlptClock;
 
@@ -35,9 +36,6 @@ public class GreatFit extends AbstractWatchFace {
 
         this.clock = new MainClock(settings);
 
-        //if(settings.isCircles()) {
-        //    this.widgets.add(new CirclesWidget(settings));
-        //}
         if(settings.isHeartRate()) {
             this.widgets.add(new HeartRateWidget(settings));
         }
@@ -46,6 +44,9 @@ public class GreatFit extends AbstractWatchFace {
         }
         if(settings.isTodayDistanceRate()) {
             this.widgets.add(new SportTodayDistanceWidget(settings));
+        }
+        if(settings.isTotalDistanceRate()) {
+            this.widgets.add(new SportTotalDistanceWidget(settings));
         }
         if(settings.isCalories()) {
             this.widgets.add(new CaloriesWidget(settings));

@@ -1314,6 +1314,11 @@ public class LoadSettings {
         return this.today_distance>0 || this.today_distanceProg>0;
     }
 
+    // SPORT'S TOTAL DISTANCE WIDGET
+    public boolean isTotalDistanceRate(){
+        return this.total_distance>0;
+    }
+
     // HEART RATE WIDGET
     public boolean isHeartRate(){
         return this.heart_rate>0 || this.heart_rateProg>0;

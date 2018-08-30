@@ -12,6 +12,7 @@ import com.dinodevs.greatfitwatchface.widget.HeartRateWidget;
 import com.dinodevs.greatfitwatchface.widget.MainClock;
 import com.dinodevs.greatfitwatchface.widget.GreatWidget;
 import com.dinodevs.greatfitwatchface.widget.SportTodayDistanceWidget;
+import com.dinodevs.greatfitwatchface.widget.SportTotalDistanceWidget;
 import com.dinodevs.greatfitwatchface.widget.StepsWidget;
 import com.dinodevs.greatfitwatchface.widget.WeatherWidget;
 import com.dinodevs.greatfitwatchface.widget.Widget;
@@ -39,9 +40,6 @@ public class GreatFitSlpt extends AbstractWatchFaceSlpt {
 
         this.clock = new MainClock(settings);
 
-        //if(settings.isCircles()) {
-        //    this.widgets.add(new CirclesWidget(settings));
-        //}
         if(settings.isHeartRate()) {
             this.widgets.add(new HeartRateWidget(settings));
         }
@@ -50,6 +48,9 @@ public class GreatFitSlpt extends AbstractWatchFaceSlpt {
         }
         if(settings.isTodayDistanceRate()) {
             this.widgets.add(new SportTodayDistanceWidget(settings));
+        }
+        if(settings.isTotalDistanceRate()) {
+            this.widgets.add(new SportTotalDistanceWidget(settings));
         }
         if(settings.isCalories()) {
             this.widgets.add(new CaloriesWidget(settings));
