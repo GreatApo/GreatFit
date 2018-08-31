@@ -95,15 +95,6 @@ public abstract class AbstractWatchFace extends com.huami.watch.watchface.Abstra
 
     // Status bar (ex.battery charging)
     public final Engine onCreateEngine() {
-        // Show it or... show it off screen :P
-        if(getResources().getBoolean(R.bool.status_bar)) {
-            notifyStatusBarPosition(
-                    getResources().getDimension(R.dimen.status_left),
-                    getResources().getDimension(R.dimen.status_top)
-            );
-        }else{
-            notifyStatusBarPosition(10.0F,10.0F);// not working
-        }
 
         return AnalogClockWidget.class.isInstance(this.clock) ? new AnalogEngine((AnalogClockWidget) this.clock) : new DigitalEngine((DigitalClockWidget) this.clock);
     }

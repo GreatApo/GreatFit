@@ -64,9 +64,22 @@ public class GreatFit extends AbstractWatchFace {
             this.widgets.add(new GreatWidget(settings));
         }
 
+        status_bar(settings.status_bar, settings.status_barLeft, settings.status_barTop);
+
         super.onCreate();
     }
 
+    private void status_bar(boolean isOn, int left, int top){
+        // Show it or... show it off screen :P
+        if(isOn) {
+            notifyStatusBarPosition(
+                    (float) left,
+                    (float) top
+            );
+        }else{
+            notifyStatusBarPosition(10.0F,10.0F);// not working
+        }
+    }
 
     @Override
     protected Class<? extends AbstractSlptClock> slptClockClass() {

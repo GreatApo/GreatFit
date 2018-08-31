@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- progress bars circle sltp palette -->
-    <integer name="sltp_circle_color">1</integer><!-- 1=red, 2=light blue, 3=green, 4=purple, 5=white, 6=yellow, 7=black, 8=blue -->
-
     <!-- slpt position compartibility -->
     <integer name="font_ratio">75</integer><!-- /100, font height center point ratio -->
 
     <!-- Slpt refresh rate for custom widgets (air pressure, Xdrip) -->
     <integer name="custom_refresh_rate">60</integer><!-- in seconds --> <!-- 60 = 1 min -->
+
+    <!-- status (ex. charging icon) -->
+    <integer name="status_left">142</integer>
+    <integer name="status_top">175</integer>
 </resources>

@@ -1,9 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- status (ex. charging icon) -->
-    <dimen name="status_left">10px</dimen>
-    <dimen name="status_top">150px</dimen>
-
     <!-- Settings (Do not change) -->
     <dimen name="padding_round">16dp</dimen>
     <dimen name="padding_round_small">8dp</dimen>
