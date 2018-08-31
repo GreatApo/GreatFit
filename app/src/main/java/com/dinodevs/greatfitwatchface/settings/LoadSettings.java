@@ -443,6 +443,21 @@ public class LoadSettings {
     public int heart_rateProgBgColor;
     public String heart_rateProgBgImage;
     public String heart_rateProgSlptImage;
+    // Phone Battery
+    public int phone_batteryProg;
+    public float phone_batteryProgLeft;
+    public float phone_batteryProgTop;
+    public int phone_batteryProgType;
+    public float phone_batteryProgRadius;
+    public float phone_batteryProgThickness;
+    public int phone_batteryProgStartAngle;
+    public int phone_batteryProgEndAngle;
+    public int phone_batteryProgClockwise;
+    public int phone_batteryProgColorIndex;
+    public boolean phone_batteryProgBgBool;
+    public int phone_batteryProgBgColor;
+    public String phone_batteryProgBgImage;
+    public String phone_batteryProgSlptImage;
 
     // Default Parameters
     private void defaultParameters(){
@@ -1333,7 +1348,6 @@ public class LoadSettings {
             widgetN.recycle();
         }
 
-
         // heart_rateProg
         this.heart_rateProg = sharedPreferences.getInt("heart_rateProg", circle_bars_list.indexOf("heart_rate")+1);
         if(this.heart_rateProg>0){
@@ -1361,6 +1375,37 @@ public class LoadSettings {
                 this.heart_rateProgSlptImage = sharedPreferences.getString("heart_rateProgSlptImage", widgetN.getString(i+this.heart_rateProgColorIndex));
             }else{ // Progression with images
                 //this.heart_rateProgSlptImages = res.obtainTypedArray(res.getIdentifier("param_progress_element_slpt"+this.heart_rateProg, "array", context.getPackageName()));
+            }
+            widgetN.recycle();
+        }
+
+        // phone_batteryProg
+        this.phone_batteryProg = sharedPreferences.getInt("phone_batteryProg", circle_bars_list.indexOf("phone_battery")+1);
+        if(this.phone_batteryProg>0){
+            TypedArray widgetN = res.obtainTypedArray(res.getIdentifier("progress_element"+this.phone_batteryProg, "array", context.getPackageName()));
+            i = 0;
+            this.phone_batteryProgLeft  = sharedPreferences.getFloat("phone_batteryProgLeft", widgetN.getDimension(i++, 0));
+            this.phone_batteryProgTop  = sharedPreferences.getFloat("phone_batteryProgTop", widgetN.getDimension(i++, 0));
+            this.phone_batteryProgType = sharedPreferences.getInt("phone_batteryProgType", widgetN.getColor(i++, 0));
+
+            if(this.phone_batteryProgType==0){ // Circle bar element
+                this.phone_batteryProgRadius  = sharedPreferences.getFloat("phone_batteryProgRadius", widgetN.getDimension(i++, 0));
+                this.phone_batteryProgThickness  = sharedPreferences.getFloat("phone_batteryProgThickness", widgetN.getDimension(i++, 0));
+                this.phone_batteryProgStartAngle = sharedPreferences.getInt("phone_batteryProgStartAngle", widgetN.getInteger(i++, 0));
+                this.phone_batteryProgEndAngle = sharedPreferences.getInt("phone_batteryProgEndAngle", widgetN.getInteger(i++, 0));
+                this.phone_batteryProgClockwise = sharedPreferences.getInt("phone_batteryProgClockwise", widgetN.getInteger(i++, 1));
+                if(this.color>-1 && theme_elements.indexOf("bar_element"+this.phone_batteryProg)>-1){
+                    this.phone_batteryProgColorIndex = this.color;
+                    i++;
+                }else{
+                    this.phone_batteryProgColorIndex = sharedPreferences.getInt("phone_batteryProgColorIndex", widgetN.getInteger(i++, 0));
+                }
+                this.phone_batteryProgBgBool = sharedPreferences.getBoolean("phone_batteryProgBgBool", widgetN.getBoolean(i++, false));
+                this.phone_batteryProgBgColor = sharedPreferences.getInt("phone_batteryProgBgColor", widgetN.getInteger(i++, 0));
+                this.phone_batteryProgBgImage = sharedPreferences.getString("phone_batteryProgBgImage", widgetN.getString(i++));
+                this.phone_batteryProgSlptImage = sharedPreferences.getString("phone_batteryProgSlptImage", widgetN.getString(i+this.phone_batteryProgColorIndex));
+            }else{ // Progression with images
+                //this.phone_batteryProgSlptImages = res.obtainTypedArray(res.getIdentifier("param_progress_element_slpt"+this.phone_batteryProg, "array", context.getPackageName()));
             }
             widgetN.recycle();
         }
@@ -1408,7 +1453,7 @@ public class LoadSettings {
 
     // GREAT WIDGET
     public boolean isGreat(){
-        return this.am_pmBool || watch_alarm>0 || xdrip>0 || air_pressure>0 || altitude>0 || phone_battery>0 || world_time>0;
+        return this.am_pmBool || watch_alarm>0 || xdrip>0 || air_pressure>0 || altitude>0 || phone_battery>0 || phone_batteryProg>0 || world_time>0;
     }
     public boolean isCustom(){
         return air_pressure>0 || altitude>0 || phone_battery>0;

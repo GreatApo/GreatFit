@@ -3,7 +3,9 @@ package com.dinodevs.greatfitwatchface.widget;
 import android.app.Service;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.RectF;
 import android.hardware.Sensor;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
@@ -18,6 +20,7 @@ import com.dinodevs.greatfitwatchface.data.CustomData;
 import com.dinodevs.greatfitwatchface.data.Xdrip;
 import com.dinodevs.greatfitwatchface.settings.LoadSettings;
 import com.huami.watch.watchface.util.Util;
+import com.ingenic.iwds.slpt.view.arc.SlptArcAnglePicView;
 import com.ingenic.iwds.slpt.view.core.SlptLinearLayout;
 import com.ingenic.iwds.slpt.view.core.SlptPictureView;
 import com.ingenic.iwds.slpt.view.core.SlptViewComponent;
@@ -63,12 +66,24 @@ public class GreatWidget extends AbstractWidget {
     private String alarm;
     private Integer tempHour=-1;
 
+
+    private Float phone_batterySweepAngle=0f;
+    private Integer angleLength;
+    private Paint ring;
+
     private Service mService;
     private LoadSettings settings;
 
     // Constructor
     public GreatWidget(LoadSettings settings) {
         this.settings = settings;
+
+        if(!(settings.phone_batteryProg>0 && settings.phone_batteryProgType==0)){return;}
+        if(settings.phone_batteryProgClockwise==1) {
+            this.angleLength = (settings.phone_batteryProgEndAngle < settings.phone_batteryProgStartAngle) ? 360 - (settings.phone_batteryProgStartAngle - settings.phone_batteryProgEndAngle) : settings.phone_batteryProgEndAngle - settings.phone_batteryProgStartAngle;
+        }else{
+            this.angleLength = (settings.phone_batteryProgEndAngle > settings.phone_batteryProgStartAngle) ? 360 - (settings.phone_batteryProgStartAngle - settings.phone_batteryProgEndAngle) : settings.phone_batteryProgEndAngle - settings.phone_batteryProgStartAngle;
+        }
     }
 
     // Screen-on init (runs once)
@@ -173,6 +188,14 @@ public class GreatWidget extends AbstractWidget {
             // Refresh time every hour
             customRefresher.run();
         }
+
+        // Progress Bar Circle
+        if(settings.phone_batteryProg>0 && settings.phone_batteryProgType==0){
+            this.ring = new Paint(Paint.ANTI_ALIAS_FLAG);
+            this.ring.setStrokeCap(Paint.Cap.ROUND);
+            this.ring.setStyle(Paint.Style.STROKE);
+            this.ring.setStrokeWidth(settings.phone_batteryProgThickness);
+        }
     }
 
     // Draw screen-on
@@ -251,6 +274,26 @@ public class GreatWidget extends AbstractWidget {
             Integer minutes = now.get(Calendar.MINUTE);
             canvas.drawText(Util.formatTime(hours)+":"+Util.formatTime(minutes), settings.world_timeLeft, settings.world_timeTop, world_timePaint);
         }
+
+
+        // phone_battery bar
+        if(settings.phone_batteryProg>0 && settings.phone_batteryProgType==0) {
+            int count = canvas.save();
+            // Rotate canvas to 0 degrees = 12 o'clock
+            canvas.rotate(-90, centerX, centerY);
+            // Define circle
+            float radius = settings.phone_batteryProgRadius - settings.phone_batteryProgThickness;
+            RectF oval = new RectF(settings.phone_batteryProgLeft - radius, settings.phone_batteryProgTop - radius, settings.phone_batteryProgLeft + radius, settings.phone_batteryProgTop + radius);
+            // Background
+            if(settings.phone_batteryProgBgBool) {
+                this.ring.setColor(Color.parseColor("#999999"));
+                canvas.drawArc(oval, settings.phone_batteryProgStartAngle, this.angleLength, false, ring);
+            }
+            this.ring.setColor(settings.colorCodes[settings.phone_batteryProgColorIndex]);
+            canvas.drawArc(oval, settings.phone_batteryProgStartAngle, this.phone_batterySweepAngle, false, ring);
+
+            canvas.restoreToCount(count);
+        }
     }
 
     // Register update listeners
@@ -262,7 +305,7 @@ public class GreatWidget extends AbstractWidget {
             dataTypes.add(TIME);
         }
 
-        if( settings.air_pressure>0 || settings.phone_alarm>0 || settings.phone_battery>0 || settings.altitude>0 ) {
+        if( settings.air_pressure>0 || settings.phone_alarm>0 || settings.phone_battery>0 || settings.phone_batteryProg>0 || settings.altitude>0 ) {
             dataTypes.add(DataType.CUSTOM);
         }
 
@@ -309,6 +352,11 @@ public class GreatWidget extends AbstractWidget {
                 break;
             case CUSTOM:
                 this.customData = (CustomData) value;
+                // Battery bar angle
+                if(settings.phone_batteryProg>0 && settings.phone_batteryProgType==0 && this.customData!=null) {
+                    int temp_battery = (this.customData.phoneBattery.equals("--"))?0:Integer.parseInt(this.customData.phoneBattery);
+                    this.phone_batterySweepAngle = this.angleLength * Math.min(temp_battery/100f,1f);
+                }
                 break;
         }
 
@@ -694,6 +742,27 @@ public class GreatWidget extends AbstractWidget {
             );
             //Add it to the list
             slpt_objects.add(world_timeLayout);
+        }
+
+
+        // Draw phone battery bar
+        if(settings.phone_batteryProg>0 && settings.phone_batteryProgType==0){
+            // Draw background image
+            if(settings.phone_batteryProgBgBool) {
+                SlptPictureView ring_background = new SlptPictureView();
+                ring_background.setImagePicture(SimpleFile.readFileFromAssets(service, ( (better_resolution)?"":"slpt_" )+"circles/ring1_bg.png"));
+                ring_background.setStart((int) (settings.phone_batteryProgLeft-settings.phone_batteryProgRadius), (int) (settings.phone_batteryProgTop-settings.phone_batteryProgRadius));
+                slpt_objects.add(ring_background);
+            }
+            SlptArcAnglePicView localSlptArcAnglePicView = new SlptArcAnglePicView();
+            localSlptArcAnglePicView.setImagePicture(SimpleFile.readFileFromAssets(service, ( (better_resolution)?"":"slpt_" )+settings.phone_batteryProgSlptImage));
+            localSlptArcAnglePicView.setStart((int) (settings.phone_batteryProgLeft-settings.phone_batteryProgRadius), (int) (settings.phone_batteryProgTop-settings.phone_batteryProgRadius));
+            localSlptArcAnglePicView.start_angle = (settings.phone_batteryProgClockwise==1)? settings.phone_batteryProgStartAngle : settings.phone_batteryProgEndAngle;
+            int temp_battery = (this.customData.phoneBattery.equals("--"))?0:Integer.parseInt(this.customData.phoneBattery);
+            localSlptArcAnglePicView.len_angle = (int) (this.angleLength * Math.min(temp_battery/100f,1));
+            localSlptArcAnglePicView.full_angle = (settings.phone_batteryProgClockwise==1)? this.angleLength : -this.angleLength;
+            localSlptArcAnglePicView.draw_clockwise = settings.phone_batteryProgClockwise;
+            slpt_objects.add(localSlptArcAnglePicView);
         }
 
         return slpt_objects;

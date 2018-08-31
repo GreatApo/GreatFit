@@ -247,7 +247,7 @@ public class HeartRateWidget extends AbstractWidget {
             slpt_objects.add(heart);
         }
 
-        // Draw heart rate element
+        // Draw heart rate bar
         if(settings.heart_rateProg>0 && settings.heart_rateProgType==0){
             // Draw background image
             if(settings.heart_rateProgBgBool) {

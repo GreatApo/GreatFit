@@ -296,7 +296,7 @@
         <item>heart_rate</item> <!-- 0-200 bpm -->
         <item>calories</item> <!-- set target in settings -->
         <!-- <item>humidity</item> -->
-        <!-- <item>phone_battery</item> -->
+        <item>phone_battery</item>
         <!-- <item>wind_strength</item> -->
         <!-- <item>floors</item> -->
         <item>none</item>
