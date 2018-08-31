@@ -1,6 +1,6 @@
 [![latest release](https://img.shields.io/badge/latest%20release-v3.4-green.svg?style=flat-square)](https://github.com/GreatApo/GreatFit/releases/latest)
 # GreatFit: Amazfit Pace/Stratos APK Watchface sources
-![GreatFit Watchface Banner](other/images/2.jpg)
+![GreatFit Watchface Banner](other/images/1.jpg)
 
 Bla, bla, bla... will write something here later :P continue reading for now
 XDA Topic [here](https://forum.xda-developers.com/smartwatch/amazfit/app-watchface-greatfit-v1-1-settings-t3791516)
