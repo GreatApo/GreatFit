@@ -344,10 +344,16 @@ public class LoadSettings {
     public float xdripIconLeft;
     public float xdripIconTop;
     // Weather
-    public int weather_imgProg;
-    public float weather_imgProgLeft;
-    public float weather_imgProgTop;
-    //public int weather_imgProgType;
+    public int weather_img;
+    public float weather_imgFontSize;
+    public float weather_imgLeft;
+    public float weather_imgTop;
+    public int weather_imgColor;
+    public boolean weather_imgAlignLeft;
+    public boolean weather_imgUnits;
+    public boolean weather_imgIcon;
+    public float weather_imgIconLeft;
+    public float weather_imgIconTop;
 
     // PROGRESS ELEMENTS
     // Steps
@@ -1127,19 +1133,26 @@ public class LoadSettings {
             }
 
         // weather_img
-        this.weather_imgProg = sharedPreferences.getInt("weather_imgProg", widgets_list.indexOf("weather_img")+1);
-        if(this.weather_imgProg>0){
-            TypedArray widgetN = res.obtainTypedArray(res.getIdentifier("widget"+this.weather_imgProg, "array", context.getPackageName()));
-            i = 7;
-            this.weather_imgProgLeft  = sharedPreferences.getFloat("weather_imgProgLeft", widgetN.getDimension(i++, 0));
-            this.weather_imgProgTop  = sharedPreferences.getFloat("weather_imgProgTop", widgetN.getDimension(i, 0));
-            /*
-            this.weather_imgProgType = sharedPreferences.getInt("weather_imgProgType", widgetN.getColor(i++, 0));
-            if(this.weather_imgProgType==1){
-                // Progression with images
-                //this.weather_imgProgSlptImages = res.obtainTypedArray(res.getIdentifier("param_progress_element_slpt"+this.weather_imgProg, "array", context.getPackageName()));
+        this.weather_img = sharedPreferences.getInt("weather_img", widgets_list.indexOf("weather_img")+1);
+        if(this.weather_img>0){
+            TypedArray widgetN = res.obtainTypedArray(res.getIdentifier("widget"+this.weather_img, "array", context.getPackageName()));
+            i = 0;
+            this.weather_imgFontSize  = sharedPreferences.getFloat("weather_imgFontSize", widgetN.getDimension(i++, 0));
+            this.weather_imgLeft  = sharedPreferences.getFloat("weather_imgLeft", widgetN.getDimension(i++, 0));
+            this.weather_imgTop  = sharedPreferences.getFloat("weather_imgTop", widgetN.getDimension(i++, 0));
+            if(this.color>-1 && theme_elements.indexOf("widget"+this.weather_img)>-1){
+                this.weather_imgColor = Color.parseColor(color_codes[this.color]);
+                i++;
+            }else{
+                this.weather_imgColor = sharedPreferences.getInt("weather_imgColor", widgetN.getColor(i++, 0));
             }
-            */
+            this.weather_imgAlignLeft = sharedPreferences.getBoolean("weather_imgAlignLeft", widgetN.getBoolean(i++, false));
+            this.weather_imgUnits = sharedPreferences.getBoolean("weather_imgUnits", widgetN.getBoolean(i++, true));
+            this.weather_imgIcon = sharedPreferences.getBoolean("weather_imgIcon", widgetN.getBoolean(i++, true));
+            if(weather_imgIcon) {
+                this.weather_imgIconLeft = sharedPreferences.getFloat("weather_imgIconLeft", widgetN.getDimension(i++, 0));
+                this.weather_imgIconTop = sharedPreferences.getFloat("weather_imgIconTop", widgetN.getDimension(i, 0));
+            }
             widgetN.recycle();
         }
 
@@ -1353,7 +1366,7 @@ public class LoadSettings {
 
     // WEATHER WIDGET
     public boolean isWeather(){
-        return this.temperature>0 || this.city>0 || this.humidity>0 || this.uv>0 || this.wind_direction>0 || this.wind_strength>0 || this.weather_imgProg>0;
+        return this.temperature>0 || this.city>0 || this.humidity>0 || this.uv>0 || this.wind_direction>0 || this.wind_strength>0 || this.weather_img>0;
     }
 
     // GREAT WIDGET

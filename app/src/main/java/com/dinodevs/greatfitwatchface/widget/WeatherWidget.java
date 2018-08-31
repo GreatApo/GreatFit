@@ -36,8 +36,6 @@ public class WeatherWidget extends AbstractWidget {
     private WeatherData weather;
     private Service mService;
 
-    private List<Drawable> weatherImageList;
-    private Drawable weatherImage;
     private List<String> weatherImageStrList;
     private Bitmap weatherImageIcon;
     private TextPaint temperaturePaint;
@@ -46,6 +44,7 @@ public class WeatherWidget extends AbstractWidget {
     private TextPaint uvPaint;
     private TextPaint wind_directionPaint;
     private TextPaint wind_strengthPaint;
+    private TextPaint weather_imgPaint;
 
     private Bitmap temperatureIcon;
     private Bitmap cityIcon;
@@ -167,10 +166,15 @@ public class WeatherWidget extends AbstractWidget {
         }
 
         // Load weather icons
-        if(settings.weather_imgProg>0) {
+        if(settings.weather_img>0) {
             // Get weather data
             this.weather = getSlptWeather();
             this.weatherImageIcon = Util.decodeImage(service.getResources(),"weather/"+this.weatherImageStrList.get(22)+".png");
+            this.weather_imgPaint = new TextPaint(TextPaint.ANTI_ALIAS_FLAG);
+            this.weather_imgPaint.setColor(settings.weather_imgColor);
+            this.weather_imgPaint.setTypeface(ResourceManager.getTypeFace(service.getResources(), ResourceManager.Font.FONT_FILE));
+            this.weather_imgPaint.setTextSize(settings.weather_imgFontSize);
+            this.weather_imgPaint.setTextAlign((settings.weather_imgAlignLeft) ? Paint.Align.LEFT : Paint.Align.CENTER);
         }
     }
 
@@ -247,11 +251,12 @@ public class WeatherWidget extends AbstractWidget {
         }
 
         // Draw Weather icon
-        if(settings.weather_imgProg>0) {
-            //if (this.weather.weatherType > 22 || this.weather.weatherType < 0) {
-            //    this.weather.weatherType = 22;
-            //}
-            canvas.drawBitmap(this.weatherImageIcon, settings.weather_imgProgLeft, settings.weather_imgProgTop, settings.mGPaint);
+        if(settings.weather_img>0) {
+            canvas.drawBitmap(this.weatherImageIcon, settings.weather_imgIconLeft, settings.weather_imgIconTop, settings.mGPaint);
+            if(settings.weather_imgIcon) {//In the weather image widget, if icon is disabled, temperature is not shown!
+                String units = (settings.weather_imgUnits) ? weather.getUnits() : ""; //"ºC"
+                canvas.drawText(weather.getTemperature() + units, settings.weather_imgLeft, settings.weather_imgTop, weather_imgPaint);
+            }
         }
     }
 
@@ -368,14 +373,44 @@ public class WeatherWidget extends AbstractWidget {
         }
 
         // Weather Icons
-        if(settings.weather_imgProg>0){
-            SlptPictureView weatherLayout = new SlptPictureView();
-            weatherLayout.setImagePicture( SimpleFile.readFileFromAssets(service, String.format(( (better_resolution)?"":"slpt_" )+"weather/%s.png", this.weatherImageStrList.get(this.weather.weatherType))) );
-            weatherLayout.setStart(
-                    (int) settings.weather_imgProgLeft,
-                    (int) settings.weather_imgProgTop
+        if(settings.weather_img>0){
+            SlptPictureView weatherIcon = new SlptPictureView();
+            weatherIcon.setImagePicture( SimpleFile.readFileFromAssets(service, String.format(( (better_resolution)?"":"slpt_" )+"weather/%s.png", this.weatherImageStrList.get(this.weather.weatherType))) );
+            weatherIcon.setStart(
+                    (int) settings.weather_imgIconLeft,
+                    (int) settings.weather_imgIconTop
             );
-            slpt_objects.add(weatherLayout);
+            slpt_objects.add(weatherIcon);
+
+            if(settings.weather_imgIcon) {//In the weather image widget, if icon is disabled, temperature is not shown!
+                SlptLinearLayout weatherLayout = new SlptLinearLayout();
+                // Show temperature with units or not
+                SlptPictureView weather_imgNum = new SlptPictureView();
+                weather_imgNum.setStringPicture(this.weather.tempString + (settings.weather_imgUnits ? this.weather.getUnits() : ""));
+                weather_imgNum.setTextAttr(
+                        settings.weather_imgFontSize,
+                        settings.weather_imgColor,
+                        ResourceManager.getTypeFace(service.getResources(), ResourceManager.Font.FONT_FILE)
+                );
+                weatherLayout.add(weather_imgNum);
+                // Position based on screen on
+                weatherLayout.alignX = 2;
+                weatherLayout.alignY = 0;
+                int tmp_left = (int) settings.weather_imgLeft;
+                if (!settings.weather_imgAlignLeft) {
+                    // If text is centered, set rectangle
+                    weatherLayout.setRect(
+                            (int) (2 * tmp_left + 640),
+                            (int) (settings.weather_imgFontSize)
+                    );
+                    tmp_left = -320;
+                }
+                weatherLayout.setStart(
+                        (int) tmp_left,
+                        (int) (settings.weather_imgTop - ((float) settings.font_ratio / 100) * settings.weather_imgFontSize)
+                );
+                slpt_objects.add(weatherLayout);
+            }
         }
 
         // Draw City
