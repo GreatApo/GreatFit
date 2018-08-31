@@ -7,8 +7,8 @@ android {
         applicationId 'com.dinodevs.greatfitwatchface'
         minSdkVersion 22
         targetSdkVersion 27
-        versionCode 7
-        versionName '3.3'
+        versionCode 8
+        versionName '3.4'
         multiDexEnabled true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }

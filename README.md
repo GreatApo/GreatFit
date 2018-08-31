@@ -1,9 +1,9 @@
-[![latest release](https://img.shields.io/badge/latest%20release-v3.3-green.svg?style=flat-square)](https://github.com/GreatApo/GreatFit/releases/latest)
+[![latest release](https://img.shields.io/badge/latest%20release-v3.4-green.svg?style=flat-square)](https://github.com/GreatApo/GreatFit/releases/latest)
 # GreatFit: Amazfit Pace/Stratos APK Watchface sources
 ![GreatFit Watchface Banner](other/preview.jpg)
 
 Bla, bla, bla... will write something here later :P continue reading for now
-XDA Topic [here](https://forum.xda-developers.com/smartwatch/amazfit/app-watchface-greatfit-v1-1-settings-t3791516)
+XDA Topic [here](other/images/2.jpg)
 
 
 ### Features
@@ -16,10 +16,12 @@ XDA Topic [here](https://forum.xda-developers.com/smartwatch/amazfit/app-watchfa
 - New watch alarm widget
 - New air pressure, altitude/dive depth (calculated based on air pressure)
 - New xdrip values widget (will be supported with Xdrip by Klaus3d3)
-- New phone battery widget (needs amazfit service+phone app)
+- New phone battery widget/bar (needs amazfit service+phone app)
 - New calories progress bar (set target in settings)
 - New heart-rate progress bar (min 0 bpm, max 200 bpm)
-- Better image resolution then raising hand
+- New world time widget, you can select the time difference it displays
+- Better image resolution when raising hand
+- Status bar position and enable/disable
 
 
 ### Tutorial for devs and stylers
