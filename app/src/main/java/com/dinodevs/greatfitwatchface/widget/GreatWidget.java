@@ -7,6 +7,7 @@ import android.graphics.Paint;
 import android.hardware.Sensor;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.os.Handler;
 import android.provider.Settings;
 import android.text.TextPaint;
 import android.util.Log;
@@ -30,7 +31,11 @@ import com.dinodevs.greatfitwatchface.data.DataType;
 import com.dinodevs.greatfitwatchface.data.Time;
 import com.dinodevs.greatfitwatchface.resource.ResourceManager;
 import com.dinodevs.greatfitwatchface.R;
+import com.ingenic.iwds.slpt.view.digital.SlptMinuteHView;
+import com.ingenic.iwds.slpt.view.digital.SlptMinuteLView;
 import com.ingenic.iwds.slpt.view.utils.SimpleFile;
+
+import static com.dinodevs.greatfitwatchface.data.DataType.TIME;
 
 
 public class GreatWidget extends AbstractWidget {
@@ -45,15 +50,18 @@ public class GreatWidget extends AbstractWidget {
     private TextPaint airPressurePaint;
     private TextPaint altitudePaint;
     private TextPaint phoneBatteryPaint;
+    private TextPaint world_timePaint;
 
     private Bitmap watch_alarmIcon;
     private Bitmap xdripIcon;
     private Bitmap air_pressureIcon;
     private Bitmap altitudeIcon;
     private Bitmap phone_batteryIcon;
+    private Bitmap world_timeIcon;
 
     private String tempAMPM;
     private String alarm;
+    private Integer tempHour=-1;
 
     private Service mService;
     private LoadSettings settings;
@@ -102,7 +110,7 @@ public class GreatWidget extends AbstractWidget {
             this.xdripPaint = new TextPaint(TextPaint.ANTI_ALIAS_FLAG);
             this.xdripPaint.setColor(settings.xdripColor);
             this.xdripPaint.setTypeface(ResourceManager.getTypeFace(service.getResources(), ResourceManager.Font.FONT_FILE));
-            this.xdripPaint.setTextSize(settings.xdripColor);
+            this.xdripPaint.setTextSize(settings.xdripFontSize);
             this.xdripPaint.setTextAlign((settings.xdripAlignLeft) ? Paint.Align.LEFT : Paint.Align.CENTER);
 
             if(settings.xdripIcon){
@@ -147,6 +155,23 @@ public class GreatWidget extends AbstractWidget {
                     this.phone_batteryIcon = Util.decodeImage(service.getResources(),"icons/phone_battery.png");
                 }
             }
+        }
+
+        // World time
+        if(settings.world_time>0) {
+            // Get world_time
+            this.world_timePaint = new TextPaint(TextPaint.ANTI_ALIAS_FLAG);
+            this.world_timePaint.setColor(settings.world_timeColor);
+            this.world_timePaint.setTypeface(ResourceManager.getTypeFace(service.getResources(), ResourceManager.Font.FONT_FILE));
+            this.world_timePaint.setTextSize(settings.world_timeFontSize);
+            this.world_timePaint.setTextAlign((settings.world_timeAlignLeft) ? Paint.Align.LEFT : Paint.Align.CENTER);
+
+            if(settings.world_timeIcon){
+                this.world_timeIcon = Util.decodeImage(service.getResources(),"icons/world_time.png");
+            }
+
+            // Refresh time every hour
+            customRefresher.run();
         }
     }
 
@@ -213,6 +238,19 @@ public class GreatWidget extends AbstractWidget {
             // todo
             //canvas.drawText(this.customData.phoneAlarm+"%", settings.phone_alarmLeft, settings.phone_alarmTop, phoneAlarmPaint);
         }
+
+        // Draw world_time, if enabled
+        if(settings.world_time>0) {
+            if(settings.world_timeIcon){
+                canvas.drawBitmap(this.world_timeIcon, settings.world_timeIconLeft, settings.world_timeIconTop, settings.mGPaint);
+            }
+            Calendar now = Calendar.getInstance();
+            Integer hours = now.get(Calendar.HOUR_OF_DAY) + settings.world_time_zone;
+            if(hours<0){hours = hours+24;}
+            else if(hours>23){hours = hours-24;}
+            Integer minutes = now.get(Calendar.MINUTE);
+            canvas.drawText(Util.formatTime(hours)+":"+Util.formatTime(minutes), settings.world_timeLeft, settings.world_timeTop, world_timePaint);
+        }
     }
 
     // Register update listeners
@@ -220,8 +258,8 @@ public class GreatWidget extends AbstractWidget {
     public List<DataType> getDataTypes() {
         List<DataType> dataTypes = new ArrayList<>();
 
-        if(settings.am_pmBool) {
-            dataTypes.add(DataType.TIME);
+        if(settings.am_pmBool || settings.world_time_zone>0) {
+            dataTypes.add(TIME);
         }
 
         if( settings.air_pressure>0 || settings.phone_alarm>0 || settings.phone_battery>0 || settings.altitude>0 ) {
@@ -250,9 +288,15 @@ public class GreatWidget extends AbstractWidget {
             case TIME:
                 // Update AM/PM
                 this.time = (Time) value;
-                if(!this.tempAMPM.equals(this.time.ampmStr)){
+                if(!this.tempAMPM.equals(this.time.ampmStr) && settings.am_pmBool){
                     this.tempAMPM = this.time.ampmStr;
                     refreshSlpt = true;
+                }
+                if(settings.world_time>0){
+                    if(!this.tempHour.equals(this.time.hours)){
+                        this.tempHour=this.time.hours;
+                        refreshSlpt = true;
+                    }
                 }
                 break;
             case ALARM:
@@ -273,6 +317,27 @@ public class GreatWidget extends AbstractWidget {
             ((AbstractWatchFace) this.mService).restartSlpt();
         }
     }
+
+    // Data updater handler
+    private Handler mHandler = new Handler();
+    private Runnable customRefresher = new Runnable(){
+        @Override
+        public void run() {
+            Calendar now = Calendar.getInstance();
+            Integer hours = now.get(Calendar.HOUR_OF_DAY);
+            Integer minutes = now.get(Calendar.MINUTE);
+            Integer seconds = now.get(Calendar.SECOND);
+
+            Object values = new Time(seconds, minutes, hours, -1);
+            onDataUpdate(TIME, values);
+
+            // Calculate remaining time to next hour change
+            Integer millisecond = now.get(Calendar.MILLISECOND);
+            minutes = (60-minutes);
+            seconds = (60-seconds);
+            mHandler.postDelayed(customRefresher, minutes*60*1000 + seconds*1000 + millisecond+1 );
+        }
+    };
 
     // Get data functions
     public Time getSlptTime() {
@@ -312,6 +377,7 @@ public class GreatWidget extends AbstractWidget {
 
         // Get AM/PM
         this.time = getSlptTime();
+        this.tempAMPM = this.time.ampmStr;
 
         // Get next alarm
         this.alarmData = getAlarm();
@@ -576,6 +642,58 @@ public class GreatWidget extends AbstractWidget {
             );
             //Add it to the list
             slpt_objects.add(phoneBatteryLayout);
+        }
+
+
+        // Draw world_time
+        if(settings.world_time>0){
+            // Show or Not icon
+            if (settings.world_timeIcon) {
+                SlptPictureView world_timeIcon = new SlptPictureView();
+                world_timeIcon.setImagePicture( SimpleFile.readFileFromAssets(service, ( (better_resolution)?"":"slpt_" )+"icons/world_time.png") );
+                world_timeIcon.setStart(
+                        (int) settings.world_timeIconLeft,
+                        (int) settings.world_timeIconTop
+                );
+                slpt_objects.add(world_timeIcon);
+            }
+
+            SlptLinearLayout world_timeLayout = new SlptLinearLayout();
+            // Hours:
+            Calendar now = Calendar.getInstance();
+            Integer hours = now.get(Calendar.HOUR_OF_DAY) + settings.world_time_zone;
+            if(hours<0){hours = hours+24;}
+            else if(hours>23){hours = hours-24;}
+            SlptPictureView world_timeStr = new SlptPictureView();
+            world_timeStr.setStringPicture( Util.formatTime(hours)+":" );
+            world_timeLayout.add(world_timeStr);
+            // Minutes
+            world_timeLayout.add(new SlptMinuteHView());
+            world_timeLayout.add(new SlptMinuteLView());
+
+            world_timeLayout.setTextAttrForAll(
+                    settings.world_timeFontSize,
+                    settings.world_timeColor,
+                    ResourceManager.getTypeFace(service.getResources(), ResourceManager.Font.FONT_FILE)
+            );
+            // Position based on screen on
+            world_timeLayout.alignX = 2;
+            world_timeLayout.alignY = 0;
+            tmp_left = (int) settings.world_timeLeft;
+            if(!settings.world_timeAlignLeft) {
+                // If text is centered, set rectangle
+                world_timeLayout.setRect(
+                        (int) (2 * tmp_left + 640),
+                        (int) (settings.world_timeFontSize)
+                );
+                tmp_left = -320;
+            }
+            world_timeLayout.setStart(
+                    (int) tmp_left,
+                    (int) (settings.world_timeTop-((float)settings.font_ratio/100)*settings.world_timeFontSize)
+            );
+            //Add it to the list
+            slpt_objects.add(world_timeLayout);
         }
 
         return slpt_objects;

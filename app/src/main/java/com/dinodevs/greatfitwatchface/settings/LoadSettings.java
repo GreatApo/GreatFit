@@ -55,6 +55,7 @@ public class LoadSettings {
     public int temp_heart_rate;
     public int temp_calories;
     public boolean am_pm_always;
+    public int world_time_zone;
     public Paint mGPaint;
     public List widgets_list;
     public List circle_bars_list;
@@ -354,6 +355,17 @@ public class LoadSettings {
     public boolean weather_imgIcon;
     public float weather_imgIconLeft;
     public float weather_imgIconTop;
+    // world_time
+    public int world_time;
+    public float world_timeFontSize;
+    public float world_timeLeft;
+    public float world_timeTop;
+    public int world_timeColor;
+    public boolean world_timeAlignLeft;
+    public boolean world_timeUnits;
+    public boolean world_timeIcon;
+    public float world_timeIconLeft;
+    public float world_timeIconTop;
 
     // PROGRESS ELEMENTS
     // Steps
@@ -456,6 +468,7 @@ public class LoadSettings {
             this.temp_heart_rate = sharedPreferences.getInt( "temp_heart_rate", 0);
             this.temp_calories = sharedPreferences.getInt( "temp_calories", 0);
             this.am_pm_always = sharedPreferences.getBoolean( "am_pm_always", context.getResources().getBoolean(R.bool.am_pm_always));
+            this.world_time_zone = sharedPreferences.getInt( "world_time_zone", -1);
 
             // Populate color codes
             String[] colorCodes = context.getResources().getStringArray(R.array.color_codes);
@@ -1156,6 +1169,30 @@ public class LoadSettings {
             widgetN.recycle();
         }
 
+        // world_time
+        this.world_time = sharedPreferences.getInt("world_time", widgets_list.indexOf("world_time")+1);
+        if(this.world_time>0){
+            TypedArray widgetN = res.obtainTypedArray(res.getIdentifier("widget"+this.world_time, "array", context.getPackageName()));
+            i = 0;
+            this.world_timeFontSize  = sharedPreferences.getFloat("world_timeFontSize", widgetN.getDimension(i++, 0));
+            this.world_timeLeft  = sharedPreferences.getFloat("world_timeLeft", widgetN.getDimension(i++, 0));
+            this.world_timeTop  = sharedPreferences.getFloat("world_timeTop", widgetN.getDimension(i++, 0));
+            if(this.color>-1 && theme_elements.indexOf("widget"+this.world_time)>-1){
+                this.world_timeColor = Color.parseColor(color_codes[this.color]);
+                i++;
+            }else{
+                this.world_timeColor = sharedPreferences.getInt("world_timeColor", widgetN.getColor(i++, 0));
+            }
+            this.world_timeAlignLeft = sharedPreferences.getBoolean("world_timeAlignLeft", widgetN.getBoolean(i++, false));
+            this.world_timeUnits = sharedPreferences.getBoolean("world_timeUnits", widgetN.getBoolean(i++, true));
+            this.world_timeIcon = sharedPreferences.getBoolean("world_timeIcon", widgetN.getBoolean(i++, true));
+            if(world_timeIcon) {
+                this.world_timeIconLeft = sharedPreferences.getFloat("world_timeIconLeft", widgetN.getDimension(i++, 0));
+                this.world_timeIconTop = sharedPreferences.getFloat("world_timeIconTop", widgetN.getDimension(i, 0));
+            }
+            widgetN.recycle();
+        }
+
         // Get Progress Bars
         String barsAsText = sharedPreferences.getString("progress_bars", null);
         if(barsAsText==null) {
@@ -1371,7 +1408,7 @@ public class LoadSettings {
 
     // GREAT WIDGET
     public boolean isGreat(){
-        return this.am_pmBool || watch_alarm>0 || xdrip>0 || air_pressure>0 || altitude>0 || phone_battery>0;
+        return this.am_pmBool || watch_alarm>0 || xdrip>0 || air_pressure>0 || altitude>0 || phone_battery>0 || world_time>0;
     }
     public boolean isCustom(){
         return air_pressure>0 || altitude>0 || phone_battery>0;

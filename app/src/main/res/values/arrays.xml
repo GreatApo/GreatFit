@@ -92,7 +92,7 @@
         <item>1</item> <!-- Widget 2: type from "supported widgets" list -->
         <item>18</item>
         <item>7</item>
-        <item>21</item>
+        <item>22</item>
     </integer-array>
 
     <!-- Widget 1 -->
@@ -284,6 +284,7 @@
         <item>phone_battery</item>
         <item>phone_alarm</item>
         <item>xdrip</item>
+        <item>world_time</item>
         <item>none</item> <!-- 21 -->
     </string-array>
 

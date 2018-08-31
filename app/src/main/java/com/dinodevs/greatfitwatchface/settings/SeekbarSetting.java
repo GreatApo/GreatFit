@@ -19,10 +19,10 @@ public class SeekbarSetting extends BaseSetting {
     Integer current;
     Integer max;
 
-    public SeekbarSetting(Drawable icon, String title, SeekBar.OnSeekBarChangeListener onChangeListener, Integer current, Integer max) {
+    public SeekbarSetting(Drawable icon, String title,  String subtitle, SeekBar.OnSeekBarChangeListener onChangeListener, Integer current, Integer max) {
         this.onChangeListener = onChangeListener;
         this.title = title;
-        this.subtitle = "Current: "+current+" (Max: "+max+")";
+        this.subtitle = (subtitle==null)?"Current: "+current+" (Max: "+max+")":subtitle;
         this.icon = icon;
         this.current = current;
         this.max = max;

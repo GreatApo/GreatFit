@@ -109,7 +109,7 @@ public class OthersActivity extends FragmentActivity {
         }, am_pm_always));
 
         final int target_calories = sharedPreferences.getInt( "target_calories", 1000);
-        settings.add(new SeekbarSetting(null, "Target calories", new SeekBar.OnSeekBarChangeListener() {
+        settings.add(new SeekbarSetting(null, "Target calories", null, new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 sharedPreferences.edit().putInt( "target_calories", progress).apply();
@@ -124,7 +124,7 @@ public class OthersActivity extends FragmentActivity {
         }, target_calories, 3000));
 
         final int custom_refresh_rate = sharedPreferences.getInt( "custom_refresh_rate", getResources().getInteger(R.integer.custom_refresh_rate)*1000);
-        settings.add(new SeekbarSetting(null, "Air pressure refresh sec", new SeekBar.OnSeekBarChangeListener() {
+        settings.add(new SeekbarSetting(null, "Air pressure refresh sec", null, new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 sharedPreferences.edit().putInt( "custom_refresh_rate", progress).apply();
@@ -137,6 +137,21 @@ public class OthersActivity extends FragmentActivity {
                 Toast.makeText(seekBar.getContext(), "Refresh rate: "+seekBar.getProgress()+" sec", Toast.LENGTH_SHORT).show();
             }
         }, custom_refresh_rate, 60));
+
+        final int world_time_zone = sharedPreferences.getInt( "world_time_zone", -1);
+        settings.add(new SeekbarSetting(null, "Second time diff", "Current: "+world_time_zone+" hours", new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                sharedPreferences.edit().putInt( "world_time_zone", progress-12).apply();
+            }
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+            }
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                Toast.makeText(seekBar.getContext(), "Time diff: "+(seekBar.getProgress()-12)+" hours", Toast.LENGTH_SHORT).show();
+            }
+        }, world_time_zone+12, 23));
 
         //Setup layout
         root.setBackgroundResource(R.drawable.settings_background);
