@@ -138,20 +138,20 @@ public class OthersActivity extends FragmentActivity {
             }
         }, custom_refresh_rate, 60));
 
-        final int world_time_zone = sharedPreferences.getInt( "world_time_zone", -1);
-        settings.add(new SeekbarSetting(null, "Second time diff", "Current: "+world_time_zone+" hours", new SeekBar.OnSeekBarChangeListener() {
+        final float world_time_zone = sharedPreferences.getFloat( "world_time_zone", -1f);
+        settings.add(new SeekbarSetting(null, "Second time difference", "Current: "+world_time_zone+" hours", new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                sharedPreferences.edit().putInt( "world_time_zone", progress-12).apply();
+                sharedPreferences.edit().putFloat( "world_time_zone", progress/2f-12).apply();
             }
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
             }
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                Toast.makeText(seekBar.getContext(), "Time diff: "+(seekBar.getProgress()-12)+" hours", Toast.LENGTH_SHORT).show();
+                Toast.makeText(seekBar.getContext(), "Time diff: "+(seekBar.getProgress()/2f-12)+" hours", Toast.LENGTH_SHORT).show();
             }
-        }, world_time_zone+12, 23));
+        }, (int) (world_time_zone+12)*2, 47));
 
         //Setup layout
         root.setBackgroundResource(R.drawable.settings_background);

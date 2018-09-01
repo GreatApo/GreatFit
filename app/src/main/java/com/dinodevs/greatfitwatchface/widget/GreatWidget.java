@@ -22,6 +22,7 @@ import com.dinodevs.greatfitwatchface.settings.LoadSettings;
 import com.huami.watch.watchface.util.Util;
 import com.ingenic.iwds.slpt.view.arc.SlptArcAnglePicView;
 import com.ingenic.iwds.slpt.view.core.SlptLinearLayout;
+import com.ingenic.iwds.slpt.view.core.SlptNumView;
 import com.ingenic.iwds.slpt.view.core.SlptPictureView;
 import com.ingenic.iwds.slpt.view.core.SlptViewComponent;
 
@@ -268,9 +269,11 @@ public class GreatWidget extends AbstractWidget {
                 canvas.drawBitmap(this.world_timeIcon, settings.world_timeIconLeft, settings.world_timeIconTop, settings.mGPaint);
             }
             Calendar now = Calendar.getInstance();
-            Integer hours = now.get(Calendar.HOUR_OF_DAY) + settings.world_time_zone;
-            if(hours<0){hours = hours+24;}
-            else if(hours>23){hours = hours-24;}
+            now.add(Calendar.HOUR, (int) settings.world_time_zone);
+            if(settings.world_time_zone%1!=0) {
+                now.add(Calendar.MINUTE, (settings.world_time_zone>0)?30:-30);
+            }
+            Integer hours = now.get(Calendar.HOUR_OF_DAY);
             Integer minutes = now.get(Calendar.MINUTE);
             canvas.drawText(Util.formatTime(hours)+":"+Util.formatTime(minutes), settings.world_timeLeft, settings.world_timeTop, world_timePaint);
         }
@@ -336,8 +339,14 @@ public class GreatWidget extends AbstractWidget {
                     refreshSlpt = true;
                 }
                 if(settings.world_time>0){
-                    if(!this.tempHour.equals(this.time.hours)){
-                        this.tempHour=this.time.hours;
+                    Integer hours = this.time.hours;
+                    if(settings.world_time_zone%1!=0){
+                        Calendar now = Calendar.getInstance();
+                        now.add(Calendar.MINUTE, 30);
+                        hours = now.get(Calendar.HOUR_OF_DAY);
+                    }
+                    if(!this.tempHour.equals(hours)){
+                        this.tempHour=hours;
                         refreshSlpt = true;
                     }
                 }
@@ -380,6 +389,10 @@ public class GreatWidget extends AbstractWidget {
             onDataUpdate(TIME, values);
 
             // Calculate remaining time to next hour change
+            if(settings.world_time_zone%1!=0){
+                now.add(Calendar.MINUTE, (settings.world_time_zone>0)?30:-30);
+                minutes = now.get(Calendar.MINUTE);
+            }
             Integer millisecond = now.get(Calendar.MILLISECOND);
             minutes = (60-minutes);
             seconds = (60-seconds);
@@ -709,14 +722,22 @@ public class GreatWidget extends AbstractWidget {
             SlptLinearLayout world_timeLayout = new SlptLinearLayout();
             // Hours:
             Calendar now = Calendar.getInstance();
-            Integer hours = now.get(Calendar.HOUR_OF_DAY) + settings.world_time_zone;
-            if(hours<0){hours = hours+24;}
-            else if(hours>23){hours = hours-24;}
+            now.add(Calendar.HOUR, (int) settings.world_time_zone);
+            Integer hours = now.get(Calendar.HOUR_OF_DAY);
             SlptPictureView world_timeStr = new SlptPictureView();
             world_timeStr.setStringPicture( Util.formatTime(hours)+":" );
             world_timeLayout.add(world_timeStr);
             // Minutes
-            world_timeLayout.add(new SlptMinuteHView());
+            SlptViewComponent firstDigit = new SlptMinuteHView();
+            if(settings.world_time_zone%1==0){//+00 minutes
+                String[] digitalNums = {"0", "1", "2", "3", "4", "5", "-", "-", "-", "-"};
+                ((SlptNumView) firstDigit).setStringPictureArray(digitalNums);
+            }else{//+30 minutes
+                String[] digitalNums = {"3", "4", "5", "0", "1", "2", "-", "-", "-", "-"};
+                ((SlptNumView) firstDigit).setStringPictureArray(digitalNums);
+            }
+            world_timeLayout.add(firstDigit);
+            //world_timeLayout.add(new SlptMinuteHView());
             world_timeLayout.add(new SlptMinuteLView());
 
             world_timeLayout.setTextAttrForAll(
