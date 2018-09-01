@@ -122,7 +122,7 @@
     <!-- Widget 3 -->
     <array name="widget3">
         <item name="font_size">24px</item>
-        <item name="left">88px</item>
+        <item name="left">90px</item>
         <item name="top">256px</item>
         <item name="color">#fff</item>
         <item name="align_left">true</item>
