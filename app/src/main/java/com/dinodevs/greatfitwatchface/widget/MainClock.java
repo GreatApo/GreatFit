@@ -532,7 +532,7 @@ public class MainClock extends DigitalClockWidget {
                     months[1] = months_3let[11];
                 }
             if(settings.month_as_text) { // if as text
-                if (service.getResources().getBoolean(R.bool.three_letters_month_if_text)) {
+                if (settings.three_letters_month_if_text) {
                     monthLayout.setStringPictureArrayForAll(months_3let[settings.language]);
                 } else {
                     monthLayout.setStringPictureArrayForAll(months[settings.language]);
