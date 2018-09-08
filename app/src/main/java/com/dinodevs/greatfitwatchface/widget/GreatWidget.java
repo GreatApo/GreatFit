@@ -54,6 +54,7 @@ public class GreatWidget extends AbstractWidget {
     private TextPaint airPressurePaint;
     private TextPaint altitudePaint;
     private TextPaint phoneBatteryPaint;
+    private TextPaint phoneAlarmPaint;
     private TextPaint world_timePaint;
 
     private Bitmap watch_alarmIcon;
@@ -61,6 +62,7 @@ public class GreatWidget extends AbstractWidget {
     private Bitmap air_pressureIcon;
     private Bitmap altitudeIcon;
     private Bitmap phone_batteryIcon;
+    private Bitmap phone_alarmIcon;
     private Bitmap world_timeIcon;
 
     private String tempAMPM;
@@ -171,6 +173,17 @@ public class GreatWidget extends AbstractWidget {
                     this.phone_batteryIcon = Util.decodeImage(service.getResources(),"icons/phone_battery.png");
                 }
             }
+            if(settings.phone_alarm>0) {
+                this.phoneAlarmPaint = new TextPaint(TextPaint.ANTI_ALIAS_FLAG);
+                this.phoneAlarmPaint.setColor(settings.phone_alarmColor);
+                this.phoneAlarmPaint.setTypeface(ResourceManager.getTypeFace(service.getResources(), ResourceManager.Font.FONT_FILE));
+                this.phoneAlarmPaint.setTextSize(settings.phone_alarmFontSize);
+                this.phoneAlarmPaint.setTextAlign((settings.phone_alarmAlignLeft) ? Paint.Align.LEFT : Paint.Align.CENTER);
+
+                if(settings.phone_alarmIcon){
+                    this.phone_alarmIcon = Util.decodeImage(service.getResources(),"icons/phone_alarm.png");
+                }
+            }
         }
 
         // World time
@@ -250,6 +263,14 @@ public class GreatWidget extends AbstractWidget {
                 canvas.drawBitmap(this.phone_batteryIcon, settings.phone_batteryIconLeft, settings.phone_batteryIconTop, settings.mGPaint);
             }
             canvas.drawText(this.customData.phoneBattery+"%", settings.phone_batteryLeft, settings.phone_batteryTop, phoneBatteryPaint);
+        }
+
+        // Draw Phone's alarm
+        if(settings.phone_alarm>0) {
+            if(settings.phone_alarmIcon){
+                canvas.drawBitmap(this.phone_alarmIcon, settings.phone_alarmIconLeft, settings.phone_alarmIconTop, settings.mGPaint);
+            }
+            canvas.drawText(this.customData.phoneAlarm, settings.phone_alarmLeft, settings.phone_alarmTop, phoneAlarmPaint);
         }
 
         // Draw Phone's alarm
@@ -703,6 +724,48 @@ public class GreatWidget extends AbstractWidget {
             );
             //Add it to the list
             slpt_objects.add(phoneBatteryLayout);
+        }
+
+        // Draw Phone's alarm
+        if(settings.phone_alarm>0){
+            // Show or Not icon
+            if (settings.phone_alarmIcon) {
+                SlptPictureView phone_alarmIcon = new SlptPictureView();
+                phone_alarmIcon.setImagePicture( SimpleFile.readFileFromAssets(service, ( (better_resolution)?"":"slpt_" )+"icons/phone_alarm.png") );
+                phone_alarmIcon.setStart(
+                        (int) settings.phone_alarmIconLeft,
+                        (int) settings.phone_alarmIconTop
+                );
+                slpt_objects.add(phone_alarmIcon);
+            }
+
+            SlptLinearLayout phoneAlarmLayout = new SlptLinearLayout();
+            SlptPictureView phoneAlarmStr = new SlptPictureView();
+            phoneAlarmStr.setStringPicture( this.customData.phoneAlarm );
+            phoneAlarmLayout.add(phoneAlarmStr);
+            phoneAlarmLayout.setTextAttrForAll(
+                    settings.phone_alarmFontSize,
+                    settings.phone_alarmColor,
+                    ResourceManager.getTypeFace(service.getResources(), ResourceManager.Font.FONT_FILE)
+            );
+            // Position based on screen on
+            phoneAlarmLayout.alignX = 2;
+            phoneAlarmLayout.alignY = 0;
+            tmp_left = (int) settings.phone_alarmLeft;
+            if(!settings.phone_alarmAlignLeft) {
+                // If text is centered, set rectangle
+                phoneAlarmLayout.setRect(
+                        (int) (2 * tmp_left + 640),
+                        (int) (settings.phone_alarmFontSize)
+                );
+                tmp_left = -320;
+            }
+            phoneAlarmLayout.setStart(
+                    (int) tmp_left,
+                    (int) (settings.phone_alarmTop-((float)settings.font_ratio/100)*settings.phone_alarmFontSize)
+            );
+            //Add it to the list
+            slpt_objects.add(phoneAlarmLayout);
         }
 
 

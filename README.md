@@ -65,6 +65,16 @@ Translations are ported from my Pace Calendar widget project (code [here](https:
 
 Special thanks to:
 - @lfom and @GramThanos for helping me out
+- @KieronQuinn for the settings style code (from his [AmazfitStepNotify](https://github.com/KieronQuinn/AmazfitStepNotify) app)
 - and all those invisible people giving back to the community by helping or donating!
+
+This project couldn't be possible without the following free software:
+• Android Studio
+• APK Easy Tool (decompile-recompile)
+• Notepad++ (smali editing)
+• JD-gui (jar file decompiler)
+• dex2jar (file type converter)
+• SVADeodexerForArt (working deodexer for amazfit's system)
+• 7zip
 
 Libraries files (*.lib) have copyrights by Huami
