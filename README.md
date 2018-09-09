@@ -45,7 +45,6 @@ adb uninstall com.dinodevs.greatfitwatchface
 adb install -r GreatFit.X.X.apk
 adb reboot
 ```
-Reboot is required for air pressure to work.
 
 ### Screenshots
 ![GreatFit v3.0](other/images/3.jpg)
