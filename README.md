@@ -48,7 +48,7 @@ ADB uninstall command: (run this first if you get installation error message)
 ```shell
 adb uninstall com.dinodevs.greatfitwatchface
 ```
-Clear data: (not cleared with uninstall, use this if GreatFit crashes when changing versions)
+Clear data: (not cleared with uninstall, run this if GreatFit crashes when changing versions)
 ```shell
 adb shell pm clear com.dinodevs.greatfitwatchface
 ```
