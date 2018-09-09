@@ -40,10 +40,17 @@ Or if you are hardcore, compile the source code with Android Studio.
 ### Installation
 To install this watchface, you will need a PC with the ADB installed. Connect your Amazfit on your PC and fire up a terminal.
 
+ADB install command:
+```shell
+adb install -r GreatFit.X.X.apk
+```
+ADB uninstall command: (run this first if you get installation error message)
 ```shell
 adb uninstall com.dinodevs.greatfitwatchface
-adb install -r GreatFit.X.X.apk
-adb reboot
+```
+Clear data: (not cleared with uninstall, use this if GreatFit crashes when changing versions)
+```shell
+adb shell pm clear com.dinodevs.greatfitwatchface
 ```
 
 ### Screenshots
