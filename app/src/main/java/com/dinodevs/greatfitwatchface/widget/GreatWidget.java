@@ -414,10 +414,12 @@ public class GreatWidget extends AbstractWidget {
             onDataUpdate(TIME, values);
 
             int refreshTime = 48*60*60*1000; //Big value
+            minutes = (60 - minutes)*60*1000;
+            seconds = (60 - seconds)*1000;
 
             // Refresh AM/PM
             if(settings.am_pmBool){
-                refreshTime = (11-(hours % 12))*60*60*1000 + (60 - minutes)*60*1000 + (60 - seconds)*1000 + millisecond+1;
+                refreshTime = (11-(hours % 12))*60*60*1000 + minutes + seconds + millisecond+1;
             }
 
             // Refreshes world_time
@@ -425,12 +427,10 @@ public class GreatWidget extends AbstractWidget {
                 // Calculate remaining time to next hour change
                 if (settings.world_time_zone % 1 != 0) {
                     now.add(Calendar.MINUTE, (settings.world_time_zone > 0) ? 30 : -30);
-                    minutes = now.get(Calendar.MINUTE);
+                    minutes = (60 - now.get(Calendar.MINUTE))*60*1000;
                 }
-                minutes = (60 - minutes);
-                seconds = (60 - seconds);
 
-                int tempRefreshTime = minutes*60*1000 + seconds*1000 + millisecond+1;
+                int tempRefreshTime = minutes + seconds + millisecond+1;
                 if(refreshTime>tempRefreshTime)
                     refreshTime = tempRefreshTime;
             }
