@@ -239,7 +239,7 @@ public class WeatherWidget extends AbstractWidget {
             if(settings.wind_directionIcon){
                 canvas.drawBitmap(this.wind_directionIcon, settings.wind_directionIconLeft, settings.wind_directionIconTop, settings.mGPaint);
             }
-            canvas.drawText(weather.windDirection, settings.wind_directionLeft, settings.wind_directionTop, wind_directionPaint);
+            canvas.drawText((settings.wind_direction_as_arrows)?weather.windArrow:weather.windDirection, settings.wind_directionLeft, settings.wind_directionTop, wind_directionPaint);
         }
 
         // Draw Wind Strength
@@ -566,7 +566,7 @@ public class WeatherWidget extends AbstractWidget {
             SlptLinearLayout wind_directionLayout = new SlptLinearLayout();
             SlptPictureView wind_directionText = new SlptPictureView();
             // todo
-            wind_directionText.setStringPicture( (service.getResources().getBoolean(R.bool.wind_direction_as_arrows))? this.weather.windArrow : this.weather.windDirection );
+            wind_directionText.setStringPicture( (settings.wind_direction_as_arrows)? this.weather.windArrow : this.weather.windDirection );
             wind_directionText.setTextAttr(
                     settings.wind_directionFontSize,
                     settings.wind_directionColor,
