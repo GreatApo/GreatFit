@@ -198,9 +198,6 @@ public class GreatWidget extends AbstractWidget {
             if(settings.world_timeIcon){
                 this.world_timeIcon = Util.decodeImage(service.getResources(),"icons/world_time.png");
             }
-
-            // Refresh time every hour
-            customRefresher.run();
         }
 
         // Progress Bar Circle
@@ -209,6 +206,12 @@ public class GreatWidget extends AbstractWidget {
             this.ring.setStrokeCap(Paint.Cap.ROUND);
             this.ring.setStyle(Paint.Style.STROKE);
             this.ring.setStrokeWidth(settings.phone_batteryProgThickness);
+        }
+
+        // Custom time refresher
+        if(settings.am_pmBool || settings.world_time>0) {
+            // Refresh time every hour
+            customRefresher.run();
         }
     }
 
@@ -405,19 +408,34 @@ public class GreatWidget extends AbstractWidget {
             Integer hours = now.get(Calendar.HOUR_OF_DAY);
             Integer minutes = now.get(Calendar.MINUTE);
             Integer seconds = now.get(Calendar.SECOND);
+            Integer millisecond = now.get(Calendar.MILLISECOND);
 
             Object values = new Time(seconds, minutes, hours, -1);
             onDataUpdate(TIME, values);
 
-            // Calculate remaining time to next hour change
-            if(settings.world_time_zone%1!=0){
-                now.add(Calendar.MINUTE, (settings.world_time_zone>0)?30:-30);
-                minutes = now.get(Calendar.MINUTE);
+            int refreshTime = 48*60*60*1000; //Big value
+
+            // Refresh AM/PM
+            if(settings.am_pmBool){
+                refreshTime = (11-(hours % 12))*60*60*1000 + (60 - minutes)*60*1000 + (60 - seconds)*1000 + millisecond+1;
             }
-            Integer millisecond = now.get(Calendar.MILLISECOND);
-            minutes = (60-minutes);
-            seconds = (60-seconds);
-            mHandler.postDelayed(customRefresher, minutes*60*1000 + seconds*1000 + millisecond+1 );
+
+            // Refreshes world_time
+            if(settings.world_time>0) {
+                // Calculate remaining time to next hour change
+                if (settings.world_time_zone % 1 != 0) {
+                    now.add(Calendar.MINUTE, (settings.world_time_zone > 0) ? 30 : -30);
+                    minutes = now.get(Calendar.MINUTE);
+                }
+                minutes = (60 - minutes);
+                seconds = (60 - seconds);
+
+                int tempRefreshTime = minutes*60*1000 + seconds*1000 + millisecond+1;
+                if(refreshTime>tempRefreshTime)
+                    refreshTime = tempRefreshTime;
+            }
+
+            mHandler.postDelayed(customRefresher, refreshTime);
         }
     };
 
