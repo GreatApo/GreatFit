@@ -110,7 +110,7 @@ public class MainClock extends DigitalClockWidget {
             {"ВСК", "ПНД", "ВТР", "СРД", "ЧТВ", "ПТН", "СБТ"},
             {"NED", "PON", "UTO", "STR", "ŠTV", "PIA", "SOB"},
             {"DOM", "LUN", "MAR", "MIÉ", "JUE", "VIE", "SÁB"},
-            {"PAZ", "PAR", "SAL", "ÇAR", "PER", "CUM", "CUR"},
+            {"PAZ", "PZT", "SAL", "ÇAR", "PER", "CUM", "CMT"},
     };
 
     private static String[][] months = {
@@ -132,7 +132,7 @@ public class MainClock extends DigitalClockWidget {
             {"ДЕКАБРЬ", "ЯНВАРЬ", "ФЕВРАЛЬ", "МАРТ", "АПРЕЛЬ", "МАЙ", "ИЮНЬ", "ИЮЛЬ", "АВГУСТ", "СЕНТЯБРЬ", "ОКТЯБРЬ", "НОЯБРЬ", "ДЕКАБРЬ"},
             {"DECEMBER", "JANUÁR", "FEBRUÁR", "MAREC", "APRÍL", "MÁJ", "JÚN", "JÚL", "AUGUST", "SEPTEMBER", "OKTÓBER", "NOVEMBER", "DECEMBER"},
             {"DICIEMBRE", "ENERO", "FEBRERO", "MARZO", "ABRIL", "MAYO", "JUNIO", "JULIO", "AGOSTO", "SEPTIEMBRE", "OCTUBRE", "NOVIEMBRE", "DICIEMBRE"},
-            {"ARALıK", "OCAK", "ŞUBAT", "MART", "NISAN", "MAYıS", "HAZIRAN", "TEMMUZ", "AĞUSTOS", "EYLÜL", "EKIM", "KASıM", "ARALıK"},
+            {"ARALıK", "OCAK", "ŞUBAT", "MART", "NISAN", "MAYıS", "HAZIRAN", "TEMMUZ", "AĞUSTOS", "EYLÜL", "EKIM", "KASıM", "ARALıK"}
     };
 
     private static String[][] months_3let = {
