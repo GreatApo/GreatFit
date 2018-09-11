@@ -66,7 +66,7 @@ public class MainClock extends DigitalClockWidget {
 
     // Languages
     public static String[] codes = {
-            "English", "中文", "Czech", "Nederlands", "Français", "Deutsch", "Ελληνικά", "עברית", "Magyar", "Italiano", "日本語", "한국어", "Polski", "Português", "Русский", "Slovenčina", "Español", "Türkçe"
+            "English", "中文", "Czech", "Nederlands", "Français", "Deutsch", "Ελληνικά", "עברית", "Magyar", "Italiano", "日本語", "한국어", "Polski", "Português", "Русский", "Slovenčina", "Español", "ไทย", "Türkçe"
     };
 
     private static String[][] days = {
@@ -88,9 +88,10 @@ public class MainClock extends DigitalClockWidget {
             {"ВОСКРЕСЕНЬЕ", "ПОНЕДЕЛЬНИК", "ВТОРНИК", "СРЕДА", "ЧЕТВЕРГ", "ПЯТНИЦА", "СУББОТА"},
             {"NEDEĽA", "PONDELOK", "UTOROK", "STREDA", "ŠTVRTOK", "PIATOK", "SOBOTA"},
             {"DOMINGO", "LUNES", "MARTES", "MIÉRCOLES", "JUEVES", "VIERNES", "SÁBADO"},
+            {"อาทิตย์", "จันทร์", "อังคาร", "พุธ", "พฤหัสบดี", "ุกร์", "สาร์"},
             {"PAZAR", "PAZARTESI", "SALı", "ÇARŞAMBA", "PERŞEMBE", "CUMA", "CUMARTESI"},
     };
-
+    
     private static String[][] days_3let = {
             //{"SUNDAY", "MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY"},
             {"SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"},
@@ -110,6 +111,7 @@ public class MainClock extends DigitalClockWidget {
             {"ВСК", "ПНД", "ВТР", "СРД", "ЧТВ", "ПТН", "СБТ"},
             {"NED", "PON", "UTO", "STR", "ŠTV", "PIA", "SOB"},
             {"DOM", "LUN", "MAR", "MIÉ", "JUE", "VIE", "SÁB"},
+            {"อาทิ", "จันท", "อังค", "พุธ", "พฤหั", "ุกร์", "สาร์"},
             {"PAZ", "PZT", "SAL", "ÇAR", "PER", "CUM", "CMT"},
     };
 
@@ -132,6 +134,7 @@ public class MainClock extends DigitalClockWidget {
             {"ДЕКАБРЬ", "ЯНВАРЬ", "ФЕВРАЛЬ", "МАРТ", "АПРЕЛЬ", "МАЙ", "ИЮНЬ", "ИЮЛЬ", "АВГУСТ", "СЕНТЯБРЬ", "ОКТЯБРЬ", "НОЯБРЬ", "ДЕКАБРЬ"},
             {"DECEMBER", "JANUÁR", "FEBRUÁR", "MAREC", "APRÍL", "MÁJ", "JÚN", "JÚL", "AUGUST", "SEPTEMBER", "OKTÓBER", "NOVEMBER", "DECEMBER"},
             {"DICIEMBRE", "ENERO", "FEBRERO", "MARZO", "ABRIL", "MAYO", "JUNIO", "JULIO", "AGOSTO", "SEPTIEMBRE", "OCTUBRE", "NOVIEMBRE", "DICIEMBRE"},
+            {"ันวาคม", "มกราคม", "กุมภาพันธ์", "ีนาคม", "เมษายน", "พฤษภาคม", "มิถุนายน", "กรกฎาคม", "สิงหาคม", "กันยายน", "ตุลาคม", "พฤศจิกายน"},
             {"ARALıK", "OCAK", "ŞUBAT", "MART", "NISAN", "MAYıS", "HAZIRAN", "TEMMUZ", "AĞUSTOS", "EYLÜL", "EKIM", "KASıM", "ARALıK"}
     };
 
@@ -154,6 +157,7 @@ public class MainClock extends DigitalClockWidget {
             {"ДЕК", "ЯНВ", "ФЕВ", "МАР", "АПР", "МАЙ", "ИЮН", "ИЮЛ", "АВГ", "СЕН", "ОКТ", "НОЯ"},
             {"DEC", "JAN", "FEB", "MAR", "APR", "MÁJ", "JÚN", "JÚL", "AUG", "SEP", "OKT", "NOV"},
             {"DIC", "ENE", "FEB", "MAR", "ABR", "MAY", "JUN", "JUL", "AGO", "SEP", "OCT", "NOV"},
+            {"ันวา", "มกรา", "กุมภ", "ีนาค", "เมษา", "พฤษ", "มิถุน", "กรก", "สิงห", "กันย", "ตุลา", "พฤศ"},
             {"ARA", "OCA", "ŞUB", "MAR", "NIS", "MAY", "HAZ", "TEM", "AĞU", "EYL", "EKI", "KAS"},
     };
 
