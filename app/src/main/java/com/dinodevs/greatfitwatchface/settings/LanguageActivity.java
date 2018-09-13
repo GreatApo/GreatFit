@@ -29,13 +29,14 @@ public class LanguageActivity extends FragmentActivity {
         settings.add(new HeaderSetting(getString(R.string.set_language)));
         //Setup items for each day
         String[] languages = getResources().getStringArray(R.array.language);
+        String[] languages_EN = getResources().getStringArray(R.array.languages_EN);
         final SharedPreferences sharedPreferences = getSharedPreferences(getPackageName()+"_settings", Context.MODE_PRIVATE);
         int x = 0;
         int current = sharedPreferences.getInt("language", 0);
         for(String language : languages){
             //Each item needs a SwitchSetting with a value
             final int finalX = x;
-            settings.add(new IconSetting( (current==x)?getDrawable(R.drawable.check):getDrawable(R.drawable.circle_icon), language, null, new View.OnClickListener() {
+            settings.add(new IconSetting( (current==x)?getDrawable(R.drawable.check):getDrawable(R.drawable.circle_icon), language, languages_EN[x], new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     sharedPreferences.edit().putInt("language", finalX).apply();

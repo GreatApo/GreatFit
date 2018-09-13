@@ -346,7 +346,29 @@
         <item>@string/Russian</item>
         <item>@string/Slovak</item>
         <item>@string/Spanish</item>
+        <item>@string/Thai</item>
         <item>@string/Turkish</item>
+    </string-array>
+    <string-array name="languages_EN">
+        <item>English</item>
+        <item>Chinese</item>
+        <item>Czech</item>
+        <item>Dutch</item>
+        <item>French</item>
+        <item>German</item>
+        <item>Greek</item>
+        <item>Hebrew</item>
+        <item>Hungarian</item>
+        <item>Italian</item>
+        <item>Japanese</item>
+        <item>Korean</item>
+        <item>Polish</item>
+        <item>Portuguese</item>
+        <item>Russian</item>
+        <item>Slovak</item>
+        <item>Spanish</item>
+        <item>Thai</item>
+        <item>Turkish</item>
     </string-array>
 
     <!--
