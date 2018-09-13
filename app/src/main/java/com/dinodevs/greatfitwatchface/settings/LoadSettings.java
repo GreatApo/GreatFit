@@ -524,7 +524,7 @@ public class LoadSettings {
         // Indicator
             this.indicatorBool = sharedPreferences.getBoolean("indicatorBool", res.getIdentifier("indicator", "array", context.getPackageName())!=0);
             if(this.indicatorBool) {
-                TypedArray indicator = res.obtainTypedArray(res.getIdentifier("weekday", "array", context.getPackageName()));
+                TypedArray indicator = res.obtainTypedArray(res.getIdentifier("indicator", "array", context.getPackageName()));
                 i = 0;
                 this.indicatorFontSize = sharedPreferences.getFloat("indicatorFontSize", indicator.getDimension(i++, 0));
                 this.indicatorLeft = sharedPreferences.getFloat("indicatorLeft", indicator.getDimension(i++, 0));
