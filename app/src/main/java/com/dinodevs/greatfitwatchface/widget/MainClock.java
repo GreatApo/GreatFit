@@ -101,7 +101,7 @@ public class MainClock extends DigitalClockWidget {
             {"NE", "PO", "ÚT", "ST", "ČT", "PÁ", "SO"},
             {"ZON", "MAA", "DIN", "WOE", "DON", "VRI", "ZAT"},
             {"DIM", "LUN", "MAR", "MER", "JEU", "VEN", "SAM"},
-            {"SON", "MON", "DIE", "MIT", "DON", "FRE", "SAM"},
+            {"SO", "MO", "DI", "MI", "DO", "FR", "SA"},
             {"ΚΥΡ", "ΔΕΥ", "ΤΡΙ", "ΤΕΤ", "ΠΕΜ", "ΠΑΡ", "ΣΑΒ"},
             {"ש'","ו'","ה'","ד'","ג'","ב'","א'"},
             {"VAS", "HÉT", "KED", "SZE", "CSÜ", "PÉN", "SZO"},
