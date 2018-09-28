@@ -331,6 +331,7 @@
     <string-array name="language">
         <item>@string/English</item>
         <item>@string/Chinese</item>
+        <item>@string/Croatian</item>
         <item>@string/Czech</item>
         <item>@string/Dutch</item>
         <item>@string/French</item>
@@ -352,6 +353,7 @@
     <string-array name="languages_EN">
         <item>English</item>
         <item>Chinese</item>
+        <item>Croatian</item>
         <item>Czech</item>
         <item>Dutch</item>
         <item>French</item>

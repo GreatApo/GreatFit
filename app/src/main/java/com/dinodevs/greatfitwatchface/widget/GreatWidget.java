@@ -6,13 +6,9 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
-import android.hardware.Sensor;
-import android.hardware.SensorEventListener;
-import android.hardware.SensorManager;
 import android.os.Handler;
 import android.provider.Settings;
 import android.text.TextPaint;
-import android.util.Log;
 
 import com.dinodevs.greatfitwatchface.AbstractWatchFace;
 import com.dinodevs.greatfitwatchface.data.Alarm;
@@ -27,14 +23,12 @@ import com.ingenic.iwds.slpt.view.core.SlptPictureView;
 import com.ingenic.iwds.slpt.view.core.SlptViewComponent;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 
 import com.dinodevs.greatfitwatchface.data.DataType;
 import com.dinodevs.greatfitwatchface.data.Time;
 import com.dinodevs.greatfitwatchface.resource.ResourceManager;
-import com.dinodevs.greatfitwatchface.R;
 import com.ingenic.iwds.slpt.view.digital.SlptMinuteHView;
 import com.ingenic.iwds.slpt.view.digital.SlptMinuteLView;
 import com.ingenic.iwds.slpt.view.utils.SimpleFile;
