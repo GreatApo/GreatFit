@@ -13,6 +13,7 @@ public class CustomData {
     public String altitude;
     public String phoneBattery;
     public String phoneAlarm;
+    public String notifications;
 
     public CustomData(String parmStr1) {
         this.JSONstr = parmStr1;
@@ -21,6 +22,7 @@ public class CustomData {
         this.phoneBattery = "--";
         this.phoneAlarm = "--";
         this.altitude = "--";
+        this.notifications = "--";
         if(parmStr1!=null && !parmStr1.equals("")){
             try {
                 // Extract data from JSON
@@ -49,6 +51,9 @@ public class CustomData {
                 }
                 if(json_data.has("phoneAlarm")) {
                     this.phoneAlarm = json_data.getString("phoneAlarm");
+                }
+                if(json_data.has("notifications")) {
+                    this.notifications = json_data.getString("notifications");
                 }
             }catch (JSONException e) {
                 // Nothing

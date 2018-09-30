@@ -285,7 +285,8 @@
         <item>phone_alarm</item>
         <item>xdrip</item>
         <item>world_time</item>
-        <item>none</item> <!-- 21 -->
+        <item>notifications</item>
+        <item>none</item> <!-- 23 -->
     </string-array>
 
     <!-- Supported Progress Elements -->

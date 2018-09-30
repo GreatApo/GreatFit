@@ -50,6 +50,7 @@ public class GreatWidget extends AbstractWidget {
     private TextPaint phoneBatteryPaint;
     private TextPaint phoneAlarmPaint;
     private TextPaint world_timePaint;
+    private TextPaint notificationsPaint;
 
     private Bitmap watch_alarmIcon;
     private Bitmap xdripIcon;
@@ -58,6 +59,7 @@ public class GreatWidget extends AbstractWidget {
     private Bitmap phone_batteryIcon;
     private Bitmap phone_alarmIcon;
     private Bitmap world_timeIcon;
+    private Bitmap notificationsIcon;
 
     private String tempAMPM;
     private String alarm;
@@ -178,6 +180,17 @@ public class GreatWidget extends AbstractWidget {
                     this.phone_alarmIcon = Util.decodeImage(service.getResources(),"icons/phone_alarm.png");
                 }
             }
+            if(settings.notifications>0) {
+                this.notificationsPaint = new TextPaint(TextPaint.ANTI_ALIAS_FLAG);
+                this.notificationsPaint.setColor(settings.notificationsColor);
+                this.notificationsPaint.setTypeface(ResourceManager.getTypeFace(service.getResources(), ResourceManager.Font.FONT_FILE));
+                this.notificationsPaint.setTextSize(settings.notificationsFontSize);
+                this.notificationsPaint.setTextAlign((settings.notificationsAlignLeft) ? Paint.Align.LEFT : Paint.Align.CENTER);
+
+                if(settings.notificationsIcon){
+                    this.notificationsIcon = Util.decodeImage(service.getResources(),"icons/notifications.png");
+                }
+            }
         }
 
         // World time
@@ -270,15 +283,12 @@ public class GreatWidget extends AbstractWidget {
             canvas.drawText(this.customData.phoneAlarm, settings.phone_alarmLeft, settings.phone_alarmTop, phoneAlarmPaint);
         }
 
-        // Draw Phone's alarm
-        if(settings.phone_alarm>0) {
-            /*
-            if(settings.phone_alarmIcon){
-                canvas.drawBitmap(this.phone_alarmIcon, settings.phone_alarmIconLeft, settings.phone_alarmIconTop, settings.mGPaint);
+        // Draw notifications
+        if(settings.notifications>0) {
+            if(settings.notificationsIcon){
+                canvas.drawBitmap(this.notificationsIcon, settings.notificationsIconLeft, settings.notificationsIconTop, settings.mGPaint);
             }
-            */
-            // todo
-            //canvas.drawText(this.customData.phoneAlarm+"%", settings.phone_alarmLeft, settings.phone_alarmTop, phoneAlarmPaint);
+            canvas.drawText(this.customData.notifications, settings.notificationsLeft, settings.notificationsTop, notificationsPaint);
         }
 
         // Draw world_time, if enabled
@@ -326,7 +336,7 @@ public class GreatWidget extends AbstractWidget {
             dataTypes.add(TIME);
         }
 
-        if( settings.air_pressure>0 || settings.phone_alarm>0 || settings.phone_battery>0 || settings.phone_batteryProg>0 || settings.altitude>0 ) {
+        if( settings.air_pressure>0 || settings.phone_alarm>0 || settings.phone_battery>0 || settings.phone_batteryProg>0 || settings.altitude>0 || settings.notifications>0 ) {
             dataTypes.add(DataType.CUSTOM);
         }
 
@@ -556,7 +566,6 @@ public class GreatWidget extends AbstractWidget {
             slpt_objects.add(alarmLayout);
         }
 
-
         // Draw Xdrip
         if(settings.xdrip>0){
             // Show or Not icon
@@ -780,6 +789,47 @@ public class GreatWidget extends AbstractWidget {
             slpt_objects.add(phoneAlarmLayout);
         }
 
+        // Draw Notifications
+        if(settings.notifications>0){
+            // Show or Not icon
+            if (settings.notificationsIcon) {
+                SlptPictureView notificationsIcon = new SlptPictureView();
+                notificationsIcon.setImagePicture( SimpleFile.readFileFromAssets(service, ( (better_resolution)?"":"slpt_" )+"icons/notifications.png") );
+                notificationsIcon.setStart(
+                        (int) settings.notificationsIconLeft,
+                        (int) settings.notificationsIconTop
+                );
+                slpt_objects.add(notificationsIcon);
+            }
+
+            SlptLinearLayout notificationsLayout = new SlptLinearLayout();
+            SlptPictureView notificationsStr = new SlptPictureView();
+            notificationsStr.setStringPicture( this.customData.notifications );
+            notificationsLayout.add(notificationsStr);
+            notificationsLayout.setTextAttrForAll(
+                    settings.notificationsFontSize,
+                    settings.notificationsColor,
+                    ResourceManager.getTypeFace(service.getResources(), ResourceManager.Font.FONT_FILE)
+            );
+            // Position based on screen on
+            notificationsLayout.alignX = 2;
+            notificationsLayout.alignY = 0;
+            tmp_left = (int) settings.notificationsLeft;
+            if(!settings.notificationsAlignLeft) {
+                // If text is centered, set rectangle
+                notificationsLayout.setRect(
+                        (int) (2 * tmp_left + 640),
+                        (int) (settings.notificationsFontSize)
+                );
+                tmp_left = -320;
+            }
+            notificationsLayout.setStart(
+                    (int) tmp_left,
+                    (int) (settings.notificationsTop-((float)settings.font_ratio/100)*settings.notificationsFontSize)
+            );
+            //Add it to the list
+            slpt_objects.add(notificationsLayout);
+        }
 
         // Draw world_time
         if(settings.world_time>0){

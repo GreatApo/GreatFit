@@ -366,6 +366,17 @@ public class LoadSettings {
     public boolean world_timeIcon;
     public float world_timeIconLeft;
     public float world_timeIconTop;
+    // phone_alarm
+    public int notifications;
+    public float notificationsFontSize;
+    public float notificationsLeft;
+    public float notificationsTop;
+    public int notificationsColor;
+    public boolean notificationsAlignLeft;
+    public boolean notificationsUnits;
+    public boolean notificationsIcon;
+    public float notificationsIconLeft;
+    public float notificationsIconTop;
 
     // PROGRESS ELEMENTS
     // Steps
@@ -1204,6 +1215,30 @@ public class LoadSettings {
             if(world_timeIcon) {
                 this.world_timeIconLeft = sharedPreferences.getFloat("world_timeIconLeft", widgetN.getDimension(i++, 0));
                 this.world_timeIconTop = sharedPreferences.getFloat("world_timeIconTop", widgetN.getDimension(i, 0));
+            }
+            widgetN.recycle();
+        }
+
+        // notifications
+        this.notifications = sharedPreferences.getInt("notifications", widgets_list.indexOf("notifications")+1);
+        if(this.notifications>0){
+            TypedArray widgetN = res.obtainTypedArray(res.getIdentifier("widget"+this.notifications, "array", context.getPackageName()));
+            i = 0;
+            this.notificationsFontSize  = sharedPreferences.getFloat("notificationsFontSize", widgetN.getDimension(i++, 0));
+            this.notificationsLeft  = sharedPreferences.getFloat("notificationsLeft", widgetN.getDimension(i++, 0));
+            this.notificationsTop  = sharedPreferences.getFloat("notificationsTop", widgetN.getDimension(i++, 0));
+            if(this.color>-1 && theme_elements.indexOf("widget"+this.notifications)>-1){
+                this.notificationsColor = Color.parseColor(color_codes[this.color]);
+                i++;
+            }else{
+                this.notificationsColor = sharedPreferences.getInt("notificationsColor", widgetN.getColor(i++, 0));
+            }
+            this.notificationsAlignLeft = sharedPreferences.getBoolean("notificationsAlignLeft", widgetN.getBoolean(i++, false));
+            this.notificationsUnits = sharedPreferences.getBoolean("notificationsUnits", widgetN.getBoolean(i++, true));
+            this.notificationsIcon = sharedPreferences.getBoolean("notificationsIcon", widgetN.getBoolean(i++, true));
+            if(notificationsIcon) {
+                this.notificationsIconLeft = sharedPreferences.getFloat("notificationsIconLeft", widgetN.getDimension(i++, 0));
+                this.notificationsIconTop = sharedPreferences.getFloat("notificationsIconTop", widgetN.getDimension(i, 0));
             }
             widgetN.recycle();
         }
