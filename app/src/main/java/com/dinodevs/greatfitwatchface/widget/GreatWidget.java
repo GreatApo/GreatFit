@@ -793,18 +793,18 @@ public class GreatWidget extends AbstractWidget {
         if(settings.notifications>0){
             // Show or Not icon
             if (settings.notificationsIcon) {
-                SlptPictureView notificationsIcon = new SlptPictureView();
-                notificationsIcon.setImagePicture( SimpleFile.readFileFromAssets(service, ( (better_resolution)?"":"slpt_" )+"icons/notifications.png") );
-                notificationsIcon.setStart(
+                SlptPictureView notificationIcon = new SlptPictureView();
+                notificationIcon.setImagePicture( SimpleFile.readFileFromAssets(service, ( (better_resolution)?"":"slpt_" )+"icons/notifications.png") );
+                notificationIcon.setStart(
                         (int) settings.notificationsIconLeft,
                         (int) settings.notificationsIconTop
                 );
-                slpt_objects.add(notificationsIcon);
+                slpt_objects.add(notificationIcon);
             }
 
             SlptLinearLayout notificationsLayout = new SlptLinearLayout();
             SlptPictureView notificationsStr = new SlptPictureView();
-            notificationsStr.setStringPicture( this.customData.notifications );
+            notificationsStr.setStringPicture( this.customData.notifications+"" );
             notificationsLayout.add(notificationsStr);
             notificationsLayout.setTextAttrForAll(
                     settings.notificationsFontSize,
@@ -889,7 +889,6 @@ public class GreatWidget extends AbstractWidget {
             //Add it to the list
             slpt_objects.add(world_timeLayout);
         }
-
 
         // Draw phone battery bar
         if(settings.phone_batteryProg>0 && settings.phone_batteryProgType==0){
