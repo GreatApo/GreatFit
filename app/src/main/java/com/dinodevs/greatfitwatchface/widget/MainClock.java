@@ -524,15 +524,16 @@ public class MainClock extends DigitalClockWidget {
 
         // Draw month
         if(settings.monthBool){
+            // JAVA calendar get/show time library
+            Calendar calendar = Calendar.getInstance();
+            int month = calendar.get(Calendar.MONTH);
+
             SlptLinearLayout monthLayout = new SlptLinearLayout();
-            if(!settings.month_as_text){ // if as number
+            if(!settings.month_as_text && (month>=9 || !settings.no_0_on_hour_first_digit)){ // if as number, show first digit
                 monthLayout.add(new SlptMonthHView());
             }
             monthLayout.add(new SlptMonthLView());
             // Fix 00 type of month
-                // JAVA calendar get/show time library
-                Calendar calendar = Calendar.getInstance();
-                int month = calendar.get(Calendar.MONTH);
                 if(month>=9){
                     months_3let[settings.language][2] = months_3let[settings.language][0];
                     months_3let[settings.language][0] = months_3let[settings.language][10];

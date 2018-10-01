@@ -69,7 +69,7 @@ public class OthersActivity extends FragmentActivity {
         }, three_letters_day_if_text));
 
         final boolean no_0_on_hour_first_digit = sharedPreferences.getBoolean( "no_0_on_hour_first_digit", getResources().getBoolean(R.bool.no_0_on_hour_first_digit));
-        settings.add(new SwitchSetting(null, "No 0 in hours", "Remove 0 from hour's first digit", new CompoundButton.OnCheckedChangeListener() {
+        settings.add(new SwitchSetting(null, "No 0 in hours/months", "Remove 0 if first digit", new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 sharedPreferences.edit().putBoolean( "no_0_on_hour_first_digit", b).apply();
