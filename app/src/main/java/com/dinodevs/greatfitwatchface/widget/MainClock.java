@@ -525,7 +525,9 @@ public class MainClock extends DigitalClockWidget {
         // Draw month
         if(settings.monthBool){
             SlptLinearLayout monthLayout = new SlptLinearLayout();
-            //monthLayout.add(new SlptMonthHView());
+            if(!settings.month_as_text){ // if as number
+                monthLayout.add(new SlptMonthHView());
+            }
             monthLayout.add(new SlptMonthLView());
             // Fix 00 type of month
                 // JAVA calendar get/show time library
