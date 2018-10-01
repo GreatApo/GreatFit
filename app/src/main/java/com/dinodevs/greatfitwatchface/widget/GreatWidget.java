@@ -804,12 +804,16 @@ public class GreatWidget extends AbstractWidget {
 
             SlptLinearLayout notificationsLayout = new SlptLinearLayout();
             SlptPictureView notificationsStr = new SlptPictureView();
-            notificationsStr.setStringPicture( this.customData.notifications+"" );
+            // These can be used instead of setTextAttrForAll()
+            //notificationsStr.textSize = settings.notificationsFontSize;
+            //notificationsStr.typeface = ResourceManager.getTypeFace(service.getResources(), ResourceManager.Font.FONT_FILE);
+            //notificationsStr.textColor = settings.notificationsColor;
+            notificationsStr.setStringPicture( this.customData.notifications );
             notificationsLayout.add(notificationsStr);
             notificationsLayout.setTextAttrForAll(
                     settings.notificationsFontSize,
                     settings.notificationsColor,
-                    ResourceManager.getTypeFace(service.getResources(), ResourceManager.Font.FONT_FILE)
+                    null//ResourceManager.getTypeFace(service.getResources(), ResourceManager.Font.FONT_FILE) //This causes error for some reason...
             );
             // Position based on screen on
             notificationsLayout.alignX = 2;
