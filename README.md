@@ -1,4 +1,4 @@
-[![latest release](https://img.shields.io/badge/latest%20release-v3.5-green.svg?style=flat-square) ![release date](https://img.shields.io/badge/release%20date-2018.09.09-orange.svg?style=flat-square)](https://github.com/GreatApo/GreatFit/releases/latest) 
+[![latest release](https://img.shields.io/badge/latest%20release-v3.6-green.svg?style=flat-square) ![release date](https://img.shields.io/badge/release%20date-2018.10.01-orange.svg?style=flat-square)](https://github.com/GreatApo/GreatFit/releases/latest) 
 # GreatFit: Amazfit Pace/Stratos APK Watchface sources
 ![GreatFit Watchface Banner](other/images/1.jpg)
 
@@ -9,7 +9,7 @@ XDA Topic [here](https://forum.xda-developers.com/smartwatch/amazfit/app-watchfa
 ### Features
 - This is a Pace/Stratos APK watchface (Pace WOS2)
 - Custom apk watchface with sources
-- Supported languages: English, Chinese, Czech, Dutch, French, German, Greek, Hebrew, Hungarian, Italian, Japanese, Polish, Portuguese, Russian, Slovak, Spanish, Turkish
+- Supported languages: English, Chinese, Croatian, Czech, Dutch, French, German, Greek, Hebrew, Hungarian, Italian, Japanese, Polish, Portuguese, Russian, Slovak, Spanish, Turkish
 - Ability to change widgets/progress bars
 - Seconds are enabled based on your system settings (refresh the watchface)
 - More weather widgets (humidity, wind direction and strength, UV status, city)
@@ -21,8 +21,10 @@ XDA Topic [here](https://forum.xda-developers.com/smartwatch/amazfit/app-watchfa
 - New calories progress bar (set target in settings)
 - New heart-rate progress bar (min 0 bpm, max 200 bpm)
 - New world time widget, you can select the time difference it displays
+- New notifications widget, see unread notifications (needs amazfit service+phone app)
 - Better image resolution when raising hand
 - Status bar position and enable/disable
+- Many other options available in settings
 
 
 ### Tutorial for devs and stylers
