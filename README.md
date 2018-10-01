@@ -9,7 +9,7 @@ XDA Topic [here](https://forum.xda-developers.com/smartwatch/amazfit/app-watchfa
 ### Features
 - This is a Pace/Stratos APK watchface (Pace WOS2)
 - Custom apk watchface with sources
-- Supported languages: English, Chinese, Croatian, Czech, Dutch, French, German, Greek, Hebrew, Hungarian, Italian, Japanese, Polish, Portuguese, Russian, Slovak, Spanish, Turkish
+- Supported languages: English, Chinese, Croatian, Czech, Dutch, French, German, Greek, Hebrew, Hungarian, Italian, Japanese, Polish, Portuguese, Russian, Slovak, Spanish, Thai, Turkish
 - Ability to change widgets/progress bars
 - Seconds are enabled based on your system settings (refresh the watchface)
 - More weather widgets (humidity, wind direction and strength, UV status, city)
