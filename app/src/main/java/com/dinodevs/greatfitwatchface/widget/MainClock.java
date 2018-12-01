@@ -3,12 +3,15 @@ package com.dinodevs.greatfitwatchface.widget;
 import android.app.Service;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.text.TextPaint;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.dinodevs.greatfitwatchface.AbstractWatchFace;
@@ -93,7 +96,7 @@ public class MainClock extends DigitalClockWidget {
             {"PAZAR", "PAZARTESI", "SALı", "ÇARŞAMBA", "PERŞEMBE", "CUMA", "CUMARTESI"},
     };
     
-    private static String[][] days_3let = {
+    public static String[][] days_3let = {
             //{"SUNDAY", "MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY"},
             {"SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"},
             {"星期天", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"},
@@ -103,7 +106,7 @@ public class MainClock extends DigitalClockWidget {
             {"DIM", "LUN", "MAR", "MER", "JEU", "VEN", "SAM"},
             {"SO", "MO", "DI", "MI", "DO", "FR", "SA"},
             {"ΚΥΡ", "ΔΕΥ", "ΤΡΙ", "ΤΕΤ", "ΠΕΜ", "ΠΑΡ", "ΣΑΒ"},
-            {"ש'","ו'","ה'","ד'","ג'","ב'","א'"},
+            {"א'", "ב'", "ג'", "ד'", "ה'", "ו'", "ש'"},
             {"VAS", "HÉT", "KED", "SZE", "CSÜ", "PÉN", "SZO"},
             {"DOM", "LUN", "MAR", "MER", "GIO", "VEN", "SAB"},
             {"日曜日", "月曜日", "火曜日", "水曜日", "木曜日", "金曜日", "土曜日"},
@@ -143,26 +146,26 @@ public class MainClock extends DigitalClockWidget {
 
     private static String[][] months_3let = {
             //{"DECEMBER", "JANUARY", "FEBRUARY", "MARCH", "APRIL", "MAY", "JUNE", "JULY", "AUGUST", "SEPTEMBER", "OCTOBER", "NOVEMBER", "DECEMBER"},
-            {"DEC", "JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV"},
-            {"十二月", "一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月"},
-            {"PRO", "SIJ", "VE", "OŽU", "TRA", "SVI", "LIP", "SRP", "KOL", "RUJ", "LIS", "STU", "PRO"},
-            {"PRO", "LED", "ÚNO", "BŘE", "DUB", "KVĚ", "ČER", "ČER", "SRP", "ZÁŘ", "ŘÍJ", "LIS"},
-            {"DEC", "JAN", "FEB", "MAA", "APR", "MEI", "JUN", "JUL", "AUG", "SEP", "OKT", "NOV"},
-            {"DÉC", "JAN", "FÉV", "MAR", "AVR", "MAI", "JUI", "JUI", "AOÛ", "SEP", "OCT", "NOV"},
-            {"DEZ", "JAN", "FEB", "MÄR", "APR", "MAI", "JUN", "JUL", "AUG", "SEP", "OKT", "NOV"},
-            {"ΔΕΚ", "ΙΑΝ", "ΦΕΒ", "ΜΑΡ", "ΑΠΡ", "ΜΑΙ", "ΙΟΥΝ", "ΙΟΥΛ", "ΑΥΓ", "ΣΕΠ", "ΟΚΤ", "ΝΟΕ"},
-            {"דצמ", "ינו", "פבר", "מרץ", "אפר", "מאי", "יונ", "יול", "אוג", "ספט", "אוק", "נוב"},
-            {"DEC", "JAN", "FEB", "MÁR", "ÁPR", "MÁJ", "JÚN", "JÚL", "AUG", "SZE", "OKT", "NOV"},
-            {"DIC", "GEN", "FEB", "MAR", "APR", "MAG", "GIU", "LUG", "AGO", "SET", "OTT", "NOV"},
-            {"12月", "1月", "2月", "3月", "4月", "5月", "6月", "7月", "8月", "9月", "10月", "11月"},
-            {"12월", "1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월"},
-            {"GRU", "STY", "LUT", "MAR", "KWI", "MAJ", "CZE", "LIP", "SIE", "WRZ", "PAŹ", "LIS"},
-            {"DEZ", "JAN", "FEV", "MAR", "ABR", "MAI", "JUN", "JUL", "AGO", "SET", "OUT", "NOV"},
-            {"ДЕК", "ЯНВ", "ФЕВ", "МАР", "АПР", "МАЙ", "ИЮН", "ИЮЛ", "АВГ", "СЕН", "ОКТ", "НОЯ"},
-            {"DEC", "JAN", "FEB", "MAR", "APR", "MÁJ", "JÚN", "JÚL", "AUG", "SEP", "OKT", "NOV"},
-            {"DIC", "ENE", "FEB", "MAR", "ABR", "MAY", "JUN", "JUL", "AGO", "SEP", "OCT", "NOV"},
-            {"ธ.ค.", "ม.ค.", "ก.พ.", "มี.ค.", "เม.ย.", "พ.ค.", "มิ.ย.", "ก.ค.", "ส.ค.", "ก.ย.", "ต.ค.", "พ.ย."},
-            {"ARA", "OCA", "ŞUB", "MAR", "NIS", "MAY", "HAZ", "TEM", "AĞU", "EYL", "EKI", "KAS"},
+            {"DEC", "JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"},
+            {"十二月", "一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十二月"},
+            {"PRO", "SIJ", "VE", "OŽU", "TRA", "SVI", "LIP", "SRP", "KOL", "RUJ", "LIS", "STU", "PRO", "PRO"},
+            {"PRO", "LED", "ÚNO", "BŘE", "DUB", "KVĚ", "ČER", "ČER", "SRP", "ZÁŘ", "ŘÍJ", "LIS", "PRO"},
+            {"DEC", "JAN", "FEB", "MAA", "APR", "MEI", "JUN", "JUL", "AUG", "SEP", "OKT", "NOV", "DEC"},
+            {"DÉC", "JAN", "FÉV", "MAR", "AVR", "MAI", "JUI", "JUI", "AOÛ", "SEP", "OCT", "NOV", "DÉC"},
+            {"DEZ", "JAN", "FEB", "MÄR", "APR", "MAI", "JUN", "JUL", "AUG", "SEP", "OKT", "NOV", "DEZ"},
+            {"ΔΕΚ", "ΙΑΝ", "ΦΕΒ", "ΜΑΡ", "ΑΠΡ", "ΜΑΙ", "ΙΟΥΝ", "ΙΟΥΛ", "ΑΥΓ", "ΣΕΠ", "ΟΚΤ", "ΝΟΕ", "ΔΕΚ"},
+            {"דצמ", "ינו", "פבר", "מרץ", "אפר", "מאי", "יונ", "יול", "אוג", "ספט", "אוק", "נוב", "דצמ"},
+            {"DEC", "JAN", "FEB", "MÁR", "ÁPR", "MÁJ", "JÚN", "JÚL", "AUG", "SZE", "OKT", "NOV", "DEC"},
+            {"DIC", "GEN", "FEB", "MAR", "APR", "MAG", "GIU", "LUG", "AGO", "SET", "OTT", "NOV", "DIC"},
+            {"12月", "1月", "2月", "3月", "4月", "5月", "6月", "7月", "8月", "9月", "10月", "11月", "12月"},
+            {"12월", "1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"},
+            {"GRU", "STY", "LUT", "MAR", "KWI", "MAJ", "CZE", "LIP", "SIE", "WRZ", "PAŹ", "LIS", "GRU"},
+            {"DEZ", "JAN", "FEV", "MAR", "ABR", "MAI", "JUN", "JUL", "AGO", "SET", "OUT", "NOV", "DEZ"},
+            {"ДЕК", "ЯНВ", "ФЕВ", "МАР", "АПР", "МАЙ", "ИЮН", "ИЮЛ", "АВГ", "СЕН", "ОКТ", "НОЯ", "ДЕК"},
+            {"DEC", "JAN", "FEB", "MAR", "APR", "MÁJ", "JÚN", "JÚL", "AUG", "SEP", "OKT", "NOV", "DEC"},
+            {"DIC", "ENE", "FEB", "MAR", "ABR", "MAY", "JUN", "JUL", "AGO", "SEP", "OCT", "NOV", "DIC"},
+            {"ธ.ค.", "ม.ค.", "ก.พ.", "มี.ค.", "เม.ย.", "พ.ค.", "มิ.ย.", "ก.ค.", "ส.ค.", "ก.ย.", "ต.ค.", "พ.ย.", "ธ.ค."},
+            {"ARA", "OCA", "ŞUB", "MAR", "NIS", "MAY", "HAZ", "TEM", "AĞU", "EYL", "EKI", "KAS", "ARA"},
     };
 
     private LoadSettings settings;
@@ -173,8 +176,17 @@ public class MainClock extends DigitalClockWidget {
 
     @Override
     public void init(Service service) {
+        // Get pkg info
+        String version = "n/a";
+        try {
+            PackageInfo pInfo = service.getPackageManager().getPackageInfo(service.getPackageName(), 0);
+            version = pInfo.versionName;
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+
         // Please do not change the following line
-        Toast.makeText(service, "Source code by GreatApo, style by "+service.getResources().getString(R.string.author), Toast.LENGTH_LONG).show();
+        Toast.makeText(service, "GreatFit "+ version +" by GreatApo, style by "+service.getResources().getString(R.string.author), Toast.LENGTH_LONG).show();
 
         //this.background = service.getResources().getDrawable(R.drawable.background); //todo
         //this.background.setBounds(0, 0, 320, 300);
@@ -529,26 +541,36 @@ public class MainClock extends DigitalClockWidget {
             int month = calendar.get(Calendar.MONTH);
 
             SlptLinearLayout monthLayout = new SlptLinearLayout();
-            if(!settings.month_as_text && (month>=9 || !settings.no_0_on_hour_first_digit)){ // if as number, show first digit
-                monthLayout.add(new SlptMonthHView());
-            }
-            monthLayout.add(new SlptMonthLView());
-            // Fix 00 type of month
-                if(month>=9){
-                    months_3let[settings.language][2] = months_3let[settings.language][0];
+
+            // if as text
+            if(settings.month_as_text) {
+                monthLayout.add(new SlptMonthLView());
+
+                // Fix 00 type of month
+                if(month>=9){ // 9: October, 10: November, 11: December
                     months_3let[settings.language][0] = months_3let[settings.language][10];
                     months_3let[settings.language][1] = months_3let[settings.language][11];
-                    months[settings.language][2] = months[settings.language][0];
+                    months_3let[settings.language][2] = months_3let[settings.language][12];
                     months[settings.language][0] = months[settings.language][10];
                     months[settings.language][1] = months[settings.language][11];
+                    months[settings.language][2] = months[settings.language][12];
                 }
-            if(settings.month_as_text) { // if as text
+
                 if (settings.three_letters_month_if_text) {
                     monthLayout.setStringPictureArrayForAll(months_3let[settings.language]);
                 } else {
                     monthLayout.setStringPictureArrayForAll(months[settings.language]);
                 }
+
+            // if as number
+            }else{
+                // show first digit
+                if(month>=9 || !settings.no_0_on_hour_first_digit){
+                    monthLayout.add(new SlptMonthHView());
+                }
+                monthLayout.add(new SlptMonthLView());
             }
+
             monthLayout.setTextAttrForAll(
                     settings.monthFontSize,
                     settings.monthColor,

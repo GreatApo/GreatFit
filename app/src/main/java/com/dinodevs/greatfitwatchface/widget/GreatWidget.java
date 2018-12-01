@@ -238,7 +238,7 @@ public class GreatWidget extends AbstractWidget {
             if(settings.watch_alarmIcon){
                 canvas.drawBitmap(this.watch_alarmIcon, settings.watch_alarmIconLeft, settings.watch_alarmIconTop, settings.mGPaint);
             }
-            canvas.drawText(this.alarmData.alarm, settings.watch_alarmLeft, settings.watch_alarmTop, alarmPaint);
+            canvas.drawText(translate_alarm(this.alarmData.alarm), settings.watch_alarmLeft, settings.watch_alarmTop, alarmPaint);
         }
 
         // Draw Xdrip, if enabled
@@ -280,7 +280,7 @@ public class GreatWidget extends AbstractWidget {
             if(settings.phone_alarmIcon){
                 canvas.drawBitmap(this.phone_alarmIcon, settings.phone_alarmIconLeft, settings.phone_alarmIconTop, settings.mGPaint);
             }
-            canvas.drawText(this.customData.phoneAlarm, settings.phone_alarmLeft, settings.phone_alarmTop, phoneAlarmPaint);
+            canvas.drawText(translate_alarm(this.customData.phoneAlarm), settings.phone_alarmLeft, settings.phone_alarmTop, phoneAlarmPaint);
         }
 
         // Draw notifications
@@ -465,6 +465,18 @@ public class GreatWidget extends AbstractWidget {
         return new CustomData(str);
     }
 
+    // Translate the alarm
+    private String translate_alarm(String string){
+        return string
+                .replace("Sun", MainClock.days_3let[settings.language][0])
+                .replace("Mon", MainClock.days_3let[settings.language][1])
+                .replace("Tue", MainClock.days_3let[settings.language][2])
+                .replace("Wed", MainClock.days_3let[settings.language][3])
+                .replace("Thu", MainClock.days_3let[settings.language][4])
+                .replace("Fri", MainClock.days_3let[settings.language][5])
+                .replace("Sat", MainClock.days_3let[settings.language][6]);
+    }
+
     // Screen-off (SLPT)
     @Override
     public List<SlptViewComponent> buildSlptViewComponent(Service service) {
@@ -539,7 +551,7 @@ public class GreatWidget extends AbstractWidget {
 
             SlptLinearLayout alarmLayout = new SlptLinearLayout();
             SlptPictureView alarmStr = new SlptPictureView();
-            alarmStr.setStringPicture( this.alarm );
+            alarmStr.setStringPicture( translate_alarm(this.alarm) );
             alarmLayout.add(alarmStr);
             alarmLayout.setTextAttrForAll(
                     settings.watch_alarmFontSize,
@@ -762,7 +774,7 @@ public class GreatWidget extends AbstractWidget {
 
             SlptLinearLayout phoneAlarmLayout = new SlptLinearLayout();
             SlptPictureView phoneAlarmStr = new SlptPictureView();
-            phoneAlarmStr.setStringPicture( this.customData.phoneAlarm );
+            phoneAlarmStr.setStringPicture( translate_alarm(this.customData.phoneAlarm) );
             phoneAlarmLayout.add(phoneAlarmStr);
             phoneAlarmLayout.setTextAttrForAll(
                     settings.phone_alarmFontSize,
