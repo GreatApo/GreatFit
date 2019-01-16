@@ -345,6 +345,7 @@
         <item>@string/Korean</item>
         <item>@string/Polish</item>
         <item>@string/Portuguese</item>
+        <item>@string/Romanian</item>
         <item>@string/Russian</item>
         <item>@string/Slovak</item>
         <item>@string/Spanish</item>
@@ -367,6 +368,7 @@
         <item>Korean</item>
         <item>Polish</item>
         <item>Portuguese</item>
+        <item>Romanian</item>
         <item>Russian</item>
         <item>Slovak</item>
         <item>Spanish</item>
