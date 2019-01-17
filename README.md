@@ -1,4 +1,4 @@
-[![latest release](https://img.shields.io/badge/latest%20release-v3.7-green.svg?style=flat-square) ![release date](https://img.shields.io/badge/release%20date-2018.12.01-orange.svg?style=flat-square)](https://github.com/GreatApo/GreatFit/releases/latest) 
+[![latest release](https://img.shields.io/badge/latest%20release-v3.8-green.svg?style=flat-square) ![release date](https://img.shields.io/badge/release%20date-2019.01.16-orange.svg?style=flat-square)](https://github.com/GreatApo/GreatFit/releases/latest) 
 # GreatFit: Amazfit Pace/Stratos APK Watchface sources
 ![GreatFit Watchface Banner](other/images/1.jpg)
 
@@ -9,7 +9,7 @@ XDA Topic [here](https://forum.xda-developers.com/smartwatch/amazfit/app-watchfa
 ### Features
 - This is a Pace/Stratos APK watchface (Pace WOS2)
 - Custom apk watchface with sources
-- Supported languages: English, Chinese, Croatian, Czech, Dutch, French, German, Greek, Hebrew, Hungarian, Italian, Japanese, Polish, Portuguese, Russian, Slovak, Spanish, Thai, Turkish
+- Supported languages: English, Chinese, Croatian, Czech, Dutch, French, German, Greek, Hebrew, Hungarian, Italian, Japanese, Polish, Portuguese, Romanian, Russian, Slovak, Spanish, Thai, Turkish
 - Ability to change widgets/progress bars
 - Seconds are enabled based on your system settings (refresh the watchface)
 - More weather widgets (humidity, wind direction and strength, UV status, city)
