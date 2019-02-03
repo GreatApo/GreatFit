@@ -1,4 +1,4 @@
-[![latest release](https://img.shields.io/badge/latest%20release-v3.8-green.svg?style=flat-square) ![release date](https://img.shields.io/badge/release%20date-2019.01.16-orange.svg?style=flat-square)(https://github.com/GreatApo/GreatFit/releases/latest) ![Downloads](https://img.shields.io/github/downloads/GreatApo/GreatFit/total.svg?style=flat-square) ![HitCount](http://hits.dwyl.io/GreatApo/GreatFit.svg)]
+[![latest release](https://img.shields.io/badge/latest%20release-v3.8-green.svg?style=flat-square) ![release date](https://img.shields.io/badge/release%20date-2019.01.16-orange.svg?style=flat-square) ![Downloads](https://img.shields.io/github/downloads/GreatApo/GreatFit/total.svg?style=flat-square) ![HitCount](http://hits.dwyl.io/GreatApo/GreatFit.svg)(https://github.com/GreatApo/GreatFit/releases/latest)]
 # GreatFit: Amazfit Pace/Stratos APK Watchface sources
 ![GreatFit Watchface Banner](other/images/1.jpg)
 
