@@ -301,8 +301,8 @@ public class GreatWidget extends AbstractWidget {
             if(settings.world_time_zone%1!=0) {
                 now.add(Calendar.MINUTE, (settings.world_time_zone>0)?30:-30);
             }
-            Integer hours = now.get(Calendar.HOUR_OF_DAY);
-            Integer minutes = now.get(Calendar.MINUTE);
+            int hours = now.get(Calendar.HOUR_OF_DAY);
+            int minutes = now.get(Calendar.MINUTE);
             canvas.drawText(Util.formatTime(hours)+":"+Util.formatTime(minutes), settings.world_timeLeft, settings.world_timeTop, world_timePaint);
         }
 
@@ -409,10 +409,10 @@ public class GreatWidget extends AbstractWidget {
         @Override
         public void run() {
             Calendar now = Calendar.getInstance();
-            Integer hours = now.get(Calendar.HOUR_OF_DAY);
-            Integer minutes = now.get(Calendar.MINUTE);
-            Integer seconds = now.get(Calendar.SECOND);
-            Integer millisecond = now.get(Calendar.MILLISECOND);
+            int hours = now.get(Calendar.HOUR_OF_DAY);
+            int minutes = now.get(Calendar.MINUTE);
+            int seconds = now.get(Calendar.SECOND);
+            int millisecond = now.get(Calendar.MILLISECOND);
 
             Object values = new Time(seconds, minutes, hours, -1);
             onDataUpdate(TIME, values);
@@ -444,23 +444,23 @@ public class GreatWidget extends AbstractWidget {
     };
 
     // Get data functions
-    public Time getSlptTime() {
+    private Time getSlptTime() {
         Calendar now = Calendar.getInstance();
         int periode = (now.get(Calendar.HOUR_OF_DAY) < 12)?0:1;
         return new Time(periode);
     }
 
-    public Alarm getAlarm() {
+    private Alarm getAlarm() {
         String str = Settings.System.getString(this.mService.getContentResolver(), Settings.System.NEXT_ALARM_FORMATTED);
         return new Alarm(str);
     }
 
-    public Xdrip getXdrip(){
+    private Xdrip getXdrip(){
         String str = Settings.System.getString(this.mService.getContentResolver(), "xdrip");
         return new Xdrip(str);
     }
 
-    public CustomData getCustomData(){
+    private CustomData getCustomData(){
         String str = Settings.System.getString(this.mService.getContentResolver(), "CustomWatchfaceData");
         return new CustomData(str);
     }
@@ -864,7 +864,7 @@ public class GreatWidget extends AbstractWidget {
             // Hours:
             Calendar now = Calendar.getInstance();
             now.add(Calendar.HOUR, (int) settings.world_time_zone);
-            Integer hours = now.get(Calendar.HOUR_OF_DAY);
+            int hours = now.get(Calendar.HOUR_OF_DAY);
             SlptPictureView world_timeStr = new SlptPictureView();
             world_timeStr.setStringPicture( Util.formatTime(hours)+":" );
             world_timeLayout.add(world_timeStr);

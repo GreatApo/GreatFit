@@ -1491,6 +1491,6 @@ public class LoadSettings {
         return this.am_pmBool || watch_alarm>0 || xdrip>0 || air_pressure>0 || altitude>0 || phone_battery>0 || phone_alarm>0 || notifications>0 || phone_batteryProg>0 || world_time>0;
     }
     public boolean isCustom(){
-        return air_pressure>0 || altitude>0 || phone_battery>0;
+        return air_pressure>0 || altitude>0 || phone_battery>0 || phone_alarm>0 || notifications>0;
     }
 }
