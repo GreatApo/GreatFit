@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">GreatFit Watchface</string>
     <string name="watch_face">GreatFit</string>
-    <string name="author">GreatApo</string>
+    <string name="author">Andrea O.</string>
 
     <!-- Settings -->
     <string name="settings">Settings</string>

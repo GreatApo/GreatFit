@@ -10,13 +10,13 @@
         <item name="align_left">false</item> <!-- align left -->
     </array>
     <!-- ":" -->
-    <!-- <array name="indicator">
-       <item name="font_size">91px</item>
-       <item name="left">158px</item>
-       <item name="top">139px</item>
+    <array name="indicator">
+       <item name="font_size">130px</item>
+       <item name="left">168px</item>
+       <item name="top">184px</item>
        <item name="color">#fff</item>
        <item name="align_left">false</item>
-    </array> -->
+    </array>
     <array name="minutes">
         <item name="font_size">130px</item>
         <item name="left">220px</item>
