@@ -3,9 +3,9 @@
 
     <!-- Constant Elements -->
     <array name="hours">
-        <item name="font_size">190px</item> <!-- font size -->
+        <item name="font_size">120px</item> <!-- font size -->
         <item name="left">110px</item> <!-- position top -->
-        <item name="top">226px</item> <!-- position left -->
+        <item name="top">200px</item> <!-- position left -->
         <item name="color">#ff0000</item> <!-- color -->
         <item name="align_left">false</item> <!-- align left -->
     </array>
@@ -18,14 +18,14 @@
        <item name="align_left">false</item>
     </array>
     <array name="minutes">
-        <item name="font_size">130px</item>
+        <item name="font_size">90px</item>
         <item name="left">220px</item>
         <item name="top">184px</item>
         <item name="color">#fff</item>
         <item name="align_left">false</item> <!-- not supported -->
     </array>
     <array name="seconds">
-       <item name="font_size">32px</item>
+       <item name="font_size">28px</item>
        <item name="left">282px</item>
        <item name="top">140px</item>
        <item name="color">#fff</item>
@@ -49,28 +49,28 @@
     </array>
     -->
     <array name="am_pm">
-       <item name="font_size">30px</item>
+       <item name="font_size">28px</item>
        <item name="left">282px</item>
        <item name="top">180px</item>
        <item name="color">#fff</item>
        <item name="align_left">false</item>
     </array>
     <array name="weekday">
-        <item name="font_size">28px</item>
+        <item name="font_size">24px</item>
         <item name="left">182px</item>
         <item name="top">254px</item>
         <item name="color">#fff</item>
         <item name="align_left">true</item>
     </array>
     <array name="month">
-        <item name="font_size">28px</item>
+        <item name="font_size">24px</item>
         <item name="left">182px</item>
         <item name="top">220px</item>
         <item name="color">#fff</item>
         <item name="align_left">true</item>
     </array>
     <array name="day">
-        <item name="font_size">28px</item>
+        <item name="font_size">24px</item>
         <item name="left">234px</item>
         <item name="top">254px</item>
         <item name="color">#fff</item>
@@ -90,9 +90,9 @@
     <integer-array name="widgets">
         <item>2</item> <!-- Widget 1: type from "supported widgets" list -->
         <item>1</item> <!-- Widget 2: type from "supported widgets" list -->
-        <item>18</item>
-        <item>7</item>
-        <item>23</item>
+        <item>3</item>
+        <item>8</item>
+        <item>13</item>
     </integer-array>
 
     <!-- Widget 1 -->
