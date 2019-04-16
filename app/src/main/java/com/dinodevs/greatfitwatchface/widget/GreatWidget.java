@@ -51,6 +51,7 @@ public class GreatWidget extends AbstractWidget {
     private TextPaint phoneAlarmPaint;
     private TextPaint world_timePaint;
     private TextPaint notificationsPaint;
+    private TextPaint moonphasePaint;
 
     private Bitmap watch_alarmIcon;
     private Bitmap xdripIcon;
@@ -60,6 +61,7 @@ public class GreatWidget extends AbstractWidget {
     private Bitmap phone_alarmIcon;
     private Bitmap world_timeIcon;
     private Bitmap notificationsIcon;
+    private Bitmap moonphaseIcon;
 
     private String tempAMPM;
     private String alarm;
@@ -204,6 +206,20 @@ public class GreatWidget extends AbstractWidget {
 
             if(settings.world_timeIcon){
                 this.world_timeIcon = Util.decodeImage(service.getResources(),"icons/world_time.png");
+            }
+        }
+
+        // Moon phase
+        if(settings.moonphase>0) {
+            // Get moonphase
+            this.moonphasePaint = new TextPaint(TextPaint.ANTI_ALIAS_FLAG);
+            this.moonphasePaint.setColor(settings.moonphaseColor);
+            this.moonphasePaint.setTypeface(ResourceManager.getTypeFace(service.getResources(), ResourceManager.Font.FONT_FILE));
+            this.moonphasePaint.setTextSize(settings.moonphaseFontSize);
+            this.moonphasePaint.setTextAlign((settings.moonphaseAlignLeft) ? Paint.Align.LEFT : Paint.Align.CENTER);
+
+            if(settings.moonphaseIcon){
+                this.moonphaseIcon = Util.decodeImage(service.getResources(),"icons/moonphase.png");
             }
         }
 
@@ -906,6 +922,55 @@ public class GreatWidget extends AbstractWidget {
             slpt_objects.add(world_timeLayout);
         }
 
+        if(settings.moonphase>0) {
+            // Show or Not icon
+            if (settings.moonphaseIcon) {
+                SlptPictureView moonphaseIcon = new SlptPictureView();
+                moonphaseIcon.setImagePicture(SimpleFile.readFileFromAssets(service, ((better_resolution) ? "" : "slpt_") + "icons/moonphase.png"));
+                moonphaseIcon.setStart(
+                        (int) settings.moonphaseIconLeft,
+                        (int) settings.moonphaseIconTop
+                );
+                slpt_objects.add(moonphaseIcon);
+            }
+
+            SlptLinearLayout moonphaseLayout = new SlptLinearLayout();
+            // Hours:
+            Calendar now = Calendar.getInstance();
+            int hours = now.get(Calendar.HOUR_OF_DAY);
+            SlptPictureView moonphaseStr = new SlptPictureView();
+            moonphaseStr.setStringPicture(Util.formatTime(hours) + ":");
+            moonphaseLayout.add(moonphaseStr);
+            // Minutes
+            SlptViewComponent firstDigit = new SlptMinuteHView();
+            moonphaseLayout.add(firstDigit);
+            //moonphaseLayout.add(new SlptMinuteHView());
+            moonphaseLayout.add(new SlptMinuteLView());
+
+            moonphaseLayout.setTextAttrForAll(
+                    settings.moonphaseFontSize,
+                    settings.moonphaseColor,
+                    ResourceManager.getTypeFace(service.getResources(), ResourceManager.Font.FONT_FILE)
+            );
+            // Position based on screen on
+            moonphaseLayout.alignX = 2;
+            moonphaseLayout.alignY = 0;
+            tmp_left = (int) settings.moonphaseLeft;
+            if (!settings.moonphaseAlignLeft) {
+                // If text is centered, set rectangle
+                moonphaseLayout.setRect(
+                        (int) (2 * tmp_left + 640),
+                        (int) (settings.moonphaseFontSize)
+                );
+                tmp_left = -320;
+            }
+            moonphaseLayout.setStart(
+                    (int) tmp_left,
+                    (int) (settings.moonphaseTop - ((float) settings.font_ratio / 100) * settings.moonphaseFontSize)
+            );
+            //Add it to the list
+            slpt_objects.add(moonphaseLayout);
+        }
         // Draw phone battery bar
         if(settings.phone_batteryProg>0 && settings.phone_batteryProgType==0){
             // Draw background image

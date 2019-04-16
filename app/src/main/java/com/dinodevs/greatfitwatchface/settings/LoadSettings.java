@@ -377,6 +377,16 @@ public class LoadSettings {
     public boolean notificationsIcon;
     public float notificationsIconLeft;
     public float notificationsIconTop;
+    //moonphase
+    public int moonphase;
+    public float moonphaseFontSize;
+    public float moonphaseLeft;
+    public float moonphaseTop;
+    public int moonphaseColor;
+    public boolean moonphaseAlignLeft;
+    public boolean moonphaseIcon;
+    public float moonphaseIconLeft;
+    public float moonphaseIconTop;
 
     // PROGRESS ELEMENTS
     // Steps
@@ -1219,6 +1229,31 @@ public class LoadSettings {
             widgetN.recycle();
         }
 
+        // moonphase
+        this.moonphase = sharedPreferences.getInt("moonphase", widgets_list.indexOf("moonphase")+1);
+        if(this.moonphase>0){
+            TypedArray widgetN = res.obtainTypedArray(res.getIdentifier("widget"+this.moonphase, "array", context.getPackageName()));
+            i = 0;
+            this.moonphaseFontSize  = sharedPreferences.getFloat("moonphaseFontSize", widgetN.getDimension(i++, 0));
+            this.moonphaseLeft  = sharedPreferences.getFloat("moonphaseLeft", widgetN.getDimension(i++, 0));
+            this.moonphaseTop  = sharedPreferences.getFloat("moonphaseTop", widgetN.getDimension(i++, 0));
+            if(this.color>-1 && theme_elements.indexOf("widget"+this.moonphase)>-1){
+                this.moonphaseColor = Color.parseColor(color_codes[this.color]);
+                i++;
+            }else{
+                this.moonphaseColor = sharedPreferences.getInt("moonphaseColor", widgetN.getColor(i++, 0));
+            }
+            this.moonphaseAlignLeft = sharedPreferences.getBoolean("moonphaseAlignLeft", widgetN.getBoolean(i++, false));
+            /* TODO smerdare
+            this.moonphaseIcon = sharedPreferences.getBoolean("moonphaseIcon", widgetN.getBoolean(i++, false));
+            if(moonphaseIcon) {
+                this.moonphaseIconLeft = sharedPreferences.getFloat("moonphaseIconLeft", widgetN.getDimension(i++, 0));
+                this.moonphaseIconTop = sharedPreferences.getFloat("moonphaseIconTop", widgetN.getDimension(i, 0));
+            }
+            */
+            widgetN.recycle();
+        }
+
         // notifications
         this.notifications = sharedPreferences.getInt("notifications", widgets_list.indexOf("notifications")+1);
         if(this.notifications>0){
@@ -1474,6 +1509,11 @@ public class LoadSettings {
     // FLOOR WIDGET
     public boolean isFloor(){
         return this.floors>0;
+    }
+
+    // MOONPHASE WIDGET
+    public boolean isMoonPhase(){
+        return this.moonphase>0;
     }
 
     // BATTERY WIDGET
