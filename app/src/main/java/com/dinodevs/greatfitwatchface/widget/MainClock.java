@@ -267,7 +267,7 @@ public class MainClock extends DigitalClockWidget {
         canvas.drawBitmap(this.background, 0f, 0f, settings.mGPaint);
 
         // Author
-        canvas.drawText(author,120,43, this.weekdayFont);
+        canvas.drawText(author,108,43, this.weekdayFont);
         // Draw hours
         canvas.drawText( (settings.no_0_on_hour_first_digit)?hours+"":Util.formatTime(hours), settings.hoursLeft, settings.hoursTop, this.hourFont);
 

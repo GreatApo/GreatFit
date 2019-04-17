@@ -6,19 +6,18 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.provider.Settings;
 import android.text.TextPaint;
+import android.util.Log;
 
 import com.dinodevs.greatfitwatchface.data.DataType;
-import com.dinodevs.greatfitwatchface.data.WeatherData;
+import com.dinodevs.greatfitwatchface.data.Date;
+import com.dinodevs.greatfitwatchface.data.MoonPhase;
 import com.dinodevs.greatfitwatchface.resource.ResourceManager;
 import com.dinodevs.greatfitwatchface.settings.LoadSettings;
 import com.huami.watch.watchface.util.Util;
 import com.ingenic.iwds.slpt.view.core.SlptLinearLayout;
 import com.ingenic.iwds.slpt.view.core.SlptPictureView;
 import com.ingenic.iwds.slpt.view.core.SlptViewComponent;
-import com.ingenic.iwds.slpt.view.utils.SimpleFile;
 
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -40,6 +39,8 @@ public class MoonPhaseWidget extends AbstractWidget {
     private Bitmap moonIcon;
 
     private LoadSettings settings;
+    private MoonPhase mf;
+    private int lastDay;
 
     // Constructor
     public MoonPhaseWidget(LoadSettings settings) {
@@ -57,6 +58,7 @@ public class MoonPhaseWidget extends AbstractWidget {
                 "Waning crescent"	// 7
         };
         this.moonphaseImageStrList =  Arrays.asList(weatherIconNames);
+        lastDay = -1;
     }
 
     // Screen-on init (runs once)
@@ -64,16 +66,16 @@ public class MoonPhaseWidget extends AbstractWidget {
     public void init(Service service) {
         this.mService = service;
 
-        // Temperature
         if (settings.moonphase >0) {
             this.txtPaint = new TextPaint(TextPaint.ANTI_ALIAS_FLAG);
-            this.txtPaint.setColor(settings.temperatureColor);
+            this.txtPaint.setColor(settings.moonphaseColor);
             this.txtPaint.setTypeface(ResourceManager.getTypeFace(service.getResources(), ResourceManager.Font.FONT_FILE));
-            this.txtPaint.setTextSize(settings.temperatureFontSize);
-            this.txtPaint.setTextAlign((settings.temperatureAlignLeft) ? Paint.Align.LEFT : Paint.Align.CENTER);
+            this.txtPaint.setTextSize(settings.moonphaseFontSize);
+            this.txtPaint.setTextAlign((settings.moonphaseAlignLeft) ? Paint.Align.LEFT : Paint.Align.CENTER);
             if(settings.moonphaseIcon){
                 this.moonphaseImageIcon = Util.decodeImage(service.getResources(),"icons/moonphase.png");
             }
+            mf= new MoonPhase();
         }
 /*
     TODO: icone della luna
@@ -99,10 +101,16 @@ public class MoonPhaseWidget extends AbstractWidget {
     // Updater
     @Override
     public void onDataUpdate(DataType type, Object value) {
-        this.txtx = "Luna Nuova";
-
-        // TODO: implementare
-        //this.weatherImageIcon = Util.decodeImage(mService.getResources(),"weather/"+this.weatherImageStrList.get(this.weather.weatherType)+".png");
+        Date d =(Date)value;
+        if (d.getDay() != lastDay) {
+            lastDay=d.getDay();
+            Calendar c = Calendar.getInstance();
+            c.set(d.getYear(), d.getMonth(), lastDay);
+            mf = new MoonPhase(c);
+            Log.d("DinoDevs-GreatFit", "Get phase name");
+            Log.d("DinoDevs-GreatFit", mf.getPhaseName());
+            this.txtx = mf.getPhaseName();
+        }
     }
 
     // Screen on
