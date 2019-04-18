@@ -53,6 +53,7 @@
     <string name="wind_strength">wind_strength</string>
     <string name="phoneBattery">phoneBattery</string>
     <string name="alarm">alarm</string>
+    <string name="moonphase">moonphase</string>
 
     <!-- Days of week -->
     <string name="sunday">Sunday</string>

@@ -66,17 +66,24 @@ public class MoonPhaseWidget extends AbstractWidget {
     public void init(Service service) {
         this.mService = service;
 
-        if (settings.moonphase >0) {
+        if (settings.moonphase > 0) {
             this.txtPaint = new TextPaint(TextPaint.ANTI_ALIAS_FLAG);
             this.txtPaint.setColor(settings.moonphaseColor);
             this.txtPaint.setTypeface(ResourceManager.getTypeFace(service.getResources(), ResourceManager.Font.FONT_FILE));
             this.txtPaint.setTextSize(settings.moonphaseFontSize);
             this.txtPaint.setTextAlign((settings.moonphaseAlignLeft) ? Paint.Align.LEFT : Paint.Align.CENTER);
-            if(settings.moonphaseIcon){
-                this.moonphaseImageIcon = Util.decodeImage(service.getResources(),"icons/moonphase.png");
+            mf = new MoonPhase();
+            if (settings.moonphaseIcon) {
+                int i = mf.getPhaseIndex();
+                this.moonphaseImageIcon = getMoonphaseImageIcon(i);
             }
-            mf= new MoonPhase();
         }
+    }
+
+    private Bitmap getMoonphaseImageIcon(int i) {
+        String name = "moon/moon"+Integer.toString(i)+".png";
+        return Util.decodeImage(mService.getResources(),name);
+    }
 /*
     TODO: icone della luna
         // Load weather icons
@@ -90,7 +97,6 @@ public class MoonPhaseWidget extends AbstractWidget {
             this.weather_imgPaint.setTextSize(settings.weather_imgFontSize);
             this.weather_imgPaint.setTextAlign((settings.weather_imgAlignLeft) ? Paint.Align.LEFT : Paint.Align.CENTER);
         }*/
-    }
 
     // Register listener
     @Override
@@ -107,9 +113,9 @@ public class MoonPhaseWidget extends AbstractWidget {
             Calendar c = Calendar.getInstance();
             c.set(d.getYear(), d.getMonth(), lastDay);
             mf = new MoonPhase(c);
-            Log.d("DinoDevs-GreatFit", "Get phase name");
-            Log.d("DinoDevs-GreatFit", mf.getPhaseName());
+            int i = mf.getPhaseIndex();
             this.txtx = mf.getPhaseName();
+            this.moonphaseImageIcon = getMoonphaseImageIcon(i);
         }
     }
 
@@ -119,17 +125,10 @@ public class MoonPhaseWidget extends AbstractWidget {
         // Draw Text
         if(settings.moonphase>0) {
             canvas.drawText(txtx, settings.moonphaseLeft, settings.moonphaseTop, txtPaint);
-        }
-
-
-        /* TODO Draw moonphase icon
-        if(settings.weather_img>0) {
-            canvas.drawBitmap(this.weatherImageIcon, settings.weather_imgIconLeft, settings.weather_imgIconTop, settings.mGPaint);
-            if(settings.weather_imgIcon) {//In the weather image widget, if icon is disabled, temperature is not shown!
-                String units = (settings.weather_imgUnits) ? weather.getUnits() : ""; //"ºC"
-                canvas.drawText(weather.getTemperature() + units, settings.weather_imgLeft, settings.weather_imgTop, weather_imgPaint);
+            if (moonphaseImageIcon != null) {
+                canvas.drawBitmap(this.moonphaseImageIcon, settings.moonphaseIconLeft, settings.moonphaseIconTop, settings.mGPaint);
             }
-        }*/
+        }
     }
 
     /* Get Weather Data on screen off

@@ -22,6 +22,7 @@ public class LoadSettings {
     public SharedPreferences sharedPreferences;
     private int versionCode;
     private Resources res;
+    private final static  String TAG = "DinoDevs-GreatFit";
 
     public LoadSettings(Context context){
         this.context = context;
@@ -1244,13 +1245,16 @@ public class LoadSettings {
                 this.moonphaseColor = sharedPreferences.getInt("moonphaseColor", widgetN.getColor(i++, 0));
             }
             this.moonphaseAlignLeft = sharedPreferences.getBoolean("moonphaseAlignLeft", widgetN.getBoolean(i++, false));
-            /* TODO smerdare
-            this.moonphaseIcon = sharedPreferences.getBoolean("moonphaseIcon", widgetN.getBoolean(i++, false));
+            sharedPreferences.getBoolean("moonphaseUnits", widgetN.getBoolean(i++, true));/*dummy*/
+            Log.d(TAG,"read flag");
+            this.moonphaseIcon = sharedPreferences.getBoolean("moonphaseIcon", widgetN.getBoolean(i++, true));
+
             if(moonphaseIcon) {
+                Log.d(TAG,"read coord");
                 this.moonphaseIconLeft = sharedPreferences.getFloat("moonphaseIconLeft", widgetN.getDimension(i++, 0));
                 this.moonphaseIconTop = sharedPreferences.getFloat("moonphaseIconTop", widgetN.getDimension(i, 0));
             }
-            */
+
             widgetN.recycle();
         }
 
