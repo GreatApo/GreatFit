@@ -22,6 +22,7 @@ public class LoadSettings {
     public SharedPreferences sharedPreferences;
     private int versionCode;
     private Resources res;
+    private final static  String TAG = "DinoDevs-GreatFit";
 
     public LoadSettings(Context context){
         this.context = context;
@@ -377,6 +378,16 @@ public class LoadSettings {
     public boolean notificationsIcon;
     public float notificationsIconLeft;
     public float notificationsIconTop;
+    //moonphase
+    public int moonphase;
+    public float moonphaseFontSize;
+    public float moonphaseLeft;
+    public float moonphaseTop;
+    public int moonphaseColor;
+    public boolean moonphaseAlignLeft;
+    public boolean moonphaseIcon;
+    public float moonphaseIconLeft;
+    public float moonphaseIconTop;
 
     // PROGRESS ELEMENTS
     // Steps
@@ -512,7 +523,7 @@ public class LoadSettings {
             List theme_elements = Arrays.asList(context.getResources().getStringArray(R.array.theme_elements));
             String[] color_codes = context.getResources().getStringArray(R.array.color_codes);
 
-            Log.w("DinoDevs-GreatFit", "Language: "+this.language );
+            Log.d("DinoDevs-GreatFit", "Language: "+this.language );
 
         @StyleableRes int i = 0;
         // Hours
@@ -1219,6 +1230,32 @@ public class LoadSettings {
             widgetN.recycle();
         }
 
+        // moonphase
+        this.moonphase = sharedPreferences.getInt("moonphase", widgets_list.indexOf("moonphase")+1);
+        if(this.moonphase>0){
+            TypedArray widgetN = res.obtainTypedArray(res.getIdentifier("widget"+this.moonphase, "array", context.getPackageName()));
+            i = 0;
+            this.moonphaseFontSize  = sharedPreferences.getFloat("moonphaseFontSize", widgetN.getDimension(i++, 0));
+            this.moonphaseLeft  = sharedPreferences.getFloat("moonphaseLeft", widgetN.getDimension(i++, 0));
+            this.moonphaseTop  = sharedPreferences.getFloat("moonphaseTop", widgetN.getDimension(i++, 0));
+            if(this.color>-1 && theme_elements.indexOf("widget"+this.moonphase)>-1){
+                this.moonphaseColor = Color.parseColor(color_codes[this.color]);
+                i++;
+            }else{
+                this.moonphaseColor = sharedPreferences.getInt("moonphaseColor", widgetN.getColor(i++, 0));
+            }
+            this.moonphaseAlignLeft = sharedPreferences.getBoolean("moonphaseAlignLeft", widgetN.getBoolean(i++, false));
+            sharedPreferences.getBoolean("moonphaseUnits", widgetN.getBoolean(i++, true));/*dummy*/
+            this.moonphaseIcon = sharedPreferences.getBoolean("moonphaseIcon", widgetN.getBoolean(i++, true));
+
+            if(moonphaseIcon) {
+                this.moonphaseIconLeft = sharedPreferences.getFloat("moonphaseIconLeft", widgetN.getDimension(i++, 0));
+                this.moonphaseIconTop = sharedPreferences.getFloat("moonphaseIconTop", widgetN.getDimension(i, 0));
+            }
+
+            widgetN.recycle();
+        }
+
         // notifications
         this.notifications = sharedPreferences.getInt("notifications", widgets_list.indexOf("notifications")+1);
         if(this.notifications>0){
@@ -1258,7 +1295,7 @@ public class LoadSettings {
             this.circle_bars_list = Arrays.asList(text.split(","));
         }
 
-        Log.w("DinoDevs-GreatFit", "Bars: "+ circle_bars_list.toString());
+        Log.d("DinoDevs-GreatFit", "Bars: "+ circle_bars_list.toString());
 
         // StepsProg
         this.stepsProg = sharedPreferences.getInt("stepsProg", circle_bars_list.indexOf("steps")+1);
@@ -1474,6 +1511,11 @@ public class LoadSettings {
     // FLOOR WIDGET
     public boolean isFloor(){
         return this.floors>0;
+    }
+
+    // MOONPHASE WIDGET
+    public boolean isMoonPhase(){
+        return this.moonphase>0;
     }
 
     // BATTERY WIDGET

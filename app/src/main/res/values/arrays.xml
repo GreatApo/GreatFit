@@ -3,9 +3,9 @@
 
     <!-- Constant Elements -->
     <array name="hours">
-        <item name="font_size">120px</item> <!-- font size -->
+        <item name="font_size">100px</item> <!-- font size -->
         <item name="left">110px</item> <!-- position top -->
-        <item name="top">200px</item> <!-- position left -->
+        <item name="top">180px</item> <!-- position left -->
         <item name="color">#ff0000</item> <!-- color -->
         <item name="align_left">false</item> <!-- align left -->
     </array>
@@ -18,9 +18,9 @@
        <item name="align_left">false</item>
     </array>
     <array name="minutes">
-        <item name="font_size">90px</item>
+        <item name="font_size">60px</item>
         <item name="left">220px</item>
-        <item name="top">184px</item>
+        <item name="top">154px</item>
         <item name="color">#fff</item>
         <item name="align_left">false</item> <!-- not supported -->
     </array>
@@ -286,6 +286,7 @@
         <item>xdrip</item>
         <item>world_time</item>
         <item>notifications</item>
+        <item>moonphase</item>
         <item>none</item> <!-- 23 -->
     </string-array>
 
