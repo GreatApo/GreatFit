@@ -1246,11 +1246,9 @@ public class LoadSettings {
             }
             this.moonphaseAlignLeft = sharedPreferences.getBoolean("moonphaseAlignLeft", widgetN.getBoolean(i++, false));
             sharedPreferences.getBoolean("moonphaseUnits", widgetN.getBoolean(i++, true));/*dummy*/
-            Log.d(TAG,"read flag");
             this.moonphaseIcon = sharedPreferences.getBoolean("moonphaseIcon", widgetN.getBoolean(i++, true));
 
             if(moonphaseIcon) {
-                Log.d(TAG,"read coord");
                 this.moonphaseIconLeft = sharedPreferences.getFloat("moonphaseIconLeft", widgetN.getDimension(i++, 0));
                 this.moonphaseIconTop = sharedPreferences.getFloat("moonphaseIconTop", widgetN.getDimension(i, 0));
             }

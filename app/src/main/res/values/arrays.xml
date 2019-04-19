@@ -109,7 +109,7 @@
     </array>
     <!-- Widget 2 -->
     <array name="widget2">
-        <item name="font_size">16px</item>
+        <item name="font_size">24px</item>
         <item name="left">192px</item>
         <item name="top">77px</item>
         <item name="color">#fff</item>

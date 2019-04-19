@@ -331,7 +331,6 @@ public class MoonPhase {
      * Uses class Calendar field _curCal
      * */
     public double getPhase(){
-       /*!!! TODO: insert timezone correction here*/
         _JD = calendarToJD(_curCal);
         _phase = phase(_JD);
         return _phase;

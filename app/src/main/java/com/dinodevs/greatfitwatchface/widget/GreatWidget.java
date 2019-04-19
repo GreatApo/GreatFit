@@ -9,10 +9,12 @@ import android.graphics.RectF;
 import android.os.Handler;
 import android.provider.Settings;
 import android.text.TextPaint;
+import android.util.Log;
 
 import com.dinodevs.greatfitwatchface.AbstractWatchFace;
 import com.dinodevs.greatfitwatchface.data.Alarm;
 import com.dinodevs.greatfitwatchface.data.CustomData;
+import com.dinodevs.greatfitwatchface.data.MoonPhase;
 import com.dinodevs.greatfitwatchface.data.Xdrip;
 import com.dinodevs.greatfitwatchface.settings.LoadSettings;
 import com.huami.watch.watchface.util.Util;
@@ -923,10 +925,13 @@ public class GreatWidget extends AbstractWidget {
         }
 
         if(settings.moonphase>0) {
+
             // Show or Not icon
             if (settings.moonphaseIcon) {
+                Calendar now = Calendar.getInstance();
+                MoonPhase mf = new MoonPhase(now);
                 SlptPictureView moonphaseIcon = new SlptPictureView();
-                moonphaseIcon.setImagePicture(SimpleFile.readFileFromAssets(service, ((better_resolution) ? "" : "slpt_") + "icons/moonphase.png"));
+                moonphaseIcon.setImagePicture(SimpleFile.readFileFromAssets(service, "slpt_moon/moon"+mf.getPhaseIndex()+".png"));
                 moonphaseIcon.setStart(
                         (int) settings.moonphaseIconLeft,
                         (int) settings.moonphaseIconTop
@@ -934,42 +939,6 @@ public class GreatWidget extends AbstractWidget {
                 slpt_objects.add(moonphaseIcon);
             }
 
-            SlptLinearLayout moonphaseLayout = new SlptLinearLayout();
-            // Hours:
-            Calendar now = Calendar.getInstance();
-            int hours = now.get(Calendar.HOUR_OF_DAY);
-            SlptPictureView moonphaseStr = new SlptPictureView();
-            moonphaseStr.setStringPicture(Util.formatTime(hours) + ":");
-            moonphaseLayout.add(moonphaseStr);
-            // Minutes
-            SlptViewComponent firstDigit = new SlptMinuteHView();
-            moonphaseLayout.add(firstDigit);
-            //moonphaseLayout.add(new SlptMinuteHView());
-            moonphaseLayout.add(new SlptMinuteLView());
-
-            moonphaseLayout.setTextAttrForAll(
-                    settings.moonphaseFontSize,
-                    settings.moonphaseColor,
-                    ResourceManager.getTypeFace(service.getResources(), ResourceManager.Font.FONT_FILE)
-            );
-            // Position based on screen on
-            moonphaseLayout.alignX = 2;
-            moonphaseLayout.alignY = 0;
-            tmp_left = (int) settings.moonphaseLeft;
-            if (!settings.moonphaseAlignLeft) {
-                // If text is centered, set rectangle
-                moonphaseLayout.setRect(
-                        (int) (2 * tmp_left + 640),
-                        (int) (settings.moonphaseFontSize)
-                );
-                tmp_left = -320;
-            }
-            moonphaseLayout.setStart(
-                    (int) tmp_left,
-                    (int) (settings.moonphaseTop - ((float) settings.font_ratio / 100) * settings.moonphaseFontSize)
-            );
-            //Add it to the list
-            slpt_objects.add(moonphaseLayout);
         }
         // Draw phone battery bar
         if(settings.phone_batteryProg>0 && settings.phone_batteryProgType==0){
