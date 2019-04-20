@@ -183,7 +183,8 @@ public class MainClock extends DigitalClockWidget {
     public void init(Service service) {
         // Get pkg info
         String version = "n/a";
-        author= service.getResources().getString(R.string.author);
+        if (author==null)
+            author= service.getResources().getString(R.string.author);
 
         try {
             PackageInfo pInfo = service.getPackageManager().getPackageInfo(service.getPackageName(), 0);
@@ -338,6 +339,10 @@ public class MainClock extends DigitalClockWidget {
         better_resolution = better_resolution && settings.better_resolution_when_raising_hand;
 
         int tmp_left;
+
+        if (author==null)
+            author= service.getResources().getString(R.string.author);
+
         List<SlptViewComponent> slpt_objects = new ArrayList<>();
 
         // Draw background image
@@ -347,6 +352,29 @@ public class MainClock extends DigitalClockWidget {
 
         // Set font
         Typeface timeTypeFace = ResourceManager.getTypeFace(service.getResources(), ResourceManager.Font.FONT_FILE);
+
+        SlptLinearLayout authorLayout = new SlptLinearLayout();
+        SlptPictureView auW = new SlptPictureView();
+        auW.setStringPicture(author);
+        authorLayout.add(auW);
+        authorLayout.setTextAttrForAll(
+                settings.weekdayFontSize,
+                settings.weekdayColor,
+                timeTypeFace
+        );
+        // Position based on screen on
+        authorLayout.alignX = 2;
+        authorLayout.alignY=0;
+        authorLayout.setRect(
+                (int) (2*160+640),
+                (int) (settings.weekdayFontSize)
+        );
+        authorLayout.setStart(
+                -320,
+                (int) (43-((float)settings.font_ratio/100)*settings.weekdayFontSize)
+        );
+        //Add it to the list
+        slpt_objects.add(authorLayout);
 
         // Draw hours
         if(settings.hoursBool){
