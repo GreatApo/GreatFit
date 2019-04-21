@@ -14,7 +14,6 @@ import android.util.Log;
 import com.dinodevs.greatfitwatchface.AbstractWatchFace;
 import com.dinodevs.greatfitwatchface.data.Alarm;
 import com.dinodevs.greatfitwatchface.data.CustomData;
-import com.dinodevs.greatfitwatchface.data.MoonPhase;
 import com.dinodevs.greatfitwatchface.data.Xdrip;
 import com.dinodevs.greatfitwatchface.settings.LoadSettings;
 import com.huami.watch.watchface.util.Util;
@@ -53,7 +52,6 @@ public class GreatWidget extends AbstractWidget {
     private TextPaint phoneAlarmPaint;
     private TextPaint world_timePaint;
     private TextPaint notificationsPaint;
-    private TextPaint moonphasePaint;
 
     private Bitmap watch_alarmIcon;
     private Bitmap xdripIcon;
@@ -63,7 +61,6 @@ public class GreatWidget extends AbstractWidget {
     private Bitmap phone_alarmIcon;
     private Bitmap world_timeIcon;
     private Bitmap notificationsIcon;
-    private Bitmap moonphaseIcon;
 
     private String tempAMPM;
     private String alarm;
@@ -208,20 +205,6 @@ public class GreatWidget extends AbstractWidget {
 
             if(settings.world_timeIcon){
                 this.world_timeIcon = Util.decodeImage(service.getResources(),"icons/world_time.png");
-            }
-        }
-
-        // Moon phase
-        if(settings.moonphase>0) {
-            // Get moonphase
-            this.moonphasePaint = new TextPaint(TextPaint.ANTI_ALIAS_FLAG);
-            this.moonphasePaint.setColor(settings.moonphaseColor);
-            this.moonphasePaint.setTypeface(ResourceManager.getTypeFace(service.getResources(), ResourceManager.Font.FONT_FILE));
-            this.moonphasePaint.setTextSize(settings.moonphaseFontSize);
-            this.moonphasePaint.setTextAlign((settings.moonphaseAlignLeft) ? Paint.Align.LEFT : Paint.Align.CENTER);
-
-            if(settings.moonphaseIcon){
-                this.moonphaseIcon = Util.decodeImage(service.getResources(),"icons/moonphase.png");
             }
         }
 
@@ -922,23 +905,6 @@ public class GreatWidget extends AbstractWidget {
             );
             //Add it to the list
             slpt_objects.add(world_timeLayout);
-        }
-
-        if(settings.moonphase>0) {
-
-            // Show or Not icon
-            if (settings.moonphaseIcon) {
-                Calendar now = Calendar.getInstance();
-                MoonPhase mf = new MoonPhase(now);
-                SlptPictureView moonphaseIcon = new SlptPictureView();
-                moonphaseIcon.setImagePicture(SimpleFile.readFileFromAssets(service, "slpt_moon/moon"+mf.getPhaseIndex()+".png"));
-                moonphaseIcon.setStart(
-                        (int) settings.moonphaseIconLeft,
-                        (int) settings.moonphaseIconTop
-                );
-                slpt_objects.add(moonphaseIcon);
-            }
-
         }
         // Draw phone battery bar
         if(settings.phone_batteryProg>0 && settings.phone_batteryProgType==0){
