@@ -30,9 +30,8 @@ android {
 }
 
 dependencies {
-    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation fileTree(include: ['*.jar'], dir: 'libs') 
     implementation 'com.android.support.constraint:constraint-layout:1.1.3'
-    //implementation files('libs/HuamiWatchFacesWOS2.8-frankeistain-20190116.jar')
     implementation 'com.android.support:appcompat-v7:27.1.1'
     implementation 'com.android.support:recyclerview-v7:27.1.1'
 }

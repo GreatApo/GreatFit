@@ -62,27 +62,27 @@ public class WeatherData {
     }
 
     public String getWindDirectionArrow() { // Arrows
-        // NW N NE     ↖ ↑ ↗
-        // W n/a E  =  ← • →
-        // SW S SE     ↙ ↓ ↘
+        // NW N NE     ↘ ↓ ↙
+        // W n/a E  =  → • ←
+        // SW S SE     ↗ ↑ ↖
 
         String windDirectionArrow = "•";
         if(this.windDirection.equals("NW") || this.windDirection.equals("西北風")){
-            windDirectionArrow = "↖";
-        }else if(this.windDirection.equals("N") || this.windDirection.equals("北風")){
-            windDirectionArrow = "↑";
-        }else if(this.windDirection.equals("NE") || this.windDirection.equals("東北風")){
-            windDirectionArrow = "↗";
-        }else if(this.windDirection.equals("W") || this.windDirection.equals("西風")){
-            windDirectionArrow = "←";
-        }else if(this.windDirection.equals("E") || this.windDirection.equals("東風")){
-            windDirectionArrow = "→";
-        }else if(this.windDirection.equals("SW") || this.windDirection.equals("西南風")){
-            windDirectionArrow = "↙";
-        }else if(this.windDirection.equals("S") || this.windDirection.equals("南風")){
-            windDirectionArrow = "↓";
-        }else if(this.windDirection.equals("SE") || this.windDirection.equals("東南風")){
             windDirectionArrow = "↘";
+        }else if(this.windDirection.equals("N") || this.windDirection.equals("北風")){
+            windDirectionArrow = "↓";
+        }else if(this.windDirection.equals("NE") || this.windDirection.equals("東北風")){
+            windDirectionArrow = "↙";
+        }else if(this.windDirection.equals("W") || this.windDirection.equals("西風")){
+            windDirectionArrow = "→";
+        }else if(this.windDirection.equals("E") || this.windDirection.equals("東風")){
+            windDirectionArrow = "←";
+        }else if(this.windDirection.equals("SW") || this.windDirection.equals("西南風")){
+            windDirectionArrow = "↗";
+        }else if(this.windDirection.equals("S") || this.windDirection.equals("南風")){
+            windDirectionArrow = "↑";
+        }else if(this.windDirection.equals("SE") || this.windDirection.equals("東南風")){
+            windDirectionArrow = "↖";
         }
 
         return windDirectionArrow;
