@@ -1,4 +1,4 @@
-package com.dinodevs.greatfitwatchface.data;
+package com.dinodevs.greatfitwatchface.resource;
 
 import java.util.Calendar;
 import java.util.Date;

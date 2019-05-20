@@ -9,7 +9,6 @@ import android.graphics.RectF;
 import android.os.Handler;
 import android.provider.Settings;
 import android.text.TextPaint;
-import android.util.Log;
 
 import com.dinodevs.greatfitwatchface.AbstractWatchFace;
 import com.dinodevs.greatfitwatchface.data.Alarm;
@@ -906,6 +905,7 @@ public class GreatWidget extends AbstractWidget {
             //Add it to the list
             slpt_objects.add(world_timeLayout);
         }
+
         // Draw phone battery bar
         if(settings.phone_batteryProg>0 && settings.phone_batteryProgType==0){
             // Draw background image

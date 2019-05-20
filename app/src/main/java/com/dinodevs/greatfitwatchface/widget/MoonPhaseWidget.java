@@ -3,11 +3,10 @@ package com.dinodevs.greatfitwatchface.widget;
 import android.app.Service;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.util.Log;
 
 import com.dinodevs.greatfitwatchface.data.DataType;
 import com.dinodevs.greatfitwatchface.data.Date;
-import com.dinodevs.greatfitwatchface.data.MoonPhase;
+import com.dinodevs.greatfitwatchface.resource.MoonPhase;
 import com.dinodevs.greatfitwatchface.settings.LoadSettings;
 import com.huami.watch.watchface.util.Util;
 import com.ingenic.iwds.slpt.view.core.SlptPictureView;
@@ -34,7 +33,7 @@ public class MoonPhaseWidget extends AbstractWidget {
     public MoonPhaseWidget(LoadSettings settings) {
         this.settings = settings;
 
-        if (mf==null) mf=new MoonPhase();
+        mf = new MoonPhase();
         lastDay = -1;
     }
 

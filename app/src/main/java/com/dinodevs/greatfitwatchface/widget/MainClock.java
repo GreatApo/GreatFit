@@ -58,7 +58,6 @@ public class MainClock extends DigitalClockWidget {
     private TextPaint weekdayFont;
     private TextPaint monthFont;
     private TextPaint yearFont;
-    private String author;
 
     private Bitmap dateIcon;
 
@@ -110,7 +109,7 @@ public class MainClock extends DigitalClockWidget {
             {"ΚΥΡ", "ΔΕΥ", "ΤΡΙ", "ΤΕΤ", "ΠΕΜ", "ΠΑΡ", "ΣΑΒ"},
             {"א'", "ב'", "ג'", "ד'", "ה'", "ו'", "ש'"},
             {"VAS", "HÉT", "KED", "SZE", "CSÜ", "PÉN", "SZO"},
-            {"DOM", "Lun", "Mar", "Mer", "Gio", "Ven", "Sab"},
+            {"DOM", "LUN", "MAR", "MER", "GIO", "VEN", "SAB"},
             {"日曜日", "月曜日", "火曜日", "水曜日", "木曜日", "金曜日", "土曜日"},
             {"일요일", "월요일", "화요일", "수요일", "목요일", "금요일", "토요일"},
             {"NIE", "PON", "WTO", "ŚRO", "CZW", "PIĄ", "SOB"},
@@ -160,7 +159,7 @@ public class MainClock extends DigitalClockWidget {
             {"ΔΕΚ", "ΙΑΝ", "ΦΕΒ", "ΜΑΡ", "ΑΠΡ", "ΜΑΙ", "ΙΟΥΝ", "ΙΟΥΛ", "ΑΥΓ", "ΣΕΠ", "ΟΚΤ", "ΝΟΕ", "ΔΕΚ"},
             {"דצמ", "ינו", "פבר", "מרץ", "אפר", "מאי", "יונ", "יול", "אוג", "ספט", "אוק", "נוב", "דצמ"},
             {"DEC", "JAN", "FEB", "MÁR", "ÁPR", "MÁJ", "JÚN", "JÚL", "AUG", "SZE", "OKT", "NOV", "DEC"},
-            {"Dic", "Gen", "Feb", "Mar", "Apr", "Mag", "Giu", "Lug", "Ago", "Set", "Ott", "Nov", "Dic"},
+            {"DIC", "GEN", "FEB", "MAR", "APR", "MAG", "GIU", "LUG", "AGO", "SET", "OTT", "NOV", "DIC"},
             {"12月", "1月", "2月", "3月", "4月", "5月", "6月", "7月", "8月", "9月", "10月", "11月", "12月"},
             {"12월", "1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"},
             {"GRU", "STY", "LUT", "MAR", "KWI", "MAJ", "CZE", "LIP", "SIE", "WRZ", "PAŹ", "LIS", "GRU"},
@@ -183,9 +182,6 @@ public class MainClock extends DigitalClockWidget {
     public void init(Service service) {
         // Get pkg info
         String version = "n/a";
-        if (author==null)
-            author= service.getResources().getString(R.string.author);
-
         try {
             PackageInfo pInfo = service.getPackageManager().getPackageInfo(service.getPackageName(), 0);
             version = pInfo.versionName;
@@ -194,7 +190,7 @@ public class MainClock extends DigitalClockWidget {
         }
 
         // Please do not change the following line
-        Toast.makeText(service, "GreatFit "+ version +" by GreatApo, style by "+author, Toast.LENGTH_LONG).show();
+        Toast.makeText(service, "GreatFit "+ version +" by GreatApo, style by "+service.getResources().getString(R.string.author), Toast.LENGTH_LONG).show();
 
         //this.background = service.getResources().getDrawable(R.drawable.background); //todo
         //this.background.setBounds(0, 0, 320, 300);
@@ -267,8 +263,6 @@ public class MainClock extends DigitalClockWidget {
         //this.background.draw(canvas);
         canvas.drawBitmap(this.background, 0f, 0f, settings.mGPaint);
 
-        // Author
-        canvas.drawText(author,108,43, this.weekdayFont);
         // Draw hours
         canvas.drawText( (settings.no_0_on_hour_first_digit)?hours+"":Util.formatTime(hours), settings.hoursLeft, settings.hoursTop, this.hourFont);
 
@@ -339,10 +333,6 @@ public class MainClock extends DigitalClockWidget {
         better_resolution = better_resolution && settings.better_resolution_when_raising_hand;
 
         int tmp_left;
-
-        if (author==null)
-            author= service.getResources().getString(R.string.author);
-
         List<SlptViewComponent> slpt_objects = new ArrayList<>();
 
         // Draw background image
@@ -352,29 +342,6 @@ public class MainClock extends DigitalClockWidget {
 
         // Set font
         Typeface timeTypeFace = ResourceManager.getTypeFace(service.getResources(), ResourceManager.Font.FONT_FILE);
-
-        SlptLinearLayout authorLayout = new SlptLinearLayout();
-        SlptPictureView auW = new SlptPictureView();
-        auW.setStringPicture(author);
-        authorLayout.add(auW);
-        authorLayout.setTextAttrForAll(
-                settings.weekdayFontSize,
-                settings.weekdayColor,
-                timeTypeFace
-        );
-        // Position based on screen on
-        authorLayout.alignX = 2;
-        authorLayout.alignY=0;
-        authorLayout.setRect(
-                (int) (2*160+640),
-                (int) (settings.weekdayFontSize)
-        );
-        authorLayout.setStart(
-                -320,
-                (int) (43-((float)settings.font_ratio/100)*settings.weekdayFontSize)
-        );
-        //Add it to the list
-        slpt_objects.add(authorLayout);
 
         // Draw hours
         if(settings.hoursBool){
