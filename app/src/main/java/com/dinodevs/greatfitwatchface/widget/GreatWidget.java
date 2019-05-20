@@ -258,6 +258,23 @@ public class GreatWidget extends AbstractWidget {
                                 // Extract data from JSON
                                 JSONObject json_data = new JSONObject(data);
                                 json_data.put("airPressure", GreatWidget.this.tempAirPressure);
+                                // Get temperature
+                                if(settings.altitude>0){
+                                    String str = Settings.System.getString(GreatWidget.this.mService.getApplicationContext().getContentResolver(), "WeatherInfo");
+                                    JSONObject weather_data;
+                                    try {
+                                        weather_data = new JSONObject(str);
+                                        String tempUnit = weather_data.getString("tempUnit");
+                                        String temp = weather_data.getString("temp");
+
+                                        if(!tempUnit.equals("C"))
+                                            temp = String.valueOf((Integer.parseInt(temp)-32)*5/9);
+
+                                        json_data.put("temperature", temp);
+                                    } catch (JSONException e) {
+                                        // Nothing
+                                    }
+                                }
 
                                 Settings.System.putString(GreatWidget.this.mService.getContentResolver(), "CustomWatchfaceData", json_data.toString());
                             } catch (JSONException e) {

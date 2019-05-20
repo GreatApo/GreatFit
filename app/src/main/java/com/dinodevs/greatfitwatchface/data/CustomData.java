@@ -30,16 +30,21 @@ public class CustomData {
                 if(json_data.has("airPressure")) {
                     this.airPressure = json_data.getString("airPressure");
                     try {// Convert from float to int
-                        float f = Float.parseFloat(this.airPressure);
-                        this.airPressure = Integer.toString((int) f);
-                        // Convert Pressure to Altitude based on (https://www.weather.gov/media/epz/wxcalc/pressureAltitude.pdf) (2019 05 20)
-                        if(f<1200) {
-                            // Altitude mode
-                            int d = (int) ( ( 1 - Math.pow(f/1013.25, 0.190284) )*145366.45*0.3048 );
-                            this.altitude = Integer.toString(d);
+                        float p = Float.parseFloat(this.airPressure);
+                        this.airPressure = Integer.toString((int) p);
+                        double p0 = 1013.25; // pressure at sea level in hPa
+                        if(p<1200) {
+                            // Altitude conversion using hypsometric formula
+                            int T;
+                            if(json_data.has("temperature"))
+                                T = Integer.parseInt(json_data.getString("temperature")); //temperature in oC
+                            else
+                                T = 15; //temperature in oC
+                            int h = (int) ( ( 1 - Math.pow(p/p0, 1/5.25579) )*(T+273.15)/0.0065 );
+                            this.altitude = Integer.toString(h);
                         }else{
                             // Dive depth mode
-                            float d = -(f-1011)/100;
+                            float d = (float) -(p-p0)/100;
                             this.altitude = String.format("%.2f", d); //Float.toString(d);
                         }
                     } catch (Exception e) {
