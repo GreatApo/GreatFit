@@ -6,6 +6,7 @@ import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.os.Build;
 import android.provider.Settings;
 import android.support.annotation.StyleableRes;
 import android.util.Log;
@@ -483,9 +484,21 @@ public class LoadSettings {
     // Clock
     public boolean analog_clock;
     public boolean digital_clock;
+    public float scale;
+
+    public final String[] BUILD_VERGE_MODELS = {"Amazfit Verge"};
+    public boolean isVerge(){
+        boolean isVerge = Arrays.asList(BUILD_VERGE_MODELS).contains(Build.MODEL);
+        Log.d("GreatFit","Verge model: "+Build.MODEL);
+        return isVerge;
+    }
 
     // Default Parameters
     private void defaultParameters(){
+        // Verge scale
+        this.scale = (isVerge())? 1.125f : 1f; // 360/320 = 1.125
+        Log.d("GreatFit","Scale: "+scale);
+
         // All
             this.font_ratio = sharedPreferences.getInt("font_ratio", res.getInteger(R.integer.font_ratio));
             this.watchface = context.getResources().getString(R.string.watch_face);
