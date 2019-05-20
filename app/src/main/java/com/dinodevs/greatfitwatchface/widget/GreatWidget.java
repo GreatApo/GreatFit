@@ -1,14 +1,20 @@
 package com.dinodevs.greatfitwatchface.widget;
 
 import android.app.Service;
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.os.Handler;
 import android.provider.Settings;
 import android.text.TextPaint;
+import android.util.Log;
 
 import com.dinodevs.greatfitwatchface.AbstractWatchFace;
 import com.dinodevs.greatfitwatchface.data.Alarm;
@@ -32,6 +38,9 @@ import com.dinodevs.greatfitwatchface.resource.ResourceManager;
 import com.ingenic.iwds.slpt.view.digital.SlptMinuteHView;
 import com.ingenic.iwds.slpt.view.digital.SlptMinuteLView;
 import com.ingenic.iwds.slpt.view.utils.SimpleFile;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import static com.dinodevs.greatfitwatchface.data.DataType.TIME;
 
@@ -72,6 +81,13 @@ public class GreatWidget extends AbstractWidget {
 
     private Service mService;
     private LoadSettings settings;
+
+    // Pressure sensor
+    private boolean airPressureBool;
+    private String tempAirPressure = "--";
+    private SensorManager mManager;
+    private Sensor mPressureSensor;
+    private SensorEventListener mListener;
 
     // Constructor
     public GreatWidget(LoadSettings settings) {
@@ -215,8 +231,46 @@ public class GreatWidget extends AbstractWidget {
             this.ring.setStrokeWidth(settings.phone_batteryProgThickness);
         }
 
+        // Get AirPressure in hPa
+        airPressureBool = (settings.air_pressure>0 || settings.altitude>0);
+        if(airPressureBool) {
+            // WearCompass.jar!\com\huami\watch\compass\logic\GeographicManager.class
+            this.mManager = (SensorManager) this.mService.getApplicationContext().getSystemService(Context.SENSOR_SERVICE);
+            this.mPressureSensor = this.mManager.getDefaultSensor(6);
+            this.mListener = new SensorEventListener() {
+                public void onAccuracyChanged(Sensor parameter1, int parameter2) {
+                }
+
+                public void onSensorChanged(SensorEvent parameters) {
+                    GreatWidget.this.mManager.unregisterListener(this);
+                    float[] pressure = parameters.values;
+                    if (pressure != null && pressure.length > 0) {
+                        float value = pressure[0];
+                        //Log.d("DinoDevs-GreatFit", "Pressure is " + value + " hPa");
+                        if (value > 0 && !(Float.toString(value)).equals(GreatWidget.this.tempAirPressure)) {
+                            GreatWidget.this.tempAirPressure = Float.toString(value);
+                            // Save
+                            String data = Settings.System.getString(GreatWidget.this.mService.getContentResolver(), "CustomWatchfaceData");
+
+                            if (data == null || data.equals("")) { data = "{}"; }
+
+                            try {
+                                // Extract data from JSON
+                                JSONObject json_data = new JSONObject(data);
+                                json_data.put("airPressure", GreatWidget.this.tempAirPressure);
+
+                                Settings.System.putString(GreatWidget.this.mService.getContentResolver(), "CustomWatchfaceData", json_data.toString());
+                            } catch (JSONException e) {
+                                Settings.System.putString(GreatWidget.this.mService.getContentResolver(), "CustomWatchfaceData", "{\"airPressure\":\"" + GreatWidget.this.tempAirPressure + "\"}");//,\"phoneBattery\":\""+this.phoneBattery+"\",\"phoneAlarm\":\""+this.phoneAlarm+"\"}");//default
+                            }
+                        }
+                    }
+                }
+            };
+        }
+
         // Custom time refresher
-        if(settings.am_pmBool || settings.world_time>0) {
+        if(settings.am_pmBool || settings.world_time>0 || airPressureBool) {
             // Refresh time every hour
             customRefresher.run();
         }
@@ -435,6 +489,17 @@ public class GreatWidget extends AbstractWidget {
                 }
 
                 int tempRefreshTime = minutes + seconds + millisecond+1;
+                if(refreshTime>tempRefreshTime)
+                    refreshTime = tempRefreshTime;
+            }
+
+            // Air pressure
+            if(airPressureBool){
+                //Log.d("DinoDevs-GreatFit", "Sensor custom refresh in "+settings.custom_refresh_rate+" sec");
+                // Update AirPressure
+                mManager.registerListener(GreatWidget.this.mListener, GreatWidget.this.mPressureSensor, 60*1000);
+
+                int tempRefreshTime = (settings.custom_refresh_rate>0)? settings.custom_refresh_rate*1000 : 60*60*1000;
                 if(refreshTime>tempRefreshTime)
                     refreshTime = tempRefreshTime;
             }

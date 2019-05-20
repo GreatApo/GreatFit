@@ -37,19 +37,6 @@
         <!--
             Here you can copy-paste the above code (under "Mainface") to add a second watch face
         -->
-        <service android:name="com.dinodevs.greatfitwatchface.CustomDataUpdater" />
-        <receiver
-            android:name="com.dinodevs.greatfitwatchface.Reciever"
-            android:enabled="true"
-            android:exported="false">
-            <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED" />
-                <action android:name="android.intent.action.QUICKBOOT_POWERON" />
-                <action android:name="android.intent.action.REBOOT" />
-                <action android:name="android.intent.action.USER_PRESENT" />
-                <category android:name="android.intent.category.HOME" />
-            </intent-filter>
-        </receiver>
         <activity android:name="com.dinodevs.greatfitwatchface.settings.ColorActivity"></activity>
         <activity android:name="com.dinodevs.greatfitwatchface.settings.OthersActivity"></activity>
         <activity android:name="com.dinodevs.greatfitwatchface.settings.WidgetsActivity"></activity>
