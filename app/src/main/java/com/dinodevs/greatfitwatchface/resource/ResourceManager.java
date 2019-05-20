@@ -1,12 +1,17 @@
 package com.dinodevs.greatfitwatchface.resource;
 
+import android.content.Context;
 import android.content.res.Resources;
+import android.graphics.Bitmap;
 import android.graphics.Typeface;
 
+import com.huami.watch.watchface.util.Util;
 import com.ingenic.iwds.slpt.view.core.SlptLayout;
 import com.ingenic.iwds.slpt.view.core.SlptNumView;
 import com.ingenic.iwds.slpt.view.core.SlptViewComponent;
+import com.ingenic.iwds.slpt.view.utils.SimpleFile;
 
+import java.io.ByteArrayOutputStream;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.EnumMap;
@@ -37,5 +42,25 @@ public class ResourceManager {
             TYPE_FACES.put(font, typeface);
         }
         return typeface;
+    }
+
+    // This function can scale images for verge
+    public static byte[] getVergeImageFromAssets(Boolean verge, Context var0, String var1) {
+        byte[] file;
+        if(!verge) {
+            file = SimpleFile.readFileFromAssets(var0, var1);
+        }else{
+            Bitmap image = Util.decodeImage(var0.getResources(),"background.png");
+            image = Bitmap.createScaledBitmap(image, 360, 360, false);
+            file = getBytesFromBitmap(image);
+        }
+        return file;
+    }
+
+    // convert from bitmap to byte array
+    public static byte[] getBytesFromBitmap(Bitmap bitmap) {
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 70, stream);
+        return stream.toByteArray();
     }
 }

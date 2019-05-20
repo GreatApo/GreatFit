@@ -488,9 +488,7 @@ public class LoadSettings {
 
     public final String[] BUILD_VERGE_MODELS = {"Amazfit Verge"};
     public boolean isVerge(){
-        boolean isVerge = Arrays.asList(BUILD_VERGE_MODELS).contains(Build.MODEL);
-        Log.d("GreatFit","Verge model: "+Build.MODEL);
-        return isVerge;
+        return Arrays.asList(BUILD_VERGE_MODELS).contains(Build.MODEL);
     }
 
     // Default Parameters
@@ -549,9 +547,9 @@ public class LoadSettings {
             this.hoursBool = sharedPreferences.getBoolean("hoursBool", true);
             if(this.hoursBool) {
                 TypedArray hours = res.obtainTypedArray(R.array.hours);
-                this.hoursFontSize = sharedPreferences.getFloat("hoursFontSize", hours.getDimension(i++, 0));
-                this.hoursLeft = sharedPreferences.getFloat("hoursLeft", hours.getDimension(i++, 0));
-                this.hoursTop = sharedPreferences.getFloat("hoursTop", hours.getDimension(i++, 0));
+                this.hoursFontSize = scale*sharedPreferences.getFloat("hoursFontSize", hours.getDimension(i++, 0));
+                this.hoursLeft = scale*sharedPreferences.getFloat("hoursLeft", hours.getDimension(i++, 0));
+                this.hoursTop = scale*sharedPreferences.getFloat("hoursTop", hours.getDimension(i++, 0));
                 if(this.color>-1 && theme_elements.indexOf("hours")>-1){
                     this.hoursColor = Color.parseColor(color_codes[this.color]);
                     i++;
@@ -567,9 +565,9 @@ public class LoadSettings {
             if(this.indicatorBool) {
                 TypedArray indicator = res.obtainTypedArray(res.getIdentifier("indicator", "array", context.getPackageName()));
                 i = 0;
-                this.indicatorFontSize = sharedPreferences.getFloat("indicatorFontSize", indicator.getDimension(i++, 0));
-                this.indicatorLeft = sharedPreferences.getFloat("indicatorLeft", indicator.getDimension(i++, 0));
-                this.indicatorTop = sharedPreferences.getFloat("indicatorTop", indicator.getDimension(i++, 0));
+                this.indicatorFontSize = scale*sharedPreferences.getFloat("indicatorFontSize", indicator.getDimension(i++, 0));
+                this.indicatorLeft = scale*sharedPreferences.getFloat("indicatorLeft", indicator.getDimension(i++, 0));
+                this.indicatorTop = scale*sharedPreferences.getFloat("indicatorTop", indicator.getDimension(i++, 0));
                 if(this.color>-1 && theme_elements.indexOf("indicator")>-1){
                     this.indicatorColor = Color.parseColor(color_codes[this.color]);
                     i++;
@@ -584,9 +582,9 @@ public class LoadSettings {
             if(this.minutesBool) {
                 TypedArray minutes = res.obtainTypedArray(R.array.minutes);
                 i = 0;
-                this.minutesFontSize = sharedPreferences.getFloat("minutesFontSize", minutes.getDimension(i++, 0));
-                this.minutesLeft = sharedPreferences.getFloat("minutesLeft", minutes.getDimension(i++, 0));
-                this.minutesTop = sharedPreferences.getFloat("minutesTop", minutes.getDimension(i++, 0));
+                this.minutesFontSize = scale*sharedPreferences.getFloat("minutesFontSize", minutes.getDimension(i++, 0));
+                this.minutesLeft = scale*sharedPreferences.getFloat("minutesLeft", minutes.getDimension(i++, 0));
+                this.minutesTop = scale*sharedPreferences.getFloat("minutesTop", minutes.getDimension(i++, 0));
                 if(this.color>-1 && theme_elements.indexOf("minutes")>-1) {
                     this.minutesColor = Color.parseColor(color_codes[this.color]);
                     i++;
@@ -601,9 +599,9 @@ public class LoadSettings {
             if(this.secondsBool) {
                 TypedArray seconds = res.obtainTypedArray(res.getIdentifier("seconds", "array", context.getPackageName()));
                 i = 0;
-                this.secondsFontSize = sharedPreferences.getFloat("secondsFontSize", seconds.getDimension(i++, 0));
-                this.secondsLeft = sharedPreferences.getFloat("secondsLeft", seconds.getDimension(i++, 0));
-                this.secondsTop = sharedPreferences.getFloat("secondsTop", seconds.getDimension(i++, 0));
+                this.secondsFontSize = scale*sharedPreferences.getFloat("secondsFontSize", seconds.getDimension(i++, 0));
+                this.secondsLeft = scale*sharedPreferences.getFloat("secondsLeft", seconds.getDimension(i++, 0));
+                this.secondsTop = scale*sharedPreferences.getFloat("secondsTop", seconds.getDimension(i++, 0));
                 if(this.color>-1 && theme_elements.indexOf("seconds")>-1){
                     this.secondsColor = Color.parseColor(color_codes[this.color]);
                     i++;
@@ -623,9 +621,9 @@ public class LoadSettings {
             if(this.am_pmBool) {
                 TypedArray am_pm = res.obtainTypedArray(res.getIdentifier("am_pm", "array", context.getPackageName()));
                 i = 0;
-                this.am_pmFontSize = sharedPreferences.getFloat("am_pmFontSize", am_pm.getDimension(i++, 0));
-                this.am_pmLeft = sharedPreferences.getFloat("am_pmLeft", am_pm.getDimension(i++, 0));
-                this.am_pmTop = sharedPreferences.getFloat("am_pmTop", am_pm.getDimension(i++, 0));
+                this.am_pmFontSize = scale*sharedPreferences.getFloat("am_pmFontSize", am_pm.getDimension(i++, 0));
+                this.am_pmLeft = scale*sharedPreferences.getFloat("am_pmLeft", am_pm.getDimension(i++, 0));
+                this.am_pmTop = scale*sharedPreferences.getFloat("am_pmTop", am_pm.getDimension(i++, 0));
                 if(this.color>-1 && theme_elements.indexOf("am_pm")>-1){
                     this.am_pmColor = Color.parseColor(color_codes[this.color]);
                     i++;
@@ -640,9 +638,9 @@ public class LoadSettings {
             if(this.weekdayBool) {
                 TypedArray weekday = res.obtainTypedArray(res.getIdentifier("weekday", "array", context.getPackageName()));
                 i = 0;
-                this.weekdayFontSize = sharedPreferences.getFloat("weekdayFontSize", weekday.getDimension(i++, 0));
-                this.weekdayLeft = sharedPreferences.getFloat("weekdayLeft", weekday.getDimension(i++, 0));
-                this.weekdayTop = sharedPreferences.getFloat("weekdayTop", weekday.getDimension(i++, 0));
+                this.weekdayFontSize = scale*sharedPreferences.getFloat("weekdayFontSize", weekday.getDimension(i++, 0));
+                this.weekdayLeft = scale*sharedPreferences.getFloat("weekdayLeft", weekday.getDimension(i++, 0));
+                this.weekdayTop = scale*sharedPreferences.getFloat("weekdayTop", weekday.getDimension(i++, 0));
                 if(this.color>-1 && theme_elements.indexOf("weekday")>-1){
                     this.weekdayColor = Color.parseColor(color_codes[this.color]);
                     i++;
@@ -657,9 +655,9 @@ public class LoadSettings {
             if(this.monthBool) {
                 TypedArray month = res.obtainTypedArray(res.getIdentifier("month", "array", context.getPackageName()));
                 i = 0;
-                this.monthFontSize = sharedPreferences.getFloat("monthFontSize", month.getDimension(i++, 0));
-                this.monthLeft = sharedPreferences.getFloat("monthLeft", month.getDimension(i++, 0));
-                this.monthTop = sharedPreferences.getFloat("monthTop", month.getDimension(i++, 0));
+                this.monthFontSize = scale*sharedPreferences.getFloat("monthFontSize", month.getDimension(i++, 0));
+                this.monthLeft = scale*sharedPreferences.getFloat("monthLeft", month.getDimension(i++, 0));
+                this.monthTop = scale*sharedPreferences.getFloat("monthTop", month.getDimension(i++, 0));
                 if(this.color>-1 && theme_elements.indexOf("month")>-1){
                     this.monthColor = Color.parseColor(color_codes[this.color]);
                     i++;
@@ -674,9 +672,9 @@ public class LoadSettings {
             if(this.dayBool) {
                 TypedArray day = res.obtainTypedArray(res.getIdentifier("day", "array", context.getPackageName()));
                 i = 0;
-                this.dayFontSize = sharedPreferences.getFloat("dayFontSize", day.getDimension(i++, 0));
-                this.dayLeft = sharedPreferences.getFloat("dayLeft", day.getDimension(i++, 0));
-                this.dayTop = sharedPreferences.getFloat("dayTop", day.getDimension(i++, 0));
+                this.dayFontSize = scale*sharedPreferences.getFloat("dayFontSize", day.getDimension(i++, 0));
+                this.dayLeft = scale*sharedPreferences.getFloat("dayLeft", day.getDimension(i++, 0));
+                this.dayTop = scale*sharedPreferences.getFloat("dayTop", day.getDimension(i++, 0));
                 if(this.color>-1 && theme_elements.indexOf("day")>-1){
                     this.dayColor = Color.parseColor(color_codes[this.color]);
                     i++;
@@ -691,9 +689,9 @@ public class LoadSettings {
             if(this.yearBool) {
                 TypedArray year = res.obtainTypedArray(res.getIdentifier("year", "array", context.getPackageName()));
                 i = 0;
-                this.yearFontSize = sharedPreferences.getFloat("yearFontSize", year.getDimension(i++, 0));
-                this.yearLeft = sharedPreferences.getFloat("yearLeft", year.getDimension(i++, 0));
-                this.yearTop = sharedPreferences.getFloat("yearTop", year.getDimension(i++, 0));
+                this.yearFontSize = scale*sharedPreferences.getFloat("yearFontSize", year.getDimension(i++, 0));
+                this.yearLeft = scale*sharedPreferences.getFloat("yearLeft", year.getDimension(i++, 0));
+                this.yearTop = scale*sharedPreferences.getFloat("yearTop", year.getDimension(i++, 0));
                 if(this.color>-1 && theme_elements.indexOf("year")>-1){
                     this.yearColor = Color.parseColor(color_codes[this.color]);
                     i++;
@@ -726,9 +724,9 @@ public class LoadSettings {
             if(this.date>0){
                 TypedArray widgetN = res.obtainTypedArray(res.getIdentifier("widget"+this.date, "array", context.getPackageName()));
                 i = 0;
-                this.dateFontSize  = sharedPreferences.getFloat("dateFontSize", widgetN.getDimension(i++, 0));
-                this.dateLeft  = sharedPreferences.getFloat("dateLeft", widgetN.getDimension(i++, 0));
-                this.dateTop  = sharedPreferences.getFloat("dateTop", widgetN.getDimension(i++, 0));
+                this.dateFontSize  = scale*sharedPreferences.getFloat("dateFontSize", widgetN.getDimension(i++, 0));
+                this.dateLeft  = scale*sharedPreferences.getFloat("dateLeft", widgetN.getDimension(i++, 0));
+                this.dateTop  = scale*sharedPreferences.getFloat("dateTop", widgetN.getDimension(i++, 0));
                 if(this.color>-1 && theme_elements.indexOf("widget"+this.date)>-1){
                     this.dateColor = Color.parseColor(color_codes[this.color]);
                     i++;
@@ -739,8 +737,8 @@ public class LoadSettings {
                 this.dateUnits = sharedPreferences.getBoolean("dateUnits", widgetN.getBoolean(i++, true));
                 this.dateIcon = sharedPreferences.getBoolean("dateIcon", widgetN.getBoolean(i++, true));
                 if(dateIcon) {
-                    this.dateIconLeft = sharedPreferences.getFloat("dateIconLeft", widgetN.getDimension(i++, 0));
-                    this.dateIconTop = sharedPreferences.getFloat("dateIconTop", widgetN.getDimension(i, 0));
+                    this.dateIconLeft = scale*sharedPreferences.getFloat("dateIconLeft", widgetN.getDimension(i++, 0));
+                    this.dateIconTop = scale*sharedPreferences.getFloat("dateIconTop", widgetN.getDimension(i, 0));
                 }
                 widgetN.recycle();
             }
@@ -750,9 +748,9 @@ public class LoadSettings {
             if(this.calories>0){
                 TypedArray widgetN = res.obtainTypedArray(res.getIdentifier("widget"+this.calories, "array", context.getPackageName()));
                 i = 0;
-                this.caloriesFontSize  = sharedPreferences.getFloat("caloriesFontSize", widgetN.getDimension(i++, 0));
-                this.caloriesLeft  = sharedPreferences.getFloat("caloriesLeft", widgetN.getDimension(i++, 0));
-                this.caloriesTop  = sharedPreferences.getFloat("caloriesTop", widgetN.getDimension(i++, 0));
+                this.caloriesFontSize  = scale*sharedPreferences.getFloat("caloriesFontSize", widgetN.getDimension(i++, 0));
+                this.caloriesLeft  = scale*sharedPreferences.getFloat("caloriesLeft", widgetN.getDimension(i++, 0));
+                this.caloriesTop  = scale*sharedPreferences.getFloat("caloriesTop", widgetN.getDimension(i++, 0));
                 if(this.color>-1 && theme_elements.indexOf("widget"+this.calories)>-1){
                     this.caloriesColor = Color.parseColor(color_codes[this.color]);
                     i++;
@@ -763,8 +761,8 @@ public class LoadSettings {
                 this.caloriesUnits = sharedPreferences.getBoolean("caloriesUnits", widgetN.getBoolean(i++, true));
                 this.caloriesIcon = sharedPreferences.getBoolean("caloriesIcon", widgetN.getBoolean(i++, true));
                 if(caloriesIcon){
-                    this.caloriesIconLeft = sharedPreferences.getFloat("caloriesIconLeft", widgetN.getDimension(i++, 0));
-                    this.caloriesIconTop = sharedPreferences.getFloat("caloriesIconTop", widgetN.getDimension(i, 0));
+                    this.caloriesIconLeft = scale*sharedPreferences.getFloat("caloriesIconLeft", widgetN.getDimension(i++, 0));
+                    this.caloriesIconTop = scale*sharedPreferences.getFloat("caloriesIconTop", widgetN.getDimension(i, 0));
                 }
                 widgetN.recycle();
             }
@@ -774,9 +772,9 @@ public class LoadSettings {
             if(this.steps>0){
                 TypedArray widgetN = res.obtainTypedArray(res.getIdentifier("widget"+this.steps, "array", context.getPackageName()));
                 i = 0;
-                this.stepsFontSize  = sharedPreferences.getFloat("stepsFontSize", widgetN.getDimension(i++, 0));
-                this.stepsLeft  = sharedPreferences.getFloat("stepsLeft", widgetN.getDimension(i++, 0));
-                this.stepsTop  = sharedPreferences.getFloat("stepsTop", widgetN.getDimension(i++, 0));
+                this.stepsFontSize  = scale*sharedPreferences.getFloat("stepsFontSize", widgetN.getDimension(i++, 0));
+                this.stepsLeft  = scale*sharedPreferences.getFloat("stepsLeft", widgetN.getDimension(i++, 0));
+                this.stepsTop  = scale*sharedPreferences.getFloat("stepsTop", widgetN.getDimension(i++, 0));
                 if(this.color>-1 && theme_elements.indexOf("widget"+this.steps)>-1){
                     this.stepsColor = Color.parseColor(color_codes[this.color]);
                     i++;
@@ -787,8 +785,8 @@ public class LoadSettings {
                 this.stepsUnits = sharedPreferences.getBoolean("stepsUnits", widgetN.getBoolean(i++, true));
                 this.stepsIcon = sharedPreferences.getBoolean("stepsIcon", widgetN.getBoolean(i++, true));
                 if(stepsIcon){
-                    this.stepsIconLeft = sharedPreferences.getFloat("stepsIconLeft", widgetN.getDimension(i++, 0));
-                    this.stepsIconTop = sharedPreferences.getFloat("stepsIconTop", widgetN.getDimension(i, 0));
+                    this.stepsIconLeft = scale*sharedPreferences.getFloat("stepsIconLeft", widgetN.getDimension(i++, 0));
+                    this.stepsIconTop = scale*sharedPreferences.getFloat("stepsIconTop", widgetN.getDimension(i, 0));
                 }
                 widgetN.recycle();
             }
@@ -798,9 +796,9 @@ public class LoadSettings {
             if(this.heart_rate>0){
                 TypedArray widgetN = res.obtainTypedArray(res.getIdentifier("widget"+this.heart_rate, "array", context.getPackageName()));
                 i = 0;
-                this.heart_rateFontSize  = sharedPreferences.getFloat("heart_rateFontSize", widgetN.getDimension(i++, 0));
-                this.heart_rateLeft  = sharedPreferences.getFloat("heart_rateLeft", widgetN.getDimension(i++, 0));
-                this.heart_rateTop  = sharedPreferences.getFloat("heart_rateTop", widgetN.getDimension(i++, 0));
+                this.heart_rateFontSize  = scale*sharedPreferences.getFloat("heart_rateFontSize", widgetN.getDimension(i++, 0));
+                this.heart_rateLeft  = scale*sharedPreferences.getFloat("heart_rateLeft", widgetN.getDimension(i++, 0));
+                this.heart_rateTop  = scale*sharedPreferences.getFloat("heart_rateTop", widgetN.getDimension(i++, 0));
                 if(this.color>-1 && theme_elements.indexOf("widget"+this.heart_rate)>-1){
                     this.heart_rateColor = Color.parseColor(color_codes[this.color]);
                     i++;
@@ -811,8 +809,8 @@ public class LoadSettings {
                 this.heart_rateUnits = sharedPreferences.getBoolean("heart_rateUnits", widgetN.getBoolean(i++, true));
                 this.heart_rateIcon = sharedPreferences.getBoolean("heart_rateIcon", widgetN.getBoolean(i++, true));
                 if(heart_rateIcon) {
-                    this.heart_rateIconLeft = sharedPreferences.getFloat("heart_rateIconLeft", widgetN.getDimension(i++, 0));
-                    this.heart_rateIconTop = sharedPreferences.getFloat("heart_rateIconTop", widgetN.getDimension(i, 0));
+                    this.heart_rateIconLeft = scale*sharedPreferences.getFloat("heart_rateIconLeft", widgetN.getDimension(i++, 0));
+                    this.heart_rateIconTop = scale*sharedPreferences.getFloat("heart_rateIconTop", widgetN.getDimension(i, 0));
                 }
                 widgetN.recycle();
             }
@@ -822,9 +820,9 @@ public class LoadSettings {
             if(this.total_distance>0){
                 TypedArray widgetN = res.obtainTypedArray(res.getIdentifier("widget"+this.total_distance, "array", context.getPackageName()));
                 i = 0;
-                this.total_distanceFontSize  = sharedPreferences.getFloat("total_distanceFontSize", widgetN.getDimension(i++, 0));
-                this.total_distanceLeft  = sharedPreferences.getFloat("total_distanceLeft", widgetN.getDimension(i++, 0));
-                this.total_distanceTop  = sharedPreferences.getFloat("total_distanceTop", widgetN.getDimension(i++, 0));
+                this.total_distanceFontSize  = scale*sharedPreferences.getFloat("total_distanceFontSize", widgetN.getDimension(i++, 0));
+                this.total_distanceLeft  = scale*sharedPreferences.getFloat("total_distanceLeft", widgetN.getDimension(i++, 0));
+                this.total_distanceTop  = scale*sharedPreferences.getFloat("total_distanceTop", widgetN.getDimension(i++, 0));
                 if(this.color>-1 && theme_elements.indexOf("widget"+this.total_distance)>-1){
                     this.total_distanceColor = Color.parseColor(color_codes[this.color]);
                     i++;
@@ -835,8 +833,8 @@ public class LoadSettings {
                 this.total_distanceUnits = sharedPreferences.getBoolean("total_distanceUnits", widgetN.getBoolean(i++, true));
                 this.total_distanceIcon = sharedPreferences.getBoolean("total_distanceIcon", widgetN.getBoolean(i++, true));
                 if(total_distanceIcon) {
-                    this.total_distanceIconLeft = sharedPreferences.getFloat("total_distanceIconLeft", widgetN.getDimension(i++, 0));
-                    this.total_distanceIconTop = sharedPreferences.getFloat("total_distanceIconTop", widgetN.getDimension(i, 0));
+                    this.total_distanceIconLeft = scale*sharedPreferences.getFloat("total_distanceIconLeft", widgetN.getDimension(i++, 0));
+                    this.total_distanceIconTop = scale*sharedPreferences.getFloat("total_distanceIconTop", widgetN.getDimension(i, 0));
                 }
                 widgetN.recycle();
             }
@@ -846,9 +844,9 @@ public class LoadSettings {
             if(this.today_distance>0){
                 TypedArray widgetN = res.obtainTypedArray(res.getIdentifier("widget"+this.today_distance, "array", context.getPackageName()));
                 i = 0;
-                this.today_distanceFontSize  = sharedPreferences.getFloat("today_distanceFontSize", widgetN.getDimension(i++, 0));
-                this.today_distanceLeft  = sharedPreferences.getFloat("today_distanceLeft", widgetN.getDimension(i++, 0));
-                this.today_distanceTop  = sharedPreferences.getFloat("today_distanceTop", widgetN.getDimension(i++, 0));
+                this.today_distanceFontSize  = scale*sharedPreferences.getFloat("today_distanceFontSize", widgetN.getDimension(i++, 0));
+                this.today_distanceLeft  = scale*sharedPreferences.getFloat("today_distanceLeft", widgetN.getDimension(i++, 0));
+                this.today_distanceTop  = scale*sharedPreferences.getFloat("today_distanceTop", widgetN.getDimension(i++, 0));
                 if(this.color>-1 && theme_elements.indexOf("widget"+this.today_distance)>-1){
                     this.today_distanceColor = Color.parseColor(color_codes[this.color]);
                     i++;
@@ -859,8 +857,8 @@ public class LoadSettings {
                 this.today_distanceUnits = sharedPreferences.getBoolean("today_distanceUnits", widgetN.getBoolean(i++, true));
                 this.today_distanceIcon = sharedPreferences.getBoolean("today_distanceIcon", widgetN.getBoolean(i++, true));
                 if(today_distanceIcon) {
-                    this.today_distanceIconLeft  = sharedPreferences.getFloat("today_distanceIconLeft", widgetN.getDimension(i++, 0));
-                    this.today_distanceIconTop  = sharedPreferences.getFloat("today_distanceIconTop", widgetN.getDimension(i, 0));
+                    this.today_distanceIconLeft  = scale*sharedPreferences.getFloat("today_distanceIconLeft", widgetN.getDimension(i++, 0));
+                    this.today_distanceIconTop  = scale*sharedPreferences.getFloat("today_distanceIconTop", widgetN.getDimension(i, 0));
                 }
                 widgetN.recycle();
             }
@@ -870,9 +868,9 @@ public class LoadSettings {
             if(this.floors>0){
                 TypedArray widgetN = res.obtainTypedArray(res.getIdentifier("widget"+this.floors, "array", context.getPackageName()));
                 i = 0;
-                this.floorsFontSize  = sharedPreferences.getFloat("floorsFontSize", widgetN.getDimension(i++, 0));
-                this.floorsLeft  = sharedPreferences.getFloat("floorsLeft", widgetN.getDimension(i++, 0));
-                this.floorsTop  = sharedPreferences.getFloat("floorsTop", widgetN.getDimension(i++, 0));
+                this.floorsFontSize  = scale*sharedPreferences.getFloat("floorsFontSize", widgetN.getDimension(i++, 0));
+                this.floorsLeft  = scale*sharedPreferences.getFloat("floorsLeft", widgetN.getDimension(i++, 0));
+                this.floorsTop  = scale*sharedPreferences.getFloat("floorsTop", widgetN.getDimension(i++, 0));
                 if(this.color>-1 && theme_elements.indexOf("widget"+this.floors)>-1){
                     this.floorsColor = Color.parseColor(color_codes[this.color]);
                     i++;
@@ -883,8 +881,8 @@ public class LoadSettings {
                 this.floorsUnits = sharedPreferences.getBoolean("floorsUnits", widgetN.getBoolean(i++, true));
                 this.floorsIcon = sharedPreferences.getBoolean("floorsIcon", widgetN.getBoolean(i++, true));
                 if(floorsIcon) {
-                    this.floorsIconLeft = sharedPreferences.getFloat("floorsIconLeft", widgetN.getDimension(i++, 0));
-                    this.floorsIconTop = sharedPreferences.getFloat("floorsIconTop", widgetN.getDimension(i, 0));
+                    this.floorsIconLeft = scale*sharedPreferences.getFloat("floorsIconLeft", widgetN.getDimension(i++, 0));
+                    this.floorsIconTop = scale*sharedPreferences.getFloat("floorsIconTop", widgetN.getDimension(i, 0));
                 }
                 widgetN.recycle();
             }
@@ -894,9 +892,9 @@ public class LoadSettings {
             if(this.battery_percent>0){
                 TypedArray widgetN = res.obtainTypedArray(res.getIdentifier("widget"+this.battery_percent, "array", context.getPackageName()));
                 i = 0;
-                this.battery_percentFontSize  = sharedPreferences.getFloat("battery_percentFontSize", widgetN.getDimension(i++, 0));
-                this.battery_percentLeft  = sharedPreferences.getFloat("battery_percentLeft", widgetN.getDimension(i++, 0));
-                this.battery_percentTop  = sharedPreferences.getFloat("battery_percentTop", widgetN.getDimension(i++, 0));
+                this.battery_percentFontSize  = scale*sharedPreferences.getFloat("battery_percentFontSize", widgetN.getDimension(i++, 0));
+                this.battery_percentLeft  = scale*sharedPreferences.getFloat("battery_percentLeft", widgetN.getDimension(i++, 0));
+                this.battery_percentTop  = scale*sharedPreferences.getFloat("battery_percentTop", widgetN.getDimension(i++, 0));
                 if(this.color>-1 && theme_elements.indexOf("widget"+this.battery_percent)>-1){
                     this.battery_percentColor = Color.parseColor(color_codes[this.color]);
                     i++;
@@ -907,8 +905,8 @@ public class LoadSettings {
                 this.battery_percentUnits = sharedPreferences.getBoolean("battery_percentUnits", widgetN.getBoolean(i++, true));
                 this.battery_percentIcon = sharedPreferences.getBoolean("battery_percentIcon", widgetN.getBoolean(i++, true));
                 if(battery_percentIcon) {
-                    this.battery_percentIconLeft = sharedPreferences.getFloat("battery_percentIconLeft", widgetN.getDimension(i++, 0));
-                    this.battery_percentIconTop = sharedPreferences.getFloat("battery_percentIconTop", widgetN.getDimension(i, 0));
+                    this.battery_percentIconLeft = scale*sharedPreferences.getFloat("battery_percentIconLeft", widgetN.getDimension(i++, 0));
+                    this.battery_percentIconTop = scale*sharedPreferences.getFloat("battery_percentIconTop", widgetN.getDimension(i, 0));
                 }
                 widgetN.recycle();
             }
@@ -918,9 +916,9 @@ public class LoadSettings {
             if(this.temperature>0){
                 TypedArray widgetN = res.obtainTypedArray(res.getIdentifier("widget"+this.temperature, "array", context.getPackageName()));
                 i = 0;
-                this.temperatureFontSize  = sharedPreferences.getFloat("temperatureFontSize", widgetN.getDimension(i++, 0));
-                this.temperatureLeft  = sharedPreferences.getFloat("temperatureLeft", widgetN.getDimension(i++, 0));
-                this.temperatureTop  = sharedPreferences.getFloat("temperatureTop", widgetN.getDimension(i++, 0));
+                this.temperatureFontSize  = scale*sharedPreferences.getFloat("temperatureFontSize", widgetN.getDimension(i++, 0));
+                this.temperatureLeft  = scale*sharedPreferences.getFloat("temperatureLeft", widgetN.getDimension(i++, 0));
+                this.temperatureTop  = scale*sharedPreferences.getFloat("temperatureTop", widgetN.getDimension(i++, 0));
                 if(this.color>-1 && theme_elements.indexOf("widget"+this.temperature)>-1){
                     this.temperatureColor = Color.parseColor(color_codes[this.color]);
                     i++;
@@ -931,8 +929,8 @@ public class LoadSettings {
                 this.temperatureUnits = sharedPreferences.getBoolean("temperatureUnits", widgetN.getBoolean(i++, true));
                 this.temperatureIcon = sharedPreferences.getBoolean("temperatureIcon", widgetN.getBoolean(i++, true));
                 if(temperatureIcon) {
-                    this.temperatureIconLeft = sharedPreferences.getFloat("temperatureIconLeft", widgetN.getDimension(i++, 0));
-                    this.temperatureIconTop = sharedPreferences.getFloat("temperatureIconTop", widgetN.getDimension(i, 0));
+                    this.temperatureIconLeft = scale*sharedPreferences.getFloat("temperatureIconLeft", widgetN.getDimension(i++, 0));
+                    this.temperatureIconTop = scale*sharedPreferences.getFloat("temperatureIconTop", widgetN.getDimension(i, 0));
                 }
                 widgetN.recycle();
             }
@@ -942,9 +940,9 @@ public class LoadSettings {
             if(this.city>0){
                 TypedArray widgetN = res.obtainTypedArray(res.getIdentifier("widget"+this.city, "array", context.getPackageName()));
                 i = 0;
-                this.cityFontSize  = sharedPreferences.getFloat("cityFontSize", widgetN.getDimension(i++, 0));
-                this.cityLeft  = sharedPreferences.getFloat("cityLeft", widgetN.getDimension(i++, 0));
-                this.cityTop  = sharedPreferences.getFloat("cityTop", widgetN.getDimension(i++, 0));
+                this.cityFontSize  = scale*sharedPreferences.getFloat("cityFontSize", widgetN.getDimension(i++, 0));
+                this.cityLeft  = scale*sharedPreferences.getFloat("cityLeft", widgetN.getDimension(i++, 0));
+                this.cityTop  = scale*sharedPreferences.getFloat("cityTop", widgetN.getDimension(i++, 0));
                 if(this.color>-1 && theme_elements.indexOf("widget"+this.city)>-1){
                     this.cityColor = Color.parseColor(color_codes[this.color]);
                     i++;
@@ -955,8 +953,8 @@ public class LoadSettings {
                 this.cityUnits = sharedPreferences.getBoolean("cityUnits", widgetN.getBoolean(i++, false));
                 this.cityIcon = sharedPreferences.getBoolean("cityIcon", widgetN.getBoolean(i++, true));
                 if(cityIcon) {
-                    this.cityIconLeft = sharedPreferences.getFloat("cityIconLeft", widgetN.getDimension(i++, 0));
-                    this.cityIconTop = sharedPreferences.getFloat("cityIconTop", widgetN.getDimension(i, 0));
+                    this.cityIconLeft = scale*sharedPreferences.getFloat("cityIconLeft", widgetN.getDimension(i++, 0));
+                    this.cityIconTop = scale*sharedPreferences.getFloat("cityIconTop", widgetN.getDimension(i, 0));
                 }
                 widgetN.recycle();
             }
@@ -966,9 +964,9 @@ public class LoadSettings {
             if(this.watch_alarm>0){
                 TypedArray widgetN = res.obtainTypedArray(res.getIdentifier("widget"+this.watch_alarm, "array", context.getPackageName()));
                 i = 0;
-                this.watch_alarmFontSize  = sharedPreferences.getFloat("watch_alarmFontSize", widgetN.getDimension(i++, 0));
-                this.watch_alarmLeft  = sharedPreferences.getFloat("watch_alarmLeft", widgetN.getDimension(i++, 0));
-                this.watch_alarmTop  = sharedPreferences.getFloat("watch_alarmTop", widgetN.getDimension(i++, 0));
+                this.watch_alarmFontSize  = scale*sharedPreferences.getFloat("watch_alarmFontSize", widgetN.getDimension(i++, 0));
+                this.watch_alarmLeft  = scale*sharedPreferences.getFloat("watch_alarmLeft", widgetN.getDimension(i++, 0));
+                this.watch_alarmTop  = scale*sharedPreferences.getFloat("watch_alarmTop", widgetN.getDimension(i++, 0));
                 if(this.color>-1 && theme_elements.indexOf("widget"+this.watch_alarm)>-1){
                     this.watch_alarmColor = Color.parseColor(color_codes[this.color]);
                     i++;
@@ -979,8 +977,8 @@ public class LoadSettings {
                 this.watch_alarmUnits = sharedPreferences.getBoolean("watch_alarmUnits", widgetN.getBoolean(i++, true));
                 this.watch_alarmIcon = sharedPreferences.getBoolean("watch_alarmIcon", widgetN.getBoolean(i++, true));
                 if(watch_alarmIcon) {
-                    this.watch_alarmIconLeft = sharedPreferences.getFloat("watch_alarmIconLeft", widgetN.getDimension(i++, 0));
-                    this.watch_alarmIconTop = sharedPreferences.getFloat("watch_alarmIconTop", widgetN.getDimension(i, 0));
+                    this.watch_alarmIconLeft = scale*sharedPreferences.getFloat("watch_alarmIconLeft", widgetN.getDimension(i++, 0));
+                    this.watch_alarmIconTop = scale*sharedPreferences.getFloat("watch_alarmIconTop", widgetN.getDimension(i, 0));
                 }
                 widgetN.recycle();
             }
@@ -990,9 +988,9 @@ public class LoadSettings {
             if(this.humidity>0){
                 TypedArray widgetN = res.obtainTypedArray(res.getIdentifier("widget"+this.humidity, "array", context.getPackageName()));
                 i = 0;
-                this.humidityFontSize  = sharedPreferences.getFloat("humidityFontSize", widgetN.getDimension(i++, 0));
-                this.humidityLeft  = sharedPreferences.getFloat("humidityLeft", widgetN.getDimension(i++, 0));
-                this.humidityTop  = sharedPreferences.getFloat("humidityTop", widgetN.getDimension(i++, 0));
+                this.humidityFontSize  = scale*sharedPreferences.getFloat("humidityFontSize", widgetN.getDimension(i++, 0));
+                this.humidityLeft  = scale*sharedPreferences.getFloat("humidityLeft", widgetN.getDimension(i++, 0));
+                this.humidityTop  = scale*sharedPreferences.getFloat("humidityTop", widgetN.getDimension(i++, 0));
                 if(this.color>-1 && theme_elements.indexOf("widget"+this.humidity)>-1){
                     this.humidityColor = Color.parseColor(color_codes[this.color]);
                     i++;
@@ -1003,8 +1001,8 @@ public class LoadSettings {
                 this.humidityUnits = sharedPreferences.getBoolean("humidityUnits", widgetN.getBoolean(i++, true));
                 this.humidityIcon = sharedPreferences.getBoolean("humidityIcon", widgetN.getBoolean(i++, true));
                 if(humidityIcon) {
-                    this.humidityIconLeft = sharedPreferences.getFloat("humidityIconLeft", widgetN.getDimension(i++, 0));
-                    this.humidityIconTop = sharedPreferences.getFloat("humidityIconTop", widgetN.getDimension(i, 0));
+                    this.humidityIconLeft = scale*sharedPreferences.getFloat("humidityIconLeft", widgetN.getDimension(i++, 0));
+                    this.humidityIconTop = scale*sharedPreferences.getFloat("humidityIconTop", widgetN.getDimension(i, 0));
                 }
                 widgetN.recycle();
             }
@@ -1014,9 +1012,9 @@ public class LoadSettings {
             if(this.uv>0){
                 TypedArray widgetN = res.obtainTypedArray(res.getIdentifier("widget"+this.uv, "array", context.getPackageName()));
                 i = 0;
-                this.uvFontSize  = sharedPreferences.getFloat("uvFontSize", widgetN.getDimension(i++, 0));
-                this.uvLeft  = sharedPreferences.getFloat("uvLeft", widgetN.getDimension(i++, 0));
-                this.uvTop  = sharedPreferences.getFloat("uvTop", widgetN.getDimension(i++, 0));
+                this.uvFontSize  = scale*sharedPreferences.getFloat("uvFontSize", widgetN.getDimension(i++, 0));
+                this.uvLeft  = scale*sharedPreferences.getFloat("uvLeft", widgetN.getDimension(i++, 0));
+                this.uvTop  = scale*sharedPreferences.getFloat("uvTop", widgetN.getDimension(i++, 0));
                 if(this.color>-1 && theme_elements.indexOf("widget"+this.uv)>-1){
                     this.uvColor = Color.parseColor(color_codes[this.color]);
                     i++;
@@ -1027,8 +1025,8 @@ public class LoadSettings {
                 this.uvUnits = sharedPreferences.getBoolean("uvUnits", widgetN.getBoolean(i++, true));
                 this.uvIcon = sharedPreferences.getBoolean("uvIcon", widgetN.getBoolean(i++, true));
                 if(uvIcon) {
-                    this.uvIconLeft = sharedPreferences.getFloat("uvIconLeft", widgetN.getDimension(i++, 0));
-                    this.uvIconTop = sharedPreferences.getFloat("uvIconTop", widgetN.getDimension(i, 0));
+                    this.uvIconLeft = scale*sharedPreferences.getFloat("uvIconLeft", widgetN.getDimension(i++, 0));
+                    this.uvIconTop = scale*sharedPreferences.getFloat("uvIconTop", widgetN.getDimension(i, 0));
                 }
                 widgetN.recycle();
             }
@@ -1038,9 +1036,9 @@ public class LoadSettings {
             if(this.wind_direction>0){
                 TypedArray widgetN = res.obtainTypedArray(res.getIdentifier("widget"+this.wind_direction, "array", context.getPackageName()));
                 i = 0;
-                this.wind_directionFontSize  = sharedPreferences.getFloat("wind_directionFontSize", widgetN.getDimension(i++, 0));
-                this.wind_directionLeft  = sharedPreferences.getFloat("wind_directionLeft", widgetN.getDimension(i++, 0));
-                this.wind_directionTop  = sharedPreferences.getFloat("wind_directionTop", widgetN.getDimension(i++, 0));
+                this.wind_directionFontSize  = scale*sharedPreferences.getFloat("wind_directionFontSize", widgetN.getDimension(i++, 0));
+                this.wind_directionLeft  = scale*sharedPreferences.getFloat("wind_directionLeft", widgetN.getDimension(i++, 0));
+                this.wind_directionTop  = scale*sharedPreferences.getFloat("wind_directionTop", widgetN.getDimension(i++, 0));
                 if(this.color>-1 && theme_elements.indexOf("widget"+this.wind_direction)>-1){
                     this.wind_directionColor = Color.parseColor(color_codes[this.color]);
                     i++;
@@ -1051,8 +1049,8 @@ public class LoadSettings {
                 this.wind_directionUnits = sharedPreferences.getBoolean("wind_directionUnits", widgetN.getBoolean(i++, true));
                 this.wind_directionIcon = sharedPreferences.getBoolean("wind_directionIcon", widgetN.getBoolean(i++, true));
                 if(wind_directionIcon) {
-                    this.wind_directionIconLeft = sharedPreferences.getFloat("wind_directionIconLeft", widgetN.getDimension(i++, 0));
-                    this.wind_directionIconTop = sharedPreferences.getFloat("wind_directionIconTop", widgetN.getDimension(i, 0));
+                    this.wind_directionIconLeft = scale*sharedPreferences.getFloat("wind_directionIconLeft", widgetN.getDimension(i++, 0));
+                    this.wind_directionIconTop = scale*sharedPreferences.getFloat("wind_directionIconTop", widgetN.getDimension(i, 0));
                 }
                 widgetN.recycle();
             }
@@ -1062,9 +1060,9 @@ public class LoadSettings {
             if(this.wind_strength>0){
                 TypedArray widgetN = res.obtainTypedArray(res.getIdentifier("widget"+this.wind_strength, "array", context.getPackageName()));
                 i = 0;
-                this.wind_strengthFontSize  = sharedPreferences.getFloat("wind_strengthFontSize", widgetN.getDimension(i++, 0));
-                this.wind_strengthLeft  = sharedPreferences.getFloat("wind_strengthLeft", widgetN.getDimension(i++, 0));
-                this.wind_strengthTop  = sharedPreferences.getFloat("wind_strengthTop", widgetN.getDimension(i++, 0));
+                this.wind_strengthFontSize  = scale*sharedPreferences.getFloat("wind_strengthFontSize", widgetN.getDimension(i++, 0));
+                this.wind_strengthLeft  = scale*sharedPreferences.getFloat("wind_strengthLeft", widgetN.getDimension(i++, 0));
+                this.wind_strengthTop  = scale*sharedPreferences.getFloat("wind_strengthTop", widgetN.getDimension(i++, 0));
                 if(this.color>-1 && theme_elements.indexOf("widget"+this.wind_strength)>-1){
                     this.wind_strengthColor = Color.parseColor(color_codes[this.color]);
                     i++;
@@ -1075,8 +1073,8 @@ public class LoadSettings {
                 this.wind_strengthUnits = sharedPreferences.getBoolean("wind_strengthUnits", widgetN.getBoolean(i++, true));
                 this.wind_strengthIcon = sharedPreferences.getBoolean("wind_strengthIcon", widgetN.getBoolean(i++, true));
                 if(wind_strengthIcon) {
-                    this.wind_strengthIconLeft = sharedPreferences.getFloat("wind_strengthIconLeft", widgetN.getDimension(i++, 0));
-                    this.wind_strengthIconTop = sharedPreferences.getFloat("wind_strengthIconTop", widgetN.getDimension(i, 0));
+                    this.wind_strengthIconLeft = scale*sharedPreferences.getFloat("wind_strengthIconLeft", widgetN.getDimension(i++, 0));
+                    this.wind_strengthIconTop = scale*sharedPreferences.getFloat("wind_strengthIconTop", widgetN.getDimension(i, 0));
                 }
                 widgetN.recycle();
             }
@@ -1086,9 +1084,9 @@ public class LoadSettings {
             if(this.air_pressure>0){
                 TypedArray widgetN = res.obtainTypedArray(res.getIdentifier("widget"+this.air_pressure, "array", context.getPackageName()));
                 i = 0;
-                this.air_pressureFontSize  = sharedPreferences.getFloat("air_pressureFontSize", widgetN.getDimension(i++, 0));
-                this.air_pressureLeft  = sharedPreferences.getFloat("air_pressureLeft", widgetN.getDimension(i++, 0));
-                this.air_pressureTop  = sharedPreferences.getFloat("air_pressureTop", widgetN.getDimension(i++, 0));
+                this.air_pressureFontSize  = scale*sharedPreferences.getFloat("air_pressureFontSize", widgetN.getDimension(i++, 0));
+                this.air_pressureLeft  = scale*sharedPreferences.getFloat("air_pressureLeft", widgetN.getDimension(i++, 0));
+                this.air_pressureTop  = scale*sharedPreferences.getFloat("air_pressureTop", widgetN.getDimension(i++, 0));
                 if(this.color>-1 && theme_elements.indexOf("widget"+this.air_pressure)>-1){
                     this.air_pressureColor = Color.parseColor(color_codes[this.color]);
                     i++;
@@ -1099,8 +1097,8 @@ public class LoadSettings {
                 this.air_pressureUnits = sharedPreferences.getBoolean("air_pressureUnits", widgetN.getBoolean(i++, true));
                 this.air_pressureIcon = sharedPreferences.getBoolean("air_pressureIcon", widgetN.getBoolean(i++, true));
                 if(air_pressureIcon) {
-                    this.air_pressureIconLeft = sharedPreferences.getFloat("air_pressureIconLeft", widgetN.getDimension(i++, 0));
-                    this.air_pressureIconTop = sharedPreferences.getFloat("air_pressureIconTop", widgetN.getDimension(i, 0));
+                    this.air_pressureIconLeft = scale*sharedPreferences.getFloat("air_pressureIconLeft", widgetN.getDimension(i++, 0));
+                    this.air_pressureIconTop = scale*sharedPreferences.getFloat("air_pressureIconTop", widgetN.getDimension(i, 0));
                 }
                 widgetN.recycle();
             }
@@ -1110,9 +1108,9 @@ public class LoadSettings {
             if(this.altitude>0){
                 TypedArray widgetN = res.obtainTypedArray(res.getIdentifier("widget"+this.altitude, "array", context.getPackageName()));
                 i = 0;
-                this.altitudeFontSize  = sharedPreferences.getFloat("altitudeFontSize", widgetN.getDimension(i++, 0));
-                this.altitudeLeft  = sharedPreferences.getFloat("altitudeLeft", widgetN.getDimension(i++, 0));
-                this.altitudeTop  = sharedPreferences.getFloat("altitudeTop", widgetN.getDimension(i++, 0));
+                this.altitudeFontSize  = scale*sharedPreferences.getFloat("altitudeFontSize", widgetN.getDimension(i++, 0));
+                this.altitudeLeft  = scale*sharedPreferences.getFloat("altitudeLeft", widgetN.getDimension(i++, 0));
+                this.altitudeTop  = scale*sharedPreferences.getFloat("altitudeTop", widgetN.getDimension(i++, 0));
                 if(this.color>-1 && theme_elements.indexOf("widget"+this.altitude)>-1){
                     this.altitudeColor = Color.parseColor(color_codes[this.color]);
                     i++;
@@ -1123,8 +1121,8 @@ public class LoadSettings {
                 this.altitudeUnits = sharedPreferences.getBoolean("altitudeUnits", widgetN.getBoolean(i++, true));
                 this.altitudeIcon = sharedPreferences.getBoolean("altitudeIcon", widgetN.getBoolean(i++, true));
                 if(altitudeIcon) {
-                    this.altitudeIconLeft = sharedPreferences.getFloat("altitude", widgetN.getDimension(i++, 0));
-                    this.altitudeIconTop = sharedPreferences.getFloat("altitudeIconTop", widgetN.getDimension(i, 0));
+                    this.altitudeIconLeft = scale*sharedPreferences.getFloat("altitude", widgetN.getDimension(i++, 0));
+                    this.altitudeIconTop = scale*sharedPreferences.getFloat("altitudeIconTop", widgetN.getDimension(i, 0));
                 }
                 widgetN.recycle();
             }
@@ -1134,9 +1132,9 @@ public class LoadSettings {
             if(this.phone_battery>0){
                 TypedArray widgetN = res.obtainTypedArray(res.getIdentifier("widget"+this.phone_battery, "array", context.getPackageName()));
                 i = 0;
-                this.phone_batteryFontSize  = sharedPreferences.getFloat("phone_batteryFontSize", widgetN.getDimension(i++, 0));
-                this.phone_batteryLeft  = sharedPreferences.getFloat("phone_batteryLeft", widgetN.getDimension(i++, 0));
-                this.phone_batteryTop  = sharedPreferences.getFloat("phone_batteryTop", widgetN.getDimension(i++, 0));
+                this.phone_batteryFontSize  = scale*sharedPreferences.getFloat("phone_batteryFontSize", widgetN.getDimension(i++, 0));
+                this.phone_batteryLeft  = scale*sharedPreferences.getFloat("phone_batteryLeft", widgetN.getDimension(i++, 0));
+                this.phone_batteryTop  = scale*sharedPreferences.getFloat("phone_batteryTop", widgetN.getDimension(i++, 0));
                 if(this.color>-1 && theme_elements.indexOf("widget"+this.phone_battery)>-1){
                     this.phone_batteryColor = Color.parseColor(color_codes[this.color]);
                     i++;
@@ -1147,8 +1145,8 @@ public class LoadSettings {
                 this.phone_batteryUnits = sharedPreferences.getBoolean("phone_batteryUnits", widgetN.getBoolean(i++, true));
                 this.phone_batteryIcon = sharedPreferences.getBoolean("phone_batteryIcon", widgetN.getBoolean(i++, true));
                 if(phone_batteryIcon) {
-                    this.phone_batteryIconLeft = sharedPreferences.getFloat("phone_batteryIconLeft", widgetN.getDimension(i++, 0));
-                    this.phone_batteryIconTop = sharedPreferences.getFloat("phone_batteryIconTop", widgetN.getDimension(i, 0));
+                    this.phone_batteryIconLeft = scale*sharedPreferences.getFloat("phone_batteryIconLeft", widgetN.getDimension(i++, 0));
+                    this.phone_batteryIconTop = scale*sharedPreferences.getFloat("phone_batteryIconTop", widgetN.getDimension(i, 0));
                 }
                 widgetN.recycle();
             }
@@ -1158,9 +1156,9 @@ public class LoadSettings {
             if(this.phone_alarm>0){
                 TypedArray widgetN = res.obtainTypedArray(res.getIdentifier("widget"+this.phone_alarm, "array", context.getPackageName()));
                 i = 0;
-                this.phone_alarmFontSize  = sharedPreferences.getFloat("phone_alarmFontSize", widgetN.getDimension(i++, 0));
-                this.phone_alarmLeft  = sharedPreferences.getFloat("phone_alarmLeft", widgetN.getDimension(i++, 0));
-                this.phone_alarmTop  = sharedPreferences.getFloat("phone_alarmTop", widgetN.getDimension(i++, 0));
+                this.phone_alarmFontSize  = scale*sharedPreferences.getFloat("phone_alarmFontSize", widgetN.getDimension(i++, 0));
+                this.phone_alarmLeft  = scale*sharedPreferences.getFloat("phone_alarmLeft", widgetN.getDimension(i++, 0));
+                this.phone_alarmTop  = scale*sharedPreferences.getFloat("phone_alarmTop", widgetN.getDimension(i++, 0));
                 if(this.color>-1 && theme_elements.indexOf("widget"+this.phone_alarm)>-1){
                     this.phone_alarmColor = Color.parseColor(color_codes[this.color]);
                     i++;
@@ -1171,8 +1169,8 @@ public class LoadSettings {
                 this.phone_alarmUnits = sharedPreferences.getBoolean("phone_alarmUnits", widgetN.getBoolean(i++, true));
                 this.phone_alarmIcon = sharedPreferences.getBoolean("phone_alarmIcon", widgetN.getBoolean(i++, true));
                 if(phone_alarmIcon) {
-                    this.phone_alarmIconLeft = sharedPreferences.getFloat("phone_alarmIconLeft", widgetN.getDimension(i++, 0));
-                    this.phone_alarmIconTop = sharedPreferences.getFloat("phone_alarmIconTop", widgetN.getDimension(i, 0));
+                    this.phone_alarmIconLeft = scale*sharedPreferences.getFloat("phone_alarmIconLeft", widgetN.getDimension(i++, 0));
+                    this.phone_alarmIconTop = scale*sharedPreferences.getFloat("phone_alarmIconTop", widgetN.getDimension(i, 0));
                 }
                 widgetN.recycle();
             }
@@ -1182,9 +1180,9 @@ public class LoadSettings {
             if(this.xdrip>0){
                 TypedArray widgetN = res.obtainTypedArray(res.getIdentifier("widget"+this.xdrip, "array", context.getPackageName()));
                 i = 0;
-                this.xdripFontSize  = sharedPreferences.getFloat("xdripFontSize", widgetN.getDimension(i++, 0));
-                this.xdripLeft  = sharedPreferences.getFloat("xdripLeft", widgetN.getDimension(i++, 0));
-                this.xdripTop  = sharedPreferences.getFloat("xdripTop", widgetN.getDimension(i++, 0));
+                this.xdripFontSize  = scale*sharedPreferences.getFloat("xdripFontSize", widgetN.getDimension(i++, 0));
+                this.xdripLeft  = scale*sharedPreferences.getFloat("xdripLeft", widgetN.getDimension(i++, 0));
+                this.xdripTop  = scale*sharedPreferences.getFloat("xdripTop", widgetN.getDimension(i++, 0));
                 if(this.color>-1 && theme_elements.indexOf("widget"+this.xdrip)>-1){
                     this.xdripColor = Color.parseColor(color_codes[this.color]);
                     i++;
@@ -1195,8 +1193,8 @@ public class LoadSettings {
                 this.xdripUnits = sharedPreferences.getBoolean("xdripUnits", widgetN.getBoolean(i++, true));
                 this.xdripIcon = sharedPreferences.getBoolean("xdripIcon", widgetN.getBoolean(i++, true));
                 if(xdripIcon) {
-                    this.xdripIconLeft = sharedPreferences.getFloat("xdripIconLeft", widgetN.getDimension(i++, 0));
-                    this.xdripIconTop = sharedPreferences.getFloat("xdripIconTop", widgetN.getDimension(i, 0));
+                    this.xdripIconLeft = scale*sharedPreferences.getFloat("xdripIconLeft", widgetN.getDimension(i++, 0));
+                    this.xdripIconTop = scale*sharedPreferences.getFloat("xdripIconTop", widgetN.getDimension(i, 0));
                 }
                 widgetN.recycle();
             }
@@ -1206,9 +1204,9 @@ public class LoadSettings {
         if(this.weather_img>0){
             TypedArray widgetN = res.obtainTypedArray(res.getIdentifier("widget"+this.weather_img, "array", context.getPackageName()));
             i = 0;
-            this.weather_imgFontSize  = sharedPreferences.getFloat("weather_imgFontSize", widgetN.getDimension(i++, 0));
-            this.weather_imgLeft  = sharedPreferences.getFloat("weather_imgLeft", widgetN.getDimension(i++, 0));
-            this.weather_imgTop  = sharedPreferences.getFloat("weather_imgTop", widgetN.getDimension(i++, 0));
+            this.weather_imgFontSize  = scale*sharedPreferences.getFloat("weather_imgFontSize", widgetN.getDimension(i++, 0));
+            this.weather_imgLeft  = scale*sharedPreferences.getFloat("weather_imgLeft", widgetN.getDimension(i++, 0));
+            this.weather_imgTop  = scale*sharedPreferences.getFloat("weather_imgTop", widgetN.getDimension(i++, 0));
             if(this.color>-1 && theme_elements.indexOf("widget"+this.weather_img)>-1){
                 this.weather_imgColor = Color.parseColor(color_codes[this.color]);
                 i++;
@@ -1219,8 +1217,8 @@ public class LoadSettings {
             this.weather_imgUnits = sharedPreferences.getBoolean("weather_imgUnits", widgetN.getBoolean(i++, true));
             this.weather_imgIcon = sharedPreferences.getBoolean("weather_imgIcon", widgetN.getBoolean(i++, true));
             if(weather_imgIcon) {
-                this.weather_imgIconLeft = sharedPreferences.getFloat("weather_imgIconLeft", widgetN.getDimension(i++, 0));
-                this.weather_imgIconTop = sharedPreferences.getFloat("weather_imgIconTop", widgetN.getDimension(i, 0));
+                this.weather_imgIconLeft = scale*sharedPreferences.getFloat("weather_imgIconLeft", widgetN.getDimension(i++, 0));
+                this.weather_imgIconTop = scale*sharedPreferences.getFloat("weather_imgIconTop", widgetN.getDimension(i, 0));
             }
             widgetN.recycle();
         }
@@ -1230,9 +1228,9 @@ public class LoadSettings {
         if(this.world_time>0){
             TypedArray widgetN = res.obtainTypedArray(res.getIdentifier("widget"+this.world_time, "array", context.getPackageName()));
             i = 0;
-            this.world_timeFontSize  = sharedPreferences.getFloat("world_timeFontSize", widgetN.getDimension(i++, 0));
-            this.world_timeLeft  = sharedPreferences.getFloat("world_timeLeft", widgetN.getDimension(i++, 0));
-            this.world_timeTop  = sharedPreferences.getFloat("world_timeTop", widgetN.getDimension(i++, 0));
+            this.world_timeFontSize  = scale*sharedPreferences.getFloat("world_timeFontSize", widgetN.getDimension(i++, 0));
+            this.world_timeLeft  = scale*sharedPreferences.getFloat("world_timeLeft", widgetN.getDimension(i++, 0));
+            this.world_timeTop  = scale*sharedPreferences.getFloat("world_timeTop", widgetN.getDimension(i++, 0));
             if(this.color>-1 && theme_elements.indexOf("widget"+this.world_time)>-1){
                 this.world_timeColor = Color.parseColor(color_codes[this.color]);
                 i++;
@@ -1243,8 +1241,8 @@ public class LoadSettings {
             this.world_timeUnits = sharedPreferences.getBoolean("world_timeUnits", widgetN.getBoolean(i++, true));
             this.world_timeIcon = sharedPreferences.getBoolean("world_timeIcon", widgetN.getBoolean(i++, true));
             if(world_timeIcon) {
-                this.world_timeIconLeft = sharedPreferences.getFloat("world_timeIconLeft", widgetN.getDimension(i++, 0));
-                this.world_timeIconTop = sharedPreferences.getFloat("world_timeIconTop", widgetN.getDimension(i, 0));
+                this.world_timeIconLeft = scale*sharedPreferences.getFloat("world_timeIconLeft", widgetN.getDimension(i++, 0));
+                this.world_timeIconTop = scale*sharedPreferences.getFloat("world_timeIconTop", widgetN.getDimension(i, 0));
             }
             widgetN.recycle();
         }
@@ -1254,9 +1252,9 @@ public class LoadSettings {
         if(this.moonphase>0){
             TypedArray widgetN = res.obtainTypedArray(res.getIdentifier("widget"+this.moonphase, "array", context.getPackageName()));
             i = 0;
-            this.moonphaseFontSize  = sharedPreferences.getFloat("moonphaseFontSize", widgetN.getDimension(i++, 0));
-            this.moonphaseLeft  = sharedPreferences.getFloat("moonphaseLeft", widgetN.getDimension(i++, 0));
-            this.moonphaseTop  = sharedPreferences.getFloat("moonphaseTop", widgetN.getDimension(i++, 0));
+            this.moonphaseFontSize  = scale*sharedPreferences.getFloat("moonphaseFontSize", widgetN.getDimension(i++, 0));
+            this.moonphaseLeft  = scale*sharedPreferences.getFloat("moonphaseLeft", widgetN.getDimension(i++, 0));
+            this.moonphaseTop  = scale*sharedPreferences.getFloat("moonphaseTop", widgetN.getDimension(i++, 0));
             if(this.color>-1 && theme_elements.indexOf("widget"+this.moonphase)>-1){
                 this.moonphaseColor = Color.parseColor(color_codes[this.color]);
                 i++;
@@ -1268,8 +1266,8 @@ public class LoadSettings {
             this.moonphaseIcon = sharedPreferences.getBoolean("moonphaseIcon", widgetN.getBoolean(i++, true));
 
             if(moonphaseIcon) {
-                this.moonphaseIconLeft = sharedPreferences.getFloat("moonphaseIconLeft", widgetN.getDimension(i++, 0));
-                this.moonphaseIconTop = sharedPreferences.getFloat("moonphaseIconTop", widgetN.getDimension(i, 0));
+                this.moonphaseIconLeft = scale*sharedPreferences.getFloat("moonphaseIconLeft", widgetN.getDimension(i++, 0));
+                this.moonphaseIconTop = scale*sharedPreferences.getFloat("moonphaseIconTop", widgetN.getDimension(i, 0));
             }
 
             widgetN.recycle();
@@ -1280,9 +1278,9 @@ public class LoadSettings {
         if(this.notifications>0){
             TypedArray widgetN = res.obtainTypedArray(res.getIdentifier("widget"+this.notifications, "array", context.getPackageName()));
             i = 0;
-            this.notificationsFontSize  = sharedPreferences.getFloat("notificationsFontSize", widgetN.getDimension(i++, 0));
-            this.notificationsLeft  = sharedPreferences.getFloat("notificationsLeft", widgetN.getDimension(i++, 0));
-            this.notificationsTop  = sharedPreferences.getFloat("notificationsTop", widgetN.getDimension(i++, 0));
+            this.notificationsFontSize  = scale*sharedPreferences.getFloat("notificationsFontSize", widgetN.getDimension(i++, 0));
+            this.notificationsLeft  = scale*sharedPreferences.getFloat("notificationsLeft", widgetN.getDimension(i++, 0));
+            this.notificationsTop  = scale*sharedPreferences.getFloat("notificationsTop", widgetN.getDimension(i++, 0));
             if(this.color>-1 && theme_elements.indexOf("widget"+this.notifications)>-1){
                 this.notificationsColor = Color.parseColor(color_codes[this.color]);
                 i++;
@@ -1293,8 +1291,8 @@ public class LoadSettings {
             this.notificationsUnits = sharedPreferences.getBoolean("notificationsUnits", widgetN.getBoolean(i++, true));
             this.notificationsIcon = sharedPreferences.getBoolean("notificationsIcon", widgetN.getBoolean(i++, true));
             if(notificationsIcon) {
-                this.notificationsIconLeft = sharedPreferences.getFloat("notificationsIconLeft", widgetN.getDimension(i++, 0));
-                this.notificationsIconTop = sharedPreferences.getFloat("notificationsIconTop", widgetN.getDimension(i, 0));
+                this.notificationsIconLeft = scale*sharedPreferences.getFloat("notificationsIconLeft", widgetN.getDimension(i++, 0));
+                this.notificationsIconTop = scale*sharedPreferences.getFloat("notificationsIconTop", widgetN.getDimension(i, 0));
             }
             widgetN.recycle();
         }
@@ -1321,13 +1319,13 @@ public class LoadSettings {
         if(this.stepsProg>0){
             TypedArray widgetN = res.obtainTypedArray(res.getIdentifier("progress_element"+this.stepsProg, "array", context.getPackageName()));
             i = 0;
-            this.stepsProgLeft  = sharedPreferences.getFloat("stepsProgLeft", widgetN.getDimension(i++, 0));
-            this.stepsProgTop  = sharedPreferences.getFloat("stepsProgTop", widgetN.getDimension(i++, 0));
+            this.stepsProgLeft  = scale*sharedPreferences.getFloat("stepsProgLeft", widgetN.getDimension(i++, 0));
+            this.stepsProgTop  = scale*sharedPreferences.getFloat("stepsProgTop", widgetN.getDimension(i++, 0));
             this.stepsProgType = sharedPreferences.getInt("stepsProgType", widgetN.getColor(i++, 0));
 
             if(this.stepsProgType==0){ // Circle bar element
-                this.stepsProgRadius  = sharedPreferences.getFloat("stepsProgRadius", widgetN.getDimension(i++, 0));
-                this.stepsProgThickness  = sharedPreferences.getFloat("stepsProgRadius", widgetN.getDimension(i++, 0));
+                this.stepsProgRadius  = scale*sharedPreferences.getFloat("stepsProgRadius", widgetN.getDimension(i++, 0));
+                this.stepsProgThickness  = scale*sharedPreferences.getFloat("stepsProgRadius", widgetN.getDimension(i++, 0));
                 this.stepsProgStartAngle = sharedPreferences.getInt("stepsProgStartAngle", widgetN.getInteger(i++, 0));
                 this.stepsProgEndAngle = sharedPreferences.getInt("stepsProgEndAngle", widgetN.getInteger(i++, 0));
                 this.stepsProgClockwise = sharedPreferences.getInt("stepsProgClockwise", widgetN.getInteger(i++, 1));
@@ -1352,12 +1350,12 @@ public class LoadSettings {
         if(this.today_distanceProg>0){
             TypedArray widgetN = res.obtainTypedArray(res.getIdentifier("progress_element"+this.today_distanceProg, "array", context.getPackageName()));
             i = 0;
-            this.today_distanceProgLeft  = sharedPreferences.getFloat("today_distanceProgLeft", widgetN.getDimension(i++, 0));
-            this.today_distanceProgTop  = sharedPreferences.getFloat("today_distanceProgTop", widgetN.getDimension(i++, 0));
+            this.today_distanceProgLeft  = scale*sharedPreferences.getFloat("today_distanceProgLeft", widgetN.getDimension(i++, 0));
+            this.today_distanceProgTop  = scale*sharedPreferences.getFloat("today_distanceProgTop", widgetN.getDimension(i++, 0));
             this.today_distanceProgType = sharedPreferences.getInt("today_distanceProgType", widgetN.getColor(i++, 0));
             if(this.today_distanceProgType==0){ // Circle bar element
-                this.today_distanceProgRadius  = sharedPreferences.getFloat("today_distanceProgRadius", widgetN.getDimension(i++, 0));
-                this.today_distanceProgThickness  = sharedPreferences.getFloat("today_distanceProgThickness", widgetN.getDimension(i++, 0));
+                this.today_distanceProgRadius  = scale*sharedPreferences.getFloat("today_distanceProgRadius", widgetN.getDimension(i++, 0));
+                this.today_distanceProgThickness  = scale*sharedPreferences.getFloat("today_distanceProgThickness", widgetN.getDimension(i++, 0));
                 this.today_distanceProgStartAngle = sharedPreferences.getInt("today_distanceProgStartAngle", widgetN.getInteger(i++, 0));
                 this.today_distanceProgEndAngle = sharedPreferences.getInt("today_distanceProgEndAngle", widgetN.getInteger(i++, 0));
                 this.today_distanceProgClockwise = sharedPreferences.getInt("today_distanceProgClockwise", widgetN.getInteger(i++, 1));
@@ -1382,13 +1380,13 @@ public class LoadSettings {
         if(this.batteryProg>0){
             TypedArray widgetN = res.obtainTypedArray(res.getIdentifier("progress_element"+this.batteryProg, "array", context.getPackageName()));
             i = 0;
-            this.batteryProgLeft  = sharedPreferences.getFloat("batteryProgLeft", widgetN.getDimension(i++, 0));
-            this.batteryProgTop  = sharedPreferences.getFloat("batteryProgTop", widgetN.getDimension(i++, 0));
+            this.batteryProgLeft  = scale*sharedPreferences.getFloat("batteryProgLeft", widgetN.getDimension(i++, 0));
+            this.batteryProgTop  = scale*sharedPreferences.getFloat("batteryProgTop", widgetN.getDimension(i++, 0));
             this.batteryProgType = sharedPreferences.getInt("batteryProgType", widgetN.getColor(i++, 0));
 
             if(this.batteryProgType==0){ // Circle bar element
-                this.batteryProgRadius  = sharedPreferences.getFloat("batteryProgRadius", widgetN.getDimension(i++, 0));
-                this.batteryProgThickness  = sharedPreferences.getFloat("batteryProgThickness", widgetN.getDimension(i++, 0));
+                this.batteryProgRadius  = scale*sharedPreferences.getFloat("batteryProgRadius", widgetN.getDimension(i++, 0));
+                this.batteryProgThickness  = scale*sharedPreferences.getFloat("batteryProgThickness", widgetN.getDimension(i++, 0));
                 this.batteryProgStartAngle = sharedPreferences.getInt("batteryProgStartAngle", widgetN.getInteger(i++, 0));
                 this.batteryProgEndAngle = sharedPreferences.getInt("batteryProgEndAngle", widgetN.getInteger(i++, 0));
                 this.batteryProgClockwise = sharedPreferences.getInt("batteryProgClockwise", widgetN.getInteger(i++, 1));
@@ -1413,13 +1411,13 @@ public class LoadSettings {
         if(this.caloriesProg>0){
             TypedArray widgetN = res.obtainTypedArray(res.getIdentifier("progress_element"+this.caloriesProg, "array", context.getPackageName()));
             i = 0;
-            this.caloriesProgLeft  = sharedPreferences.getFloat("caloriesProgLeft", widgetN.getDimension(i++, 0));
-            this.caloriesProgTop  = sharedPreferences.getFloat("caloriesProgTop", widgetN.getDimension(i++, 0));
+            this.caloriesProgLeft  = scale*sharedPreferences.getFloat("caloriesProgLeft", widgetN.getDimension(i++, 0));
+            this.caloriesProgTop  = scale*sharedPreferences.getFloat("caloriesProgTop", widgetN.getDimension(i++, 0));
             this.caloriesProgType = sharedPreferences.getInt("caloriesProgType", widgetN.getColor(i++, 0));
 
             if(this.caloriesProgType==0){ // Circle bar element
-                this.caloriesProgRadius  = sharedPreferences.getFloat("caloriesProgRadius", widgetN.getDimension(i++, 0));
-                this.caloriesProgThickness  = sharedPreferences.getFloat("caloriesProgThickness", widgetN.getDimension(i++, 0));
+                this.caloriesProgRadius  = scale*sharedPreferences.getFloat("caloriesProgRadius", widgetN.getDimension(i++, 0));
+                this.caloriesProgThickness  = scale*sharedPreferences.getFloat("caloriesProgThickness", widgetN.getDimension(i++, 0));
                 this.caloriesProgStartAngle = sharedPreferences.getInt("caloriesProgStartAngle", widgetN.getInteger(i++, 0));
                 this.caloriesProgEndAngle = sharedPreferences.getInt("caloriesProgEndAngle", widgetN.getInteger(i++, 0));
                 this.caloriesProgClockwise = sharedPreferences.getInt("caloriesProgClockwise", widgetN.getInteger(i++, 1));
@@ -1444,13 +1442,13 @@ public class LoadSettings {
         if(this.heart_rateProg>0){
             TypedArray widgetN = res.obtainTypedArray(res.getIdentifier("progress_element"+this.heart_rateProg, "array", context.getPackageName()));
             i = 0;
-            this.heart_rateProgLeft  = sharedPreferences.getFloat("heart_rateProgLeft", widgetN.getDimension(i++, 0));
-            this.heart_rateProgTop  = sharedPreferences.getFloat("heart_rateProgTop", widgetN.getDimension(i++, 0));
+            this.heart_rateProgLeft  = scale*sharedPreferences.getFloat("heart_rateProgLeft", widgetN.getDimension(i++, 0));
+            this.heart_rateProgTop  = scale*sharedPreferences.getFloat("heart_rateProgTop", widgetN.getDimension(i++, 0));
             this.heart_rateProgType = sharedPreferences.getInt("heart_rateProgType", widgetN.getColor(i++, 0));
 
             if(this.heart_rateProgType==0){ // Circle bar element
-                this.heart_rateProgRadius  = sharedPreferences.getFloat("heart_rateProgRadius", widgetN.getDimension(i++, 0));
-                this.heart_rateProgThickness  = sharedPreferences.getFloat("heart_rateProgThickness", widgetN.getDimension(i++, 0));
+                this.heart_rateProgRadius  = scale*sharedPreferences.getFloat("heart_rateProgRadius", widgetN.getDimension(i++, 0));
+                this.heart_rateProgThickness  = scale*sharedPreferences.getFloat("heart_rateProgThickness", widgetN.getDimension(i++, 0));
                 this.heart_rateProgStartAngle = sharedPreferences.getInt("heart_rateProgStartAngle", widgetN.getInteger(i++, 0));
                 this.heart_rateProgEndAngle = sharedPreferences.getInt("heart_rateProgEndAngle", widgetN.getInteger(i++, 0));
                 this.heart_rateProgClockwise = sharedPreferences.getInt("heart_rateProgClockwise", widgetN.getInteger(i++, 1));
@@ -1475,13 +1473,13 @@ public class LoadSettings {
         if(this.phone_batteryProg>0){
             TypedArray widgetN = res.obtainTypedArray(res.getIdentifier("progress_element"+this.phone_batteryProg, "array", context.getPackageName()));
             i = 0;
-            this.phone_batteryProgLeft  = sharedPreferences.getFloat("phone_batteryProgLeft", widgetN.getDimension(i++, 0));
-            this.phone_batteryProgTop  = sharedPreferences.getFloat("phone_batteryProgTop", widgetN.getDimension(i++, 0));
+            this.phone_batteryProgLeft  = scale*sharedPreferences.getFloat("phone_batteryProgLeft", widgetN.getDimension(i++, 0));
+            this.phone_batteryProgTop  = scale*sharedPreferences.getFloat("phone_batteryProgTop", widgetN.getDimension(i++, 0));
             this.phone_batteryProgType = sharedPreferences.getInt("phone_batteryProgType", widgetN.getColor(i++, 0));
 
             if(this.phone_batteryProgType==0){ // Circle bar element
-                this.phone_batteryProgRadius  = sharedPreferences.getFloat("phone_batteryProgRadius", widgetN.getDimension(i++, 0));
-                this.phone_batteryProgThickness  = sharedPreferences.getFloat("phone_batteryProgThickness", widgetN.getDimension(i++, 0));
+                this.phone_batteryProgRadius  = scale*sharedPreferences.getFloat("phone_batteryProgRadius", widgetN.getDimension(i++, 0));
+                this.phone_batteryProgThickness  = scale*sharedPreferences.getFloat("phone_batteryProgThickness", widgetN.getDimension(i++, 0));
                 this.phone_batteryProgStartAngle = sharedPreferences.getInt("phone_batteryProgStartAngle", widgetN.getInteger(i++, 0));
                 this.phone_batteryProgEndAngle = sharedPreferences.getInt("phone_batteryProgEndAngle", widgetN.getInteger(i++, 0));
                 this.phone_batteryProgClockwise = sharedPreferences.getInt("phone_batteryProgClockwise", widgetN.getInteger(i++, 1));

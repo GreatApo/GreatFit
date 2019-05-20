@@ -6,6 +6,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
+import android.util.Log;
 
 import com.dinodevs.greatfitwatchface.settings.LoadSettings;
 import com.huami.watch.watchface.util.Util;
@@ -227,13 +228,13 @@ public class BatteryWidget extends AbstractWidget {
             // Draw background image
             if(settings.batteryProgBgBool) {
                 SlptPictureView ring_background = new SlptPictureView();
-                ring_background.setImagePicture(SimpleFile.readFileFromAssets(service, ( (better_resolution)?"":"slpt_" )+"circles/ring1_bg.png"));
+                ring_background.setImagePicture(SimpleFile.readFileFromAssets(service, ((settings.isVerge())?"verge_":( (better_resolution)?"":"slpt_" ))+"circles/ring1_bg.png"));
                 ring_background.setStart((int) (settings.batteryProgLeft-settings.batteryProgRadius), (int) (settings.batteryProgTop-settings.batteryProgRadius));
                 slpt_objects.add(ring_background);
             }
 
             SlptPowerArcAnglePicView localSlptPowerArcAnglePicView = new SlptPowerArcAnglePicView();
-            localSlptPowerArcAnglePicView.setImagePicture(SimpleFile.readFileFromAssets(service, ( (better_resolution)?"":"slpt_" )+settings.batteryProgSlptImage));
+            localSlptPowerArcAnglePicView.setImagePicture(SimpleFile.readFileFromAssets(service, ((settings.isVerge())?"verge_":( (better_resolution)?"":"slpt_" ))+settings.batteryProgSlptImage));
             localSlptPowerArcAnglePicView.setStart((int) (settings.batteryProgLeft-settings.batteryProgRadius), (int) (settings.batteryProgTop-settings.batteryProgRadius));
             localSlptPowerArcAnglePicView.start_angle = (settings.batteryProgClockwise==1)? settings.batteryProgStartAngle : settings.batteryProgEndAngle;
             localSlptPowerArcAnglePicView.len_angle = 0;

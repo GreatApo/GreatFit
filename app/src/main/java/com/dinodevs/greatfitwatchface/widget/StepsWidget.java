@@ -186,13 +186,13 @@ public class StepsWidget extends AbstractWidget {
             // Draw background image
             if(settings.stepsProgBgBool) {
                 SlptPictureView ring_background = new SlptPictureView();
-                ring_background.setImagePicture(SimpleFile.readFileFromAssets(service, ( (better_resolution)?"":"slpt_" )+"circles/ring1_bg.png"));
+                ring_background.setImagePicture(SimpleFile.readFileFromAssets(service, ((settings.isVerge())?"verge_":( (better_resolution)?"":"slpt_" ))+"circles/ring1_bg.png"));
                 ring_background.setStart((int) (settings.stepsProgLeft-settings.stepsProgRadius), (int) (settings.stepsProgTop-settings.stepsProgRadius));
                 slpt_objects.add(ring_background);
             }
 
             SlptTodayStepArcAnglePicView stepsArcAnglePicView = new SlptTodayStepArcAnglePicView();
-            stepsArcAnglePicView.setImagePicture(SimpleFile.readFileFromAssets(service, ( (better_resolution)?"":"slpt_" )+settings.stepsProgSlptImage));
+            stepsArcAnglePicView.setImagePicture(SimpleFile.readFileFromAssets(service, ((settings.isVerge())?"verge_":( (better_resolution)?"":"slpt_" ))+settings.stepsProgSlptImage));
             stepsArcAnglePicView.setStart((int) (settings.stepsProgLeft-settings.stepsProgRadius), (int) (settings.stepsProgTop-settings.stepsProgRadius));
             stepsArcAnglePicView.start_angle = (settings.stepsProgClockwise==1)? settings.stepsProgStartAngle : settings.stepsProgEndAngle;
             //stepsArcAnglePicView.start_angle = settings.stepsProgStartAngle;

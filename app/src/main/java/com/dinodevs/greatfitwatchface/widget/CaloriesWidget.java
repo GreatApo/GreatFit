@@ -204,7 +204,7 @@ public class CaloriesWidget extends AbstractWidget {
             // Draw background image
             if(settings.caloriesProgBgBool) {
                 SlptPictureView ring_background = new SlptPictureView();
-                ring_background.setImagePicture(SimpleFile.readFileFromAssets(service, ( (better_resolution)?"":"slpt_" )+"circles/ring1_bg.png"));
+                ring_background.setImagePicture(SimpleFile.readFileFromAssets(service, ((settings.isVerge())?"verge_":( (better_resolution)?"":"slpt_" ))+"circles/ring1_bg.png"));
                 ring_background.setStart((int) (settings.caloriesProgLeft-settings.caloriesProgRadius), (int) (settings.caloriesProgTop-settings.caloriesProgRadius));
                 slpt_objects.add(ring_background);
             }
@@ -212,7 +212,7 @@ public class CaloriesWidget extends AbstractWidget {
             //if(calories==null){calories = new Calories(0);}
 
             SlptArcAnglePicView localSlptArcAnglePicView = new SlptArcAnglePicView();
-            localSlptArcAnglePicView.setImagePicture(SimpleFile.readFileFromAssets(service, ( (better_resolution)?"":"slpt_" )+settings.caloriesProgSlptImage));
+            localSlptArcAnglePicView.setImagePicture(SimpleFile.readFileFromAssets(service, ((settings.isVerge())?"verge_":( (better_resolution)?"":"slpt_" ))+settings.caloriesProgSlptImage));
             localSlptArcAnglePicView.setStart((int) (settings.caloriesProgLeft-settings.caloriesProgRadius), (int) (settings.caloriesProgTop-settings.caloriesProgRadius));
             localSlptArcAnglePicView.start_angle = (settings.caloriesProgClockwise==1)? settings.caloriesProgStartAngle : settings.caloriesProgEndAngle;
             localSlptArcAnglePicView.len_angle = (int) (this.angleLength * Math.min(settings.temp_calories/settings.target_calories,1));

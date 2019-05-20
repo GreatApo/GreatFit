@@ -174,6 +174,8 @@ public class MainClock extends DigitalClockWidget {
         //this.background = service.getResources().getDrawable(R.drawable.background); //todo
         //this.background.setBounds(0, 0, 320, 300);
         this.background = Util.decodeImage(service.getResources(),"background.png");
+        if(settings.isVerge())
+            this.background = Bitmap.createScaledBitmap(this.background, 360, 360, true);
 
         if(settings.digital_clock) {
             this.hourFont = new TextPaint(TextPaint.ANTI_ALIAS_FLAG);
@@ -202,9 +204,9 @@ public class MainClock extends DigitalClockWidget {
         }
 
         if(settings.analog_clock) {
-            this.hourHand = Util.decodeImage(service.getResources(),"timehand/hour.png");
-            this.minuteHand = Util.decodeImage(service.getResources(),"timehand/minute.png");
-            this.secondsHand = Util.decodeImage(service.getResources(),"timehand/seconds.png");
+            this.hourHand = Util.decodeImage(service.getResources(),"timehand/hour"+ ((settings.isVerge())?"_verge":"") +".png");
+            this.minuteHand = Util.decodeImage(service.getResources(),"timehand/minute"+ ((settings.isVerge())?"_verge":"") +".png");
+            this.secondsHand = Util.decodeImage(service.getResources(),"timehand/seconds"+ ((settings.isVerge())?"_verge":"") +".png");
         }
 
         if(settings.date>0) {
@@ -273,17 +275,19 @@ public class MainClock extends DigitalClockWidget {
 
         if(settings.analog_clock) {
             canvas.save();
-            canvas.rotate(((float) (hours * 30)) + ((((float) minutes) / 60.0f) * 30.0f), 160.0f, 159.0f);
+            canvas.rotate(((float) (hours * 30)) + ((((float) minutes) / 60.0f) * 30.0f), 160.0f + (settings.isVerge()?20f:0f), 159.0f + (settings.isVerge()?20f:0f));
             canvas.drawBitmap(this.hourHand, centerX - this.hourHand.getWidth() / 2f, centerY - this.hourHand.getHeight() / 2f, null);
             canvas.restore();
             canvas.save();
-            canvas.rotate((float) (minutes * 6), 160.0f, 159.0f);
+            canvas.rotate((float) (minutes * 6), 160.0f + (settings.isVerge()?20f:0f), 159.0f + (settings.isVerge()?20f:0f));
             canvas.drawBitmap(this.minuteHand, centerX - this.minuteHand.getWidth() / 2f, centerY - this.minuteHand.getHeight() / 2f, null);
             canvas.restore();
-            canvas.save();
-            canvas.rotate((float) (seconds * 6), 160.0f, 159.0f);
-            canvas.drawBitmap(this.secondsHand, centerX - this.secondsHand.getWidth() / 2f, centerY - this.secondsHand.getHeight() / 2f, null);
-            canvas.restore();
+            if (settings.secondsBool) {
+                canvas.save();
+                canvas.rotate((float) (seconds * 6), 160.0f + (settings.isVerge() ? 20f : 0f), 159.0f + (settings.isVerge() ? 20f : 0f));
+                canvas.drawBitmap(this.secondsHand, centerX - this.secondsHand.getWidth() / 2f, centerY - this.secondsHand.getHeight() / 2f, null);
+                canvas.restore();
+            }
         }
 
         // JAVA calendar get/show time library
@@ -341,7 +345,7 @@ public class MainClock extends DigitalClockWidget {
 
         // Draw background image
         SlptPictureView background = new SlptPictureView();
-        background.setImagePicture(SimpleFile.readFileFromAssets(service, "background"+ ((better_resolution)?"_better":"") +"_slpt.png"));
+        background.setImagePicture(ResourceManager.getVergeImageFromAssets(settings.isVerge(), service, "background"+ ((better_resolution)?"_better":"") +"_slpt.png"));
         slpt_objects.add(background);
 
         // Set font
@@ -436,7 +440,7 @@ public class MainClock extends DigitalClockWidget {
             }
 
             // Draw Seconds
-            if (settings.secondsBool) {
+            if (settings.secondsBool && (!settings.isVerge() || better_resolution) ) {
                 SlptLinearLayout secondsLayout = new SlptLinearLayout();
                 secondsLayout.add(new SlptSecondHView());
                 secondsLayout.add(new SlptSecondLView());
@@ -463,25 +467,25 @@ public class MainClock extends DigitalClockWidget {
 
         if(settings.analog_clock) {
             SlptAnalogHourView slptAnalogHourView = new SlptAnalogHourView();
-            slptAnalogHourView.setImagePicture(SimpleFile.readFileFromAssets(service, "timehand/8c/hour.png"));
+            slptAnalogHourView.setImagePicture(SimpleFile.readFileFromAssets(service, "timehand/8c/hour"+ ((settings.isVerge())?"_verge":"") +".png"));
             slptAnalogHourView.alignX = (byte) 2;
             slptAnalogHourView.alignY = (byte) 2;
-            slptAnalogHourView.setRect(320, 320);
+            slptAnalogHourView.setRect(320 + (settings.isVerge()?40:0), 320 + (settings.isVerge()?40:0));
             slpt_objects.add(slptAnalogHourView);
 
             SlptAnalogMinuteView slptAnalogMinuteView = new SlptAnalogMinuteView();
-            slptAnalogMinuteView.setImagePicture(SimpleFile.readFileFromAssets(service, "timehand/8c/minute.png"));
+            slptAnalogMinuteView.setImagePicture(SimpleFile.readFileFromAssets(service, "timehand/8c/minute"+ ((settings.isVerge())?"_verge":"") +".png"));
             slptAnalogMinuteView.alignX = (byte) 2;
             slptAnalogMinuteView.alignY = (byte) 2;
-            slptAnalogMinuteView.setRect(320, 320);
+            slptAnalogMinuteView.setRect(320 + (settings.isVerge()?40:0), 320 + (settings.isVerge()?40:0));
             slpt_objects.add(slptAnalogMinuteView);
 
-            if(settings.secondsBool){
+            if(settings.secondsBool && (!settings.isVerge() || better_resolution) ){
                 SlptAnalogSecondView slptAnalogSecondView = new SlptAnalogSecondView();
-                slptAnalogSecondView.setImagePicture(SimpleFile.readFileFromAssets(service, "timehand/8c/second.png"));
+                slptAnalogSecondView.setImagePicture(SimpleFile.readFileFromAssets(service, "timehand/8c/second"+ ((settings.isVerge())?"_verge":"") +".png"));
                 slptAnalogSecondView.alignX = (byte) 2;
                 slptAnalogSecondView.alignY = (byte) 2;
-                slptAnalogSecondView.setRect(320, 320);
+                slptAnalogSecondView.setRect(320 + (settings.isVerge()?40:0), 320 + (settings.isVerge()?40:0));
                 slpt_objects.add(slptAnalogSecondView);
             }
         }

@@ -993,12 +993,12 @@ public class GreatWidget extends AbstractWidget {
             // Draw background image
             if(settings.phone_batteryProgBgBool) {
                 SlptPictureView ring_background = new SlptPictureView();
-                ring_background.setImagePicture(SimpleFile.readFileFromAssets(service, ( (better_resolution)?"":"slpt_" )+"circles/ring1_bg.png"));
+                ring_background.setImagePicture(SimpleFile.readFileFromAssets(service, ((settings.isVerge())?"verge_":( (better_resolution)?"":"slpt_" ))+"circles/ring1_bg.png"));
                 ring_background.setStart((int) (settings.phone_batteryProgLeft-settings.phone_batteryProgRadius), (int) (settings.phone_batteryProgTop-settings.phone_batteryProgRadius));
                 slpt_objects.add(ring_background);
             }
             SlptArcAnglePicView localSlptArcAnglePicView = new SlptArcAnglePicView();
-            localSlptArcAnglePicView.setImagePicture(SimpleFile.readFileFromAssets(service, ( (better_resolution)?"":"slpt_" )+settings.phone_batteryProgSlptImage));
+            localSlptArcAnglePicView.setImagePicture(SimpleFile.readFileFromAssets(service, ((settings.isVerge())?"verge_":( (better_resolution)?"":"slpt_" ))+settings.phone_batteryProgSlptImage));
             localSlptArcAnglePicView.setStart((int) (settings.phone_batteryProgLeft-settings.phone_batteryProgRadius), (int) (settings.phone_batteryProgTop-settings.phone_batteryProgRadius));
             localSlptArcAnglePicView.start_angle = (settings.phone_batteryProgClockwise==1)? settings.phone_batteryProgStartAngle : settings.phone_batteryProgEndAngle;
             int temp_battery = (this.customData.phoneBattery.equals("--"))?0:Integer.parseInt(this.customData.phoneBattery);

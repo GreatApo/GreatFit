@@ -191,12 +191,12 @@ public class SportTodayDistanceWidget extends AbstractWidget {
             // Draw background image
             if(settings.today_distanceProgBgBool) {
                 SlptPictureView ring_background = new SlptPictureView();
-                ring_background.setImagePicture(SimpleFile.readFileFromAssets(service, ( (better_resolution)?"":"slpt_" )+"circles/ring1__bg.png"));
+                ring_background.setImagePicture(SimpleFile.readFileFromAssets(service, ((settings.isVerge())?"verge_":( (better_resolution)?"":"slpt_" ))+"circles/ring1__bg.png"));
                 slpt_objects.add(ring_background);
             }
 
             SlptTodayDistanceArcAnglePicView today_distanceArcAnglePicView = new SlptTodayDistanceArcAnglePicView();
-            today_distanceArcAnglePicView.setImagePicture(SimpleFile.readFileFromAssets(service, ( (better_resolution)?"":"slpt_" )+settings.today_distanceProgSlptImage));
+            today_distanceArcAnglePicView.setImagePicture(SimpleFile.readFileFromAssets(service, ((settings.isVerge())?"verge_":( (better_resolution)?"":"slpt_" ))+settings.today_distanceProgSlptImage));
             today_distanceArcAnglePicView.setStart((int) settings.today_distanceProgLeft, (int) settings.today_distanceProgTop);
             today_distanceArcAnglePicView.start_angle = settings.today_distanceProgStartAngle;
             today_distanceArcAnglePicView.len_angle = 0;
