@@ -32,10 +32,10 @@ public class CustomData {
                     try {// Convert from float to int
                         float f = Float.parseFloat(this.airPressure);
                         this.airPressure = Integer.toString((int) f);
-                        // Convert Pressure to Altitude based on data found here (https://www.mide.com/pages/air-pressure-at-altitude-calculator) (2018 08 03)
+                        // Convert Pressure to Altitude based on (https://www.weather.gov/media/epz/wxcalc/pressureAltitude.pdf) (2019 05 20)
                         if(f<1200) {
                             // Altitude mode
-                            int d = (int) (-7.14622816586906E-11 * Math.pow(f, 5) + 2.64853345946368E-07 * Math.pow(f, 4) - 0.000376963054203727 * Math.pow(f, 3) + 0.262320648297135 * Math.pow(f, 2) - 103.105304780369 * f + 24471.4671194641);
+                            int d = (int) ( ( 1 - Math.pow(f/1013.25, 0.190284) )*145366.45*0.3048 );
                             this.altitude = Integer.toString(d);
                         }else{
                             // Dive depth mode
