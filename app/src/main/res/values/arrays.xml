@@ -286,7 +286,8 @@
         <item>xdrip</item>
         <item>world_time</item>
         <item>notifications</item>
-        <item>none</item> <!-- 23 -->
+        <item>moonphase</item>
+        <item>none</item> <!-- 24 -->
     </string-array>
 
     <!-- Supported Progress Elements -->

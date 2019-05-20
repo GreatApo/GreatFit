@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- slpt position compartibility -->
+    <!-- slpt position compatibility -->
     <integer name="font_ratio">75</integer><!-- /100, font height center point ratio -->
 
     <!-- Slpt refresh rate for custom widgets (air pressure, Xdrip) -->

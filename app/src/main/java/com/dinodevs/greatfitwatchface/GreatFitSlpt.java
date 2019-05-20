@@ -11,6 +11,7 @@ import com.dinodevs.greatfitwatchface.widget.FloorWidget;
 import com.dinodevs.greatfitwatchface.widget.HeartRateWidget;
 import com.dinodevs.greatfitwatchface.widget.MainClock;
 import com.dinodevs.greatfitwatchface.widget.GreatWidget;
+import com.dinodevs.greatfitwatchface.widget.MoonPhaseWidget;
 import com.dinodevs.greatfitwatchface.widget.SportTodayDistanceWidget;
 import com.dinodevs.greatfitwatchface.widget.SportTotalDistanceWidget;
 import com.dinodevs.greatfitwatchface.widget.StepsWidget;
@@ -63,6 +64,9 @@ public class GreatFitSlpt extends AbstractWatchFaceSlpt {
         }
         if(settings.isWeather()) {
             this.widgets.add(new WeatherWidget(settings));
+        }
+        if(settings.isMoonPhase()){
+            this.widgets.add(new MoonPhaseWidget(settings));
         }
         if(settings.isGreat()) {
             this.widgets.add(new GreatWidget(settings));
