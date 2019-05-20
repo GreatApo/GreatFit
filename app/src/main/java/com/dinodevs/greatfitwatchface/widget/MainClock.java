@@ -365,10 +365,10 @@ public class MainClock extends DigitalClockWidget {
             );
             // Position based on screen on
             hourLayout.alignX = 2;
-            hourLayout.alignY=0;
+            hourLayout.alignY = 0;
             hourLayout.setRect(
                     (int) (2*settings.hoursLeft+640),
-                    (int) (settings.hoursFontSize)
+                    (int) (((float)settings.font_ratio/100)*settings.hoursFontSize)
             );
             hourLayout.setStart(
                     -320,
@@ -394,7 +394,7 @@ public class MainClock extends DigitalClockWidget {
             minuteLayout.alignY=0;
             minuteLayout.setRect(
                     (int) (2*settings.minutesLeft+640),
-                    (int) (settings.minutesFontSize)
+                    (int) (((float)settings.font_ratio/100)*settings.minutesFontSize)
             );
             minuteLayout.setStart(
                     -320,
@@ -420,7 +420,7 @@ public class MainClock extends DigitalClockWidget {
             indicatorLayout.alignY=0;
             indicatorLayout.setRect(
                     (int) (2*settings.indicatorLeft+640),
-                    (int) (settings.indicatorFontSize)
+                    (int) (((float)settings.font_ratio/100)*settings.indicatorFontSize)
             );
             indicatorLayout.setStart(
                     -320,
@@ -445,7 +445,7 @@ public class MainClock extends DigitalClockWidget {
             secondsLayout.alignY = 0;
             secondsLayout.setRect(
                     (int) (2*settings.secondsLeft+640),
-                    (int) (settings.secondsFontSize)
+                    (int) (((float)settings.font_ratio/100)*settings.secondsFontSize)
             );
             secondsLayout.setStart(
                     -320,
@@ -497,7 +497,7 @@ public class MainClock extends DigitalClockWidget {
                 // If text is centered, set rectangle
                 dateLayout.setRect(
                         (int) (2 * tmp_left + 640),
-                        (int) (settings.dateFontSize)
+                        (int) (((float)settings.font_ratio/100)*settings.dateFontSize)
                 );
                 tmp_left = -320;
             }
@@ -526,7 +526,7 @@ public class MainClock extends DigitalClockWidget {
                 // If text is centered, set rectangle
                 dayLayout.setRect(
                         (int) (2 * tmp_left + 640),
-                        (int) (settings.dayFontSize)
+                        (int) (((float)settings.font_ratio/100)*settings.dayFontSize)
                 );
                 tmp_left = -320;
             }
@@ -587,7 +587,7 @@ public class MainClock extends DigitalClockWidget {
                 // If text is centered, set rectangle
                 monthLayout.setRect(
                         (int) (2 * tmp_left + 640),
-                        (int) (settings.monthFontSize)
+                        (int) (((float)settings.font_ratio/100)*settings.monthFontSize)
                 );
                 tmp_left = -320;
             }
@@ -619,7 +619,7 @@ public class MainClock extends DigitalClockWidget {
                 // If text is centered, set rectangle
                 yearLayout.setRect(
                         (int) (2 * tmp_left + 640),
-                        (int) (settings.yearFontSize)
+                        (int) (((float)settings.font_ratio/100)*settings.yearFontSize)
                 );
                 tmp_left = -320;
             }
@@ -656,7 +656,7 @@ public class MainClock extends DigitalClockWidget {
                 // If text is centered, set rectangle
                 WeekdayLayout.setRect(
                         (int) (2 * tmp_left + 640),
-                        (int) (settings.weekdayFontSize)
+                        (int) (((float)settings.font_ratio/100)*settings.weekdayFontSize)
                 );
                 tmp_left = -320;
             }

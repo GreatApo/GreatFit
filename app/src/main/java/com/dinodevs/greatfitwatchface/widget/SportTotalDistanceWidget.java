@@ -127,7 +127,7 @@ public class SportTotalDistanceWidget extends AbstractWidget {
                 // If text is centered, set rectangle
                 distance.setRect(
                         (int) (2 * tmp_left + 640),
-                        (int) settings.total_distanceFontSize
+                        (int) (((float)settings.font_ratio/100)*settings.total_distanceFontSize)
                 );
                 tmp_left = -320;
             }

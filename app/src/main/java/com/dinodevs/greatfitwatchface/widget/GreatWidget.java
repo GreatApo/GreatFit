@@ -524,7 +524,7 @@ public class GreatWidget extends AbstractWidget {
                 // If text is centered, set rectangle
                 ampm.setRect(
                         (int) (2 * tmp_left + 640),
-                        (int) (settings.am_pmFontSize)
+                        (int) (((float)settings.font_ratio/100)*settings.am_pmFontSize)
                 );
                 tmp_left = -320;
             }
@@ -566,7 +566,7 @@ public class GreatWidget extends AbstractWidget {
                 // If text is centered, set rectangle
                 alarmLayout.setRect(
                         (int) (2 * tmp_left + 640),
-                        (int) (settings.watch_alarmFontSize)
+                        (int) (((float)settings.font_ratio/100)*settings.watch_alarmFontSize)
                 );
                 tmp_left = -320;
             }
@@ -608,7 +608,7 @@ public class GreatWidget extends AbstractWidget {
                 // If text is centered, set rectangle
                 xdripLayout.setRect(
                         (int) (2 * tmp_left + 640),
-                        (int) (settings.xdripFontSize)
+                        (int) (((float)settings.font_ratio/100)*settings.xdripFontSize)
                 );
                 tmp_left = -320;
             }
@@ -657,7 +657,7 @@ public class GreatWidget extends AbstractWidget {
                 // If text is centered, set rectangle
                 airPressureLayout.setRect(
                         (int) (2 * tmp_left + 640),
-                        (int) (settings.air_pressureFontSize)
+                        (int) (((float)settings.font_ratio/100)*settings.air_pressureFontSize)
                 );
                 tmp_left = -320;
             }
@@ -705,7 +705,7 @@ public class GreatWidget extends AbstractWidget {
                 // If text is centered, set rectangle
                 altitudeLayout.setRect(
                         (int) (2 * tmp_left + 640),
-                        (int) (settings.altitudeFontSize)
+                        (int) (((float)settings.font_ratio/100)*settings.altitudeFontSize)
                 );
                 tmp_left = -320;
             }
@@ -747,7 +747,7 @@ public class GreatWidget extends AbstractWidget {
                 // If text is centered, set rectangle
                 phoneBatteryLayout.setRect(
                         (int) (2 * tmp_left + 640),
-                        (int) (settings.phone_batteryFontSize)
+                        (int) (((float)settings.font_ratio/100)*settings.phone_batteryFontSize)
                 );
                 tmp_left = -320;
             }
@@ -789,7 +789,7 @@ public class GreatWidget extends AbstractWidget {
                 // If text is centered, set rectangle
                 phoneAlarmLayout.setRect(
                         (int) (2 * tmp_left + 640),
-                        (int) (settings.phone_alarmFontSize)
+                        (int) (((float)settings.font_ratio/100)*settings.phone_alarmFontSize)
                 );
                 tmp_left = -320;
             }
@@ -835,7 +835,7 @@ public class GreatWidget extends AbstractWidget {
                 // If text is centered, set rectangle
                 notificationsLayout.setRect(
                         (int) (2 * tmp_left + 640),
-                        (int) (settings.notificationsFontSize)
+                        (int) (((float)settings.font_ratio/100)*settings.notificationsFontSize)
                 );
                 tmp_left = -320;
             }
@@ -894,7 +894,7 @@ public class GreatWidget extends AbstractWidget {
                 // If text is centered, set rectangle
                 world_timeLayout.setRect(
                         (int) (2 * tmp_left + 640),
-                        (int) (settings.world_timeFontSize)
+                        (int) (((float)settings.font_ratio/100)*settings.world_timeFontSize)
                 );
                 tmp_left = -320;
             }

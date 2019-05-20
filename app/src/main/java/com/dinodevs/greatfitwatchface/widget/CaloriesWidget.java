@@ -188,7 +188,7 @@ public class CaloriesWidget extends AbstractWidget {
                 // If text is centered, set rectangle
                 caloriesLayout.setRect(
                         (int) (2 * tmp_left + 640),
-                        (int) (settings.caloriesFontSize)
+                        (int) (((float)settings.font_ratio/100)*settings.caloriesFontSize)
                 );
                 tmp_left = -320;
             }

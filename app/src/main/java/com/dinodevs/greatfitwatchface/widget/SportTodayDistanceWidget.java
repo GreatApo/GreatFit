@@ -168,7 +168,7 @@ public class SportTodayDistanceWidget extends AbstractWidget {
                 // If text is centered, set rectangle
                 distance.setRect(
                         (int) (2 * tmp_left + 640),
-                        (int) settings.today_distanceFontSize
+                        (int) (((float)settings.font_ratio/100)*settings.today_distanceFontSize)
                 );
                 tmp_left = -320;
             }

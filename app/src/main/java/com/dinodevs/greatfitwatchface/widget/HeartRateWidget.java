@@ -236,7 +236,7 @@ public class HeartRateWidget extends AbstractWidget {
                 // If text is centered, set rectangle
                 heart.setRect(
                         (int) (2 * tmp_left + 640),
-                        (int) (settings.heart_rateFontSize)
+                        (int) (((float)settings.font_ratio/100)*settings.heart_rateFontSize)
                 );
                 tmp_left = -320;
             }

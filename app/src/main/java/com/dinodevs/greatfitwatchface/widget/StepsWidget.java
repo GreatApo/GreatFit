@@ -163,7 +163,7 @@ public class StepsWidget extends AbstractWidget {
                 // If text is centered, set rectangle
                 steps.setRect(
                         (int) (2 * tmp_left + 640),
-                        (int) settings.stepsFontSize
+                        (int) (((float)settings.font_ratio/100)*settings.stepsFontSize)
                 );
                 tmp_left = -320;
             }

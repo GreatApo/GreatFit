@@ -110,7 +110,7 @@ public class FloorWidget extends AbstractWidget {
                 // If text is centered, set rectangle
                 floorsLayout.setRect(
                         (int) (2 * tmp_left + 640),
-                        (int) (settings.floorsFontSize)
+                        (int) (((float)settings.font_ratio/100)*settings.floorsFontSize)
                 );
                 tmp_left = -320;
             }

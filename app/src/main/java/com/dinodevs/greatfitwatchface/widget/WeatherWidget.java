@@ -361,7 +361,7 @@ public class WeatherWidget extends AbstractWidget {
                 // If text is centered, set rectangle
                 temperatureLayout.setRect(
                         (int) (2 * tmp_left + 640),
-                        (int) (settings.temperatureFontSize)
+                        (int) (((float)settings.font_ratio/100)*settings.temperatureFontSize)
                 );
                 tmp_left = -320;
             }
@@ -401,7 +401,7 @@ public class WeatherWidget extends AbstractWidget {
                     // If text is centered, set rectangle
                     weatherLayout.setRect(
                             (int) (2 * tmp_left + 640),
-                            (int) (settings.weather_imgFontSize)
+                            (int) (((float)settings.font_ratio/100)*settings.weather_imgFontSize)
                     );
                     tmp_left = -320;
                 }
@@ -448,7 +448,7 @@ public class WeatherWidget extends AbstractWidget {
                 // If text is centered, set rectangle
                 cityLayout.setRect(
                         (int) (2 * tmp_left + 640),
-                        (int) (settings.cityFontSize)
+                        (int) (((float)settings.font_ratio/100)*settings.cityFontSize)
                 );
                 tmp_left = -320;
             }
@@ -494,7 +494,7 @@ public class WeatherWidget extends AbstractWidget {
                 // If text is centered, set rectangle
                 humidityLayout.setRect(
                         (int) (2 * tmp_left + 640),
-                        (int) (settings.humidityFontSize)
+                        (int) (((float)settings.font_ratio/100)*settings.humidityFontSize)
                 );
                 tmp_left = -320;
             }
@@ -540,7 +540,7 @@ public class WeatherWidget extends AbstractWidget {
                 // If text is centered, set rectangle
                 uvLayout.setRect(
                         (int) (2 * tmp_left + 640),
-                        (int) (settings.uvFontSize)
+                        (int) (((float)settings.font_ratio/100)*settings.uvFontSize)
                 );
                 tmp_left = -320;
             }
@@ -586,7 +586,7 @@ public class WeatherWidget extends AbstractWidget {
                 // If text is centered, set rectangle
                 wind_directionLayout.setRect(
                         (int) (2 * tmp_left + 640),
-                        (int) (settings.wind_directionFontSize)
+                        (int) (((float)settings.font_ratio/100)*settings.wind_directionFontSize)
                 );
                 tmp_left = -320;
             }
@@ -631,7 +631,7 @@ public class WeatherWidget extends AbstractWidget {
                 // If text is centered, set rectangle
                 wind_strengthLayout.setRect(
                         (int) (2 * tmp_left + 640),
-                        (int) (settings.wind_strengthFontSize)
+                        (int) (((float)settings.font_ratio/100)*settings.wind_strengthFontSize)
                 );
                 tmp_left = -320;
             }

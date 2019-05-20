@@ -198,7 +198,7 @@ public class BatteryWidget extends AbstractWidget {
                 // If text is centered, set rectangle
                 power.setRect(
                         (int) (2 * tmp_left + 640),
-                        (int) settings.battery_percentFontSize
+                        (int) (((float)settings.font_ratio/100)*settings.battery_percentFontSize)
                 );
                 tmp_left = -320;
             }
