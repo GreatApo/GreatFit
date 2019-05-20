@@ -3,6 +3,8 @@ package com.dinodevs.greatfitwatchface.settings;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -91,6 +93,24 @@ public class Settings extends FragmentActivity {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(Settings.this, LanguageActivity.class));
+            }
+        }, null));
+
+        // Add about
+        settings.add(new IconSetting(getDrawable(R.drawable.info), getString(R.string.about), getString(R.string.about_c), new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Get pkg info
+                String version = "n/a";
+                try {
+                    PackageInfo pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
+                    version = pInfo.versionName;
+                } catch (PackageManager.NameNotFoundException e) {
+                    e.printStackTrace();
+                }
+
+                // Please do not change the following line
+                Toast.makeText(getApplicationContext(), "GreatFit Project\nVersion: "+ version +"\nAuthor: GreatApo\nStyle: "+getResources().getString(R.string.author), Toast.LENGTH_LONG).show();
             }
         }, null));
 

@@ -184,18 +184,6 @@ public class MainClock extends DigitalClockWidget {
 
     @Override
     public void init(Service service) {
-        // Get pkg info
-        String version = "n/a";
-        try {
-            PackageInfo pInfo = service.getPackageManager().getPackageInfo(service.getPackageName(), 0);
-            version = pInfo.versionName;
-        } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
-        }
-
-        // Please do not change the following line
-        Toast.makeText(service, "GreatFit "+ version +" by GreatApo, style by "+service.getResources().getString(R.string.author), Toast.LENGTH_LONG).show();
-
         //this.background = service.getResources().getDrawable(R.drawable.background); //todo
         //this.background.setBounds(0, 0, 320, 300);
         this.background = Util.decodeImage(service.getResources(),"background.png");
