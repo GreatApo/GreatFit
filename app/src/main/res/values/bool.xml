@@ -8,13 +8,13 @@
     <bool name="three_letters_month_if_text">true</bool><!-- Apr -->
     <bool name="three_letters_day_if_text">true</bool><!-- Mon -->
     <!-- Flashing features -->
-    <bool name="flashing_indicator">false</bool><!-- the : between hours and minutes -->
+    <bool name="flashing_indicator">true</bool><!-- the : between hours and minutes -->
     <!-- Wind direction as arrows -->
     <bool name="wind_direction_as_arrows">false</bool> <!-- false = W, S, E, N, SW etc  , true =  ↖ ↑ ↗ ← → ↙ ↓ ↘ -->
 
     <bool name="flashing_heart_rate_icon">true</bool>
 
-    <bool name="am_pm_always">true</bool> <!-- Show am/pm always (not only when 12h time format) -->
+    <bool name="am_pm_always">false</bool> <!-- Show am/pm always (not only when 12h time format) -->
 
     <!-- Show status bar (ex. charging icon) -->
     <bool name="status_bar">false</bool>
