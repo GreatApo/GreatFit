@@ -4,7 +4,7 @@
     <!-- Constant Elements -->
     <array name="hours">
         <item name="font_size">190px</item> <!-- font size -->
-        <item name="left">110px</item> <!-- position top -->
+        <item name="left">108px</item> <!-- position top -->
         <item name="top">226px</item> <!-- position left -->
         <item name="color">#ff0000</item> <!-- color -->
         <item name="align_left">false</item> <!-- align left -->
