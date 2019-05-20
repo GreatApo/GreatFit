@@ -362,7 +362,7 @@ public class GreatWidget extends AbstractWidget {
             case TIME:
                 // Update AM/PM
                 this.time = (Time) value;
-                if(!this.tempAMPM.equals(this.time.ampmStr) && settings.am_pmBool){
+                if(settings.am_pmBool && !this.tempAMPM.equals(this.time.ampmStr)){
                     this.tempAMPM = this.time.ampmStr;
                     refreshSlpt = true;
                 }
