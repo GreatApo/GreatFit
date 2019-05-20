@@ -21,7 +21,6 @@ import java.util.List;
 
 
 public class MoonPhaseWidget extends AbstractWidget {
-    private Calendar today;
     private Service mService;
 
     private Bitmap moonphaseImageIcon;
@@ -79,11 +78,8 @@ public class MoonPhaseWidget extends AbstractWidget {
     @Override
     public void draw(Canvas canvas, float width, float height, float centerX, float centerY) {
         // Draw Text
-        if(settings.moonphase>0) {
-            //canvas.drawText(txtx, settings.moonphaseLeft, settings.moonphaseTop, txtPaint);
-            if (moonphaseImageIcon != null) {
-                canvas.drawBitmap(this.moonphaseImageIcon, settings.moonphaseIconLeft, settings.moonphaseIconTop, settings.mGPaint);
-            }
+        if(settings.moonphase>0 && moonphaseImageIcon != null) {
+            canvas.drawBitmap(this.moonphaseImageIcon, settings.moonphaseIconLeft, settings.moonphaseIconTop, settings.mGPaint);
         }
     }
 
@@ -98,31 +94,23 @@ public class MoonPhaseWidget extends AbstractWidget {
         better_resolution = better_resolution && settings.better_resolution_when_raising_hand;
 
         List<SlptViewComponent> slpt_objects = new ArrayList<>();
+        this.mService = service;
 
-        try
-        {
-            String filename;
+        try  {
             // Get moon data
-            this.mService = service;
-
-            SlptPictureView weatherIcon = new SlptPictureView();
             int i = mf.getPhaseIndex();
-            if (better_resolution)
-                filename= String.format("26wc_moon/moon%d.png", i);
-            else
-                filename = String.format("slpt_moon/moon%d.png", i);
+            String filename = (better_resolution) ? String.format("26wc_moon/moon%d.png", i) : String.format("slpt_moon/moon%d.png", i);
 
-            weatherIcon.setImagePicture(SimpleFile.readFileFromAssets(service, filename));
-            weatherIcon.setStart(
+            SlptPictureView moonphaseIcon = new SlptPictureView();
+            moonphaseIcon.setImagePicture(SimpleFile.readFileFromAssets(service, filename));
+            moonphaseIcon.setStart(
                     (int) settings.moonphaseIconLeft,
                     (int) settings.moonphaseIconTop
             );
-            slpt_objects.add(weatherIcon);
+            slpt_objects.add(moonphaseIcon);
 
-        }
-        catch (Exception ex)
-        {
-//            Log.e(TAG,ex.toString());
+        } catch (Exception ex) {
+            //Log.e(TAG,ex.toString());
         }
 
         return slpt_objects;
