@@ -134,7 +134,7 @@ public class SportTodayDistanceWidget extends AbstractWidget {
             // Show or Not icon
             if (settings.today_distanceIcon) {
                 SlptPictureView today_distanceIcon = new SlptPictureView();
-                today_distanceIcon.setImagePicture( SimpleFile.readFileFromAssets(service, ( (better_resolution)?"":"slpt_" )+"icons/today_distance.png") );
+                today_distanceIcon.setImagePicture( SimpleFile.readFileFromAssets(service, ( (better_resolution)?"26wc_":"slpt_" )+"icons/today_distance.png") );
                 today_distanceIcon.setStart(
                         (int) settings.today_distanceIconLeft,
                         (int) settings.today_distanceIconTop

@@ -159,7 +159,7 @@ public class CaloriesWidget extends AbstractWidget {
             // Show or Not icon
             if (settings.battery_percentIcon) {
                 SlptPictureView caloriesIcon = new SlptPictureView();
-                caloriesIcon.setImagePicture(SimpleFile.readFileFromAssets(service, ((better_resolution) ? "" : "slpt_") + "icons/calories.png"));
+                caloriesIcon.setImagePicture(SimpleFile.readFileFromAssets(service, ((better_resolution) ? "26wc_" : "slpt_") + "icons/calories.png"));
                 caloriesIcon.setStart(
                         (int) settings.caloriesIconLeft,
                         (int) settings.caloriesIconTop

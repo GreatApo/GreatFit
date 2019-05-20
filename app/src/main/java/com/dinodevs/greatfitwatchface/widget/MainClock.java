@@ -460,7 +460,7 @@ public class MainClock extends DigitalClockWidget {
             // Show or Not icon
             if (settings.dateIcon) {
                 SlptPictureView dateIcon = new SlptPictureView();
-                dateIcon.setImagePicture( SimpleFile.readFileFromAssets(service, ( (better_resolution)?"":"slpt_" )+"icons/date.png") );
+                dateIcon.setImagePicture( SimpleFile.readFileFromAssets(service, ( (better_resolution)?"26wc_":"slpt_" )+"icons/date.png") );
                 dateIcon.setStart(
                         (int) settings.dateIconLeft,
                         (int) settings.dateIconTop

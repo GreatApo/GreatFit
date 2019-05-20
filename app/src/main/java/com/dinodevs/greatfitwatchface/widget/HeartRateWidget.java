@@ -207,7 +207,7 @@ public class HeartRateWidget extends AbstractWidget {
             // Show or Not icon
             if (settings.heart_rateIcon) {
                 SlptPictureView heart_rateIcon = new SlptPictureView();
-                heart_rateIcon.setImagePicture( SimpleFile.readFileFromAssets(service, ( (better_resolution)?"":"slpt_" )+"icons/heart_rate.png") );
+                heart_rateIcon.setImagePicture( SimpleFile.readFileFromAssets(service, ( (better_resolution)?"26wc_":"slpt_" )+"icons/heart_rate.png") );
                 heart_rateIcon.setStart(
                         (int) settings.heart_rateIconLeft,
                         (int) settings.heart_rateIconTop

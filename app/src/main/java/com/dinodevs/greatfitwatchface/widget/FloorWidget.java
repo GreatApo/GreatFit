@@ -86,7 +86,7 @@ public class FloorWidget extends AbstractWidget {
             // Show or Not icon
             if (settings.floorsIcon) {
                 SlptPictureView floorsIcon = new SlptPictureView();
-                floorsIcon.setImagePicture( SimpleFile.readFileFromAssets(service, ( (better_resolution)?"":"slpt_" )+"icons/floors.png") );
+                floorsIcon.setImagePicture( SimpleFile.readFileFromAssets(service, ( (better_resolution)?"26wc_":"slpt_" )+"icons/floors.png") );
                 floorsIcon.setStart(
                         (int) settings.floorsIconLeft,
                         (int) settings.floorsIconTop

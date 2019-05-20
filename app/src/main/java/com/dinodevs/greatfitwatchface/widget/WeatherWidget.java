@@ -375,7 +375,7 @@ public class WeatherWidget extends AbstractWidget {
         // Weather Icons
         if(settings.weather_img>0){
             SlptPictureView weatherIcon = new SlptPictureView();
-            weatherIcon.setImagePicture( SimpleFile.readFileFromAssets(service, String.format(( (better_resolution)?"":"slpt_" )+"weather/%s.png", this.weatherImageStrList.get(this.weather.weatherType))) );
+            weatherIcon.setImagePicture( SimpleFile.readFileFromAssets(service, String.format(( (better_resolution)?"26wc_":"slpt_" )+"weather/%s.png", this.weatherImageStrList.get(this.weather.weatherType))) );
             weatherIcon.setStart(
                     (int) settings.weather_imgIconLeft,
                     (int) settings.weather_imgIconTop
@@ -418,7 +418,7 @@ public class WeatherWidget extends AbstractWidget {
             // Show or Not icon
             if (settings.cityIcon) {
                 SlptPictureView cityIcon = new SlptPictureView();
-                cityIcon.setImagePicture( SimpleFile.readFileFromAssets(service, ( (better_resolution)?"":"slpt_" )+"icons/city.png") );
+                cityIcon.setImagePicture( SimpleFile.readFileFromAssets(service, ( (better_resolution)?"26wc_":"slpt_" )+"icons/city.png") );
                 cityIcon.setStart(
                         (int) settings.cityIconLeft,
                         (int) settings.cityIconTop
@@ -464,7 +464,7 @@ public class WeatherWidget extends AbstractWidget {
             // Show or Not icon
             if (settings.humidityIcon) {
                 SlptPictureView humidityIcon = new SlptPictureView();
-                humidityIcon.setImagePicture( SimpleFile.readFileFromAssets(service, ( (better_resolution)?"":"slpt_" )+"icons/humidity.png") );
+                humidityIcon.setImagePicture( SimpleFile.readFileFromAssets(service, ( (better_resolution)?"26wc_":"slpt_" )+"icons/humidity.png") );
                 humidityIcon.setStart(
                         (int) settings.humidityIconLeft,
                         (int) settings.humidityIconTop
@@ -510,7 +510,7 @@ public class WeatherWidget extends AbstractWidget {
             // Show or Not icon
             if (settings.uvIcon) {
                 SlptPictureView uvIcon = new SlptPictureView();
-                uvIcon.setImagePicture( SimpleFile.readFileFromAssets(service, ( (better_resolution)?"":"slpt_" )+"icons/uv.png") );
+                uvIcon.setImagePicture( SimpleFile.readFileFromAssets(service, ( (better_resolution)?"26wc_":"slpt_" )+"icons/uv.png") );
                 uvIcon.setStart(
                         (int) settings.uvIconLeft,
                         (int) settings.uvIconTop
@@ -556,7 +556,7 @@ public class WeatherWidget extends AbstractWidget {
             // Show or Not icon
             if (settings.wind_directionIcon) {
                 SlptPictureView wind_directionIcon = new SlptPictureView();
-                wind_directionIcon.setImagePicture( SimpleFile.readFileFromAssets(service, ( (better_resolution)?"":"slpt_" )+"icons/wind_direction.png") );
+                wind_directionIcon.setImagePicture( SimpleFile.readFileFromAssets(service, ( (better_resolution)?"26wc_":"slpt_" )+"icons/wind_direction.png") );
                 wind_directionIcon.setStart(
                         (int) settings.wind_directionIconLeft,
                         (int) settings.wind_directionIconTop
@@ -602,7 +602,7 @@ public class WeatherWidget extends AbstractWidget {
             // Show or Not icon
             if (settings.wind_strengthIcon) {
                 SlptPictureView wind_strengthIcon = new SlptPictureView();
-                wind_strengthIcon.setImagePicture( SimpleFile.readFileFromAssets(service, ( (better_resolution)?"":"slpt_" )+"icons/wind_strength.png") );
+                wind_strengthIcon.setImagePicture( SimpleFile.readFileFromAssets(service, ( (better_resolution)?"26wc_":"slpt_" )+"icons/wind_strength.png") );
                 wind_strengthIcon.setStart(
                         (int) settings.wind_strengthIconLeft,
                         (int) settings.wind_strengthIconTop

@@ -140,7 +140,7 @@ public class StepsWidget extends AbstractWidget {
             // Show or Not icon
             if (settings.stepsIcon) {
                 SlptPictureView stepsIcon = new SlptPictureView();
-                stepsIcon.setImagePicture( SimpleFile.readFileFromAssets(service, ( (better_resolution)?"":"slpt_" )+"icons/steps.png") );
+                stepsIcon.setImagePicture( SimpleFile.readFileFromAssets(service, ( (better_resolution)?"26wc_":"slpt_" )+"icons/steps.png") );
                 stepsIcon.setStart(
                         (int) settings.stepsIconLeft,
                         (int) settings.stepsIconTop

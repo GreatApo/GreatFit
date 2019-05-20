@@ -93,7 +93,7 @@ public class SportTotalDistanceWidget extends AbstractWidget {
             // Show or Not icon
             if (settings.total_distanceIcon) {
                 SlptPictureView total_distanceIcon = new SlptPictureView();
-                total_distanceIcon.setImagePicture( SimpleFile.readFileFromAssets(service, ( (better_resolution)?"":"slpt_" )+"icons/total_distance.png") );
+                total_distanceIcon.setImagePicture( SimpleFile.readFileFromAssets(service, ( (better_resolution)?"26wc_":"slpt_" )+"icons/total_distance.png") );
                 total_distanceIcon.setStart(
                         (int) settings.total_distanceIconLeft,
                         (int) settings.total_distanceIconTop

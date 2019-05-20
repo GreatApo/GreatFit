@@ -108,7 +108,7 @@ public class MoonPhaseWidget extends AbstractWidget {
             SlptPictureView weatherIcon = new SlptPictureView();
             int i = mf.getPhaseIndex();
             if (better_resolution)
-                filename= String.format("moon/moon%d.png", i);
+                filename= String.format("26wc_moon/moon%d.png", i);
             else
                 filename = String.format("slpt_moon/moon%d.png", i);
 
