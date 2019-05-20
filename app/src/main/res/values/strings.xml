@@ -75,6 +75,7 @@
 
     <!-- languages -->
     <string name="English">English</string>
+    <string name="Bulgarian">Български</string>
     <string name="Chinese">中文</string>
     <string name="Croatian">Hrvatski</string>
     <string name="Czech">Czech</string>

@@ -332,6 +332,7 @@
     <!-- languages -->
     <string-array name="language">
         <item>@string/English</item>
+        <item>@string/Bulgarian</item>
         <item>@string/Chinese</item>
         <item>@string/Croatian</item>
         <item>@string/Czech</item>
@@ -355,6 +356,7 @@
     </string-array>
     <string-array name="languages_EN">
         <item>English</item>
+        <item>Bulgarian</item>
         <item>Chinese</item>
         <item>Croatian</item>
         <item>Czech</item>
