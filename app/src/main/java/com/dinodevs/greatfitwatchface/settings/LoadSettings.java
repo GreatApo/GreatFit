@@ -480,6 +480,9 @@ public class LoadSettings {
     public int phone_batteryProgBgColor;
     public String phone_batteryProgBgImage;
     public String phone_batteryProgSlptImage;
+    // Clock
+    public boolean analog_clock;
+    public boolean digital_clock;
 
     // Default Parameters
     private void defaultParameters(){
@@ -506,6 +509,9 @@ public class LoadSettings {
             this.temp_calories = sharedPreferences.getInt( "temp_calories", 0);
             this.am_pm_always = sharedPreferences.getBoolean( "am_pm_always", context.getResources().getBoolean(R.bool.am_pm_always));
             this.world_time_zone = sharedPreferences.getFloat( "world_time_zone", -1f);
+
+            this.analog_clock = sharedPreferences.getBoolean( "analog_clock", context.getResources().getBoolean(R.bool.analog_clock));
+            this.digital_clock = sharedPreferences.getBoolean( "digital_clock", context.getResources().getBoolean(R.bool.digital_clock));
 
             // Populate color codes
             String[] colorCodes = context.getResources().getStringArray(R.array.color_codes);

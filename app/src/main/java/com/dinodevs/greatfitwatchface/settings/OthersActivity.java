@@ -36,6 +36,22 @@ public class OthersActivity extends FragmentActivity {
             }
         }, better_resolution_when_raising_hand));
 
+        final boolean analog_clock = sharedPreferences.getBoolean( "analog_clock", getResources().getBoolean(R.bool.analog_clock));
+        settings.add(new SwitchSetting(null, "Analog clock", "Show clock time hands", new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                sharedPreferences.edit().putBoolean( "analog_clock", b).apply();
+            }
+        }, analog_clock));
+
+        final boolean digital_clock = sharedPreferences.getBoolean( "digital_clock", getResources().getBoolean(R.bool.digital_clock));
+        settings.add(new SwitchSetting(null, "Digital clock", "Show digital clock", new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                sharedPreferences.edit().putBoolean( "digital_clock", b).apply();
+            }
+        }, digital_clock));
+
         final boolean flashing_indicator = sharedPreferences.getBoolean( "flashing_indicator", getResources().getBoolean(R.bool.flashing_indicator));
         settings.add(new SwitchSetting(null, "Flashing \":\"", "Make time's \":\" flashing", new CompoundButton.OnCheckedChangeListener() {
             @Override

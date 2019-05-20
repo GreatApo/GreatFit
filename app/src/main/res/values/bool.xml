@@ -2,6 +2,8 @@
 <resources>
 
     <bool name="better_resolution_when_raising_hand">true</bool>
+    <bool name="digital_clock">true</bool>
+    <bool name="analog_clock">false</bool>
     <bool name="no_0_on_hour_first_digit">true</bool>
     <!-- Month / Weekday -->
     <bool name="month_as_text">true</bool><!-- April -->
