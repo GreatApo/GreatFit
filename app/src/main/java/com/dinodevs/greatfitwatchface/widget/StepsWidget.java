@@ -135,6 +135,11 @@ public class StepsWidget extends AbstractWidget {
         List<SlptViewComponent> slpt_objects = new ArrayList<>();
         int tmp_left;
 
+        // Do not show in SLPT (but show on raise of hand)
+        boolean show_all = (!settings.clock_only_slpt || better_resolution);
+        if (!show_all)
+            return slpt_objects;
+
         // Show steps
         if(settings.steps>0){
             // Show or Not icon

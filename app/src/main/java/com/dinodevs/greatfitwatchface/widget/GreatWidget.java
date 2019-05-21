@@ -579,6 +579,11 @@ public class GreatWidget extends AbstractWidget {
         List<SlptViewComponent> slpt_objects = new ArrayList<>();
         int tmp_left;
 
+        // Do not show in SLPT (but show on raise of hand)
+        boolean show_all = (!settings.clock_only_slpt || better_resolution);
+        if (!show_all)
+            return slpt_objects;
+
         // Get AM/PM
         this.time = getSlptTime();
         this.tempAMPM = this.time.ampmStr;

@@ -40,8 +40,10 @@ public class GreatFitSlpt extends AbstractWatchFaceSlpt {
         LoadSettings settings = new LoadSettings(context);
 
         this.clock = new MainClock(settings);
-        if(settings.clock_only_slpt)
-            return super.onStartCommand(intent, flags, startId);
+
+        // Disable all except clock in both SLPT modes
+        //if(settings.clock_only_slpt)
+        //    return super.onStartCommand(intent, flags, startId);
 
         if(settings.isHeartRate()) {
             this.widgets.add(new HeartRateWidget(settings));
@@ -107,7 +109,6 @@ public class GreatFitSlpt extends AbstractWatchFaceSlpt {
         return result;
     }
 
-
     protected void initWatchFaceConfig() {
         Log.w("DinoDevs-GreatFit", "Initiating watchface");
 
@@ -117,4 +118,15 @@ public class GreatFitSlpt extends AbstractWatchFaceSlpt {
             this.setClockPeriodSecond(true);
         }
     }
+
+    @Override
+    public boolean isClockPeriodSecond() {
+        Context context = this.getApplicationContext();
+        boolean needRefreshSecond = Util.needSlptRefreshSecond(context);
+        if (needRefreshSecond) {
+            this.setClockPeriodSecond(true);
+        }
+        return needRefreshSecond;
+    }
+
 }

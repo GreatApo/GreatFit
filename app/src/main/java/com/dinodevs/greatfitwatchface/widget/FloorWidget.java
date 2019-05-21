@@ -82,6 +82,12 @@ public class FloorWidget extends AbstractWidget {
         //better_resolution = better_resolution && settings.better_resolution_when_raising_hand;
         List<SlptViewComponent> slpt_objects = new ArrayList<>();
 
+        // Do not show in SLPT (but show on raise of hand)
+        boolean show_all = (!settings.clock_only_slpt || better_resolution);
+        if (!show_all)
+            return slpt_objects;
+
+
         if(settings.floors>0){
             // Show or Not icon
             if (settings.floorsIcon) {

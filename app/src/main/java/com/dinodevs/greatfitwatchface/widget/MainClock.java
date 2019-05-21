@@ -339,6 +339,7 @@ public class MainClock extends DigitalClockWidget {
 
     public List<SlptViewComponent> buildSlptViewComponent(Service service, boolean better_resolution) {
         better_resolution = better_resolution && settings.better_resolution_when_raising_hand;
+        boolean show_all = (!settings.clock_only_slpt || better_resolution);
 
         int tmp_left;
         List<SlptViewComponent> slpt_objects = new ArrayList<>();
@@ -493,7 +494,7 @@ public class MainClock extends DigitalClockWidget {
         }
 
         // Draw DATE (30.12.2018)
-        if(settings.date>0 && !settings.clock_only_slpt){
+        if(settings.date>0 && show_all){
             // Show or Not icon
             if (settings.dateIcon) {
                 SlptPictureView dateIcon = new SlptPictureView();
@@ -547,7 +548,7 @@ public class MainClock extends DigitalClockWidget {
         }
 
         // Draw day of month
-        if(settings.dayBool && !settings.clock_only_slpt){
+        if(settings.dayBool && show_all){
             SlptLinearLayout dayLayout = new SlptLinearLayout();
             dayLayout.add(new SlptDayHView());
             dayLayout.add(new SlptDayLView());
@@ -576,7 +577,7 @@ public class MainClock extends DigitalClockWidget {
         }
 
         // Draw month
-        if(settings.monthBool && !settings.clock_only_slpt){
+        if(settings.monthBool && show_all){
             // JAVA calendar get/show time library
             Calendar calendar = Calendar.getInstance();
             int month = calendar.get(Calendar.MONTH);
@@ -637,7 +638,7 @@ public class MainClock extends DigitalClockWidget {
         }
 
         // Draw year number
-        if(settings.yearBool && !settings.clock_only_slpt){
+        if(settings.yearBool && show_all){
             SlptLinearLayout yearLayout = new SlptLinearLayout();
             yearLayout.add(new SlptYear3View());
             yearLayout.add(new SlptYear2View());
@@ -672,7 +673,7 @@ public class MainClock extends DigitalClockWidget {
         Typeface weekfont = ResourceManager.getTypeFace(service.getResources(), ResourceManager.Font.FONT_FILE);
 
         // Draw day name
-        if(settings.weekdayBool && !settings.clock_only_slpt){
+        if(settings.weekdayBool && show_all){
             SlptLinearLayout WeekdayLayout = new SlptLinearLayout();
             WeekdayLayout.add(new SlptWeekView());
             if(settings.three_letters_day_if_text){
