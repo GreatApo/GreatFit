@@ -487,9 +487,10 @@ public class LoadSettings {
     public boolean clock_only_slpt;
     public float scale;
 
-    public final String[] BUILD_VERGE_MODELS = {"Amazfit Verge"};
+    // Build.PRODUCT = Amazfit Verge or Amazfit Smartwatch
+    public final String[] BUILD_VERGE_MODELS = {"qogir", "qogirUS"};
     public boolean isVerge(){
-        return Arrays.asList(BUILD_VERGE_MODELS).contains(Build.MODEL);
+        return Arrays.asList(BUILD_VERGE_MODELS).contains(Build.PRODUCT);
     }
 
     // Default Parameters

@@ -110,13 +110,7 @@ public class GreatFitSlpt extends AbstractWatchFaceSlpt {
     }
 
     protected void initWatchFaceConfig() {
-        Log.w("DinoDevs-GreatFit", "Initiating watchface");
-
-        Context context = this.getApplicationContext();
-        boolean needRefreshSecond = Util.needSlptRefreshSecond(context);
-        if (needRefreshSecond) {
-            this.setClockPeriodSecond(true);
-        }
+        //Log.w("DinoDevs-GreatFit", "Initiating watchface");
     }
 
     @Override
