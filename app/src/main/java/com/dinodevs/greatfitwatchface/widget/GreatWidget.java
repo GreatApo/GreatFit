@@ -499,7 +499,7 @@ public class GreatWidget extends AbstractWidget {
             seconds = (60 - seconds)*1000;
 
             // Refresh AM/PM
-            if(settings.am_pmBool){
+            if(settings.am_pmBool && settings.digital_clock){
                 refreshTime = (11-(hours % 12))*60*60*1000 + minutes + seconds + millisecond+1;
             }
 
@@ -599,7 +599,7 @@ public class GreatWidget extends AbstractWidget {
         this.customData = getCustomData();
 
         // Draw AM or PM
-        if(settings.am_pmBool){
+        if(settings.am_pmBool && settings.digital_clock){
             SlptLinearLayout ampm = new SlptLinearLayout();
             SlptPictureView ampmStr = new SlptPictureView();
             ampmStr.setStringPicture( this.time.ampmStr );
