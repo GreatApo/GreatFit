@@ -40,6 +40,8 @@ public class GreatFitSlpt extends AbstractWatchFaceSlpt {
         LoadSettings settings = new LoadSettings(context);
 
         this.clock = new MainClock(settings);
+        if(settings.clock_only_slpt)
+            return super.onStartCommand(intent, flags, startId);
 
         if(settings.isHeartRate()) {
             this.widgets.add(new HeartRateWidget(settings));

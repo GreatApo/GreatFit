@@ -345,7 +345,9 @@ public class MainClock extends DigitalClockWidget {
 
         // Draw background image
         SlptPictureView background = new SlptPictureView();
-        background.setImagePicture(ResourceManager.getVergeImageFromAssets(settings.isVerge(), service, "background"+ ((better_resolution)?"_better":"") +"_slpt.png"));
+        background.setImagePicture(SimpleFile.readFileFromAssets(service, "background"+ ((better_resolution)?"_better":"") + ((settings.isVerge())?"_verge":"") +"_slpt.png"));
+        //Alternative way
+        //background.setImagePicture(ResourceManager.getVergeImageFromAssets(settings.isVerge(), service, "background"+ ((better_resolution)?"_better":"") +"_slpt.png"));
         slpt_objects.add(background);
 
         // Set font
@@ -440,7 +442,7 @@ public class MainClock extends DigitalClockWidget {
             }
 
             // Draw Seconds
-            if (settings.secondsBool && (!settings.isVerge() || better_resolution) ) {
+            if (settings.secondsBool ) { //&& (!settings.isVerge() || better_resolution)
                 SlptLinearLayout secondsLayout = new SlptLinearLayout();
                 secondsLayout.add(new SlptSecondHView());
                 secondsLayout.add(new SlptSecondLView());
@@ -491,7 +493,7 @@ public class MainClock extends DigitalClockWidget {
         }
 
         // Draw DATE (30.12.2018)
-        if(settings.date>0){
+        if(settings.date>0 && !settings.clock_only_slpt){
             // Show or Not icon
             if (settings.dateIcon) {
                 SlptPictureView dateIcon = new SlptPictureView();
@@ -545,7 +547,7 @@ public class MainClock extends DigitalClockWidget {
         }
 
         // Draw day of month
-        if(settings.dayBool){
+        if(settings.dayBool && !settings.clock_only_slpt){
             SlptLinearLayout dayLayout = new SlptLinearLayout();
             dayLayout.add(new SlptDayHView());
             dayLayout.add(new SlptDayLView());
@@ -574,7 +576,7 @@ public class MainClock extends DigitalClockWidget {
         }
 
         // Draw month
-        if(settings.monthBool){
+        if(settings.monthBool && !settings.clock_only_slpt){
             // JAVA calendar get/show time library
             Calendar calendar = Calendar.getInstance();
             int month = calendar.get(Calendar.MONTH);
@@ -635,7 +637,7 @@ public class MainClock extends DigitalClockWidget {
         }
 
         // Draw year number
-        if(settings.yearBool){
+        if(settings.yearBool && !settings.clock_only_slpt){
             SlptLinearLayout yearLayout = new SlptLinearLayout();
             yearLayout.add(new SlptYear3View());
             yearLayout.add(new SlptYear2View());
@@ -670,7 +672,7 @@ public class MainClock extends DigitalClockWidget {
         Typeface weekfont = ResourceManager.getTypeFace(service.getResources(), ResourceManager.Font.FONT_FILE);
 
         // Draw day name
-        if(settings.weekdayBool){
+        if(settings.weekdayBool && !settings.clock_only_slpt){
             SlptLinearLayout WeekdayLayout = new SlptLinearLayout();
             WeekdayLayout.add(new SlptWeekView());
             if(settings.three_letters_day_if_text){

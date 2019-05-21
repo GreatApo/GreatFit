@@ -52,6 +52,14 @@ public class OthersActivity extends FragmentActivity {
             }
         }, digital_clock));
 
+        final boolean clock_only_slpt = sharedPreferences.getBoolean( "clock_only_slpt", getResources().getBoolean(R.bool.clock_only_slpt));
+        settings.add(new SwitchSetting(null, "SLPT clock only", "Show only clock when screen is off", new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                sharedPreferences.edit().putBoolean( "clock_only_slpt", b).apply();
+            }
+        }, clock_only_slpt));
+
         final boolean flashing_indicator = sharedPreferences.getBoolean( "flashing_indicator", getResources().getBoolean(R.bool.flashing_indicator));
         settings.add(new SwitchSetting(null, "Flashing \":\"", "Make time's \":\" flashing", new CompoundButton.OnCheckedChangeListener() {
             @Override
