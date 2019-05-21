@@ -236,54 +236,60 @@ public class GreatWidget extends AbstractWidget {
         if(airPressureBool) {
             // WearCompass.jar!\com\huami\watch\compass\logic\GeographicManager.class
             this.mManager = (SensorManager) this.mService.getApplicationContext().getSystemService(Context.SENSOR_SERVICE);
-            this.mPressureSensor = this.mManager.getDefaultSensor(6);
-            this.mListener = new SensorEventListener() {
-                public void onAccuracyChanged(Sensor parameter1, int parameter2) {
-                }
+            try {
+                this.mPressureSensor = this.mManager.getDefaultSensor(6);
+                this.mListener = new SensorEventListener() {
+                    public void onAccuracyChanged(Sensor parameter1, int parameter2) {
+                    }
 
-                public void onSensorChanged(SensorEvent parameters) {
-                    GreatWidget.this.mManager.unregisterListener(this);
-                    float[] pressure = parameters.values;
-                    if (pressure != null && pressure.length > 0) {
-                        float value = pressure[0];
-                        //Log.d("DinoDevs-GreatFit", "Pressure is " + value + " hPa");
-                        if (value > 0 && !(Float.toString(value)).equals(GreatWidget.this.tempAirPressure)) {
-                            GreatWidget.this.tempAirPressure = Float.toString(value);
-                            // Save
-                            String data = Settings.System.getString(GreatWidget.this.mService.getContentResolver(), "CustomWatchfaceData");
+                    public void onSensorChanged(SensorEvent parameters) {
+                        GreatWidget.this.mManager.unregisterListener(this);
+                        float[] pressure = parameters.values;
+                        if (pressure != null && pressure.length > 0) {
+                            float value = pressure[0];
+                            //Log.d("DinoDevs-GreatFit", "Pressure is " + value + " hPa");
+                            if (value > 0 && !(Float.toString(value)).equals(GreatWidget.this.tempAirPressure)) {
+                                GreatWidget.this.tempAirPressure = Float.toString(value);
+                                // Save
+                                String data = Settings.System.getString(GreatWidget.this.mService.getContentResolver(), "CustomWatchfaceData");
 
-                            if (data == null || data.equals("")) { data = "{}"; }
-
-                            try {
-                                // Extract data from JSON
-                                JSONObject json_data = new JSONObject(data);
-                                json_data.put("airPressure", GreatWidget.this.tempAirPressure);
-                                // Get temperature
-                                if(settings.altitude>0){
-                                    String str = Settings.System.getString(GreatWidget.this.mService.getApplicationContext().getContentResolver(), "WeatherInfo");
-                                    JSONObject weather_data;
-                                    try {
-                                        weather_data = new JSONObject(str);
-                                        String tempUnit = weather_data.getString("tempUnit");
-                                        String temp = weather_data.getString("temp");
-
-                                        if(!tempUnit.equals("C"))
-                                            temp = String.valueOf((Integer.parseInt(temp)-32)*5/9);
-
-                                        json_data.put("temperature", temp);
-                                    } catch (JSONException e) {
-                                        // Nothing
-                                    }
+                                if (data == null || data.equals("")) {
+                                    data = "{}";
                                 }
 
-                                Settings.System.putString(GreatWidget.this.mService.getContentResolver(), "CustomWatchfaceData", json_data.toString());
-                            } catch (JSONException e) {
-                                Settings.System.putString(GreatWidget.this.mService.getContentResolver(), "CustomWatchfaceData", "{\"airPressure\":\"" + GreatWidget.this.tempAirPressure + "\"}");//,\"phoneBattery\":\""+this.phoneBattery+"\",\"phoneAlarm\":\""+this.phoneAlarm+"\"}");//default
+                                try {
+                                    // Extract data from JSON
+                                    JSONObject json_data = new JSONObject(data);
+                                    json_data.put("airPressure", GreatWidget.this.tempAirPressure);
+                                    // Get temperature
+                                    if (settings.altitude > 0) {
+                                        String str = Settings.System.getString(GreatWidget.this.mService.getApplicationContext().getContentResolver(), "WeatherInfo");
+                                        JSONObject weather_data;
+                                        try {
+                                            weather_data = new JSONObject(str);
+                                            String tempUnit = weather_data.getString("tempUnit");
+                                            String temp = weather_data.getString("temp");
+
+                                            if (!tempUnit.equals("C"))
+                                                temp = String.valueOf((Integer.parseInt(temp) - 32) * 5 / 9);
+
+                                            json_data.put("temperature", temp);
+                                        } catch (JSONException | NumberFormatException e) {
+                                            // Nothing
+                                        }
+                                    }
+
+                                    Settings.System.putString(GreatWidget.this.mService.getContentResolver(), "CustomWatchfaceData", json_data.toString());
+                                } catch (JSONException e) {
+                                    Settings.System.putString(GreatWidget.this.mService.getContentResolver(), "CustomWatchfaceData", "{\"airPressure\":\"" + GreatWidget.this.tempAirPressure + "\"}");//,\"phoneBattery\":\""+this.phoneBattery+"\",\"phoneAlarm\":\""+this.phoneAlarm+"\"}");//default
+                                }
                             }
                         }
                     }
-                }
-            };
+                };
+            } catch (NullPointerException e) {
+                // Nothing
+            }
         }
 
         // Custom time refresher
