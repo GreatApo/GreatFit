@@ -73,10 +73,10 @@ adb shell pm clear com.dinodevs.greatfitwatchface
 
 This project couldn't be possible without getting familiar with the source code provided by Manuel Alvarez (whose code is [here](https://github.com/manuel-alvarez-alvarez/malvarez-watchface)). Additional work has be done by Fabio Barbon (whose code is [here](https://github.com/drbourbon/drbourbon-watchfaces)), Luis Baena (@LBA97) and Saúl Alemán (@Nxsaul) (whose code is [here](https://github.com/Nxsaul/AmazfitAPKs)).
 
-Translations are ported from my Pace Calendar widget project (code [here](https://github.com/GreatApo/AmazfitPaceCalendarWidget), see translators in the changelog [here](https://forum.xda-developers.com/smartwatch/amazfit/app-widget-calendar-pace-t3751889)) and @GramThanos jsCalendar project (code [here](https://github.com/GramThanos/jsCalendar)).
+Translations are ported from my Pace Calendar widget project (code [here](https://github.com/GreatApo/AmazfitPaceCalendarWidget), see translators in the changelog [here](https://forum.xda-developers.com/smartwatch/amazfit/app-widget-calendar-pace-t3751889)), @GramThanos jsCalendar project (code [here](https://github.com/GramThanos/jsCalendar)) and by users here or on XDA (see changelog).
 
 Special thanks to:
-- @lfom and @GramThanos for helping me out
+- @lfom, @GramThanos, @renzettis and the rest of the Amazmod team for helping me out
 - @KieronQuinn for the settings style code (from his [AmazfitStepNotify](https://github.com/KieronQuinn/AmazfitStepNotify) app)
 - and all those invisible people giving back to the community by helping or donating!
 
