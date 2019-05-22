@@ -3,6 +3,7 @@
 ![GreatFit Watchface Banner](other/images/1.jpg)
 
 ONE WATCHFACE TO RULE THEM ALL!
+
 XDA Topic [here](https://forum.xda-developers.com/smartwatch/amazfit/app-watchface-greatfit-v1-1-settings-t3791516)
 
 
