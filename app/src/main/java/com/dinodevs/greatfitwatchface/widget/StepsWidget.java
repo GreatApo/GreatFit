@@ -77,7 +77,7 @@ public class StepsWidget extends AbstractWidget {
         // Steps class
         this.stepsData = (Steps) value;
         // Bar angle
-        this.stepsSweepAngle = (this.stepsData == null)? 0f : this.angleLength*((float) this.stepsData.getSteps()/this.stepsData.getTarget());
+        this.stepsSweepAngle = (this.stepsData == null)? 0f : this.angleLength*((float) (this.stepsData.getSteps()>this.stepsData.getTarget()?this.stepsData.getTarget():this.stepsData.getSteps())/this.stepsData.getTarget());
     }
 
     // Register update listeners
