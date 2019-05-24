@@ -111,6 +111,9 @@ public class WidgetsActivity extends FragmentActivity {
             case "watch_alarm":
                 subtitle = getString(R.string.nextWatchAlarm);
                 break;
+            case "notifications":
+                subtitle = getString(R.string.needAmazmod);
+                break;
         }
 
         return subtitle;

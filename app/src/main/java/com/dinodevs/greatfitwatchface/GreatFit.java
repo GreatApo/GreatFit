@@ -61,11 +61,11 @@ public class GreatFit extends AbstractWatchFace {
         if(settings.isWeather()) {
             this.widgets.add(new WeatherWidget(settings));
         }
-        if(settings.isGreat()) {
-            this.widgets.add(new GreatWidget(settings));
-        }
         if (settings.isMoonPhase()){
             this.widgets.add(new MoonPhaseWidget(settings));
+        }
+        if(settings.isGreat()) {
+            this.widgets.add(new GreatWidget(settings));
         }
 
         status_bar(settings.status_bar, settings.status_barLeft, settings.status_barTop);
