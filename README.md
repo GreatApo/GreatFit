@@ -1,4 +1,4 @@
-[![latest release](https://img.shields.io/github/release/GreatApo/GreatFit.svg?colorB=green&label=latest%20release&style=flat-square) ![release date](https://img.shields.io/badge/release%20date-2019.01.16-orange.svg?style=flat-square) ![Downloads](https://img.shields.io/github/downloads/GreatApo/GreatFit/total.svg?style=flat-square) ![HitCount](http://hits.dwyl.io/GreatApo/GreatFit.svg)](https://github.com/GreatApo/GreatFit/releases/latest)
+[![latest release](https://img.shields.io/github/release/GreatApo/GreatFit.svg?colorB=green&label=latest%20release&style=flat-square) ![release date](https://img.shields.io/badge/release%20date-2019.05.24-orange.svg?style=flat-square) ![Downloads](https://img.shields.io/github/downloads/GreatApo/GreatFit/total.svg?style=flat-square) ![HitCount](http://hits.dwyl.io/GreatApo/GreatFit.svg)](https://github.com/GreatApo/GreatFit/releases/latest)
 # GreatFit: Amazfit Pace/Stratos/Verge APK Watchface sources
 ![GreatFit Watchface Banner](other/images/1.jpg)
 
@@ -15,7 +15,7 @@ XDA Topic [here](https://forum.xda-developers.com/smartwatch/amazfit/app-watchfa
 - Seconds are enabled based on your system settings (refresh the watchface)
 - More weather widgets (humidity, wind direction and strength, UV status, city)
 - New watch alarm widget
-- New air pressure, altitude/dive depth (calculated based on air pressure)
+- New air pressure, altitude/dive depth (calculated based on air pressure & temperature)
 - New xdrip values widget (will be supported with Xdrip by Klaus3d3)
 - New phone battery widget/bar (needs amazfit service+phone app)
 - New phone alarm widget (needs amazfit service+phone app)
@@ -28,6 +28,12 @@ XDA Topic [here](https://forum.xda-developers.com/smartwatch/amazfit/app-watchfa
 - Ability to show only time when screen is off (to save battery, doesn't apply on raise of hand screen)
 - Status bar position and enable/disable
 - Many other options available in settings
+
+
+### Bugs
+- Screen off mode not is sometimes not applied when saving the watchface, just change to an other and change back
+- Screen off mode shows widgets over old widgets, just change to an other and change back
+- Xdrip widget is not working
 
 
 ### Tutorial for devs and stylers
