@@ -175,7 +175,7 @@ public class MainClock extends DigitalClockWidget {
         //this.background.setBounds(0, 0, 320, 300);
         this.background = Util.decodeImage(service.getResources(),"background.png");
         if(settings.isVerge())
-            this.background = Bitmap.createScaledBitmap(this.background, 360, 360, true);
+            this.background = Bitmap.createScaledBitmap(this.background, 360, 336, true);// 336 because it is scaled from 300px and not 320px
 
         if(settings.digital_clock) {
             this.hourFont = new TextPaint(TextPaint.ANTI_ALIAS_FLAG);
