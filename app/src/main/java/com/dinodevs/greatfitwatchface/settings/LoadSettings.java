@@ -12,6 +12,7 @@ import android.support.annotation.StyleableRes;
 import android.util.Log;
 
 import com.dinodevs.greatfitwatchface.R;
+import com.dinodevs.greatfitwatchface.resource.ResourceManager;
 import com.huami.watch.watchface.util.Util;
 
 import java.util.Arrays;
@@ -41,6 +42,7 @@ public class LoadSettings {
     public String author;
     public int language;
     public int color;
+    public int font_no;
     public Integer[] colorCodes;
     public boolean flashing_indicator;
     public boolean month_as_text;
@@ -487,6 +489,8 @@ public class LoadSettings {
     public boolean clock_only_slpt;
     public float scale;
 
+    public ResourceManager.Font font;
+
     // Build.PRODUCT = Amazfit Verge or Amazfit Smartwatch
     public final String[] BUILD_VERGE_MODELS = {"qogir", "qogirUS"};
     public boolean isVerge(){
@@ -505,6 +509,7 @@ public class LoadSettings {
             this.author = context.getResources().getString(R.string.author);
             this.language = sharedPreferences.getInt( "language", 0);
             this.color = sharedPreferences.getInt( "color", -1);
+            this.font_no = sharedPreferences.getInt( "font", 0);
             this.better_resolution_when_raising_hand = sharedPreferences.getBoolean( "better_resolution_when_raising_hand", context.getResources().getBoolean(R.bool.better_resolution_when_raising_hand));
             this.flashing_indicator = sharedPreferences.getBoolean( "flashing_indicator", context.getResources().getBoolean(R.bool.flashing_indicator));
             this.month_as_text = sharedPreferences.getBoolean( "month_as_text", context.getResources().getBoolean(R.bool.month_as_text));
@@ -535,6 +540,9 @@ public class LoadSettings {
                 this.colorCodes[x] = Color.parseColor(color);
                 x++;
             }
+
+            // Select Font
+            this.font = ResourceManager.Font.values()[font_no];
 
             //icon paint
             this.mGPaint = new Paint();

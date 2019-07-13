@@ -113,7 +113,7 @@ public class GreatWidget extends AbstractWidget {
             this.tempAMPM = this.time.ampmStr;
             this.ampmPaint = new TextPaint(TextPaint.ANTI_ALIAS_FLAG);
             this.ampmPaint.setColor(settings.am_pmColor);
-            this.ampmPaint.setTypeface(ResourceManager.getTypeFace(service.getResources(), ResourceManager.Font.FONT_FILE));
+            this.ampmPaint.setTypeface(ResourceManager.getTypeFace(service.getResources(), settings.font));
             this.ampmPaint.setTextSize(settings.am_pmFontSize);
             this.ampmPaint.setTextAlign((settings.am_pmAlignLeft) ? Paint.Align.LEFT : Paint.Align.CENTER);
         }
@@ -124,7 +124,7 @@ public class GreatWidget extends AbstractWidget {
             this.alarm = this.alarmData.alarm; // ex: Fri 10:30
             this.alarmPaint = new TextPaint(TextPaint.ANTI_ALIAS_FLAG);
             this.alarmPaint.setColor(settings.watch_alarmColor);
-            this.alarmPaint.setTypeface(ResourceManager.getTypeFace(service.getResources(), ResourceManager.Font.FONT_FILE));
+            this.alarmPaint.setTypeface(ResourceManager.getTypeFace(service.getResources(), settings.font));
             this.alarmPaint.setTextSize(settings.watch_alarmFontSize);
             this.alarmPaint.setTextAlign((settings.watch_alarmAlignLeft) ? Paint.Align.LEFT : Paint.Align.CENTER);
 
@@ -139,7 +139,7 @@ public class GreatWidget extends AbstractWidget {
             this.xdripData = getXdrip();
             this.xdripPaint = new TextPaint(TextPaint.ANTI_ALIAS_FLAG);
             this.xdripPaint.setColor(settings.xdripColor);
-            this.xdripPaint.setTypeface(ResourceManager.getTypeFace(service.getResources(), ResourceManager.Font.FONT_FILE));
+            this.xdripPaint.setTypeface(ResourceManager.getTypeFace(service.getResources(), settings.font));
             this.xdripPaint.setTextSize(settings.xdripFontSize);
             this.xdripPaint.setTextAlign((settings.xdripAlignLeft) ? Paint.Align.LEFT : Paint.Align.CENTER);
 
@@ -155,7 +155,7 @@ public class GreatWidget extends AbstractWidget {
             if(settings.air_pressure>0) {
                 this.airPressurePaint = new TextPaint(TextPaint.ANTI_ALIAS_FLAG);
                 this.airPressurePaint.setColor(settings.air_pressureColor);
-                this.airPressurePaint.setTypeface(ResourceManager.getTypeFace(service.getResources(), ResourceManager.Font.FONT_FILE));
+                this.airPressurePaint.setTypeface(ResourceManager.getTypeFace(service.getResources(), settings.font));
                 this.airPressurePaint.setTextSize(settings.air_pressureFontSize);
                 this.airPressurePaint.setTextAlign((settings.air_pressureAlignLeft) ? Paint.Align.LEFT : Paint.Align.CENTER);
 
@@ -166,7 +166,7 @@ public class GreatWidget extends AbstractWidget {
             if(settings.altitude>0) {
                 this.altitudePaint = new TextPaint(TextPaint.ANTI_ALIAS_FLAG);
                 this.altitudePaint.setColor(settings.altitudeColor);
-                this.altitudePaint.setTypeface(ResourceManager.getTypeFace(service.getResources(), ResourceManager.Font.FONT_FILE));
+                this.altitudePaint.setTypeface(ResourceManager.getTypeFace(service.getResources(), settings.font));
                 this.altitudePaint.setTextSize(settings.altitudeFontSize);
                 this.altitudePaint.setTextAlign((settings.altitudeAlignLeft) ? Paint.Align.LEFT : Paint.Align.CENTER);
 
@@ -177,7 +177,7 @@ public class GreatWidget extends AbstractWidget {
             if(settings.phone_battery>0) {
                 this.phoneBatteryPaint = new TextPaint(TextPaint.ANTI_ALIAS_FLAG);
                 this.phoneBatteryPaint.setColor(settings.phone_batteryColor);
-                this.phoneBatteryPaint.setTypeface(ResourceManager.getTypeFace(service.getResources(), ResourceManager.Font.FONT_FILE));
+                this.phoneBatteryPaint.setTypeface(ResourceManager.getTypeFace(service.getResources(), settings.font));
                 this.phoneBatteryPaint.setTextSize(settings.phone_batteryFontSize);
                 this.phoneBatteryPaint.setTextAlign((settings.phone_batteryAlignLeft) ? Paint.Align.LEFT : Paint.Align.CENTER);
 
@@ -188,7 +188,7 @@ public class GreatWidget extends AbstractWidget {
             if(settings.phone_alarm>0) {
                 this.phoneAlarmPaint = new TextPaint(TextPaint.ANTI_ALIAS_FLAG);
                 this.phoneAlarmPaint.setColor(settings.phone_alarmColor);
-                this.phoneAlarmPaint.setTypeface(ResourceManager.getTypeFace(service.getResources(), ResourceManager.Font.FONT_FILE));
+                this.phoneAlarmPaint.setTypeface(ResourceManager.getTypeFace(service.getResources(), settings.font));
                 this.phoneAlarmPaint.setTextSize(settings.phone_alarmFontSize);
                 this.phoneAlarmPaint.setTextAlign((settings.phone_alarmAlignLeft) ? Paint.Align.LEFT : Paint.Align.CENTER);
 
@@ -199,7 +199,7 @@ public class GreatWidget extends AbstractWidget {
             if(settings.notifications>0) {
                 this.notificationsPaint = new TextPaint(TextPaint.ANTI_ALIAS_FLAG);
                 this.notificationsPaint.setColor(settings.notificationsColor);
-                this.notificationsPaint.setTypeface(ResourceManager.getTypeFace(service.getResources(), ResourceManager.Font.FONT_FILE));
+                this.notificationsPaint.setTypeface(ResourceManager.getTypeFace(service.getResources(), settings.font));
                 this.notificationsPaint.setTextSize(settings.notificationsFontSize);
                 this.notificationsPaint.setTextAlign((settings.notificationsAlignLeft) ? Paint.Align.LEFT : Paint.Align.CENTER);
 
@@ -214,7 +214,7 @@ public class GreatWidget extends AbstractWidget {
             // Get world_time
             this.world_timePaint = new TextPaint(TextPaint.ANTI_ALIAS_FLAG);
             this.world_timePaint.setColor(settings.world_timeColor);
-            this.world_timePaint.setTypeface(ResourceManager.getTypeFace(service.getResources(), ResourceManager.Font.FONT_FILE));
+            this.world_timePaint.setTypeface(ResourceManager.getTypeFace(service.getResources(), settings.font));
             this.world_timePaint.setTextSize(settings.world_timeFontSize);
             this.world_timePaint.setTextAlign((settings.world_timeAlignLeft) ? Paint.Align.LEFT : Paint.Align.CENTER);
 
@@ -607,7 +607,7 @@ public class GreatWidget extends AbstractWidget {
             ampm.setTextAttrForAll(
                     settings.am_pmFontSize,
                     settings.am_pmColor,
-                    ResourceManager.getTypeFace(service.getResources(), ResourceManager.Font.FONT_FILE)
+                    ResourceManager.getTypeFace(service.getResources(), settings.font)
             );
             // Position based on screen on
             ampm.alignX = 2;
@@ -649,7 +649,7 @@ public class GreatWidget extends AbstractWidget {
             alarmLayout.setTextAttrForAll(
                     settings.watch_alarmFontSize,
                     settings.watch_alarmColor,
-                    ResourceManager.getTypeFace(service.getResources(), ResourceManager.Font.FONT_FILE)
+                    ResourceManager.getTypeFace(service.getResources(), settings.font)
             );
             // Position based on screen on
             alarmLayout.alignX = 2;
@@ -691,7 +691,7 @@ public class GreatWidget extends AbstractWidget {
             xdripLayout.setTextAttrForAll(
                     settings.xdripFontSize,
                     settings.xdripColor,
-                    ResourceManager.getTypeFace(service.getResources(), ResourceManager.Font.FONT_FILE)
+                    ResourceManager.getTypeFace(service.getResources(), settings.font)
             );
             // Position based on screen on
             xdripLayout.alignX = 2;
@@ -740,7 +740,7 @@ public class GreatWidget extends AbstractWidget {
             airPressureLayout.setTextAttrForAll(
                     settings.air_pressureFontSize,
                     settings.air_pressureColor,
-                    ResourceManager.getTypeFace(service.getResources(), ResourceManager.Font.FONT_FILE)
+                    ResourceManager.getTypeFace(service.getResources(), settings.font)
             );
             // Position based on screen on
             airPressureLayout.alignX = 2;
@@ -788,7 +788,7 @@ public class GreatWidget extends AbstractWidget {
             altitudeLayout.setTextAttrForAll(
                     settings.altitudeFontSize,
                     settings.altitudeColor,
-                    ResourceManager.getTypeFace(service.getResources(), ResourceManager.Font.FONT_FILE)
+                    ResourceManager.getTypeFace(service.getResources(), settings.font)
             );
             // Position based on screen on
             altitudeLayout.alignX = 2;
@@ -830,7 +830,7 @@ public class GreatWidget extends AbstractWidget {
             phoneBatteryLayout.setTextAttrForAll(
                     settings.phone_batteryFontSize,
                     settings.phone_batteryColor,
-                    ResourceManager.getTypeFace(service.getResources(), ResourceManager.Font.FONT_FILE)
+                    ResourceManager.getTypeFace(service.getResources(), settings.font)
             );
             // Position based on screen on
             phoneBatteryLayout.alignX = 2;
@@ -872,7 +872,7 @@ public class GreatWidget extends AbstractWidget {
             phoneAlarmLayout.setTextAttrForAll(
                     settings.phone_alarmFontSize,
                     settings.phone_alarmColor,
-                    ResourceManager.getTypeFace(service.getResources(), ResourceManager.Font.FONT_FILE)
+                    ResourceManager.getTypeFace(service.getResources(), settings.font)
             );
             // Position based on screen on
             phoneAlarmLayout.alignX = 2;
@@ -911,14 +911,14 @@ public class GreatWidget extends AbstractWidget {
             SlptPictureView notificationsStr = new SlptPictureView();
             // These can be used instead of setTextAttrForAll()
             //notificationsStr.textSize = settings.notificationsFontSize;
-            //notificationsStr.typeface = ResourceManager.getTypeFace(service.getResources(), ResourceManager.Font.FONT_FILE);
+            //notificationsStr.typeface = ResourceManager.getTypeFace(service.getResources(), settings.font);
             //notificationsStr.textColor = settings.notificationsColor;
             notificationsStr.setStringPicture( this.customData.notifications );
             notificationsLayout.add(notificationsStr);
             notificationsLayout.setTextAttrForAll(
                     settings.notificationsFontSize,
                     settings.notificationsColor,
-                    null//ResourceManager.getTypeFace(service.getResources(), ResourceManager.Font.FONT_FILE) //This causes error for some reason...
+                    null//ResourceManager.getTypeFace(service.getResources(), settings.font) //This causes error for some reason...
             );
             // Position based on screen on
             notificationsLayout.alignX = 2;
@@ -977,7 +977,7 @@ public class GreatWidget extends AbstractWidget {
             world_timeLayout.setTextAttrForAll(
                     settings.world_timeFontSize,
                     settings.world_timeColor,
-                    ResourceManager.getTypeFace(service.getResources(), ResourceManager.Font.FONT_FILE)
+                    ResourceManager.getTypeFace(service.getResources(), settings.font)
             );
             // Position based on screen on
             world_timeLayout.alignX = 2;

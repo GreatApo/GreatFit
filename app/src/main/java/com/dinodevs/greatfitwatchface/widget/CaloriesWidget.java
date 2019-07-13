@@ -62,7 +62,7 @@ public class CaloriesWidget extends AbstractWidget {
             // Font
             this.textPaint = new TextPaint(TextPaint.ANTI_ALIAS_FLAG);
             this.textPaint.setColor(settings.caloriesColor);
-            this.textPaint.setTypeface(ResourceManager.getTypeFace(service.getResources(), ResourceManager.Font.FONT_FILE));
+            this.textPaint.setTypeface(ResourceManager.getTypeFace(service.getResources(), settings.font));
             this.textPaint.setTextSize(settings.caloriesFontSize);
             this.textPaint.setTextAlign((settings.caloriesAlignLeft) ? Paint.Align.LEFT : Paint.Align.CENTER);
 
@@ -184,7 +184,7 @@ public class CaloriesWidget extends AbstractWidget {
             caloriesLayout.setTextAttrForAll(
                     settings.caloriesFontSize,
                     settings.caloriesColor,
-                    ResourceManager.getTypeFace(service.getResources(), ResourceManager.Font.FONT_FILE)
+                    ResourceManager.getTypeFace(service.getResources(), settings.font)
             );
             // Position based on screen on
             caloriesLayout.alignX = 2;

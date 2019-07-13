@@ -179,25 +179,25 @@ public class MainClock extends DigitalClockWidget {
 
         if(settings.digital_clock) {
             this.hourFont = new TextPaint(TextPaint.ANTI_ALIAS_FLAG);
-            this.hourFont.setTypeface(ResourceManager.getTypeFace(service.getResources(), ResourceManager.Font.FONT_FILE));
+            this.hourFont.setTypeface(ResourceManager.getTypeFace(service.getResources(), settings.font));
             this.hourFont.setTextSize(settings.hoursFontSize);
             this.hourFont.setColor(settings.hoursColor);
             this.hourFont.setTextAlign((settings.hoursAlignLeft) ? Paint.Align.LEFT : Paint.Align.CENTER);
 
             this.minutesFont = new TextPaint(TextPaint.ANTI_ALIAS_FLAG);
-            this.minutesFont.setTypeface(ResourceManager.getTypeFace(service.getResources(), ResourceManager.Font.FONT_FILE));
+            this.minutesFont.setTypeface(ResourceManager.getTypeFace(service.getResources(), settings.font));
             this.minutesFont.setTextSize(settings.minutesFontSize);
             this.minutesFont.setColor(settings.minutesColor);
             this.minutesFont.setTextAlign((settings.minutesAlignLeft) ? Paint.Align.LEFT : Paint.Align.CENTER);
 
             this.secondsFont = new TextPaint(TextPaint.ANTI_ALIAS_FLAG);
-            this.secondsFont.setTypeface(ResourceManager.getTypeFace(service.getResources(), ResourceManager.Font.FONT_FILE));
+            this.secondsFont.setTypeface(ResourceManager.getTypeFace(service.getResources(), settings.font));
             this.secondsFont.setTextSize(settings.secondsFontSize);
             this.secondsFont.setColor(settings.secondsColor);
             this.secondsFont.setTextAlign((settings.secondsAlignLeft) ? Paint.Align.LEFT : Paint.Align.CENTER);
 
             this.indicatorFont = new TextPaint(TextPaint.ANTI_ALIAS_FLAG);
-            this.indicatorFont.setTypeface(ResourceManager.getTypeFace(service.getResources(), ResourceManager.Font.FONT_FILE));
+            this.indicatorFont.setTypeface(ResourceManager.getTypeFace(service.getResources(), settings.font));
             this.indicatorFont.setTextSize(settings.indicatorFontSize);
             this.indicatorFont.setColor(settings.indicatorColor);
             this.indicatorFont.setTextAlign((settings.indicatorAlignLeft) ? Paint.Align.LEFT : Paint.Align.CENTER);
@@ -211,7 +211,7 @@ public class MainClock extends DigitalClockWidget {
 
         if(settings.date>0) {
             this.dateFont = new TextPaint(TextPaint.ANTI_ALIAS_FLAG);
-            this.dateFont.setTypeface(ResourceManager.getTypeFace(service.getResources(), ResourceManager.Font.FONT_FILE));
+            this.dateFont.setTypeface(ResourceManager.getTypeFace(service.getResources(), settings.font));
             this.dateFont.setTextSize(settings.dateFontSize);
             this.dateFont.setColor(settings.dateColor);
             this.dateFont.setTextAlign((settings.dateAlignLeft) ? Paint.Align.LEFT : Paint.Align.CENTER);
@@ -221,25 +221,25 @@ public class MainClock extends DigitalClockWidget {
         }
 
         this.weekdayFont = new TextPaint(TextPaint.ANTI_ALIAS_FLAG);
-        this.weekdayFont.setTypeface(ResourceManager.getTypeFace(service.getResources(), ResourceManager.Font.FONT_FILE));
+        this.weekdayFont.setTypeface(ResourceManager.getTypeFace(service.getResources(), settings.font));
         this.weekdayFont.setTextSize(settings.weekdayFontSize);
         this.weekdayFont.setColor(settings.weekdayColor);
         this.weekdayFont.setTextAlign( (settings.weekdayAlignLeft) ? Paint.Align.LEFT : Paint.Align.CENTER );
 
         this.dayFont = new TextPaint(TextPaint.ANTI_ALIAS_FLAG);
-        this.dayFont.setTypeface(ResourceManager.getTypeFace(service.getResources(), ResourceManager.Font.FONT_FILE));
+        this.dayFont.setTypeface(ResourceManager.getTypeFace(service.getResources(), settings.font));
         this.dayFont.setTextSize(settings.dayFontSize);
         this.dayFont.setColor(settings.dayColor);
         this.dayFont.setTextAlign( (settings.dayAlignLeft) ? Paint.Align.LEFT : Paint.Align.CENTER );
 
         this.monthFont = new TextPaint(TextPaint.ANTI_ALIAS_FLAG);
-        this.monthFont.setTypeface(ResourceManager.getTypeFace(service.getResources(), ResourceManager.Font.FONT_FILE));
+        this.monthFont.setTypeface(ResourceManager.getTypeFace(service.getResources(), settings.font));
         this.monthFont.setTextSize(settings.monthFontSize);
         this.monthFont.setColor(settings.monthColor);
         this.monthFont.setTextAlign( (settings.monthAlignLeft) ? Paint.Align.LEFT : Paint.Align.CENTER );
 
         this.yearFont = new TextPaint(TextPaint.ANTI_ALIAS_FLAG);
-        this.yearFont.setTypeface(ResourceManager.getTypeFace(service.getResources(), ResourceManager.Font.FONT_FILE));
+        this.yearFont.setTypeface(ResourceManager.getTypeFace(service.getResources(), settings.font));
         this.yearFont.setTextSize(settings.yearFontSize);
         this.yearFont.setColor(settings.yearColor);
         this.yearFont.setTextAlign( (settings.yearAlignLeft) ? Paint.Align.LEFT : Paint.Align.CENTER );
@@ -352,7 +352,7 @@ public class MainClock extends DigitalClockWidget {
         slpt_objects.add(background);
 
         // Set font
-        Typeface timeTypeFace = ResourceManager.getTypeFace(service.getResources(), ResourceManager.Font.FONT_FILE);
+        Typeface timeTypeFace = ResourceManager.getTypeFace(service.getResources(), settings.font);
 
         if(settings.digital_clock) {
             // Draw hours
@@ -450,7 +450,7 @@ public class MainClock extends DigitalClockWidget {
                 secondsLayout.setTextAttrForAll(
                         settings.secondsFontSize,
                         settings.secondsColor,
-                        ResourceManager.getTypeFace(service.getResources(), ResourceManager.Font.FONT_FILE)
+                        ResourceManager.getTypeFace(service.getResources(), settings.font)
                 );
                 // Position based on screen on
                 secondsLayout.alignX = 2;
@@ -670,7 +670,7 @@ public class MainClock extends DigitalClockWidget {
         }
 
         // Set day name font
-        Typeface weekfont = ResourceManager.getTypeFace(service.getResources(), ResourceManager.Font.FONT_FILE);
+        Typeface weekfont = ResourceManager.getTypeFace(service.getResources(), settings.font);
 
         // Draw day name
         if(settings.weekdayBool && show_all){

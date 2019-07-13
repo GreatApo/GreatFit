@@ -55,6 +55,14 @@ public class Settings extends FragmentActivity {
             }
         }, null));
 
+        // Add font selection
+        settings.add(new IconSetting(getDrawable(R.drawable.font), getString(R.string.font), getString(R.string.font_c), new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(Settings.this, FontActivity.class));
+            }
+        }, null));
+
         // Add other features
         settings.add(new IconSetting(getDrawable(R.drawable.gear), getString(R.string.other_features), getString(R.string.other_features_c), new View.OnClickListener() {
             @Override

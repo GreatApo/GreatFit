@@ -69,7 +69,7 @@ public class HeartRateWidget extends AbstractWidget {
 
         this.textPaint = new TextPaint(TextPaint.ANTI_ALIAS_FLAG);
         this.textPaint.setColor(settings.heart_rateColor);
-        this.textPaint.setTypeface(ResourceManager.getTypeFace(service.getResources(), ResourceManager.Font.FONT_FILE));
+        this.textPaint.setTypeface(ResourceManager.getTypeFace(service.getResources(), settings.font));
         this.textPaint.setTextSize(settings.heart_rateFontSize);
         this.textPaint.setTextAlign( (settings.heart_rateAlignLeft) ? Paint.Align.LEFT : Paint.Align.CENTER );
 
@@ -231,7 +231,7 @@ public class HeartRateWidget extends AbstractWidget {
             heart.setTextAttrForAll(
                     settings.heart_rateFontSize,
                     settings.heart_rateColor,
-                    ResourceManager.getTypeFace(service.getResources(), ResourceManager.Font.FONT_FILE)
+                    ResourceManager.getTypeFace(service.getResources(), settings.font)
             );
             // Position based on screen on
             heart.alignX = 2;

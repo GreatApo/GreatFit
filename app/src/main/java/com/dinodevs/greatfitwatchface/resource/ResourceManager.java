@@ -14,6 +14,7 @@ import com.ingenic.iwds.slpt.view.utils.SimpleFile;
 import java.io.ByteArrayOutputStream;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.EnumMap;
 import java.util.Map;
 
@@ -23,7 +24,10 @@ import java.util.Map;
 public class ResourceManager {
 
     public enum Font {
-        FONT_FILE("fonts/font.otf")/*, ANOTHER_FONT("fonts/myFont.otf")*/;  // More fonts can go here
+        Thin("fonts/Thin.otf"),
+        Regular("fonts/Regular.otf"),
+        Bold("fonts/Bold.ttf");
+        // More fonts can go here
 
         private final String path;
 
@@ -57,10 +61,15 @@ public class ResourceManager {
         return file;
     }
 
-    // convert from bitmap to byte array
+    // Convert from bitmap to byte array
     public static byte[] getBytesFromBitmap(Bitmap bitmap) {
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.JPEG, 70, stream);
         return stream.toByteArray();
+    }
+
+    // Get font names
+    public static String[] getNames(Class<? extends Enum<?>> e) {
+        return Arrays.toString(e.getEnumConstants()).replaceAll("^.|.$", "").split(", ");
     }
 }

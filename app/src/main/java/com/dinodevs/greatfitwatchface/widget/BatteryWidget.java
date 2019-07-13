@@ -66,7 +66,7 @@ public class BatteryWidget extends AbstractWidget {
             }
 
             this.batteryPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-            this.batteryPaint.setTypeface(ResourceManager.getTypeFace(service.getResources(), ResourceManager.Font.FONT_FILE));
+            this.batteryPaint.setTypeface(ResourceManager.getTypeFace(service.getResources(), settings.font));
             this.batteryPaint.setTextSize(settings.battery_percentFontSize);
             this.batteryPaint.setColor(settings.battery_percentColor);
             this.batteryPaint.setTextAlign( (settings.battery_percentAlignLeft) ? Paint.Align.LEFT : Paint.Align.CENTER );
@@ -195,7 +195,7 @@ public class BatteryWidget extends AbstractWidget {
             power.setTextAttrForAll(
                     settings.battery_percentFontSize,
                     settings.battery_percentColor,
-                    ResourceManager.getTypeFace(service.getResources(), ResourceManager.Font.FONT_FILE)
+                    ResourceManager.getTypeFace(service.getResources(), settings.font)
             );
             // Position based on screen on
             power.alignX = 2;

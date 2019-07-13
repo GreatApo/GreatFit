@@ -44,7 +44,7 @@ public class SportTotalDistanceWidget extends AbstractWidget {
         this.mService = service;
         
         this.total_distancePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        this.total_distancePaint.setTypeface(ResourceManager.getTypeFace(service.getResources(), ResourceManager.Font.FONT_FILE));
+        this.total_distancePaint.setTypeface(ResourceManager.getTypeFace(service.getResources(), settings.font));
         this.total_distancePaint.setTextSize(settings.total_distanceFontSize);
         this.total_distancePaint.setColor(settings.total_distanceColor);
         this.total_distancePaint.setTextAlign( (settings.total_distanceAlignLeft) ? Paint.Align.LEFT : Paint.Align.CENTER );
@@ -122,7 +122,7 @@ public class SportTotalDistanceWidget extends AbstractWidget {
             distance.setTextAttrForAll(
                     settings.total_distanceFontSize,
                     settings.total_distanceColor,
-                    ResourceManager.getTypeFace(service.getResources(), ResourceManager.Font.FONT_FILE)
+                    ResourceManager.getTypeFace(service.getResources(), settings.font)
             );
             // Position based on screen on
             distance.alignX = 2;

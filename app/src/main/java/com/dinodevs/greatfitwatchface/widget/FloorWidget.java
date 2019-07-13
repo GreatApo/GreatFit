@@ -40,7 +40,7 @@ public class FloorWidget extends AbstractWidget {
         // Font
         this.textPaint = new TextPaint(TextPaint.ANTI_ALIAS_FLAG);
         this.textPaint.setColor(settings.floorsColor);
-        this.textPaint.setTypeface(ResourceManager.getTypeFace(service.getResources(), ResourceManager.Font.FONT_FILE));
+        this.textPaint.setTypeface(ResourceManager.getTypeFace(service.getResources(), settings.font));
         this.textPaint.setTextSize(settings.floorsFontSize);
         this.textPaint.setTextAlign( (settings.floorsAlignLeft) ? Paint.Align.LEFT : Paint.Align.CENTER );
 
@@ -106,7 +106,7 @@ public class FloorWidget extends AbstractWidget {
             floorsLayout.setTextAttrForAll(
                     settings.floorsFontSize,
                     settings.floorsColor,
-                    ResourceManager.getTypeFace(service.getResources(), ResourceManager.Font.FONT_FILE)
+                    ResourceManager.getTypeFace(service.getResources(), settings.font)
             );
             // Position based on screen on
             floorsLayout.alignX = 2;

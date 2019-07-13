@@ -54,7 +54,7 @@ public class StepsWidget extends AbstractWidget {
 
         if(settings.steps>0){
             this.stepsPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-            this.stepsPaint.setTypeface(ResourceManager.getTypeFace(service.getResources(), ResourceManager.Font.FONT_FILE));
+            this.stepsPaint.setTypeface(ResourceManager.getTypeFace(service.getResources(), settings.font));
             this.stepsPaint.setTextSize(settings.stepsFontSize);
             this.stepsPaint.setColor(settings.stepsColor);
             this.stepsPaint.setTextAlign( (settings.stepsAlignLeft) ? Paint.Align.LEFT : Paint.Align.CENTER );
@@ -158,7 +158,7 @@ public class StepsWidget extends AbstractWidget {
             steps.setTextAttrForAll(
                     settings.stepsFontSize,
                     settings.stepsColor,
-                    ResourceManager.getTypeFace(service.getResources(), ResourceManager.Font.FONT_FILE)
+                    ResourceManager.getTypeFace(service.getResources(), settings.font)
             );
             // Position based on screen on
             steps.alignX = 2;

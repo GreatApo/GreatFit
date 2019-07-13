@@ -97,7 +97,7 @@ public class WeatherWidget extends AbstractWidget {
         if(settings.temperature>0) {
             this.temperaturePaint = new TextPaint(TextPaint.ANTI_ALIAS_FLAG);
             this.temperaturePaint.setColor(settings.temperatureColor);
-            this.temperaturePaint.setTypeface(ResourceManager.getTypeFace(service.getResources(), ResourceManager.Font.FONT_FILE));
+            this.temperaturePaint.setTypeface(ResourceManager.getTypeFace(service.getResources(), settings.font));
             this.temperaturePaint.setTextSize(settings.temperatureFontSize);
             this.temperaturePaint.setTextAlign((settings.temperatureAlignLeft) ? Paint.Align.LEFT : Paint.Align.CENTER);
             if(settings.temperatureIcon){
@@ -109,7 +109,7 @@ public class WeatherWidget extends AbstractWidget {
         if(settings.city>0) {
             this.cityPaint = new TextPaint(TextPaint.ANTI_ALIAS_FLAG);
             this.cityPaint.setColor(settings.cityColor);
-            this.cityPaint.setTypeface(ResourceManager.getTypeFace(service.getResources(), ResourceManager.Font.FONT_FILE));
+            this.cityPaint.setTypeface(ResourceManager.getTypeFace(service.getResources(), settings.font));
             this.cityPaint.setTextSize(settings.cityFontSize);
             this.cityPaint.setTextAlign((settings.cityAlignLeft) ? Paint.Align.LEFT : Paint.Align.CENTER);
             if(settings.cityIcon){
@@ -121,7 +121,7 @@ public class WeatherWidget extends AbstractWidget {
         if(settings.humidity>0) {
             this.humidityPaint = new TextPaint(TextPaint.ANTI_ALIAS_FLAG);
             this.humidityPaint.setColor(settings.humidityColor);
-            this.humidityPaint.setTypeface(ResourceManager.getTypeFace(service.getResources(), ResourceManager.Font.FONT_FILE));
+            this.humidityPaint.setTypeface(ResourceManager.getTypeFace(service.getResources(), settings.font));
             this.humidityPaint.setTextSize(settings.humidityFontSize);
             this.humidityPaint.setTextAlign((settings.humidityAlignLeft) ? Paint.Align.LEFT : Paint.Align.CENTER);
             if(settings.humidityIcon){
@@ -133,7 +133,7 @@ public class WeatherWidget extends AbstractWidget {
         if(settings.uv>0) {
             this.uvPaint = new TextPaint(TextPaint.ANTI_ALIAS_FLAG);
             this.uvPaint.setColor(settings.uvColor);
-            this.uvPaint.setTypeface(ResourceManager.getTypeFace(service.getResources(), ResourceManager.Font.FONT_FILE));
+            this.uvPaint.setTypeface(ResourceManager.getTypeFace(service.getResources(), settings.font));
             this.uvPaint.setTextSize(settings.uvFontSize);
             this.uvPaint.setTextAlign((settings.uvAlignLeft) ? Paint.Align.LEFT : Paint.Align.CENTER);
             if(settings.uvIcon){
@@ -145,7 +145,7 @@ public class WeatherWidget extends AbstractWidget {
         if(settings.wind_direction>0) {
             this.wind_directionPaint = new TextPaint(TextPaint.ANTI_ALIAS_FLAG);
             this.wind_directionPaint.setColor(settings.wind_directionColor);
-            this.wind_directionPaint.setTypeface(ResourceManager.getTypeFace(service.getResources(), ResourceManager.Font.FONT_FILE));
+            this.wind_directionPaint.setTypeface(ResourceManager.getTypeFace(service.getResources(), settings.font));
             this.wind_directionPaint.setTextSize(settings.wind_directionFontSize);
             this.wind_directionPaint.setTextAlign((settings.wind_directionAlignLeft) ? Paint.Align.LEFT : Paint.Align.CENTER);
             if(settings.wind_directionIcon){
@@ -157,7 +157,7 @@ public class WeatherWidget extends AbstractWidget {
         if(settings.wind_strength>0) {
             this.wind_strengthPaint = new TextPaint(TextPaint.ANTI_ALIAS_FLAG);
             this.wind_strengthPaint.setColor(settings.wind_strengthColor);
-            this.wind_strengthPaint.setTypeface(ResourceManager.getTypeFace(service.getResources(), ResourceManager.Font.FONT_FILE));
+            this.wind_strengthPaint.setTypeface(ResourceManager.getTypeFace(service.getResources(), settings.font));
             this.wind_strengthPaint.setTextSize(settings.wind_strengthFontSize);
             this.wind_strengthPaint.setTextAlign((settings.wind_strengthAlignLeft) ? Paint.Align.LEFT : Paint.Align.CENTER);
             if(settings.wind_strengthIcon){
@@ -172,7 +172,7 @@ public class WeatherWidget extends AbstractWidget {
             this.weatherImageIcon = Util.decodeImage(service.getResources(),"weather/"+this.weatherImageStrList.get(22)+".png");
             this.weather_imgPaint = new TextPaint(TextPaint.ANTI_ALIAS_FLAG);
             this.weather_imgPaint.setColor(settings.weather_imgColor);
-            this.weather_imgPaint.setTypeface(ResourceManager.getTypeFace(service.getResources(), ResourceManager.Font.FONT_FILE));
+            this.weather_imgPaint.setTypeface(ResourceManager.getTypeFace(service.getResources(), settings.font));
             this.weather_imgPaint.setTextSize(settings.weather_imgFontSize);
             this.weather_imgPaint.setTextAlign((settings.weather_imgAlignLeft) ? Paint.Align.LEFT : Paint.Align.CENTER);
         }
@@ -355,7 +355,7 @@ public class WeatherWidget extends AbstractWidget {
             temperatureNum.setTextAttr(
                     settings.temperatureFontSize,
                     settings.temperatureColor,
-                    ResourceManager.getTypeFace(service.getResources(), ResourceManager.Font.FONT_FILE)
+                    ResourceManager.getTypeFace(service.getResources(), settings.font)
             );
             temperatureLayout.add(temperatureNum);
             // Position based on screen on
@@ -395,7 +395,7 @@ public class WeatherWidget extends AbstractWidget {
                 weather_imgNum.setTextAttr(
                         settings.weather_imgFontSize,
                         settings.weather_imgColor,
-                        ResourceManager.getTypeFace(service.getResources(), ResourceManager.Font.FONT_FILE)
+                        ResourceManager.getTypeFace(service.getResources(), settings.font)
                 );
                 weatherLayout.add(weather_imgNum);
                 // Position based on screen on
@@ -437,13 +437,13 @@ public class WeatherWidget extends AbstractWidget {
             cityText.setTextAttr(
                     settings.cityFontSize,
                     settings.cityColor,
-                    ResourceManager.getTypeFace(service.getResources(), ResourceManager.Font.FONT_FILE)
+                    ResourceManager.getTypeFace(service.getResources(), settings.font)
             );
             cityLayout.add(cityText);
             cityLayout.setTextAttrForAll(
                     settings.cityFontSize,
                     settings.cityColor,
-                    ResourceManager.getTypeFace(service.getResources(), ResourceManager.Font.FONT_FILE)
+                    ResourceManager.getTypeFace(service.getResources(), settings.font)
             );
             // Position based on screen on
             cityLayout.alignX = 2;
@@ -483,13 +483,13 @@ public class WeatherWidget extends AbstractWidget {
             humidityNum.setTextAttr(
                     settings.humidityFontSize,
                     settings.humidityColor,
-                    ResourceManager.getTypeFace(service.getResources(), ResourceManager.Font.FONT_FILE)
+                    ResourceManager.getTypeFace(service.getResources(), settings.font)
             );
             humidityLayout.add(humidityNum);
             humidityLayout.setTextAttrForAll(
                     settings.humidityFontSize,
                     settings.humidityColor,
-                    ResourceManager.getTypeFace(service.getResources(), ResourceManager.Font.FONT_FILE)
+                    ResourceManager.getTypeFace(service.getResources(), settings.font)
             );
             // Position based on screen on
             humidityLayout.alignX = 2;
@@ -529,13 +529,13 @@ public class WeatherWidget extends AbstractWidget {
             uvNum.setTextAttr(
                     settings.uvFontSize,
                     settings.uvColor,
-                    ResourceManager.getTypeFace(service.getResources(), ResourceManager.Font.FONT_FILE)
+                    ResourceManager.getTypeFace(service.getResources(), settings.font)
             );
             uvLayout.add(uvNum);
             uvLayout.setTextAttrForAll(
                     settings.uvFontSize,
                     settings.uvColor,
-                    ResourceManager.getTypeFace(service.getResources(), ResourceManager.Font.FONT_FILE)
+                    ResourceManager.getTypeFace(service.getResources(), settings.font)
             );
             // Position based on screen on
             uvLayout.alignX = 2;
@@ -575,13 +575,13 @@ public class WeatherWidget extends AbstractWidget {
             wind_directionText.setTextAttr(
                     settings.wind_directionFontSize,
                     settings.wind_directionColor,
-                    ResourceManager.getTypeFace(service.getResources(), ResourceManager.Font.FONT_FILE)
+                    ResourceManager.getTypeFace(service.getResources(), settings.font)
             );
             wind_directionLayout.add(wind_directionText);
             wind_directionLayout.setTextAttrForAll(
                     settings.wind_directionFontSize,
                     settings.wind_directionColor,
-                    ResourceManager.getTypeFace(service.getResources(), ResourceManager.Font.FONT_FILE)
+                    ResourceManager.getTypeFace(service.getResources(), settings.font)
             );
             // Position based on screen on
             wind_directionLayout.alignX = 2;
@@ -620,13 +620,13 @@ public class WeatherWidget extends AbstractWidget {
             wind_strengthText.setTextAttr(
                     settings.wind_strengthFontSize,
                     settings.wind_strengthColor,
-                    ResourceManager.getTypeFace(service.getResources(), ResourceManager.Font.FONT_FILE)
+                    ResourceManager.getTypeFace(service.getResources(), settings.font)
             );
             wind_strengthLayout.add(wind_strengthText);
             wind_strengthLayout.setTextAttrForAll(
                     settings.wind_strengthFontSize,
                     settings.wind_strengthColor,
-                    ResourceManager.getTypeFace(service.getResources(), ResourceManager.Font.FONT_FILE)
+                    ResourceManager.getTypeFace(service.getResources(), settings.font)
             );
             // Position based on screen on
             wind_strengthLayout.alignX = 2;

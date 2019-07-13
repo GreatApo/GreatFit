@@ -81,25 +81,25 @@ public class CirclesWidget extends AbstractWidget {
 
         // Widgets text colors
         this.batteryPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        this.batteryPaint.setTypeface(ResourceManager.getTypeFace(service.getResources(), ResourceManager.Font.FONT_FILE));
+        this.batteryPaint.setTypeface(ResourceManager.getTypeFace(service.getResources(), settings.font));
         this.batteryPaint.setTextSize(settings.batteryFontSize);
         this.batteryPaint.setColor(settings.batteryTextColor);
         this.batteryPaint.setTextAlign( (settings.batteryAlignLeftBool) ? Paint.Align.LEFT : Paint.Align.CENTER );
 
         this.stepsPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        this.stepsPaint.setTypeface(ResourceManager.getTypeFace(service.getResources(), ResourceManager.Font.FONT_FILE));
+        this.stepsPaint.setTypeface(ResourceManager.getTypeFace(service.getResources(), settings.font));
         this.stepsPaint.setTextSize(settings.stepsFontSize);
         this.stepsPaint.setColor(settings.stepsTextColor);
         this.stepsPaint.setTextAlign( (settings.stepsAlignLeftBool) ? Paint.Align.LEFT : Paint.Align.CENTER );
 
         this.sportPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        this.sportPaint.setTypeface(ResourceManager.getTypeFace(service.getResources(), ResourceManager.Font.FONT_FILE));
+        this.sportPaint.setTypeface(ResourceManager.getTypeFace(service.getResources(), settings.font));
         this.sportPaint.setTextSize(settings.todayDistanceFontSize);
         this.sportPaint.setColor(settings.todayDistanceTextColor);
         this.sportPaint.setTextAlign( (settings.todayDistanceAlignLeftBool) ? Paint.Align.LEFT : Paint.Align.CENTER );
 
         this.roadPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        this.roadPaint.setTypeface(ResourceManager.getTypeFace(service.getResources(), ResourceManager.Font.FONT_FILE));
+        this.roadPaint.setTypeface(ResourceManager.getTypeFace(service.getResources(), settings.font));
         this.roadPaint.setTextSize(settings.totalDistanceFontSize);
         this.roadPaint.setColor(settings.totalDistanceTextColor);
         this.roadPaint.setTextAlign( (settings.totalDistanceAlignLeftBool) ? Paint.Align.LEFT : Paint.Align.CENTER );
@@ -301,7 +301,7 @@ public class CirclesWidget extends AbstractWidget {
         int tmp_left;
 
         // It's a bird, it's a plane... nope... it's a font.
-        Typeface timeTypeFace = ResourceManager.getTypeFace(service.getResources(), ResourceManager.Font.FONT_FILE);
+        Typeface timeTypeFace = ResourceManager.getTypeFace(service.getResources(), settings.font);
 
         // Show battery
         if(settings.batteryBool){
