@@ -1,4 +1,4 @@
-[![latest release](https://img.shields.io/github/release/GreatApo/GreatFit.svg?colorB=green&label=latest%20release&style=flat-square) ![release date](https://img.shields.io/badge/release%20date-2019.05.24-orange.svg?style=flat-square) ![Downloads](https://img.shields.io/github/downloads/GreatApo/GreatFit/total.svg?style=flat-square) ![HitCount](http://hits.dwyl.io/GreatApo/GreatFit.svg)](https://github.com/GreatApo/GreatFit/releases/latest)
+[![latest release](https://img.shields.io/github/release/GreatApo/GreatFit.svg?colorB=green&label=latest%20release&style=flat-square) ![release date](https://img.shields.io/badge/release%20date-2019.07.13-orange.svg?style=flat-square) ![Downloads](https://img.shields.io/github/downloads/GreatApo/GreatFit/total.svg?style=flat-square) ![HitCount](http://hits.dwyl.io/GreatApo/GreatFit.svg)](https://github.com/GreatApo/GreatFit/releases/latest)
 # GreatFit: Amazfit Pace/Stratos/Verge APK Watchface sources
 ![GreatFit Watchface Banner](other/images/1.jpg)
 
@@ -27,6 +27,8 @@ XDA Topic [here](https://forum.xda-developers.com/smartwatch/amazfit/app-watchfa
 - Better image resolution when raising hand
 - Ability to show only time when screen is off (to save battery, doesn't apply on raise of hand screen)
 - Status bar position and enable/disable
+- Font weight selection in settings
+- White background option
 - Many other options available in settings
 
 
