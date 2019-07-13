@@ -173,7 +173,7 @@ public class MainClock extends DigitalClockWidget {
     public void init(Service service) {
         //this.background = service.getResources().getDrawable(R.drawable.background); //todo
         //this.background.setBounds(0, 0, 320, 300);
-        this.background = Util.decodeImage(service.getResources(),"background.png");
+        this.background = Util.decodeImage(service.getResources(),settings.is_white_bg+"background.png");
         if(settings.isVerge())
             this.background = Bitmap.createScaledBitmap(this.background, 360, 336, true);// 336 because it is scaled from 300px and not 320px
 
@@ -216,7 +216,7 @@ public class MainClock extends DigitalClockWidget {
             this.dateFont.setColor(settings.dateColor);
             this.dateFont.setTextAlign((settings.dateAlignLeft) ? Paint.Align.LEFT : Paint.Align.CENTER);
             if (settings.dateIcon) {
-                this.dateIcon = Util.decodeImage(service.getResources(), "icons/date.png");
+                this.dateIcon = Util.decodeImage(service.getResources(), "icons/"+settings.is_white_bg+"date.png");
             }
         }
 
@@ -346,7 +346,7 @@ public class MainClock extends DigitalClockWidget {
 
         // Draw background image
         SlptPictureView background = new SlptPictureView();
-        background.setImagePicture(SimpleFile.readFileFromAssets(service, "background"+ ((better_resolution)?"_better":"") + ((settings.isVerge())?"_verge":"") +"_slpt.png"));
+        background.setImagePicture(SimpleFile.readFileFromAssets(service, settings.is_white_bg+"background"+ ((better_resolution)?"_better":"") + ((settings.isVerge())?"_verge":"") +"_slpt.png"));
         //Alternative way
         //background.setImagePicture(ResourceManager.getVergeImageFromAssets(settings.isVerge(), service, "background"+ ((better_resolution)?"_better":"") +"_slpt.png"));
         slpt_objects.add(background);
@@ -498,7 +498,7 @@ public class MainClock extends DigitalClockWidget {
             // Show or Not icon
             if (settings.dateIcon) {
                 SlptPictureView dateIcon = new SlptPictureView();
-                dateIcon.setImagePicture( SimpleFile.readFileFromAssets(service, ( (better_resolution)?"26wc_":"slpt_" )+"icons/date.png") );
+                dateIcon.setImagePicture( SimpleFile.readFileFromAssets(service, ( (better_resolution)?"26wc_":"slpt_" )+"icons/"+settings.is_white_bg+"date.png") );
                 dateIcon.setStart(
                         (int) settings.dateIconLeft,
                         (int) settings.dateIconTop

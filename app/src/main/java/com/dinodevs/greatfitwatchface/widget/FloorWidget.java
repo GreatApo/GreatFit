@@ -45,7 +45,7 @@ public class FloorWidget extends AbstractWidget {
         this.textPaint.setTextAlign( (settings.floorsAlignLeft) ? Paint.Align.LEFT : Paint.Align.CENTER );
 
         if(settings.floorsIcon){
-            this.icon = Util.decodeImage(service.getResources(),"icons/floors.png");
+            this.icon = Util.decodeImage(service.getResources(),"icons/"+settings.is_white_bg+"floors.png");
         }
     }
 
@@ -92,7 +92,7 @@ public class FloorWidget extends AbstractWidget {
             // Show or Not icon
             if (settings.floorsIcon) {
                 SlptPictureView floorsIcon = new SlptPictureView();
-                floorsIcon.setImagePicture( SimpleFile.readFileFromAssets(service, ( (better_resolution)?"26wc_":"slpt_" )+"icons/floors.png") );
+                floorsIcon.setImagePicture( SimpleFile.readFileFromAssets(service, ( (better_resolution)?"26wc_":"slpt_" )+"icons/"+settings.is_white_bg+"floors.png") );
                 floorsIcon.setStart(
                         (int) settings.floorsIconLeft,
                         (int) settings.floorsIconTop

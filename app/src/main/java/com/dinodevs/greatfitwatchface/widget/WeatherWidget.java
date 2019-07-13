@@ -101,7 +101,7 @@ public class WeatherWidget extends AbstractWidget {
             this.temperaturePaint.setTextSize(settings.temperatureFontSize);
             this.temperaturePaint.setTextAlign((settings.temperatureAlignLeft) ? Paint.Align.LEFT : Paint.Align.CENTER);
             if(settings.temperatureIcon){
-                this.temperatureIcon = Util.decodeImage(service.getResources(),"icons/temperature.png");
+                this.temperatureIcon = Util.decodeImage(service.getResources(),"icons/"+settings.is_white_bg+"temperature.png");
             }
         }
 
@@ -113,7 +113,7 @@ public class WeatherWidget extends AbstractWidget {
             this.cityPaint.setTextSize(settings.cityFontSize);
             this.cityPaint.setTextAlign((settings.cityAlignLeft) ? Paint.Align.LEFT : Paint.Align.CENTER);
             if(settings.cityIcon){
-                this.cityIcon = Util.decodeImage(service.getResources(),"icons/city.png");
+                this.cityIcon = Util.decodeImage(service.getResources(),"icons/"+settings.is_white_bg+"city.png");
             }
         }
 
@@ -125,7 +125,7 @@ public class WeatherWidget extends AbstractWidget {
             this.humidityPaint.setTextSize(settings.humidityFontSize);
             this.humidityPaint.setTextAlign((settings.humidityAlignLeft) ? Paint.Align.LEFT : Paint.Align.CENTER);
             if(settings.humidityIcon){
-                this.humidityIcon = Util.decodeImage(service.getResources(),"icons/humidity.png");
+                this.humidityIcon = Util.decodeImage(service.getResources(),"icons/"+settings.is_white_bg+"humidity.png");
             }
         }
 
@@ -137,7 +137,7 @@ public class WeatherWidget extends AbstractWidget {
             this.uvPaint.setTextSize(settings.uvFontSize);
             this.uvPaint.setTextAlign((settings.uvAlignLeft) ? Paint.Align.LEFT : Paint.Align.CENTER);
             if(settings.uvIcon){
-                this.uvIcon = Util.decodeImage(service.getResources(),"icons/uv.png");
+                this.uvIcon = Util.decodeImage(service.getResources(),"icons/"+settings.is_white_bg+"uv.png");
             }
         }
 
@@ -149,7 +149,7 @@ public class WeatherWidget extends AbstractWidget {
             this.wind_directionPaint.setTextSize(settings.wind_directionFontSize);
             this.wind_directionPaint.setTextAlign((settings.wind_directionAlignLeft) ? Paint.Align.LEFT : Paint.Align.CENTER);
             if(settings.wind_directionIcon){
-                this.wind_directionIcon = Util.decodeImage(service.getResources(),"icons/wind_direction.png");
+                this.wind_directionIcon = Util.decodeImage(service.getResources(),"icons/"+settings.is_white_bg+"wind_direction.png");
             }
         }
 
@@ -161,7 +161,7 @@ public class WeatherWidget extends AbstractWidget {
             this.wind_strengthPaint.setTextSize(settings.wind_strengthFontSize);
             this.wind_strengthPaint.setTextAlign((settings.wind_strengthAlignLeft) ? Paint.Align.LEFT : Paint.Align.CENTER);
             if(settings.wind_strengthIcon){
-                this.wind_strengthIcon = Util.decodeImage(service.getResources(),"icons/wind_strength.png");
+                this.wind_strengthIcon = Util.decodeImage(service.getResources(),"icons/"+settings.is_white_bg+"wind_strength.png");
             }
         }
 
@@ -169,7 +169,7 @@ public class WeatherWidget extends AbstractWidget {
         if(settings.weather_img>0) {
             // Get weather data
             this.weather = getSlptWeather();
-            this.weatherImageIcon = Util.decodeImage(service.getResources(),"weather/"+this.weatherImageStrList.get(22)+".png");
+            this.weatherImageIcon = Util.decodeImage(service.getResources(),"weather/"+settings.is_white_bg+this.weatherImageStrList.get(22)+".png");
             this.weather_imgPaint = new TextPaint(TextPaint.ANTI_ALIAS_FLAG);
             this.weather_imgPaint.setColor(settings.weather_imgColor);
             this.weather_imgPaint.setTypeface(ResourceManager.getTypeFace(service.getResources(), settings.font));
@@ -194,7 +194,7 @@ public class WeatherWidget extends AbstractWidget {
         // Get ALL weather data
         this.weather = getSlptWeather();
 
-        this.weatherImageIcon = Util.decodeImage(mService.getResources(),"weather/"+this.weatherImageStrList.get(this.weather.weatherType)+".png");
+        this.weatherImageIcon = Util.decodeImage(mService.getResources(),"weather/"+settings.is_white_bg+this.weatherImageStrList.get(this.weather.weatherType)+".png");
     }
 
     // Screen on
@@ -340,7 +340,7 @@ public class WeatherWidget extends AbstractWidget {
             // Show or Not icon
             if (settings.temperatureIcon) {
                 SlptPictureView temperatureIcon = new SlptPictureView();
-                temperatureIcon.setImagePicture( SimpleFile.readFileFromAssets(service, ( (better_resolution)?"":"slpt_" )+"icons/temperature.png") );
+                temperatureIcon.setImagePicture( SimpleFile.readFileFromAssets(service, ( (better_resolution)?"":"slpt_" )+"icons/"+settings.is_white_bg+"temperature.png") );
                 temperatureIcon.setStart(
                         (int) settings.temperatureIconLeft,
                         (int) settings.temperatureIconTop
@@ -380,7 +380,7 @@ public class WeatherWidget extends AbstractWidget {
         // Weather Icons
         if(settings.weather_img>0){
             SlptPictureView weatherIcon = new SlptPictureView();
-            weatherIcon.setImagePicture( SimpleFile.readFileFromAssets(service, String.format(( (better_resolution)?"26wc_":"slpt_" )+"weather/%s.png", this.weatherImageStrList.get(this.weather.weatherType))) );
+            weatherIcon.setImagePicture( SimpleFile.readFileFromAssets(service, String.format(( (better_resolution)?"26wc_":"slpt_" )+"weather/%s.png", settings.is_white_bg+this.weatherImageStrList.get(this.weather.weatherType))) );
             weatherIcon.setStart(
                     (int) settings.weather_imgIconLeft,
                     (int) settings.weather_imgIconTop
@@ -423,7 +423,7 @@ public class WeatherWidget extends AbstractWidget {
             // Show or Not icon
             if (settings.cityIcon) {
                 SlptPictureView cityIcon = new SlptPictureView();
-                cityIcon.setImagePicture( SimpleFile.readFileFromAssets(service, ( (better_resolution)?"26wc_":"slpt_" )+"icons/city.png") );
+                cityIcon.setImagePicture( SimpleFile.readFileFromAssets(service, ( (better_resolution)?"26wc_":"slpt_" )+"icons/"+settings.is_white_bg+"city.png") );
                 cityIcon.setStart(
                         (int) settings.cityIconLeft,
                         (int) settings.cityIconTop
@@ -469,7 +469,7 @@ public class WeatherWidget extends AbstractWidget {
             // Show or Not icon
             if (settings.humidityIcon) {
                 SlptPictureView humidityIcon = new SlptPictureView();
-                humidityIcon.setImagePicture( SimpleFile.readFileFromAssets(service, ( (better_resolution)?"26wc_":"slpt_" )+"icons/humidity.png") );
+                humidityIcon.setImagePicture( SimpleFile.readFileFromAssets(service, ( (better_resolution)?"26wc_":"slpt_" )+"icons/"+settings.is_white_bg+"humidity.png") );
                 humidityIcon.setStart(
                         (int) settings.humidityIconLeft,
                         (int) settings.humidityIconTop
@@ -515,7 +515,7 @@ public class WeatherWidget extends AbstractWidget {
             // Show or Not icon
             if (settings.uvIcon) {
                 SlptPictureView uvIcon = new SlptPictureView();
-                uvIcon.setImagePicture( SimpleFile.readFileFromAssets(service, ( (better_resolution)?"26wc_":"slpt_" )+"icons/uv.png") );
+                uvIcon.setImagePicture( SimpleFile.readFileFromAssets(service, ( (better_resolution)?"26wc_":"slpt_" )+"icons/"+settings.is_white_bg+"uv.png") );
                 uvIcon.setStart(
                         (int) settings.uvIconLeft,
                         (int) settings.uvIconTop
@@ -561,7 +561,7 @@ public class WeatherWidget extends AbstractWidget {
             // Show or Not icon
             if (settings.wind_directionIcon) {
                 SlptPictureView wind_directionIcon = new SlptPictureView();
-                wind_directionIcon.setImagePicture( SimpleFile.readFileFromAssets(service, ( (better_resolution)?"26wc_":"slpt_" )+"icons/wind_direction.png") );
+                wind_directionIcon.setImagePicture( SimpleFile.readFileFromAssets(service, ( (better_resolution)?"26wc_":"slpt_" )+"icons/"+settings.is_white_bg+"wind_direction.png") );
                 wind_directionIcon.setStart(
                         (int) settings.wind_directionIconLeft,
                         (int) settings.wind_directionIconTop
@@ -607,7 +607,7 @@ public class WeatherWidget extends AbstractWidget {
             // Show or Not icon
             if (settings.wind_strengthIcon) {
                 SlptPictureView wind_strengthIcon = new SlptPictureView();
-                wind_strengthIcon.setImagePicture( SimpleFile.readFileFromAssets(service, ( (better_resolution)?"26wc_":"slpt_" )+"icons/wind_strength.png") );
+                wind_strengthIcon.setImagePicture( SimpleFile.readFileFromAssets(service, ( (better_resolution)?"26wc_":"slpt_" )+"icons/"+settings.is_white_bg+"wind_strength.png") );
                 wind_strengthIcon.setStart(
                         (int) settings.wind_strengthIconLeft,
                         (int) settings.wind_strengthIconTop

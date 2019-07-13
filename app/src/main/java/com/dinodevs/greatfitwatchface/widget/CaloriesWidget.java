@@ -67,7 +67,7 @@ public class CaloriesWidget extends AbstractWidget {
             this.textPaint.setTextAlign((settings.caloriesAlignLeft) ? Paint.Align.LEFT : Paint.Align.CENTER);
 
             if (settings.caloriesIcon) {
-                this.icon = Util.decodeImage(service.getResources(), "icons/calories.png");
+                this.icon = Util.decodeImage(service.getResources(), "icons/"+settings.is_white_bg+"calories.png");
             }
         }
 
@@ -165,7 +165,7 @@ public class CaloriesWidget extends AbstractWidget {
             // Show or Not icon
             if (settings.caloriesIcon) {
                 SlptPictureView caloriesIcon = new SlptPictureView();
-                caloriesIcon.setImagePicture(SimpleFile.readFileFromAssets(service, ((better_resolution) ? "26wc_" : "slpt_") + "icons/calories.png"));
+                caloriesIcon.setImagePicture(SimpleFile.readFileFromAssets(service, ((better_resolution) ? "26wc_" : "slpt_") + "icons/"+settings.is_white_bg+"calories.png"));
                 caloriesIcon.setStart(
                         (int) settings.caloriesIconLeft,
                         (int) settings.caloriesIconTop

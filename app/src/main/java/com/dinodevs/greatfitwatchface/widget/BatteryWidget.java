@@ -62,7 +62,7 @@ public class BatteryWidget extends AbstractWidget {
         // Battery percent element
         if(settings.battery_percent>0){
             if(settings.battery_percentIcon){
-                this.icon = Util.decodeImage(mService.getResources(),"icons/battery.png");
+                this.icon = Util.decodeImage(mService.getResources(),"icons/"+settings.is_white_bg+"battery.png");
             }
 
             this.batteryPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
@@ -179,7 +179,7 @@ public class BatteryWidget extends AbstractWidget {
             // Show or Not icon
             if (settings.battery_percentIcon) {
                 SlptPictureView battery_percentIcon = new SlptPictureView();
-                battery_percentIcon.setImagePicture( SimpleFile.readFileFromAssets(service, ( (better_resolution)?"":"slpt_" )+"icons/battery.png") );
+                battery_percentIcon.setImagePicture( SimpleFile.readFileFromAssets(service, ( (better_resolution)?"":"slpt_" )+"icons/"+settings.is_white_bg+"battery.png") );
                 battery_percentIcon.setStart(
                         (int) settings.battery_percentIconLeft,
                         (int) settings.battery_percentIconTop

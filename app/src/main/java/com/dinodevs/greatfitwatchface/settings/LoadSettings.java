@@ -42,6 +42,8 @@ public class LoadSettings {
     public String author;
     public int language;
     public int color;
+    public boolean white_bg;
+    public String is_white_bg;
     public int font_no;
     public Integer[] colorCodes;
     public boolean flashing_indicator;
@@ -501,6 +503,7 @@ public class LoadSettings {
     private void defaultParameters(){
         // Verge scale
         this.scale = (isVerge())? 1.125f : 1f; // 360/320 = 1.125
+        int inverted_text_color = Color.parseColor("#000000");
         Log.d("GreatFit","Scale: "+scale);
 
         // All
@@ -509,6 +512,8 @@ public class LoadSettings {
             this.author = context.getResources().getString(R.string.author);
             this.language = sharedPreferences.getInt( "language", 0);
             this.color = sharedPreferences.getInt( "color", -1);
+            this.white_bg = sharedPreferences.getBoolean( "white_bg", context.getResources().getBoolean(R.bool.white_bg));
+            this.is_white_bg = (this.white_bg?"inv-":"");
             this.font_no = sharedPreferences.getInt( "font", 0);
             this.better_resolution_when_raising_hand = sharedPreferences.getBoolean( "better_resolution_when_raising_hand", context.getResources().getBoolean(R.bool.better_resolution_when_raising_hand));
             this.flashing_indicator = sharedPreferences.getBoolean( "flashing_indicator", context.getResources().getBoolean(R.bool.flashing_indicator));
@@ -585,6 +590,7 @@ public class LoadSettings {
                 }else{
                     this.indicatorColor = sharedPreferences.getInt("indicatorColor", indicator.getColor(i++, 0));
                 }
+                if(this.white_bg) this.indicatorColor = inverted_text_color;
                 this.indicatorAlignLeft = sharedPreferences.getBoolean("indicatorAlignLeft", indicator.getBoolean(i, true));
                 indicator.recycle();
             }
@@ -602,6 +608,7 @@ public class LoadSettings {
                 }else{
                     this.minutesColor = sharedPreferences.getInt("minutesColor", minutes.getColor(i++, 0));
                 }
+                if(this.white_bg) this.minutesColor = inverted_text_color;
                 this.minutesAlignLeft = sharedPreferences.getBoolean("minutesAlignLeft", minutes.getBoolean(i, true));
                 minutes.recycle();
             }
@@ -619,6 +626,7 @@ public class LoadSettings {
                 }else{
                     this.secondsColor = sharedPreferences.getInt("secondsColor", seconds.getColor(i++, 0));
                 }
+                if(this.white_bg) this.secondsColor = inverted_text_color;
                 this.secondsAlignLeft = sharedPreferences.getBoolean("secondsAlignLeft", seconds.getBoolean(i, false));
                 seconds.recycle();
             }
@@ -641,6 +649,7 @@ public class LoadSettings {
                 }else{
                     this.am_pmColor = sharedPreferences.getInt("am_pmColor", am_pm.getColor(i++, 0));
                 }
+                if(this.white_bg) this.am_pmColor = inverted_text_color;
                 this.am_pmAlignLeft = sharedPreferences.getBoolean("am_pmAlignLeft", am_pm.getBoolean(i, false));
                 am_pm.recycle();
             }
@@ -658,6 +667,7 @@ public class LoadSettings {
                 }else{
                     this.weekdayColor = sharedPreferences.getInt("weekdayColor", weekday.getColor(i++, 0));
                 }
+                if(this.white_bg) this.weekdayColor = inverted_text_color;
                 this.weekdayAlignLeft = sharedPreferences.getBoolean("weekdayAlignLeft", weekday.getBoolean(i, false));
                 weekday.recycle();
             }
@@ -675,6 +685,7 @@ public class LoadSettings {
                 }else{
                     this.monthColor = sharedPreferences.getInt("monthColor", month.getColor(i++, 0));
                 }
+                if(this.white_bg) this.monthColor = inverted_text_color;
                 this.monthAlignLeft = sharedPreferences.getBoolean("monthAlignLeft", month.getBoolean(i, false));
                 month.recycle();
             }
@@ -692,6 +703,7 @@ public class LoadSettings {
                 }else{
                     this.dayColor = sharedPreferences.getInt("dayColor", day.getColor(i++, 0));
                 }
+                if(this.white_bg) this.dayColor = inverted_text_color;
                 this.dayAlignLeft = sharedPreferences.getBoolean("dayAlignLeft", day.getBoolean(i, false));
                 day.recycle();
             }
@@ -709,6 +721,7 @@ public class LoadSettings {
                 }else{
                     this.yearColor = sharedPreferences.getInt("yearColor", year.getColor(i++, 0));
                 }
+                if(this.white_bg) this.yearColor = inverted_text_color;
                 this.yearAlignLeft = sharedPreferences.getBoolean("yearAlignLeft", year.getBoolean(i, false));
                 year.recycle();
             }
@@ -744,6 +757,7 @@ public class LoadSettings {
                 }else{
                     this.dateColor = sharedPreferences.getInt("dateColor", widgetN.getColor(i++, 0));
                 }
+                if(this.white_bg) this.dateColor = inverted_text_color;
                 this.dateAlignLeft = sharedPreferences.getBoolean("dateAlignLeft", widgetN.getBoolean(i++, false));
                 this.dateUnits = sharedPreferences.getBoolean("dateUnits", widgetN.getBoolean(i++, true));
                 this.dateIcon = sharedPreferences.getBoolean("dateIcon", widgetN.getBoolean(i++, true));
@@ -768,6 +782,7 @@ public class LoadSettings {
                 }else{
                     this.caloriesColor = sharedPreferences.getInt("caloriesColor", widgetN.getColor(i++, 0));
                 }
+                if(this.white_bg) this.caloriesColor = inverted_text_color;
                 this.caloriesAlignLeft = sharedPreferences.getBoolean("caloriesAlignLeft", widgetN.getBoolean(i++, false));
                 this.caloriesUnits = sharedPreferences.getBoolean("caloriesUnits", widgetN.getBoolean(i++, true));
                 this.caloriesIcon = sharedPreferences.getBoolean("caloriesIcon", widgetN.getBoolean(i++, true));
@@ -792,6 +807,7 @@ public class LoadSettings {
                 }else{
                     this.stepsColor = sharedPreferences.getInt("stepsColor", widgetN.getColor(i++, 0));
                 }
+                if(this.white_bg) this.stepsColor = inverted_text_color;
                 this.stepsAlignLeft = sharedPreferences.getBoolean("stepsAlignLeft", widgetN.getBoolean(i++, false));
                 this.stepsUnits = sharedPreferences.getBoolean("stepsUnits", widgetN.getBoolean(i++, true));
                 this.stepsIcon = sharedPreferences.getBoolean("stepsIcon", widgetN.getBoolean(i++, true));
@@ -816,6 +832,7 @@ public class LoadSettings {
                 }else{
                     this.heart_rateColor = sharedPreferences.getInt("heart_rateColor", widgetN.getColor(i++, 0));
                 }
+                if(this.white_bg) this.heart_rateColor = inverted_text_color;
                 this.heart_rateAlignLeft = sharedPreferences.getBoolean("heart_rateAlignLeft", widgetN.getBoolean(i++, false));
                 this.heart_rateUnits = sharedPreferences.getBoolean("heart_rateUnits", widgetN.getBoolean(i++, true));
                 this.heart_rateIcon = sharedPreferences.getBoolean("heart_rateIcon", widgetN.getBoolean(i++, true));
@@ -840,6 +857,7 @@ public class LoadSettings {
                 }else{
                     this.total_distanceColor = sharedPreferences.getInt("total_distanceColor", widgetN.getColor(i++, 0));
                 }
+                if(this.white_bg) this.total_distanceColor = inverted_text_color;
                 this.total_distanceAlignLeft = sharedPreferences.getBoolean("total_distanceAlignLeft", widgetN.getBoolean(i++, false));
                 this.total_distanceUnits = sharedPreferences.getBoolean("total_distanceUnits", widgetN.getBoolean(i++, true));
                 this.total_distanceIcon = sharedPreferences.getBoolean("total_distanceIcon", widgetN.getBoolean(i++, true));
@@ -864,6 +882,7 @@ public class LoadSettings {
                 }else{
                     this.today_distanceColor = sharedPreferences.getInt("today_distanceColor", widgetN.getColor(i++, 0));
                 }
+                if(this.white_bg) this.today_distanceColor = inverted_text_color;
                 this.today_distanceAlignLeft = sharedPreferences.getBoolean("today_distanceAlignLeft", widgetN.getBoolean(i++, false));
                 this.today_distanceUnits = sharedPreferences.getBoolean("today_distanceUnits", widgetN.getBoolean(i++, true));
                 this.today_distanceIcon = sharedPreferences.getBoolean("today_distanceIcon", widgetN.getBoolean(i++, true));
@@ -888,6 +907,7 @@ public class LoadSettings {
                 }else{
                     this.floorsColor = sharedPreferences.getInt("floorsColor", widgetN.getColor(i++, 0));
                 }
+                if(this.white_bg) this.floorsColor = inverted_text_color;
                 this.floorsAlignLeft = sharedPreferences.getBoolean("floorsAlignLeft", widgetN.getBoolean(i++, false));
                 this.floorsUnits = sharedPreferences.getBoolean("floorsUnits", widgetN.getBoolean(i++, true));
                 this.floorsIcon = sharedPreferences.getBoolean("floorsIcon", widgetN.getBoolean(i++, true));
@@ -912,6 +932,7 @@ public class LoadSettings {
                 }else{
                     this.battery_percentColor = sharedPreferences.getInt("battery_percentColor", widgetN.getColor(i++, 0));
                 }
+                if(this.white_bg) this.battery_percentColor = inverted_text_color;
                 this.battery_percentAlignLeft = sharedPreferences.getBoolean("battery_percentAlignLeft", widgetN.getBoolean(i++, false));
                 this.battery_percentUnits = sharedPreferences.getBoolean("battery_percentUnits", widgetN.getBoolean(i++, true));
                 this.battery_percentIcon = sharedPreferences.getBoolean("battery_percentIcon", widgetN.getBoolean(i++, true));
@@ -936,6 +957,7 @@ public class LoadSettings {
                 }else{
                     this.temperatureColor = sharedPreferences.getInt("temperatureColor", widgetN.getColor(i++, 0));
                 }
+                if(this.white_bg) this.temperatureColor = inverted_text_color;
                 this.temperatureAlignLeft = sharedPreferences.getBoolean("temperatureAlignLeft", widgetN.getBoolean(i++, false));
                 this.temperatureUnits = sharedPreferences.getBoolean("temperatureUnits", widgetN.getBoolean(i++, true));
                 this.temperatureIcon = sharedPreferences.getBoolean("temperatureIcon", widgetN.getBoolean(i++, true));
@@ -960,6 +982,7 @@ public class LoadSettings {
                 }else{
                     this.cityColor = sharedPreferences.getInt("cityColor", widgetN.getColor(i++, 0));
                 }
+                if(this.white_bg) this.cityColor = inverted_text_color;
                 this.cityAlignLeft = sharedPreferences.getBoolean("cityAlignLeft", widgetN.getBoolean(i++, false));
                 this.cityUnits = sharedPreferences.getBoolean("cityUnits", widgetN.getBoolean(i++, false));
                 this.cityIcon = sharedPreferences.getBoolean("cityIcon", widgetN.getBoolean(i++, true));
@@ -984,6 +1007,7 @@ public class LoadSettings {
                 }else{
                     this.watch_alarmColor = sharedPreferences.getInt("watch_alarmColor", widgetN.getColor(i++, 0));
                 }
+                if(this.white_bg) this.watch_alarmColor = inverted_text_color;
                 this.watch_alarmAlignLeft = sharedPreferences.getBoolean("watch_alarmAlignLeft", widgetN.getBoolean(i++, false));
                 this.watch_alarmUnits = sharedPreferences.getBoolean("watch_alarmUnits", widgetN.getBoolean(i++, true));
                 this.watch_alarmIcon = sharedPreferences.getBoolean("watch_alarmIcon", widgetN.getBoolean(i++, true));
@@ -1008,6 +1032,7 @@ public class LoadSettings {
                 }else{
                     this.humidityColor = sharedPreferences.getInt("humidityColor", widgetN.getColor(i++, 0));
                 }
+                if(this.white_bg) this.humidityColor = inverted_text_color;
                 this.humidityAlignLeft = sharedPreferences.getBoolean("humidityAlignLeft", widgetN.getBoolean(i++, false));
                 this.humidityUnits = sharedPreferences.getBoolean("humidityUnits", widgetN.getBoolean(i++, true));
                 this.humidityIcon = sharedPreferences.getBoolean("humidityIcon", widgetN.getBoolean(i++, true));
@@ -1032,6 +1057,7 @@ public class LoadSettings {
                 }else{
                     this.uvColor = sharedPreferences.getInt("uvColor", widgetN.getColor(i++, 0));
                 }
+                if(this.white_bg) this.uvColor = inverted_text_color;
                 this.uvAlignLeft = sharedPreferences.getBoolean("uvAlignLeft", widgetN.getBoolean(i++, false));
                 this.uvUnits = sharedPreferences.getBoolean("uvUnits", widgetN.getBoolean(i++, true));
                 this.uvIcon = sharedPreferences.getBoolean("uvIcon", widgetN.getBoolean(i++, true));
@@ -1056,6 +1082,7 @@ public class LoadSettings {
                 }else{
                     this.wind_directionColor = sharedPreferences.getInt("wind_directionColor", widgetN.getColor(i++, 0));
                 }
+                if(this.white_bg) this.wind_directionColor = inverted_text_color;
                 this.wind_directionAlignLeft = sharedPreferences.getBoolean("wind_directionAlignLeft", widgetN.getBoolean(i++, false));
                 this.wind_directionUnits = sharedPreferences.getBoolean("wind_directionUnits", widgetN.getBoolean(i++, true));
                 this.wind_directionIcon = sharedPreferences.getBoolean("wind_directionIcon", widgetN.getBoolean(i++, true));
@@ -1080,6 +1107,7 @@ public class LoadSettings {
                 }else{
                     this.wind_strengthColor = sharedPreferences.getInt("wind_strengthColor", widgetN.getColor(i++, 0));
                 }
+                if(this.white_bg) this.wind_strengthColor = inverted_text_color;
                 this.wind_strengthAlignLeft = sharedPreferences.getBoolean("wind_strengthAlignLeft", widgetN.getBoolean(i++, false));
                 this.wind_strengthUnits = sharedPreferences.getBoolean("wind_strengthUnits", widgetN.getBoolean(i++, true));
                 this.wind_strengthIcon = sharedPreferences.getBoolean("wind_strengthIcon", widgetN.getBoolean(i++, true));
@@ -1104,6 +1132,7 @@ public class LoadSettings {
                 }else{
                     this.air_pressureColor = sharedPreferences.getInt("air_pressureColor", widgetN.getColor(i++, 0));
                 }
+                if(this.white_bg) this.air_pressureColor = inverted_text_color;
                 this.air_pressureAlignLeft = sharedPreferences.getBoolean("air_pressureAlignLeft", widgetN.getBoolean(i++, false));
                 this.air_pressureUnits = sharedPreferences.getBoolean("air_pressureUnits", widgetN.getBoolean(i++, true));
                 this.air_pressureIcon = sharedPreferences.getBoolean("air_pressureIcon", widgetN.getBoolean(i++, true));
@@ -1128,6 +1157,7 @@ public class LoadSettings {
                 }else{
                     this.altitudeColor = sharedPreferences.getInt("altitudeColor", widgetN.getColor(i++, 0));
                 }
+                if(this.white_bg) this.altitudeColor = inverted_text_color;
                 this.altitudeAlignLeft = sharedPreferences.getBoolean("altitudeAlignLeft", widgetN.getBoolean(i++, false));
                 this.altitudeUnits = sharedPreferences.getBoolean("altitudeUnits", widgetN.getBoolean(i++, true));
                 this.altitudeIcon = sharedPreferences.getBoolean("altitudeIcon", widgetN.getBoolean(i++, true));
@@ -1152,6 +1182,7 @@ public class LoadSettings {
                 }else{
                     this.phone_batteryColor = sharedPreferences.getInt("phone_batteryColor", widgetN.getColor(i++, 0));
                 }
+                if(this.white_bg) this.phone_batteryColor = inverted_text_color;
                 this.phone_batteryAlignLeft = sharedPreferences.getBoolean("phone_batteryAlignLeft", widgetN.getBoolean(i++, false));
                 this.phone_batteryUnits = sharedPreferences.getBoolean("phone_batteryUnits", widgetN.getBoolean(i++, true));
                 this.phone_batteryIcon = sharedPreferences.getBoolean("phone_batteryIcon", widgetN.getBoolean(i++, true));
@@ -1176,6 +1207,7 @@ public class LoadSettings {
                 }else{
                     this.phone_alarmColor = sharedPreferences.getInt("phone_alarmColor", widgetN.getColor(i++, 0));
                 }
+                if(this.white_bg) this.phone_alarmColor = inverted_text_color;
                 this.phone_alarmAlignLeft = sharedPreferences.getBoolean("phone_alarmAlignLeft", widgetN.getBoolean(i++, false));
                 this.phone_alarmUnits = sharedPreferences.getBoolean("phone_alarmUnits", widgetN.getBoolean(i++, true));
                 this.phone_alarmIcon = sharedPreferences.getBoolean("phone_alarmIcon", widgetN.getBoolean(i++, true));
@@ -1200,6 +1232,7 @@ public class LoadSettings {
                 }else{
                     this.xdripColor = sharedPreferences.getInt("xdripColor", widgetN.getColor(i++, 0));
                 }
+                if(this.white_bg) this.xdripColor = inverted_text_color;
                 this.xdripAlignLeft = sharedPreferences.getBoolean("xdripAlignLeft", widgetN.getBoolean(i++, false));
                 this.xdripUnits = sharedPreferences.getBoolean("xdripUnits", widgetN.getBoolean(i++, true));
                 this.xdripIcon = sharedPreferences.getBoolean("xdripIcon", widgetN.getBoolean(i++, true));
@@ -1224,6 +1257,7 @@ public class LoadSettings {
             }else{
                 this.weather_imgColor = sharedPreferences.getInt("weather_imgColor", widgetN.getColor(i++, 0));
             }
+            if(this.white_bg) this.weather_imgColor = inverted_text_color;
             this.weather_imgAlignLeft = sharedPreferences.getBoolean("weather_imgAlignLeft", widgetN.getBoolean(i++, false));
             this.weather_imgUnits = sharedPreferences.getBoolean("weather_imgUnits", widgetN.getBoolean(i++, true));
             this.weather_imgIcon = sharedPreferences.getBoolean("weather_imgIcon", widgetN.getBoolean(i++, true));
@@ -1248,6 +1282,7 @@ public class LoadSettings {
             }else{
                 this.world_timeColor = sharedPreferences.getInt("world_timeColor", widgetN.getColor(i++, 0));
             }
+            if(this.white_bg) this.world_timeColor = inverted_text_color;
             this.world_timeAlignLeft = sharedPreferences.getBoolean("world_timeAlignLeft", widgetN.getBoolean(i++, false));
             this.world_timeUnits = sharedPreferences.getBoolean("world_timeUnits", widgetN.getBoolean(i++, true));
             this.world_timeIcon = sharedPreferences.getBoolean("world_timeIcon", widgetN.getBoolean(i++, true));
@@ -1272,6 +1307,7 @@ public class LoadSettings {
             }else{
                 this.moonphaseColor = sharedPreferences.getInt("moonphaseColor", widgetN.getColor(i++, 0));
             }
+            if(this.white_bg) this.moonphaseColor = inverted_text_color;
             this.moonphaseAlignLeft = sharedPreferences.getBoolean("moonphaseAlignLeft", widgetN.getBoolean(i++, false));
             sharedPreferences.getBoolean("moonphaseUnits", widgetN.getBoolean(i++, true));/*dummy*/
             this.moonphaseIcon = sharedPreferences.getBoolean("moonphaseIcon", widgetN.getBoolean(i++, true));
@@ -1298,6 +1334,7 @@ public class LoadSettings {
             }else{
                 this.notificationsColor = sharedPreferences.getInt("notificationsColor", widgetN.getColor(i++, 0));
             }
+            if(this.white_bg) this.notificationsColor = inverted_text_color;
             this.notificationsAlignLeft = sharedPreferences.getBoolean("notificationsAlignLeft", widgetN.getBoolean(i++, false));
             this.notificationsUnits = sharedPreferences.getBoolean("notificationsUnits", widgetN.getBoolean(i++, true));
             this.notificationsIcon = sharedPreferences.getBoolean("notificationsIcon", widgetN.getBoolean(i++, true));

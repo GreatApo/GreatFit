@@ -129,7 +129,7 @@ public class GreatWidget extends AbstractWidget {
             this.alarmPaint.setTextAlign((settings.watch_alarmAlignLeft) ? Paint.Align.LEFT : Paint.Align.CENTER);
 
             if(settings.watch_alarmIcon){
-                this.watch_alarmIcon = Util.decodeImage(service.getResources(),"icons/alarm.png");
+                this.watch_alarmIcon = Util.decodeImage(service.getResources(),"icons/"+settings.is_white_bg+"alarm.png");
             }
         }
 
@@ -144,7 +144,7 @@ public class GreatWidget extends AbstractWidget {
             this.xdripPaint.setTextAlign((settings.xdripAlignLeft) ? Paint.Align.LEFT : Paint.Align.CENTER);
 
             if(settings.xdripIcon){
-                this.xdripIcon = Util.decodeImage(service.getResources(),"icons/xdrip.png");
+                this.xdripIcon = Util.decodeImage(service.getResources(),"icons/"+settings.is_white_bg+"xdrip.png");
             }
         }
 
@@ -160,7 +160,7 @@ public class GreatWidget extends AbstractWidget {
                 this.airPressurePaint.setTextAlign((settings.air_pressureAlignLeft) ? Paint.Align.LEFT : Paint.Align.CENTER);
 
                 if(settings.air_pressureIcon){
-                    this.air_pressureIcon = Util.decodeImage(service.getResources(),"icons/air_pressure.png");
+                    this.air_pressureIcon = Util.decodeImage(service.getResources(),"icons/"+settings.is_white_bg+"air_pressure.png");
                 }
             }
             if(settings.altitude>0) {
@@ -171,7 +171,7 @@ public class GreatWidget extends AbstractWidget {
                 this.altitudePaint.setTextAlign((settings.altitudeAlignLeft) ? Paint.Align.LEFT : Paint.Align.CENTER);
 
                 if(settings.altitudeIcon){
-                    this.altitudeIcon = Util.decodeImage(service.getResources(),"icons/altitude.png");
+                    this.altitudeIcon = Util.decodeImage(service.getResources(),"icons/"+settings.is_white_bg+"altitude.png");
                 }
             }
             if(settings.phone_battery>0) {
@@ -182,7 +182,7 @@ public class GreatWidget extends AbstractWidget {
                 this.phoneBatteryPaint.setTextAlign((settings.phone_batteryAlignLeft) ? Paint.Align.LEFT : Paint.Align.CENTER);
 
                 if(settings.phone_batteryIcon){
-                    this.phone_batteryIcon = Util.decodeImage(service.getResources(),"icons/phone_battery.png");
+                    this.phone_batteryIcon = Util.decodeImage(service.getResources(),"icons/"+settings.is_white_bg+"phone_battery.png");
                 }
             }
             if(settings.phone_alarm>0) {
@@ -193,7 +193,7 @@ public class GreatWidget extends AbstractWidget {
                 this.phoneAlarmPaint.setTextAlign((settings.phone_alarmAlignLeft) ? Paint.Align.LEFT : Paint.Align.CENTER);
 
                 if(settings.phone_alarmIcon){
-                    this.phone_alarmIcon = Util.decodeImage(service.getResources(),"icons/phone_alarm.png");
+                    this.phone_alarmIcon = Util.decodeImage(service.getResources(),"icons/"+settings.is_white_bg+"phone_alarm.png");
                 }
             }
             if(settings.notifications>0) {
@@ -204,7 +204,7 @@ public class GreatWidget extends AbstractWidget {
                 this.notificationsPaint.setTextAlign((settings.notificationsAlignLeft) ? Paint.Align.LEFT : Paint.Align.CENTER);
 
                 if(settings.notificationsIcon){
-                    this.notificationsIcon = Util.decodeImage(service.getResources(),"icons/notifications.png");
+                    this.notificationsIcon = Util.decodeImage(service.getResources(),"icons/"+settings.is_white_bg+"notifications.png");
                 }
             }
         }
@@ -219,7 +219,7 @@ public class GreatWidget extends AbstractWidget {
             this.world_timePaint.setTextAlign((settings.world_timeAlignLeft) ? Paint.Align.LEFT : Paint.Align.CENTER);
 
             if(settings.world_timeIcon){
-                this.world_timeIcon = Util.decodeImage(service.getResources(),"icons/world_time.png");
+                this.world_timeIcon = Util.decodeImage(service.getResources(),"icons/"+settings.is_white_bg+"world_time.png");
             }
         }
 
@@ -634,7 +634,7 @@ public class GreatWidget extends AbstractWidget {
             // Show or Not icon
             if (settings.watch_alarmIcon) {
                 SlptPictureView watch_alarmIcon = new SlptPictureView();
-                watch_alarmIcon.setImagePicture( SimpleFile.readFileFromAssets(service, ( (better_resolution)?"26wc_":"slpt_" )+"icons/alarm.png") );
+                watch_alarmIcon.setImagePicture( SimpleFile.readFileFromAssets(service, ( (better_resolution)?"26wc_":"slpt_" )+"icons/"+settings.is_white_bg+"alarm.png") );
                 watch_alarmIcon.setStart(
                         (int) settings.watch_alarmIconLeft,
                         (int) settings.watch_alarmIconTop
@@ -676,7 +676,7 @@ public class GreatWidget extends AbstractWidget {
             // Show or Not icon
             if (settings.xdripIcon) {
                 SlptPictureView xdripIcon = new SlptPictureView();
-                xdripIcon.setImagePicture( SimpleFile.readFileFromAssets(service, ( (better_resolution)?"26wc_":"slpt_" )+"icons/xdrip.png") );
+                xdripIcon.setImagePicture( SimpleFile.readFileFromAssets(service, ( (better_resolution)?"26wc_":"slpt_" )+"icons/"+settings.is_white_bg+"xdrip.png") );
                 xdripIcon.setStart(
                         (int) settings.xdripIconLeft,
                         (int) settings.xdripIconTop
@@ -719,7 +719,7 @@ public class GreatWidget extends AbstractWidget {
             // Show or Not icon
             if (settings.air_pressureIcon) {
                 SlptPictureView air_pressureIcon = new SlptPictureView();
-                air_pressureIcon.setImagePicture( SimpleFile.readFileFromAssets(service, ( (better_resolution)?"26wc_":"slpt_" )+"icons/air_pressure.png") );
+                air_pressureIcon.setImagePicture( SimpleFile.readFileFromAssets(service, ( (better_resolution)?"26wc_":"slpt_" )+"icons/"+settings.is_white_bg+"air_pressure.png") );
                 air_pressureIcon.setStart(
                         (int) settings.air_pressureIconLeft,
                         (int) settings.air_pressureIconTop
@@ -767,7 +767,7 @@ public class GreatWidget extends AbstractWidget {
             // Show or Not icon
             if (settings.altitudeIcon) {
                 SlptPictureView altitudeIcon = new SlptPictureView();
-                altitudeIcon.setImagePicture( SimpleFile.readFileFromAssets(service, ( (better_resolution)?"26wc_":"slpt_" )+"icons/altitude.png") );
+                altitudeIcon.setImagePicture( SimpleFile.readFileFromAssets(service, ( (better_resolution)?"26wc_":"slpt_" )+"icons/"+settings.is_white_bg+"altitude.png") );
                 altitudeIcon.setStart(
                         (int) settings.altitudeIconLeft,
                         (int) settings.altitudeIconTop
@@ -815,7 +815,7 @@ public class GreatWidget extends AbstractWidget {
             // Show or Not icon
             if (settings.phone_batteryIcon) {
                 SlptPictureView phone_batteryIcon = new SlptPictureView();
-                phone_batteryIcon.setImagePicture( SimpleFile.readFileFromAssets(service, ( (better_resolution)?"26wc_":"slpt_" )+"icons/phone_battery.png") );
+                phone_batteryIcon.setImagePicture( SimpleFile.readFileFromAssets(service, ( (better_resolution)?"26wc_":"slpt_" )+"icons/"+settings.is_white_bg+"phone_battery.png") );
                 phone_batteryIcon.setStart(
                         (int) settings.phone_batteryIconLeft,
                         (int) settings.phone_batteryIconTop
@@ -857,7 +857,7 @@ public class GreatWidget extends AbstractWidget {
             // Show or Not icon
             if (settings.phone_alarmIcon) {
                 SlptPictureView phone_alarmIcon = new SlptPictureView();
-                phone_alarmIcon.setImagePicture( SimpleFile.readFileFromAssets(service, ( (better_resolution)?"26wc_":"slpt_" )+"icons/phone_alarm.png") );
+                phone_alarmIcon.setImagePicture( SimpleFile.readFileFromAssets(service, ( (better_resolution)?"26wc_":"slpt_" )+"icons/"+settings.is_white_bg+"phone_alarm.png") );
                 phone_alarmIcon.setStart(
                         (int) settings.phone_alarmIconLeft,
                         (int) settings.phone_alarmIconTop
@@ -899,7 +899,7 @@ public class GreatWidget extends AbstractWidget {
             // Show or Not icon
             if (settings.notificationsIcon) {
                 SlptPictureView notificationIcon = new SlptPictureView();
-                notificationIcon.setImagePicture( SimpleFile.readFileFromAssets(service, ( (better_resolution)?"26wc_":"slpt_" )+"icons/notifications.png") );
+                notificationIcon.setImagePicture( SimpleFile.readFileFromAssets(service, ( (better_resolution)?"26wc_":"slpt_" )+"icons/"+settings.is_white_bg+"notifications.png") );
                 notificationIcon.setStart(
                         (int) settings.notificationsIconLeft,
                         (int) settings.notificationsIconTop
@@ -945,7 +945,7 @@ public class GreatWidget extends AbstractWidget {
             // Show or Not icon
             if (settings.world_timeIcon) {
                 SlptPictureView world_timeIcon = new SlptPictureView();
-                world_timeIcon.setImagePicture( SimpleFile.readFileFromAssets(service, ( (better_resolution)?"26wc_":"slpt_" )+"icons/world_time.png") );
+                world_timeIcon.setImagePicture( SimpleFile.readFileFromAssets(service, ( (better_resolution)?"26wc_":"slpt_" )+"icons/"+settings.is_white_bg+"world_time.png") );
                 world_timeIcon.setStart(
                         (int) settings.world_timeIconLeft,
                         (int) settings.world_timeIconTop

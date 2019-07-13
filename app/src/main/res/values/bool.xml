@@ -3,6 +3,7 @@
 
     <bool name="better_resolution_when_raising_hand">true</bool>
     <bool name="digital_clock">true</bool>
+    <bool name="white_bg">false</bool>
     <bool name="analog_clock">false</bool>
     <bool name="clock_only_slpt">false</bool>
     <bool name="no_0_on_hour_first_digit">true</bool>

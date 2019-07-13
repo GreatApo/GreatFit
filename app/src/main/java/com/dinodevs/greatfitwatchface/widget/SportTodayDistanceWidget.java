@@ -54,7 +54,7 @@ public class SportTodayDistanceWidget extends AbstractWidget {
             this.today_distancePaint.setTextAlign( (settings.today_distanceAlignLeft) ? Paint.Align.LEFT : Paint.Align.CENTER );
 
             if(settings.today_distanceIcon){
-                this.today_distanceIcon = Util.decodeImage(service.getResources(),"icons/today_distance.png");
+                this.today_distanceIcon = Util.decodeImage(service.getResources(),"icons/"+settings.is_white_bg+"today_distance.png");
             }
         }
 
@@ -139,7 +139,7 @@ public class SportTodayDistanceWidget extends AbstractWidget {
             // Show or Not icon
             if (settings.today_distanceIcon) {
                 SlptPictureView today_distanceIcon = new SlptPictureView();
-                today_distanceIcon.setImagePicture( SimpleFile.readFileFromAssets(service, ( (better_resolution)?"26wc_":"slpt_" )+"icons/today_distance.png") );
+                today_distanceIcon.setImagePicture( SimpleFile.readFileFromAssets(service, ( (better_resolution)?"26wc_":"slpt_" )+"icons/"+settings.is_white_bg+"today_distance.png") );
                 today_distanceIcon.setStart(
                         (int) settings.today_distanceIconLeft,
                         (int) settings.today_distanceIconTop

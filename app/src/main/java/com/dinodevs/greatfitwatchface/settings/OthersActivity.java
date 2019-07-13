@@ -36,6 +36,14 @@ public class OthersActivity extends FragmentActivity {
             }
         }, better_resolution_when_raising_hand));
 
+        final boolean white_bg = sharedPreferences.getBoolean( "white_bg", getResources().getBoolean(R.bool.white_bg));
+        settings.add(new SwitchSetting(null, "White background", "Theme with white bg - black text/icons", new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                sharedPreferences.edit().putBoolean( "white_bg", b).apply();
+            }
+        }, white_bg));
+
         final boolean analog_clock = sharedPreferences.getBoolean( "analog_clock", getResources().getBoolean(R.bool.analog_clock));
         settings.add(new SwitchSetting(null, "Analog clock", "Show clock time hands", new CompoundButton.OnCheckedChangeListener() {
             @Override
