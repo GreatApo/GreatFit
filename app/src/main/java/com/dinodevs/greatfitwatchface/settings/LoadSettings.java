@@ -163,6 +163,8 @@ public class LoadSettings {
     public boolean stepsIcon;
     public float stepsIconLeft;
     public float stepsIconTop;
+    public float stepLength;
+
     // heart_rate
     public int heart_rate;
     public float heart_rateFontSize;
@@ -507,224 +509,224 @@ public class LoadSettings {
         Log.d("GreatFit","Scale: "+scale);
 
         // All
-            this.font_ratio = sharedPreferences.getInt("font_ratio", res.getInteger(R.integer.font_ratio));
-            this.watchface = context.getResources().getString(R.string.watch_face);
-            this.author = context.getResources().getString(R.string.author);
-            this.language = sharedPreferences.getInt( "language", 0);
-            this.color = sharedPreferences.getInt( "color", -1);
-            this.white_bg = sharedPreferences.getBoolean( "white_bg", context.getResources().getBoolean(R.bool.white_bg));
-            this.is_white_bg = (this.white_bg?"inv-":"");
-            this.font_no = sharedPreferences.getInt( "font", 0);
-            this.better_resolution_when_raising_hand = sharedPreferences.getBoolean( "better_resolution_when_raising_hand", context.getResources().getBoolean(R.bool.better_resolution_when_raising_hand));
-            this.flashing_indicator = sharedPreferences.getBoolean( "flashing_indicator", context.getResources().getBoolean(R.bool.flashing_indicator));
-            this.month_as_text = sharedPreferences.getBoolean( "month_as_text", context.getResources().getBoolean(R.bool.month_as_text));
-            this.three_letters_month_if_text = sharedPreferences.getBoolean( "three_letters_month_if_text", context.getResources().getBoolean(R.bool.three_letters_month_if_text));
-            this.three_letters_day_if_text = sharedPreferences.getBoolean( "three_letters_day_if_text", context.getResources().getBoolean(R.bool.three_letters_day_if_text));
-            this.no_0_on_hour_first_digit = sharedPreferences.getBoolean( "no_0_on_hour_first_digit", context.getResources().getBoolean(R.bool.no_0_on_hour_first_digit));
-            this.wind_direction_as_arrows = sharedPreferences.getBoolean( "wind_direction_as_arrows", context.getResources().getBoolean(R.bool.wind_direction_as_arrows));
-            this.status_bar = sharedPreferences.getBoolean( "status_bar", context.getResources().getBoolean(R.bool.status_bar));
-            this.status_barLeft = sharedPreferences.getInt( "status_barLeft", context.getResources().getInteger(R.integer.status_left));
-            this.status_barTop = sharedPreferences.getInt( "status_barTop", context.getResources().getInteger(R.integer.status_top));
-            this.flashing_heart_rate_icon = sharedPreferences.getBoolean( "flashing_heart_rate_icon", context.getResources().getBoolean(R.bool.flashing_heart_rate_icon));
-            this.target_calories = sharedPreferences.getInt( "target_calories", 1000);
-            this.custom_refresh_rate = sharedPreferences.getInt( "custom_refresh_rate", context.getResources().getInteger(R.integer.custom_refresh_rate)*1000);
-            this.temp_heart_rate = sharedPreferences.getInt( "temp_heart_rate", 0);
-            this.temp_calories = sharedPreferences.getInt( "temp_calories", 0);
-            this.am_pm_always = sharedPreferences.getBoolean( "am_pm_always", context.getResources().getBoolean(R.bool.am_pm_always));
-            this.world_time_zone = sharedPreferences.getFloat( "world_time_zone", -1f);
+        this.font_ratio = sharedPreferences.getInt("font_ratio", res.getInteger(R.integer.font_ratio));
+        this.watchface = context.getResources().getString(R.string.watch_face);
+        this.author = context.getResources().getString(R.string.author);
+        this.language = sharedPreferences.getInt( "language", 0);
+        this.color = sharedPreferences.getInt( "color", -1);
+        this.white_bg = sharedPreferences.getBoolean( "white_bg", context.getResources().getBoolean(R.bool.white_bg));
+        this.is_white_bg = (this.white_bg?"inv-":"");
+        this.font_no = sharedPreferences.getInt( "font", 0);
+        this.better_resolution_when_raising_hand = sharedPreferences.getBoolean( "better_resolution_when_raising_hand", context.getResources().getBoolean(R.bool.better_resolution_when_raising_hand));
+        this.flashing_indicator = sharedPreferences.getBoolean( "flashing_indicator", context.getResources().getBoolean(R.bool.flashing_indicator));
+        this.month_as_text = sharedPreferences.getBoolean( "month_as_text", context.getResources().getBoolean(R.bool.month_as_text));
+        this.three_letters_month_if_text = sharedPreferences.getBoolean( "three_letters_month_if_text", context.getResources().getBoolean(R.bool.three_letters_month_if_text));
+        this.three_letters_day_if_text = sharedPreferences.getBoolean( "three_letters_day_if_text", context.getResources().getBoolean(R.bool.three_letters_day_if_text));
+        this.no_0_on_hour_first_digit = sharedPreferences.getBoolean( "no_0_on_hour_first_digit", context.getResources().getBoolean(R.bool.no_0_on_hour_first_digit));
+        this.wind_direction_as_arrows = sharedPreferences.getBoolean( "wind_direction_as_arrows", context.getResources().getBoolean(R.bool.wind_direction_as_arrows));
+        this.status_bar = sharedPreferences.getBoolean( "status_bar", context.getResources().getBoolean(R.bool.status_bar));
+        this.status_barLeft = sharedPreferences.getInt( "status_barLeft", context.getResources().getInteger(R.integer.status_left));
+        this.status_barTop = sharedPreferences.getInt( "status_barTop", context.getResources().getInteger(R.integer.status_top));
+        this.flashing_heart_rate_icon = sharedPreferences.getBoolean( "flashing_heart_rate_icon", context.getResources().getBoolean(R.bool.flashing_heart_rate_icon));
+        this.target_calories = sharedPreferences.getInt( "target_calories", 1000);
+        this.custom_refresh_rate = sharedPreferences.getInt( "custom_refresh_rate", context.getResources().getInteger(R.integer.custom_refresh_rate)*1000);
+        this.temp_heart_rate = sharedPreferences.getInt( "temp_heart_rate", 0);
+        this.temp_calories = sharedPreferences.getInt( "temp_calories", 0);
+        this.am_pm_always = sharedPreferences.getBoolean( "am_pm_always", context.getResources().getBoolean(R.bool.am_pm_always));
+        this.world_time_zone = sharedPreferences.getFloat( "world_time_zone", -1f);
 
-            this.analog_clock = sharedPreferences.getBoolean( "analog_clock", context.getResources().getBoolean(R.bool.analog_clock));
-            this.digital_clock = sharedPreferences.getBoolean( "digital_clock", context.getResources().getBoolean(R.bool.digital_clock));
-            this.clock_only_slpt = sharedPreferences.getBoolean( "clock_only_slpt", context.getResources().getBoolean(R.bool.clock_only_slpt));
+        this.analog_clock = sharedPreferences.getBoolean( "analog_clock", context.getResources().getBoolean(R.bool.analog_clock));
+        this.digital_clock = sharedPreferences.getBoolean( "digital_clock", context.getResources().getBoolean(R.bool.digital_clock));
+        this.clock_only_slpt = sharedPreferences.getBoolean( "clock_only_slpt", context.getResources().getBoolean(R.bool.clock_only_slpt));
 
-            // Populate color codes
-            String[] colorCodes = context.getResources().getStringArray(R.array.color_codes);
-            int x = 0;
-            this.colorCodes = new Integer[colorCodes.length];
-            for(String color : colorCodes){
-                this.colorCodes[x] = Color.parseColor(color);
-                x++;
-            }
+        // Populate color codes
+        String[] colorCodes = context.getResources().getStringArray(R.array.color_codes);
+        int x = 0;
+        this.colorCodes = new Integer[colorCodes.length];
+        for(String color : colorCodes){
+            this.colorCodes[x] = Color.parseColor(color);
+            x++;
+        }
 
-            // Select Font
-            this.font = ResourceManager.Font.values()[font_no];
+        // Select Font
+        this.font = ResourceManager.Font.values()[font_no];
 
-            //icon paint
-            this.mGPaint = new Paint();
-            mGPaint.setAntiAlias(false);
-            mGPaint.setFilterBitmap(false);
-            List theme_elements = Arrays.asList(context.getResources().getStringArray(R.array.theme_elements));
-            String[] color_codes = context.getResources().getStringArray(R.array.color_codes);
+        //icon paint
+        this.mGPaint = new Paint();
+        mGPaint.setAntiAlias(false);
+        mGPaint.setFilterBitmap(false);
+        List theme_elements = Arrays.asList(context.getResources().getStringArray(R.array.theme_elements));
+        String[] color_codes = context.getResources().getStringArray(R.array.color_codes);
 
-            Log.d(TAG, "Language: "+this.language );
+        Log.d(TAG, "Language: "+this.language );
 
         @StyleableRes int i = 0;
         // Hours
-            this.hoursBool = sharedPreferences.getBoolean("hoursBool", true);
-            if(this.hoursBool) {
-                TypedArray hours = res.obtainTypedArray(R.array.hours);
-                this.hoursFontSize = scale*sharedPreferences.getFloat("hoursFontSize", hours.getDimension(i++, 0));
-                this.hoursLeft = scale*sharedPreferences.getFloat("hoursLeft", hours.getDimension(i++, 0));
-                this.hoursTop = scale*sharedPreferences.getFloat("hoursTop", hours.getDimension(i++, 0));
-                if(this.color>-1 && theme_elements.indexOf("hours")>-1){
-                    this.hoursColor = Color.parseColor(color_codes[this.color]);
-                    i++;
-                }else{
-                    this.hoursColor = sharedPreferences.getInt("hoursColor", hours.getColor(i++, 0));
-                }
+        this.hoursBool = sharedPreferences.getBoolean("hoursBool", true);
+        if(this.hoursBool) {
+            TypedArray hours = res.obtainTypedArray(R.array.hours);
+            this.hoursFontSize = scale*sharedPreferences.getFloat("hoursFontSize", hours.getDimension(i++, 0));
+            this.hoursLeft = scale*sharedPreferences.getFloat("hoursLeft", hours.getDimension(i++, 0));
+            this.hoursTop = scale*sharedPreferences.getFloat("hoursTop", hours.getDimension(i++, 0));
+            if(this.color>-1 && theme_elements.indexOf("hours")>-1){
+                this.hoursColor = Color.parseColor(color_codes[this.color]);
+                i++;
+            }else{
+                this.hoursColor = sharedPreferences.getInt("hoursColor", hours.getColor(i++, 0));
+            }
 
-                this.hoursAlignLeft = sharedPreferences.getBoolean("hoursAlignLeft", hours.getBoolean(i, true));
-                hours.recycle();
-            }
+            this.hoursAlignLeft = sharedPreferences.getBoolean("hoursAlignLeft", hours.getBoolean(i, true));
+            hours.recycle();
+        }
         // Indicator
-            this.indicatorBool = sharedPreferences.getBoolean("indicatorBool", res.getIdentifier("indicator", "array", context.getPackageName())!=0);
-            if(this.indicatorBool) {
-                TypedArray indicator = res.obtainTypedArray(res.getIdentifier("indicator", "array", context.getPackageName()));
-                i = 0;
-                this.indicatorFontSize = scale*sharedPreferences.getFloat("indicatorFontSize", indicator.getDimension(i++, 0));
-                this.indicatorLeft = scale*sharedPreferences.getFloat("indicatorLeft", indicator.getDimension(i++, 0));
-                this.indicatorTop = scale*sharedPreferences.getFloat("indicatorTop", indicator.getDimension(i++, 0));
-                if(this.color>-1 && theme_elements.indexOf("indicator")>-1){
-                    this.indicatorColor = Color.parseColor(color_codes[this.color]);
-                    i++;
-                }else{
-                    this.indicatorColor = sharedPreferences.getInt("indicatorColor", indicator.getColor(i++, 0));
-                }
-                if(this.white_bg) this.indicatorColor = inverted_text_color;
-                this.indicatorAlignLeft = sharedPreferences.getBoolean("indicatorAlignLeft", indicator.getBoolean(i, true));
-                indicator.recycle();
+        this.indicatorBool = sharedPreferences.getBoolean("indicatorBool", res.getIdentifier("indicator", "array", context.getPackageName())!=0);
+        if(this.indicatorBool) {
+            TypedArray indicator = res.obtainTypedArray(res.getIdentifier("indicator", "array", context.getPackageName()));
+            i = 0;
+            this.indicatorFontSize = scale*sharedPreferences.getFloat("indicatorFontSize", indicator.getDimension(i++, 0));
+            this.indicatorLeft = scale*sharedPreferences.getFloat("indicatorLeft", indicator.getDimension(i++, 0));
+            this.indicatorTop = scale*sharedPreferences.getFloat("indicatorTop", indicator.getDimension(i++, 0));
+            if(this.color>-1 && theme_elements.indexOf("indicator")>-1){
+                this.indicatorColor = Color.parseColor(color_codes[this.color]);
+                i++;
+            }else{
+                this.indicatorColor = sharedPreferences.getInt("indicatorColor", indicator.getColor(i++, 0));
             }
+            if(this.white_bg) this.indicatorColor = inverted_text_color;
+            this.indicatorAlignLeft = sharedPreferences.getBoolean("indicatorAlignLeft", indicator.getBoolean(i, true));
+            indicator.recycle();
+        }
         // Minutes
-            this.minutesBool = sharedPreferences.getBoolean("minutesBool", true);
-            if(this.minutesBool) {
-                TypedArray minutes = res.obtainTypedArray(R.array.minutes);
-                i = 0;
-                this.minutesFontSize = scale*sharedPreferences.getFloat("minutesFontSize", minutes.getDimension(i++, 0));
-                this.minutesLeft = scale*sharedPreferences.getFloat("minutesLeft", minutes.getDimension(i++, 0));
-                this.minutesTop = scale*sharedPreferences.getFloat("minutesTop", minutes.getDimension(i++, 0));
-                if(this.color>-1 && theme_elements.indexOf("minutes")>-1) {
-                    this.minutesColor = Color.parseColor(color_codes[this.color]);
-                    i++;
-                }else{
-                    this.minutesColor = sharedPreferences.getInt("minutesColor", minutes.getColor(i++, 0));
-                }
-                if(this.white_bg) this.minutesColor = inverted_text_color;
-                this.minutesAlignLeft = sharedPreferences.getBoolean("minutesAlignLeft", minutes.getBoolean(i, true));
-                minutes.recycle();
+        this.minutesBool = sharedPreferences.getBoolean("minutesBool", true);
+        if(this.minutesBool) {
+            TypedArray minutes = res.obtainTypedArray(R.array.minutes);
+            i = 0;
+            this.minutesFontSize = scale*sharedPreferences.getFloat("minutesFontSize", minutes.getDimension(i++, 0));
+            this.minutesLeft = scale*sharedPreferences.getFloat("minutesLeft", minutes.getDimension(i++, 0));
+            this.minutesTop = scale*sharedPreferences.getFloat("minutesTop", minutes.getDimension(i++, 0));
+            if(this.color>-1 && theme_elements.indexOf("minutes")>-1) {
+                this.minutesColor = Color.parseColor(color_codes[this.color]);
+                i++;
+            }else{
+                this.minutesColor = sharedPreferences.getInt("minutesColor", minutes.getColor(i++, 0));
             }
+            if(this.white_bg) this.minutesColor = inverted_text_color;
+            this.minutesAlignLeft = sharedPreferences.getBoolean("minutesAlignLeft", minutes.getBoolean(i, true));
+            minutes.recycle();
+        }
         // Seconds
-            this.secondsBool = sharedPreferences.getBoolean("secondsBool", res.getIdentifier("seconds", "array", context.getPackageName())!=0) && Util.needSlptRefreshSecond(context);
-            if(this.secondsBool) {
-                TypedArray seconds = res.obtainTypedArray(res.getIdentifier("seconds", "array", context.getPackageName()));
-                i = 0;
-                this.secondsFontSize = scale*sharedPreferences.getFloat("secondsFontSize", seconds.getDimension(i++, 0));
-                this.secondsLeft = scale*sharedPreferences.getFloat("secondsLeft", seconds.getDimension(i++, 0));
-                this.secondsTop = scale*sharedPreferences.getFloat("secondsTop", seconds.getDimension(i++, 0));
-                if(this.color>-1 && theme_elements.indexOf("seconds")>-1){
-                    this.secondsColor = Color.parseColor(color_codes[this.color]);
-                    i++;
-                }else{
-                    this.secondsColor = sharedPreferences.getInt("secondsColor", seconds.getColor(i++, 0));
-                }
-                if(this.white_bg) this.secondsColor = inverted_text_color;
-                this.secondsAlignLeft = sharedPreferences.getBoolean("secondsAlignLeft", seconds.getBoolean(i, false));
-                seconds.recycle();
+        this.secondsBool = sharedPreferences.getBoolean("secondsBool", res.getIdentifier("seconds", "array", context.getPackageName())!=0) && Util.needSlptRefreshSecond(context);
+        if(this.secondsBool) {
+            TypedArray seconds = res.obtainTypedArray(res.getIdentifier("seconds", "array", context.getPackageName()));
+            i = 0;
+            this.secondsFontSize = scale*sharedPreferences.getFloat("secondsFontSize", seconds.getDimension(i++, 0));
+            this.secondsLeft = scale*sharedPreferences.getFloat("secondsLeft", seconds.getDimension(i++, 0));
+            this.secondsTop = scale*sharedPreferences.getFloat("secondsTop", seconds.getDimension(i++, 0));
+            if(this.color>-1 && theme_elements.indexOf("seconds")>-1){
+                this.secondsColor = Color.parseColor(color_codes[this.color]);
+                i++;
+            }else{
+                this.secondsColor = sharedPreferences.getInt("secondsColor", seconds.getColor(i++, 0));
             }
+            if(this.white_bg) this.secondsColor = inverted_text_color;
+            this.secondsAlignLeft = sharedPreferences.getBoolean("secondsAlignLeft", seconds.getBoolean(i, false));
+            seconds.recycle();
+        }
         // am_pm
-            String time_format = Settings.System.getString(context.getContentResolver(), "time_12_24");
-            if(time_format.equals("24") && !this.am_pm_always){
-                this.am_pmBool = false;//Hide on 24 if am/pm not always shown
-            }else {
-                this.am_pmBool = sharedPreferences.getBoolean("am_pmBool", res.getIdentifier("am_pm", "array", context.getPackageName()) != 0);
+        String time_format = Settings.System.getString(context.getContentResolver(), "time_12_24");
+        if(time_format.equals("24") && !this.am_pm_always){
+            this.am_pmBool = false;//Hide on 24 if am/pm not always shown
+        }else {
+            this.am_pmBool = sharedPreferences.getBoolean("am_pmBool", res.getIdentifier("am_pm", "array", context.getPackageName()) != 0);
+        }
+        if(this.am_pmBool) {
+            TypedArray am_pm = res.obtainTypedArray(res.getIdentifier("am_pm", "array", context.getPackageName()));
+            i = 0;
+            this.am_pmFontSize = scale*sharedPreferences.getFloat("am_pmFontSize", am_pm.getDimension(i++, 0));
+            this.am_pmLeft = scale*sharedPreferences.getFloat("am_pmLeft", am_pm.getDimension(i++, 0));
+            this.am_pmTop = scale*sharedPreferences.getFloat("am_pmTop", am_pm.getDimension(i++, 0));
+            if(this.color>-1 && theme_elements.indexOf("am_pm")>-1){
+                this.am_pmColor = Color.parseColor(color_codes[this.color]);
+                i++;
+            }else{
+                this.am_pmColor = sharedPreferences.getInt("am_pmColor", am_pm.getColor(i++, 0));
             }
-            if(this.am_pmBool) {
-                TypedArray am_pm = res.obtainTypedArray(res.getIdentifier("am_pm", "array", context.getPackageName()));
-                i = 0;
-                this.am_pmFontSize = scale*sharedPreferences.getFloat("am_pmFontSize", am_pm.getDimension(i++, 0));
-                this.am_pmLeft = scale*sharedPreferences.getFloat("am_pmLeft", am_pm.getDimension(i++, 0));
-                this.am_pmTop = scale*sharedPreferences.getFloat("am_pmTop", am_pm.getDimension(i++, 0));
-                if(this.color>-1 && theme_elements.indexOf("am_pm")>-1){
-                    this.am_pmColor = Color.parseColor(color_codes[this.color]);
-                    i++;
-                }else{
-                    this.am_pmColor = sharedPreferences.getInt("am_pmColor", am_pm.getColor(i++, 0));
-                }
-                if(this.white_bg) this.am_pmColor = inverted_text_color;
-                this.am_pmAlignLeft = sharedPreferences.getBoolean("am_pmAlignLeft", am_pm.getBoolean(i, false));
-                am_pm.recycle();
-            }
+            if(this.white_bg) this.am_pmColor = inverted_text_color;
+            this.am_pmAlignLeft = sharedPreferences.getBoolean("am_pmAlignLeft", am_pm.getBoolean(i, false));
+            am_pm.recycle();
+        }
         // weekday
-            this.weekdayBool = sharedPreferences.getBoolean("weekdayBool", res.getIdentifier("weekday", "array", context.getPackageName())!=0);
-            if(this.weekdayBool) {
-                TypedArray weekday = res.obtainTypedArray(res.getIdentifier("weekday", "array", context.getPackageName()));
-                i = 0;
-                this.weekdayFontSize = scale*sharedPreferences.getFloat("weekdayFontSize", weekday.getDimension(i++, 0));
-                this.weekdayLeft = scale*sharedPreferences.getFloat("weekdayLeft", weekday.getDimension(i++, 0));
-                this.weekdayTop = scale*sharedPreferences.getFloat("weekdayTop", weekday.getDimension(i++, 0));
-                if(this.color>-1 && theme_elements.indexOf("weekday")>-1){
-                    this.weekdayColor = Color.parseColor(color_codes[this.color]);
-                    i++;
-                }else{
-                    this.weekdayColor = sharedPreferences.getInt("weekdayColor", weekday.getColor(i++, 0));
-                }
-                if(this.white_bg) this.weekdayColor = inverted_text_color;
-                this.weekdayAlignLeft = sharedPreferences.getBoolean("weekdayAlignLeft", weekday.getBoolean(i, false));
-                weekday.recycle();
+        this.weekdayBool = sharedPreferences.getBoolean("weekdayBool", res.getIdentifier("weekday", "array", context.getPackageName())!=0);
+        if(this.weekdayBool) {
+            TypedArray weekday = res.obtainTypedArray(res.getIdentifier("weekday", "array", context.getPackageName()));
+            i = 0;
+            this.weekdayFontSize = scale*sharedPreferences.getFloat("weekdayFontSize", weekday.getDimension(i++, 0));
+            this.weekdayLeft = scale*sharedPreferences.getFloat("weekdayLeft", weekday.getDimension(i++, 0));
+            this.weekdayTop = scale*sharedPreferences.getFloat("weekdayTop", weekday.getDimension(i++, 0));
+            if(this.color>-1 && theme_elements.indexOf("weekday")>-1){
+                this.weekdayColor = Color.parseColor(color_codes[this.color]);
+                i++;
+            }else{
+                this.weekdayColor = sharedPreferences.getInt("weekdayColor", weekday.getColor(i++, 0));
             }
+            if(this.white_bg) this.weekdayColor = inverted_text_color;
+            this.weekdayAlignLeft = sharedPreferences.getBoolean("weekdayAlignLeft", weekday.getBoolean(i, false));
+            weekday.recycle();
+        }
         // month
-            this.monthBool = sharedPreferences.getBoolean("monthBool", res.getIdentifier("month", "array", context.getPackageName())!=0);
-            if(this.monthBool) {
-                TypedArray month = res.obtainTypedArray(res.getIdentifier("month", "array", context.getPackageName()));
-                i = 0;
-                this.monthFontSize = scale*sharedPreferences.getFloat("monthFontSize", month.getDimension(i++, 0));
-                this.monthLeft = scale*sharedPreferences.getFloat("monthLeft", month.getDimension(i++, 0));
-                this.monthTop = scale*sharedPreferences.getFloat("monthTop", month.getDimension(i++, 0));
-                if(this.color>-1 && theme_elements.indexOf("month")>-1){
-                    this.monthColor = Color.parseColor(color_codes[this.color]);
-                    i++;
-                }else{
-                    this.monthColor = sharedPreferences.getInt("monthColor", month.getColor(i++, 0));
-                }
-                if(this.white_bg) this.monthColor = inverted_text_color;
-                this.monthAlignLeft = sharedPreferences.getBoolean("monthAlignLeft", month.getBoolean(i, false));
-                month.recycle();
+        this.monthBool = sharedPreferences.getBoolean("monthBool", res.getIdentifier("month", "array", context.getPackageName())!=0);
+        if(this.monthBool) {
+            TypedArray month = res.obtainTypedArray(res.getIdentifier("month", "array", context.getPackageName()));
+            i = 0;
+            this.monthFontSize = scale*sharedPreferences.getFloat("monthFontSize", month.getDimension(i++, 0));
+            this.monthLeft = scale*sharedPreferences.getFloat("monthLeft", month.getDimension(i++, 0));
+            this.monthTop = scale*sharedPreferences.getFloat("monthTop", month.getDimension(i++, 0));
+            if(this.color>-1 && theme_elements.indexOf("month")>-1){
+                this.monthColor = Color.parseColor(color_codes[this.color]);
+                i++;
+            }else{
+                this.monthColor = sharedPreferences.getInt("monthColor", month.getColor(i++, 0));
             }
+            if(this.white_bg) this.monthColor = inverted_text_color;
+            this.monthAlignLeft = sharedPreferences.getBoolean("monthAlignLeft", month.getBoolean(i, false));
+            month.recycle();
+        }
         // day
-            this.dayBool = sharedPreferences.getBoolean("dayBool", res.getIdentifier("day", "array", context.getPackageName())!=0);
-            if(this.dayBool) {
-                TypedArray day = res.obtainTypedArray(res.getIdentifier("day", "array", context.getPackageName()));
-                i = 0;
-                this.dayFontSize = scale*sharedPreferences.getFloat("dayFontSize", day.getDimension(i++, 0));
-                this.dayLeft = scale*sharedPreferences.getFloat("dayLeft", day.getDimension(i++, 0));
-                this.dayTop = scale*sharedPreferences.getFloat("dayTop", day.getDimension(i++, 0));
-                if(this.color>-1 && theme_elements.indexOf("day")>-1){
-                    this.dayColor = Color.parseColor(color_codes[this.color]);
-                    i++;
-                }else{
-                    this.dayColor = sharedPreferences.getInt("dayColor", day.getColor(i++, 0));
-                }
-                if(this.white_bg) this.dayColor = inverted_text_color;
-                this.dayAlignLeft = sharedPreferences.getBoolean("dayAlignLeft", day.getBoolean(i, false));
-                day.recycle();
+        this.dayBool = sharedPreferences.getBoolean("dayBool", res.getIdentifier("day", "array", context.getPackageName())!=0);
+        if(this.dayBool) {
+            TypedArray day = res.obtainTypedArray(res.getIdentifier("day", "array", context.getPackageName()));
+            i = 0;
+            this.dayFontSize = scale*sharedPreferences.getFloat("dayFontSize", day.getDimension(i++, 0));
+            this.dayLeft = scale*sharedPreferences.getFloat("dayLeft", day.getDimension(i++, 0));
+            this.dayTop = scale*sharedPreferences.getFloat("dayTop", day.getDimension(i++, 0));
+            if(this.color>-1 && theme_elements.indexOf("day")>-1){
+                this.dayColor = Color.parseColor(color_codes[this.color]);
+                i++;
+            }else{
+                this.dayColor = sharedPreferences.getInt("dayColor", day.getColor(i++, 0));
             }
+            if(this.white_bg) this.dayColor = inverted_text_color;
+            this.dayAlignLeft = sharedPreferences.getBoolean("dayAlignLeft", day.getBoolean(i, false));
+            day.recycle();
+        }
         // Year
-            this.yearBool = sharedPreferences.getBoolean("yearBool", res.getIdentifier("year", "array", context.getPackageName())!=0);
-            if(this.yearBool) {
-                TypedArray year = res.obtainTypedArray(res.getIdentifier("year", "array", context.getPackageName()));
-                i = 0;
-                this.yearFontSize = scale*sharedPreferences.getFloat("yearFontSize", year.getDimension(i++, 0));
-                this.yearLeft = scale*sharedPreferences.getFloat("yearLeft", year.getDimension(i++, 0));
-                this.yearTop = scale*sharedPreferences.getFloat("yearTop", year.getDimension(i++, 0));
-                if(this.color>-1 && theme_elements.indexOf("year")>-1){
-                    this.yearColor = Color.parseColor(color_codes[this.color]);
-                    i++;
-                }else{
-                    this.yearColor = sharedPreferences.getInt("yearColor", year.getColor(i++, 0));
-                }
-                if(this.white_bg) this.yearColor = inverted_text_color;
-                this.yearAlignLeft = sharedPreferences.getBoolean("yearAlignLeft", year.getBoolean(i, false));
-                year.recycle();
+        this.yearBool = sharedPreferences.getBoolean("yearBool", res.getIdentifier("year", "array", context.getPackageName())!=0);
+        if(this.yearBool) {
+            TypedArray year = res.obtainTypedArray(res.getIdentifier("year", "array", context.getPackageName()));
+            i = 0;
+            this.yearFontSize = scale*sharedPreferences.getFloat("yearFontSize", year.getDimension(i++, 0));
+            this.yearLeft = scale*sharedPreferences.getFloat("yearLeft", year.getDimension(i++, 0));
+            this.yearTop = scale*sharedPreferences.getFloat("yearTop", year.getDimension(i++, 0));
+            if(this.color>-1 && theme_elements.indexOf("year")>-1){
+                this.yearColor = Color.parseColor(color_codes[this.color]);
+                i++;
+            }else{
+                this.yearColor = sharedPreferences.getInt("yearColor", year.getColor(i++, 0));
             }
+            if(this.white_bg) this.yearColor = inverted_text_color;
+            this.yearAlignLeft = sharedPreferences.getBoolean("yearAlignLeft", year.getBoolean(i, false));
+            year.recycle();
+        }
 
         // Get Widgets
         String widgetsAsText = sharedPreferences.getString("widgets", null);
@@ -744,504 +746,508 @@ public class LoadSettings {
 
 
         // Date
-            this.date = sharedPreferences.getInt("date", widgets_list.indexOf("date")+1);
-            if(this.date>0){
-                TypedArray widgetN = res.obtainTypedArray(res.getIdentifier("widget"+this.date, "array", context.getPackageName()));
-                i = 0;
-                this.dateFontSize  = scale*sharedPreferences.getFloat("dateFontSize", widgetN.getDimension(i++, 0));
-                this.dateLeft  = scale*sharedPreferences.getFloat("dateLeft", widgetN.getDimension(i++, 0));
-                this.dateTop  = scale*sharedPreferences.getFloat("dateTop", widgetN.getDimension(i++, 0));
-                if(this.color>-1 && theme_elements.indexOf("widget"+this.date)>-1){
-                    this.dateColor = Color.parseColor(color_codes[this.color]);
-                    i++;
-                }else{
-                    this.dateColor = sharedPreferences.getInt("dateColor", widgetN.getColor(i++, 0));
-                }
-                if(this.white_bg) this.dateColor = inverted_text_color;
-                this.dateAlignLeft = sharedPreferences.getBoolean("dateAlignLeft", widgetN.getBoolean(i++, false));
-                this.dateUnits = sharedPreferences.getBoolean("dateUnits", widgetN.getBoolean(i++, true));
-                this.dateIcon = sharedPreferences.getBoolean("dateIcon", widgetN.getBoolean(i++, true));
-                if(dateIcon) {
-                    this.dateIconLeft = scale*sharedPreferences.getFloat("dateIconLeft", widgetN.getDimension(i++, 0));
-                    this.dateIconTop = scale*sharedPreferences.getFloat("dateIconTop", widgetN.getDimension(i, 0));
-                }
-                widgetN.recycle();
+        this.date = sharedPreferences.getInt("date", widgets_list.indexOf("date")+1);
+        if(this.date>0){
+            TypedArray widgetN = res.obtainTypedArray(res.getIdentifier("widget"+this.date, "array", context.getPackageName()));
+            i = 0;
+            this.dateFontSize  = scale*sharedPreferences.getFloat("dateFontSize", widgetN.getDimension(i++, 0));
+            this.dateLeft  = scale*sharedPreferences.getFloat("dateLeft", widgetN.getDimension(i++, 0));
+            this.dateTop  = scale*sharedPreferences.getFloat("dateTop", widgetN.getDimension(i++, 0));
+            if(this.color>-1 && theme_elements.indexOf("widget"+this.date)>-1){
+                this.dateColor = Color.parseColor(color_codes[this.color]);
+                i++;
+            }else{
+                this.dateColor = sharedPreferences.getInt("dateColor", widgetN.getColor(i++, 0));
             }
+            if(this.white_bg) this.dateColor = inverted_text_color;
+            this.dateAlignLeft = sharedPreferences.getBoolean("dateAlignLeft", widgetN.getBoolean(i++, false));
+            this.dateUnits = sharedPreferences.getBoolean("dateUnits", widgetN.getBoolean(i++, true));
+            this.dateIcon = sharedPreferences.getBoolean("dateIcon", widgetN.getBoolean(i++, true));
+            if(dateIcon) {
+                this.dateIconLeft = scale*sharedPreferences.getFloat("dateIconLeft", widgetN.getDimension(i++, 0));
+                this.dateIconTop = scale*sharedPreferences.getFloat("dateIconTop", widgetN.getDimension(i, 0));
+            }
+            widgetN.recycle();
+        }
 
         // Calories
-            this.calories = sharedPreferences.getInt("calories", widgets_list.indexOf("calories")+1);
-            if(this.calories>0){
-                TypedArray widgetN = res.obtainTypedArray(res.getIdentifier("widget"+this.calories, "array", context.getPackageName()));
-                i = 0;
-                this.caloriesFontSize  = scale*sharedPreferences.getFloat("caloriesFontSize", widgetN.getDimension(i++, 0));
-                this.caloriesLeft  = scale*sharedPreferences.getFloat("caloriesLeft", widgetN.getDimension(i++, 0));
-                this.caloriesTop  = scale*sharedPreferences.getFloat("caloriesTop", widgetN.getDimension(i++, 0));
-                if(this.color>-1 && theme_elements.indexOf("widget"+this.calories)>-1){
-                    this.caloriesColor = Color.parseColor(color_codes[this.color]);
-                    i++;
-                }else{
-                    this.caloriesColor = sharedPreferences.getInt("caloriesColor", widgetN.getColor(i++, 0));
-                }
-                if(this.white_bg) this.caloriesColor = inverted_text_color;
-                this.caloriesAlignLeft = sharedPreferences.getBoolean("caloriesAlignLeft", widgetN.getBoolean(i++, false));
-                this.caloriesUnits = sharedPreferences.getBoolean("caloriesUnits", widgetN.getBoolean(i++, true));
-                this.caloriesIcon = sharedPreferences.getBoolean("caloriesIcon", widgetN.getBoolean(i++, true));
-                if(caloriesIcon){
-                    this.caloriesIconLeft = scale*sharedPreferences.getFloat("caloriesIconLeft", widgetN.getDimension(i++, 0));
-                    this.caloriesIconTop = scale*sharedPreferences.getFloat("caloriesIconTop", widgetN.getDimension(i, 0));
-                }
-                widgetN.recycle();
+        this.calories = sharedPreferences.getInt("calories", widgets_list.indexOf("calories")+1);
+        if(this.calories>0){
+            TypedArray widgetN = res.obtainTypedArray(res.getIdentifier("widget"+this.calories, "array", context.getPackageName()));
+            i = 0;
+            this.caloriesFontSize  = scale*sharedPreferences.getFloat("caloriesFontSize", widgetN.getDimension(i++, 0));
+            this.caloriesLeft  = scale*sharedPreferences.getFloat("caloriesLeft", widgetN.getDimension(i++, 0));
+            this.caloriesTop  = scale*sharedPreferences.getFloat("caloriesTop", widgetN.getDimension(i++, 0));
+            if(this.color>-1 && theme_elements.indexOf("widget"+this.calories)>-1){
+                this.caloriesColor = Color.parseColor(color_codes[this.color]);
+                i++;
+            }else{
+                this.caloriesColor = sharedPreferences.getInt("caloriesColor", widgetN.getColor(i++, 0));
             }
+            if(this.white_bg) this.caloriesColor = inverted_text_color;
+            this.caloriesAlignLeft = sharedPreferences.getBoolean("caloriesAlignLeft", widgetN.getBoolean(i++, false));
+            this.caloriesUnits = sharedPreferences.getBoolean("caloriesUnits", widgetN.getBoolean(i++, true));
+            this.caloriesIcon = sharedPreferences.getBoolean("caloriesIcon", widgetN.getBoolean(i++, true));
+            if(caloriesIcon){
+                this.caloriesIconLeft = scale*sharedPreferences.getFloat("caloriesIconLeft", widgetN.getDimension(i++, 0));
+                this.caloriesIconTop = scale*sharedPreferences.getFloat("caloriesIconTop", widgetN.getDimension(i, 0));
+            }
+            widgetN.recycle();
+        }
 
         // steps
-            this.steps = sharedPreferences.getInt("steps", widgets_list.indexOf("steps")+1);
-            if(this.steps>0){
-                TypedArray widgetN = res.obtainTypedArray(res.getIdentifier("widget"+this.steps, "array", context.getPackageName()));
-                i = 0;
-                this.stepsFontSize  = scale*sharedPreferences.getFloat("stepsFontSize", widgetN.getDimension(i++, 0));
-                this.stepsLeft  = scale*sharedPreferences.getFloat("stepsLeft", widgetN.getDimension(i++, 0));
-                this.stepsTop  = scale*sharedPreferences.getFloat("stepsTop", widgetN.getDimension(i++, 0));
-                if(this.color>-1 && theme_elements.indexOf("widget"+this.steps)>-1){
-                    this.stepsColor = Color.parseColor(color_codes[this.color]);
-                    i++;
-                }else{
-                    this.stepsColor = sharedPreferences.getInt("stepsColor", widgetN.getColor(i++, 0));
-                }
-                if(this.white_bg) this.stepsColor = inverted_text_color;
-                this.stepsAlignLeft = sharedPreferences.getBoolean("stepsAlignLeft", widgetN.getBoolean(i++, false));
-                this.stepsUnits = sharedPreferences.getBoolean("stepsUnits", widgetN.getBoolean(i++, true));
-                this.stepsIcon = sharedPreferences.getBoolean("stepsIcon", widgetN.getBoolean(i++, true));
-                if(stepsIcon){
-                    this.stepsIconLeft = scale*sharedPreferences.getFloat("stepsIconLeft", widgetN.getDimension(i++, 0));
-                    this.stepsIconTop = scale*sharedPreferences.getFloat("stepsIconTop", widgetN.getDimension(i, 0));
-                }
-                widgetN.recycle();
+
+        this.steps = sharedPreferences.getInt("steps", widgets_list.indexOf("steps")+1);
+
+        this.stepLength = ((float) sharedPreferences.getInt("step_distance", 65)) / 100;
+
+        if(this.steps>0){
+            TypedArray widgetN = res.obtainTypedArray(res.getIdentifier("widget"+this.steps, "array", context.getPackageName()));
+            i = 0;
+            this.stepsFontSize  = scale*sharedPreferences.getFloat("stepsFontSize", widgetN.getDimension(i++, 0));
+            this.stepsLeft  = scale*sharedPreferences.getFloat("stepsLeft", widgetN.getDimension(i++, 0));
+            this.stepsTop  = scale*sharedPreferences.getFloat("stepsTop", widgetN.getDimension(i++, 0));
+            if(this.color>-1 && theme_elements.indexOf("widget"+this.steps)>-1){
+                this.stepsColor = Color.parseColor(color_codes[this.color]);
+                i++;
+            }else{
+                this.stepsColor = sharedPreferences.getInt("stepsColor", widgetN.getColor(i++, 0));
             }
+            if(this.white_bg) this.stepsColor = inverted_text_color;
+            this.stepsAlignLeft = sharedPreferences.getBoolean("stepsAlignLeft", widgetN.getBoolean(i++, false));
+            this.stepsUnits = sharedPreferences.getBoolean("stepsUnits", widgetN.getBoolean(i++, true));
+            this.stepsIcon = sharedPreferences.getBoolean("stepsIcon", widgetN.getBoolean(i++, true));
+            if(stepsIcon){
+                this.stepsIconLeft = scale*sharedPreferences.getFloat("stepsIconLeft", widgetN.getDimension(i++, 0));
+                this.stepsIconTop = scale*sharedPreferences.getFloat("stepsIconTop", widgetN.getDimension(i, 0));
+            }
+            widgetN.recycle();
+        }
 
         // heart_rate
-            this.heart_rate = sharedPreferences.getInt("heart_rate", widgets_list.indexOf("heart_rate")+1);
-            if(this.heart_rate>0){
-                TypedArray widgetN = res.obtainTypedArray(res.getIdentifier("widget"+this.heart_rate, "array", context.getPackageName()));
-                i = 0;
-                this.heart_rateFontSize  = scale*sharedPreferences.getFloat("heart_rateFontSize", widgetN.getDimension(i++, 0));
-                this.heart_rateLeft  = scale*sharedPreferences.getFloat("heart_rateLeft", widgetN.getDimension(i++, 0));
-                this.heart_rateTop  = scale*sharedPreferences.getFloat("heart_rateTop", widgetN.getDimension(i++, 0));
-                if(this.color>-1 && theme_elements.indexOf("widget"+this.heart_rate)>-1){
-                    this.heart_rateColor = Color.parseColor(color_codes[this.color]);
-                    i++;
-                }else{
-                    this.heart_rateColor = sharedPreferences.getInt("heart_rateColor", widgetN.getColor(i++, 0));
-                }
-                if(this.white_bg) this.heart_rateColor = inverted_text_color;
-                this.heart_rateAlignLeft = sharedPreferences.getBoolean("heart_rateAlignLeft", widgetN.getBoolean(i++, false));
-                this.heart_rateUnits = sharedPreferences.getBoolean("heart_rateUnits", widgetN.getBoolean(i++, true));
-                this.heart_rateIcon = sharedPreferences.getBoolean("heart_rateIcon", widgetN.getBoolean(i++, true));
-                if(heart_rateIcon) {
-                    this.heart_rateIconLeft = scale*sharedPreferences.getFloat("heart_rateIconLeft", widgetN.getDimension(i++, 0));
-                    this.heart_rateIconTop = scale*sharedPreferences.getFloat("heart_rateIconTop", widgetN.getDimension(i, 0));
-                }
-                widgetN.recycle();
+        this.heart_rate = sharedPreferences.getInt("heart_rate", widgets_list.indexOf("heart_rate")+1);
+        if(this.heart_rate>0){
+            TypedArray widgetN = res.obtainTypedArray(res.getIdentifier("widget"+this.heart_rate, "array", context.getPackageName()));
+            i = 0;
+            this.heart_rateFontSize  = scale*sharedPreferences.getFloat("heart_rateFontSize", widgetN.getDimension(i++, 0));
+            this.heart_rateLeft  = scale*sharedPreferences.getFloat("heart_rateLeft", widgetN.getDimension(i++, 0));
+            this.heart_rateTop  = scale*sharedPreferences.getFloat("heart_rateTop", widgetN.getDimension(i++, 0));
+            if(this.color>-1 && theme_elements.indexOf("widget"+this.heart_rate)>-1){
+                this.heart_rateColor = Color.parseColor(color_codes[this.color]);
+                i++;
+            }else{
+                this.heart_rateColor = sharedPreferences.getInt("heart_rateColor", widgetN.getColor(i++, 0));
             }
+            if(this.white_bg) this.heart_rateColor = inverted_text_color;
+            this.heart_rateAlignLeft = sharedPreferences.getBoolean("heart_rateAlignLeft", widgetN.getBoolean(i++, false));
+            this.heart_rateUnits = sharedPreferences.getBoolean("heart_rateUnits", widgetN.getBoolean(i++, true));
+            this.heart_rateIcon = sharedPreferences.getBoolean("heart_rateIcon", widgetN.getBoolean(i++, true));
+            if(heart_rateIcon) {
+                this.heart_rateIconLeft = scale*sharedPreferences.getFloat("heart_rateIconLeft", widgetN.getDimension(i++, 0));
+                this.heart_rateIconTop = scale*sharedPreferences.getFloat("heart_rateIconTop", widgetN.getDimension(i, 0));
+            }
+            widgetN.recycle();
+        }
 
         // total_distance
-            this.total_distance = sharedPreferences.getInt("total_distance", widgets_list.indexOf("total_distance")+1);
-            if(this.total_distance>0){
-                TypedArray widgetN = res.obtainTypedArray(res.getIdentifier("widget"+this.total_distance, "array", context.getPackageName()));
-                i = 0;
-                this.total_distanceFontSize  = scale*sharedPreferences.getFloat("total_distanceFontSize", widgetN.getDimension(i++, 0));
-                this.total_distanceLeft  = scale*sharedPreferences.getFloat("total_distanceLeft", widgetN.getDimension(i++, 0));
-                this.total_distanceTop  = scale*sharedPreferences.getFloat("total_distanceTop", widgetN.getDimension(i++, 0));
-                if(this.color>-1 && theme_elements.indexOf("widget"+this.total_distance)>-1){
-                    this.total_distanceColor = Color.parseColor(color_codes[this.color]);
-                    i++;
-                }else{
-                    this.total_distanceColor = sharedPreferences.getInt("total_distanceColor", widgetN.getColor(i++, 0));
-                }
-                if(this.white_bg) this.total_distanceColor = inverted_text_color;
-                this.total_distanceAlignLeft = sharedPreferences.getBoolean("total_distanceAlignLeft", widgetN.getBoolean(i++, false));
-                this.total_distanceUnits = sharedPreferences.getBoolean("total_distanceUnits", widgetN.getBoolean(i++, true));
-                this.total_distanceIcon = sharedPreferences.getBoolean("total_distanceIcon", widgetN.getBoolean(i++, true));
-                if(total_distanceIcon) {
-                    this.total_distanceIconLeft = scale*sharedPreferences.getFloat("total_distanceIconLeft", widgetN.getDimension(i++, 0));
-                    this.total_distanceIconTop = scale*sharedPreferences.getFloat("total_distanceIconTop", widgetN.getDimension(i, 0));
-                }
-                widgetN.recycle();
+        this.total_distance = sharedPreferences.getInt("total_distance", widgets_list.indexOf("total_distance")+1);
+        if(this.total_distance>0){
+            TypedArray widgetN = res.obtainTypedArray(res.getIdentifier("widget"+this.total_distance, "array", context.getPackageName()));
+            i = 0;
+            this.total_distanceFontSize  = scale*sharedPreferences.getFloat("total_distanceFontSize", widgetN.getDimension(i++, 0));
+            this.total_distanceLeft  = scale*sharedPreferences.getFloat("total_distanceLeft", widgetN.getDimension(i++, 0));
+            this.total_distanceTop  = scale*sharedPreferences.getFloat("total_distanceTop", widgetN.getDimension(i++, 0));
+            if(this.color>-1 && theme_elements.indexOf("widget"+this.total_distance)>-1){
+                this.total_distanceColor = Color.parseColor(color_codes[this.color]);
+                i++;
+            }else{
+                this.total_distanceColor = sharedPreferences.getInt("total_distanceColor", widgetN.getColor(i++, 0));
             }
+            if(this.white_bg) this.total_distanceColor = inverted_text_color;
+            this.total_distanceAlignLeft = sharedPreferences.getBoolean("total_distanceAlignLeft", widgetN.getBoolean(i++, false));
+            this.total_distanceUnits = sharedPreferences.getBoolean("total_distanceUnits", widgetN.getBoolean(i++, true));
+            this.total_distanceIcon = sharedPreferences.getBoolean("total_distanceIcon", widgetN.getBoolean(i++, true));
+            if(total_distanceIcon) {
+                this.total_distanceIconLeft = scale*sharedPreferences.getFloat("total_distanceIconLeft", widgetN.getDimension(i++, 0));
+                this.total_distanceIconTop = scale*sharedPreferences.getFloat("total_distanceIconTop", widgetN.getDimension(i, 0));
+            }
+            widgetN.recycle();
+        }
 
         // today_distance
-            this.today_distance = sharedPreferences.getInt("today_distance", widgets_list.indexOf("today_distance")+1);
-            if(this.today_distance>0){
-                TypedArray widgetN = res.obtainTypedArray(res.getIdentifier("widget"+this.today_distance, "array", context.getPackageName()));
-                i = 0;
-                this.today_distanceFontSize  = scale*sharedPreferences.getFloat("today_distanceFontSize", widgetN.getDimension(i++, 0));
-                this.today_distanceLeft  = scale*sharedPreferences.getFloat("today_distanceLeft", widgetN.getDimension(i++, 0));
-                this.today_distanceTop  = scale*sharedPreferences.getFloat("today_distanceTop", widgetN.getDimension(i++, 0));
-                if(this.color>-1 && theme_elements.indexOf("widget"+this.today_distance)>-1){
-                    this.today_distanceColor = Color.parseColor(color_codes[this.color]);
-                    i++;
-                }else{
-                    this.today_distanceColor = sharedPreferences.getInt("today_distanceColor", widgetN.getColor(i++, 0));
-                }
-                if(this.white_bg) this.today_distanceColor = inverted_text_color;
-                this.today_distanceAlignLeft = sharedPreferences.getBoolean("today_distanceAlignLeft", widgetN.getBoolean(i++, false));
-                this.today_distanceUnits = sharedPreferences.getBoolean("today_distanceUnits", widgetN.getBoolean(i++, true));
-                this.today_distanceIcon = sharedPreferences.getBoolean("today_distanceIcon", widgetN.getBoolean(i++, true));
-                if(today_distanceIcon) {
-                    this.today_distanceIconLeft  = scale*sharedPreferences.getFloat("today_distanceIconLeft", widgetN.getDimension(i++, 0));
-                    this.today_distanceIconTop  = scale*sharedPreferences.getFloat("today_distanceIconTop", widgetN.getDimension(i, 0));
-                }
-                widgetN.recycle();
+        this.today_distance = sharedPreferences.getInt("today_distance", widgets_list.indexOf("today_distance")+1);
+        if(this.today_distance>0){
+            TypedArray widgetN = res.obtainTypedArray(res.getIdentifier("widget"+this.today_distance, "array", context.getPackageName()));
+            i = 0;
+            this.today_distanceFontSize  = scale*sharedPreferences.getFloat("today_distanceFontSize", widgetN.getDimension(i++, 0));
+            this.today_distanceLeft  = scale*sharedPreferences.getFloat("today_distanceLeft", widgetN.getDimension(i++, 0));
+            this.today_distanceTop  = scale*sharedPreferences.getFloat("today_distanceTop", widgetN.getDimension(i++, 0));
+            if(this.color>-1 && theme_elements.indexOf("widget"+this.today_distance)>-1){
+                this.today_distanceColor = Color.parseColor(color_codes[this.color]);
+                i++;
+            }else{
+                this.today_distanceColor = sharedPreferences.getInt("today_distanceColor", widgetN.getColor(i++, 0));
             }
+            if(this.white_bg) this.today_distanceColor = inverted_text_color;
+            this.today_distanceAlignLeft = sharedPreferences.getBoolean("today_distanceAlignLeft", widgetN.getBoolean(i++, false));
+            this.today_distanceUnits = sharedPreferences.getBoolean("today_distanceUnits", widgetN.getBoolean(i++, true));
+            this.today_distanceIcon = sharedPreferences.getBoolean("today_distanceIcon", widgetN.getBoolean(i++, true));
+            if(today_distanceIcon) {
+                this.today_distanceIconLeft  = scale*sharedPreferences.getFloat("today_distanceIconLeft", widgetN.getDimension(i++, 0));
+                this.today_distanceIconTop  = scale*sharedPreferences.getFloat("today_distanceIconTop", widgetN.getDimension(i, 0));
+            }
+            widgetN.recycle();
+        }
 
         // floors
-            this.floors = sharedPreferences.getInt("floors", widgets_list.indexOf("floors")+1);
-            if(this.floors>0){
-                TypedArray widgetN = res.obtainTypedArray(res.getIdentifier("widget"+this.floors, "array", context.getPackageName()));
-                i = 0;
-                this.floorsFontSize  = scale*sharedPreferences.getFloat("floorsFontSize", widgetN.getDimension(i++, 0));
-                this.floorsLeft  = scale*sharedPreferences.getFloat("floorsLeft", widgetN.getDimension(i++, 0));
-                this.floorsTop  = scale*sharedPreferences.getFloat("floorsTop", widgetN.getDimension(i++, 0));
-                if(this.color>-1 && theme_elements.indexOf("widget"+this.floors)>-1){
-                    this.floorsColor = Color.parseColor(color_codes[this.color]);
-                    i++;
-                }else{
-                    this.floorsColor = sharedPreferences.getInt("floorsColor", widgetN.getColor(i++, 0));
-                }
-                if(this.white_bg) this.floorsColor = inverted_text_color;
-                this.floorsAlignLeft = sharedPreferences.getBoolean("floorsAlignLeft", widgetN.getBoolean(i++, false));
-                this.floorsUnits = sharedPreferences.getBoolean("floorsUnits", widgetN.getBoolean(i++, true));
-                this.floorsIcon = sharedPreferences.getBoolean("floorsIcon", widgetN.getBoolean(i++, true));
-                if(floorsIcon) {
-                    this.floorsIconLeft = scale*sharedPreferences.getFloat("floorsIconLeft", widgetN.getDimension(i++, 0));
-                    this.floorsIconTop = scale*sharedPreferences.getFloat("floorsIconTop", widgetN.getDimension(i, 0));
-                }
-                widgetN.recycle();
+        this.floors = sharedPreferences.getInt("floors", widgets_list.indexOf("floors")+1);
+        if(this.floors>0){
+            TypedArray widgetN = res.obtainTypedArray(res.getIdentifier("widget"+this.floors, "array", context.getPackageName()));
+            i = 0;
+            this.floorsFontSize  = scale*sharedPreferences.getFloat("floorsFontSize", widgetN.getDimension(i++, 0));
+            this.floorsLeft  = scale*sharedPreferences.getFloat("floorsLeft", widgetN.getDimension(i++, 0));
+            this.floorsTop  = scale*sharedPreferences.getFloat("floorsTop", widgetN.getDimension(i++, 0));
+            if(this.color>-1 && theme_elements.indexOf("widget"+this.floors)>-1){
+                this.floorsColor = Color.parseColor(color_codes[this.color]);
+                i++;
+            }else{
+                this.floorsColor = sharedPreferences.getInt("floorsColor", widgetN.getColor(i++, 0));
             }
+            if(this.white_bg) this.floorsColor = inverted_text_color;
+            this.floorsAlignLeft = sharedPreferences.getBoolean("floorsAlignLeft", widgetN.getBoolean(i++, false));
+            this.floorsUnits = sharedPreferences.getBoolean("floorsUnits", widgetN.getBoolean(i++, true));
+            this.floorsIcon = sharedPreferences.getBoolean("floorsIcon", widgetN.getBoolean(i++, true));
+            if(floorsIcon) {
+                this.floorsIconLeft = scale*sharedPreferences.getFloat("floorsIconLeft", widgetN.getDimension(i++, 0));
+                this.floorsIconTop = scale*sharedPreferences.getFloat("floorsIconTop", widgetN.getDimension(i, 0));
+            }
+            widgetN.recycle();
+        }
 
         // battery_percent
-            this.battery_percent = sharedPreferences.getInt("battery_percent", widgets_list.indexOf("battery_percent")+1);
-            if(this.battery_percent>0){
-                TypedArray widgetN = res.obtainTypedArray(res.getIdentifier("widget"+this.battery_percent, "array", context.getPackageName()));
-                i = 0;
-                this.battery_percentFontSize  = scale*sharedPreferences.getFloat("battery_percentFontSize", widgetN.getDimension(i++, 0));
-                this.battery_percentLeft  = scale*sharedPreferences.getFloat("battery_percentLeft", widgetN.getDimension(i++, 0));
-                this.battery_percentTop  = scale*sharedPreferences.getFloat("battery_percentTop", widgetN.getDimension(i++, 0));
-                if(this.color>-1 && theme_elements.indexOf("widget"+this.battery_percent)>-1){
-                    this.battery_percentColor = Color.parseColor(color_codes[this.color]);
-                    i++;
-                }else{
-                    this.battery_percentColor = sharedPreferences.getInt("battery_percentColor", widgetN.getColor(i++, 0));
-                }
-                if(this.white_bg) this.battery_percentColor = inverted_text_color;
-                this.battery_percentAlignLeft = sharedPreferences.getBoolean("battery_percentAlignLeft", widgetN.getBoolean(i++, false));
-                this.battery_percentUnits = sharedPreferences.getBoolean("battery_percentUnits", widgetN.getBoolean(i++, true));
-                this.battery_percentIcon = sharedPreferences.getBoolean("battery_percentIcon", widgetN.getBoolean(i++, true));
-                if(battery_percentIcon) {
-                    this.battery_percentIconLeft = scale*sharedPreferences.getFloat("battery_percentIconLeft", widgetN.getDimension(i++, 0));
-                    this.battery_percentIconTop = scale*sharedPreferences.getFloat("battery_percentIconTop", widgetN.getDimension(i, 0));
-                }
-                widgetN.recycle();
+        this.battery_percent = sharedPreferences.getInt("battery_percent", widgets_list.indexOf("battery_percent")+1);
+        if(this.battery_percent>0){
+            TypedArray widgetN = res.obtainTypedArray(res.getIdentifier("widget"+this.battery_percent, "array", context.getPackageName()));
+            i = 0;
+            this.battery_percentFontSize  = scale*sharedPreferences.getFloat("battery_percentFontSize", widgetN.getDimension(i++, 0));
+            this.battery_percentLeft  = scale*sharedPreferences.getFloat("battery_percentLeft", widgetN.getDimension(i++, 0));
+            this.battery_percentTop  = scale*sharedPreferences.getFloat("battery_percentTop", widgetN.getDimension(i++, 0));
+            if(this.color>-1 && theme_elements.indexOf("widget"+this.battery_percent)>-1){
+                this.battery_percentColor = Color.parseColor(color_codes[this.color]);
+                i++;
+            }else{
+                this.battery_percentColor = sharedPreferences.getInt("battery_percentColor", widgetN.getColor(i++, 0));
             }
+            if(this.white_bg) this.battery_percentColor = inverted_text_color;
+            this.battery_percentAlignLeft = sharedPreferences.getBoolean("battery_percentAlignLeft", widgetN.getBoolean(i++, false));
+            this.battery_percentUnits = sharedPreferences.getBoolean("battery_percentUnits", widgetN.getBoolean(i++, true));
+            this.battery_percentIcon = sharedPreferences.getBoolean("battery_percentIcon", widgetN.getBoolean(i++, true));
+            if(battery_percentIcon) {
+                this.battery_percentIconLeft = scale*sharedPreferences.getFloat("battery_percentIconLeft", widgetN.getDimension(i++, 0));
+                this.battery_percentIconTop = scale*sharedPreferences.getFloat("battery_percentIconTop", widgetN.getDimension(i, 0));
+            }
+            widgetN.recycle();
+        }
 
         // temperature
-            this.temperature = sharedPreferences.getInt("temperature", widgets_list.indexOf("temperature")+1);
-            if(this.temperature>0){
-                TypedArray widgetN = res.obtainTypedArray(res.getIdentifier("widget"+this.temperature, "array", context.getPackageName()));
-                i = 0;
-                this.temperatureFontSize  = scale*sharedPreferences.getFloat("temperatureFontSize", widgetN.getDimension(i++, 0));
-                this.temperatureLeft  = scale*sharedPreferences.getFloat("temperatureLeft", widgetN.getDimension(i++, 0));
-                this.temperatureTop  = scale*sharedPreferences.getFloat("temperatureTop", widgetN.getDimension(i++, 0));
-                if(this.color>-1 && theme_elements.indexOf("widget"+this.temperature)>-1){
-                    this.temperatureColor = Color.parseColor(color_codes[this.color]);
-                    i++;
-                }else{
-                    this.temperatureColor = sharedPreferences.getInt("temperatureColor", widgetN.getColor(i++, 0));
-                }
-                if(this.white_bg) this.temperatureColor = inverted_text_color;
-                this.temperatureAlignLeft = sharedPreferences.getBoolean("temperatureAlignLeft", widgetN.getBoolean(i++, false));
-                this.temperatureUnits = sharedPreferences.getBoolean("temperatureUnits", widgetN.getBoolean(i++, true));
-                this.temperatureIcon = sharedPreferences.getBoolean("temperatureIcon", widgetN.getBoolean(i++, true));
-                if(temperatureIcon) {
-                    this.temperatureIconLeft = scale*sharedPreferences.getFloat("temperatureIconLeft", widgetN.getDimension(i++, 0));
-                    this.temperatureIconTop = scale*sharedPreferences.getFloat("temperatureIconTop", widgetN.getDimension(i, 0));
-                }
-                widgetN.recycle();
+        this.temperature = sharedPreferences.getInt("temperature", widgets_list.indexOf("temperature")+1);
+        if(this.temperature>0){
+            TypedArray widgetN = res.obtainTypedArray(res.getIdentifier("widget"+this.temperature, "array", context.getPackageName()));
+            i = 0;
+            this.temperatureFontSize  = scale*sharedPreferences.getFloat("temperatureFontSize", widgetN.getDimension(i++, 0));
+            this.temperatureLeft  = scale*sharedPreferences.getFloat("temperatureLeft", widgetN.getDimension(i++, 0));
+            this.temperatureTop  = scale*sharedPreferences.getFloat("temperatureTop", widgetN.getDimension(i++, 0));
+            if(this.color>-1 && theme_elements.indexOf("widget"+this.temperature)>-1){
+                this.temperatureColor = Color.parseColor(color_codes[this.color]);
+                i++;
+            }else{
+                this.temperatureColor = sharedPreferences.getInt("temperatureColor", widgetN.getColor(i++, 0));
             }
+            if(this.white_bg) this.temperatureColor = inverted_text_color;
+            this.temperatureAlignLeft = sharedPreferences.getBoolean("temperatureAlignLeft", widgetN.getBoolean(i++, false));
+            this.temperatureUnits = sharedPreferences.getBoolean("temperatureUnits", widgetN.getBoolean(i++, true));
+            this.temperatureIcon = sharedPreferences.getBoolean("temperatureIcon", widgetN.getBoolean(i++, true));
+            if(temperatureIcon) {
+                this.temperatureIconLeft = scale*sharedPreferences.getFloat("temperatureIconLeft", widgetN.getDimension(i++, 0));
+                this.temperatureIconTop = scale*sharedPreferences.getFloat("temperatureIconTop", widgetN.getDimension(i, 0));
+            }
+            widgetN.recycle();
+        }
 
         // city
-            this.city = sharedPreferences.getInt("city", widgets_list.indexOf("city")+1);
-            if(this.city>0){
-                TypedArray widgetN = res.obtainTypedArray(res.getIdentifier("widget"+this.city, "array", context.getPackageName()));
-                i = 0;
-                this.cityFontSize  = scale*sharedPreferences.getFloat("cityFontSize", widgetN.getDimension(i++, 0));
-                this.cityLeft  = scale*sharedPreferences.getFloat("cityLeft", widgetN.getDimension(i++, 0));
-                this.cityTop  = scale*sharedPreferences.getFloat("cityTop", widgetN.getDimension(i++, 0));
-                if(this.color>-1 && theme_elements.indexOf("widget"+this.city)>-1){
-                    this.cityColor = Color.parseColor(color_codes[this.color]);
-                    i++;
-                }else{
-                    this.cityColor = sharedPreferences.getInt("cityColor", widgetN.getColor(i++, 0));
-                }
-                if(this.white_bg) this.cityColor = inverted_text_color;
-                this.cityAlignLeft = sharedPreferences.getBoolean("cityAlignLeft", widgetN.getBoolean(i++, false));
-                this.cityUnits = sharedPreferences.getBoolean("cityUnits", widgetN.getBoolean(i++, false));
-                this.cityIcon = sharedPreferences.getBoolean("cityIcon", widgetN.getBoolean(i++, true));
-                if(cityIcon) {
-                    this.cityIconLeft = scale*sharedPreferences.getFloat("cityIconLeft", widgetN.getDimension(i++, 0));
-                    this.cityIconTop = scale*sharedPreferences.getFloat("cityIconTop", widgetN.getDimension(i, 0));
-                }
-                widgetN.recycle();
+        this.city = sharedPreferences.getInt("city", widgets_list.indexOf("city")+1);
+        if(this.city>0){
+            TypedArray widgetN = res.obtainTypedArray(res.getIdentifier("widget"+this.city, "array", context.getPackageName()));
+            i = 0;
+            this.cityFontSize  = scale*sharedPreferences.getFloat("cityFontSize", widgetN.getDimension(i++, 0));
+            this.cityLeft  = scale*sharedPreferences.getFloat("cityLeft", widgetN.getDimension(i++, 0));
+            this.cityTop  = scale*sharedPreferences.getFloat("cityTop", widgetN.getDimension(i++, 0));
+            if(this.color>-1 && theme_elements.indexOf("widget"+this.city)>-1){
+                this.cityColor = Color.parseColor(color_codes[this.color]);
+                i++;
+            }else{
+                this.cityColor = sharedPreferences.getInt("cityColor", widgetN.getColor(i++, 0));
             }
+            if(this.white_bg) this.cityColor = inverted_text_color;
+            this.cityAlignLeft = sharedPreferences.getBoolean("cityAlignLeft", widgetN.getBoolean(i++, false));
+            this.cityUnits = sharedPreferences.getBoolean("cityUnits", widgetN.getBoolean(i++, false));
+            this.cityIcon = sharedPreferences.getBoolean("cityIcon", widgetN.getBoolean(i++, true));
+            if(cityIcon) {
+                this.cityIconLeft = scale*sharedPreferences.getFloat("cityIconLeft", widgetN.getDimension(i++, 0));
+                this.cityIconTop = scale*sharedPreferences.getFloat("cityIconTop", widgetN.getDimension(i, 0));
+            }
+            widgetN.recycle();
+        }
 
         // watch_alarm
-            this.watch_alarm = sharedPreferences.getInt("watch_alarm", widgets_list.indexOf("watch_alarm")+1);
-            if(this.watch_alarm>0){
-                TypedArray widgetN = res.obtainTypedArray(res.getIdentifier("widget"+this.watch_alarm, "array", context.getPackageName()));
-                i = 0;
-                this.watch_alarmFontSize  = scale*sharedPreferences.getFloat("watch_alarmFontSize", widgetN.getDimension(i++, 0));
-                this.watch_alarmLeft  = scale*sharedPreferences.getFloat("watch_alarmLeft", widgetN.getDimension(i++, 0));
-                this.watch_alarmTop  = scale*sharedPreferences.getFloat("watch_alarmTop", widgetN.getDimension(i++, 0));
-                if(this.color>-1 && theme_elements.indexOf("widget"+this.watch_alarm)>-1){
-                    this.watch_alarmColor = Color.parseColor(color_codes[this.color]);
-                    i++;
-                }else{
-                    this.watch_alarmColor = sharedPreferences.getInt("watch_alarmColor", widgetN.getColor(i++, 0));
-                }
-                if(this.white_bg) this.watch_alarmColor = inverted_text_color;
-                this.watch_alarmAlignLeft = sharedPreferences.getBoolean("watch_alarmAlignLeft", widgetN.getBoolean(i++, false));
-                this.watch_alarmUnits = sharedPreferences.getBoolean("watch_alarmUnits", widgetN.getBoolean(i++, true));
-                this.watch_alarmIcon = sharedPreferences.getBoolean("watch_alarmIcon", widgetN.getBoolean(i++, true));
-                if(watch_alarmIcon) {
-                    this.watch_alarmIconLeft = scale*sharedPreferences.getFloat("watch_alarmIconLeft", widgetN.getDimension(i++, 0));
-                    this.watch_alarmIconTop = scale*sharedPreferences.getFloat("watch_alarmIconTop", widgetN.getDimension(i, 0));
-                }
-                widgetN.recycle();
+        this.watch_alarm = sharedPreferences.getInt("watch_alarm", widgets_list.indexOf("watch_alarm")+1);
+        if(this.watch_alarm>0){
+            TypedArray widgetN = res.obtainTypedArray(res.getIdentifier("widget"+this.watch_alarm, "array", context.getPackageName()));
+            i = 0;
+            this.watch_alarmFontSize  = scale*sharedPreferences.getFloat("watch_alarmFontSize", widgetN.getDimension(i++, 0));
+            this.watch_alarmLeft  = scale*sharedPreferences.getFloat("watch_alarmLeft", widgetN.getDimension(i++, 0));
+            this.watch_alarmTop  = scale*sharedPreferences.getFloat("watch_alarmTop", widgetN.getDimension(i++, 0));
+            if(this.color>-1 && theme_elements.indexOf("widget"+this.watch_alarm)>-1){
+                this.watch_alarmColor = Color.parseColor(color_codes[this.color]);
+                i++;
+            }else{
+                this.watch_alarmColor = sharedPreferences.getInt("watch_alarmColor", widgetN.getColor(i++, 0));
             }
+            if(this.white_bg) this.watch_alarmColor = inverted_text_color;
+            this.watch_alarmAlignLeft = sharedPreferences.getBoolean("watch_alarmAlignLeft", widgetN.getBoolean(i++, false));
+            this.watch_alarmUnits = sharedPreferences.getBoolean("watch_alarmUnits", widgetN.getBoolean(i++, true));
+            this.watch_alarmIcon = sharedPreferences.getBoolean("watch_alarmIcon", widgetN.getBoolean(i++, true));
+            if(watch_alarmIcon) {
+                this.watch_alarmIconLeft = scale*sharedPreferences.getFloat("watch_alarmIconLeft", widgetN.getDimension(i++, 0));
+                this.watch_alarmIconTop = scale*sharedPreferences.getFloat("watch_alarmIconTop", widgetN.getDimension(i, 0));
+            }
+            widgetN.recycle();
+        }
 
         // humidity
-            this.humidity = sharedPreferences.getInt("humidity", widgets_list.indexOf("humidity")+1);
-            if(this.humidity>0){
-                TypedArray widgetN = res.obtainTypedArray(res.getIdentifier("widget"+this.humidity, "array", context.getPackageName()));
-                i = 0;
-                this.humidityFontSize  = scale*sharedPreferences.getFloat("humidityFontSize", widgetN.getDimension(i++, 0));
-                this.humidityLeft  = scale*sharedPreferences.getFloat("humidityLeft", widgetN.getDimension(i++, 0));
-                this.humidityTop  = scale*sharedPreferences.getFloat("humidityTop", widgetN.getDimension(i++, 0));
-                if(this.color>-1 && theme_elements.indexOf("widget"+this.humidity)>-1){
-                    this.humidityColor = Color.parseColor(color_codes[this.color]);
-                    i++;
-                }else{
-                    this.humidityColor = sharedPreferences.getInt("humidityColor", widgetN.getColor(i++, 0));
-                }
-                if(this.white_bg) this.humidityColor = inverted_text_color;
-                this.humidityAlignLeft = sharedPreferences.getBoolean("humidityAlignLeft", widgetN.getBoolean(i++, false));
-                this.humidityUnits = sharedPreferences.getBoolean("humidityUnits", widgetN.getBoolean(i++, true));
-                this.humidityIcon = sharedPreferences.getBoolean("humidityIcon", widgetN.getBoolean(i++, true));
-                if(humidityIcon) {
-                    this.humidityIconLeft = scale*sharedPreferences.getFloat("humidityIconLeft", widgetN.getDimension(i++, 0));
-                    this.humidityIconTop = scale*sharedPreferences.getFloat("humidityIconTop", widgetN.getDimension(i, 0));
-                }
-                widgetN.recycle();
+        this.humidity = sharedPreferences.getInt("humidity", widgets_list.indexOf("humidity")+1);
+        if(this.humidity>0){
+            TypedArray widgetN = res.obtainTypedArray(res.getIdentifier("widget"+this.humidity, "array", context.getPackageName()));
+            i = 0;
+            this.humidityFontSize  = scale*sharedPreferences.getFloat("humidityFontSize", widgetN.getDimension(i++, 0));
+            this.humidityLeft  = scale*sharedPreferences.getFloat("humidityLeft", widgetN.getDimension(i++, 0));
+            this.humidityTop  = scale*sharedPreferences.getFloat("humidityTop", widgetN.getDimension(i++, 0));
+            if(this.color>-1 && theme_elements.indexOf("widget"+this.humidity)>-1){
+                this.humidityColor = Color.parseColor(color_codes[this.color]);
+                i++;
+            }else{
+                this.humidityColor = sharedPreferences.getInt("humidityColor", widgetN.getColor(i++, 0));
             }
+            if(this.white_bg) this.humidityColor = inverted_text_color;
+            this.humidityAlignLeft = sharedPreferences.getBoolean("humidityAlignLeft", widgetN.getBoolean(i++, false));
+            this.humidityUnits = sharedPreferences.getBoolean("humidityUnits", widgetN.getBoolean(i++, true));
+            this.humidityIcon = sharedPreferences.getBoolean("humidityIcon", widgetN.getBoolean(i++, true));
+            if(humidityIcon) {
+                this.humidityIconLeft = scale*sharedPreferences.getFloat("humidityIconLeft", widgetN.getDimension(i++, 0));
+                this.humidityIconTop = scale*sharedPreferences.getFloat("humidityIconTop", widgetN.getDimension(i, 0));
+            }
+            widgetN.recycle();
+        }
 
         // uv
-            this.uv = sharedPreferences.getInt("uv", widgets_list.indexOf("uv")+1);
-            if(this.uv>0){
-                TypedArray widgetN = res.obtainTypedArray(res.getIdentifier("widget"+this.uv, "array", context.getPackageName()));
-                i = 0;
-                this.uvFontSize  = scale*sharedPreferences.getFloat("uvFontSize", widgetN.getDimension(i++, 0));
-                this.uvLeft  = scale*sharedPreferences.getFloat("uvLeft", widgetN.getDimension(i++, 0));
-                this.uvTop  = scale*sharedPreferences.getFloat("uvTop", widgetN.getDimension(i++, 0));
-                if(this.color>-1 && theme_elements.indexOf("widget"+this.uv)>-1){
-                    this.uvColor = Color.parseColor(color_codes[this.color]);
-                    i++;
-                }else{
-                    this.uvColor = sharedPreferences.getInt("uvColor", widgetN.getColor(i++, 0));
-                }
-                if(this.white_bg) this.uvColor = inverted_text_color;
-                this.uvAlignLeft = sharedPreferences.getBoolean("uvAlignLeft", widgetN.getBoolean(i++, false));
-                this.uvUnits = sharedPreferences.getBoolean("uvUnits", widgetN.getBoolean(i++, true));
-                this.uvIcon = sharedPreferences.getBoolean("uvIcon", widgetN.getBoolean(i++, true));
-                if(uvIcon) {
-                    this.uvIconLeft = scale*sharedPreferences.getFloat("uvIconLeft", widgetN.getDimension(i++, 0));
-                    this.uvIconTop = scale*sharedPreferences.getFloat("uvIconTop", widgetN.getDimension(i, 0));
-                }
-                widgetN.recycle();
+        this.uv = sharedPreferences.getInt("uv", widgets_list.indexOf("uv")+1);
+        if(this.uv>0){
+            TypedArray widgetN = res.obtainTypedArray(res.getIdentifier("widget"+this.uv, "array", context.getPackageName()));
+            i = 0;
+            this.uvFontSize  = scale*sharedPreferences.getFloat("uvFontSize", widgetN.getDimension(i++, 0));
+            this.uvLeft  = scale*sharedPreferences.getFloat("uvLeft", widgetN.getDimension(i++, 0));
+            this.uvTop  = scale*sharedPreferences.getFloat("uvTop", widgetN.getDimension(i++, 0));
+            if(this.color>-1 && theme_elements.indexOf("widget"+this.uv)>-1){
+                this.uvColor = Color.parseColor(color_codes[this.color]);
+                i++;
+            }else{
+                this.uvColor = sharedPreferences.getInt("uvColor", widgetN.getColor(i++, 0));
             }
+            if(this.white_bg) this.uvColor = inverted_text_color;
+            this.uvAlignLeft = sharedPreferences.getBoolean("uvAlignLeft", widgetN.getBoolean(i++, false));
+            this.uvUnits = sharedPreferences.getBoolean("uvUnits", widgetN.getBoolean(i++, true));
+            this.uvIcon = sharedPreferences.getBoolean("uvIcon", widgetN.getBoolean(i++, true));
+            if(uvIcon) {
+                this.uvIconLeft = scale*sharedPreferences.getFloat("uvIconLeft", widgetN.getDimension(i++, 0));
+                this.uvIconTop = scale*sharedPreferences.getFloat("uvIconTop", widgetN.getDimension(i, 0));
+            }
+            widgetN.recycle();
+        }
 
         // wind_direction
-            this.wind_direction = sharedPreferences.getInt("wind_direction", widgets_list.indexOf("wind_direction")+1);
-            if(this.wind_direction>0){
-                TypedArray widgetN = res.obtainTypedArray(res.getIdentifier("widget"+this.wind_direction, "array", context.getPackageName()));
-                i = 0;
-                this.wind_directionFontSize  = scale*sharedPreferences.getFloat("wind_directionFontSize", widgetN.getDimension(i++, 0));
-                this.wind_directionLeft  = scale*sharedPreferences.getFloat("wind_directionLeft", widgetN.getDimension(i++, 0));
-                this.wind_directionTop  = scale*sharedPreferences.getFloat("wind_directionTop", widgetN.getDimension(i++, 0));
-                if(this.color>-1 && theme_elements.indexOf("widget"+this.wind_direction)>-1){
-                    this.wind_directionColor = Color.parseColor(color_codes[this.color]);
-                    i++;
-                }else{
-                    this.wind_directionColor = sharedPreferences.getInt("wind_directionColor", widgetN.getColor(i++, 0));
-                }
-                if(this.white_bg) this.wind_directionColor = inverted_text_color;
-                this.wind_directionAlignLeft = sharedPreferences.getBoolean("wind_directionAlignLeft", widgetN.getBoolean(i++, false));
-                this.wind_directionUnits = sharedPreferences.getBoolean("wind_directionUnits", widgetN.getBoolean(i++, true));
-                this.wind_directionIcon = sharedPreferences.getBoolean("wind_directionIcon", widgetN.getBoolean(i++, true));
-                if(wind_directionIcon) {
-                    this.wind_directionIconLeft = scale*sharedPreferences.getFloat("wind_directionIconLeft", widgetN.getDimension(i++, 0));
-                    this.wind_directionIconTop = scale*sharedPreferences.getFloat("wind_directionIconTop", widgetN.getDimension(i, 0));
-                }
-                widgetN.recycle();
+        this.wind_direction = sharedPreferences.getInt("wind_direction", widgets_list.indexOf("wind_direction")+1);
+        if(this.wind_direction>0){
+            TypedArray widgetN = res.obtainTypedArray(res.getIdentifier("widget"+this.wind_direction, "array", context.getPackageName()));
+            i = 0;
+            this.wind_directionFontSize  = scale*sharedPreferences.getFloat("wind_directionFontSize", widgetN.getDimension(i++, 0));
+            this.wind_directionLeft  = scale*sharedPreferences.getFloat("wind_directionLeft", widgetN.getDimension(i++, 0));
+            this.wind_directionTop  = scale*sharedPreferences.getFloat("wind_directionTop", widgetN.getDimension(i++, 0));
+            if(this.color>-1 && theme_elements.indexOf("widget"+this.wind_direction)>-1){
+                this.wind_directionColor = Color.parseColor(color_codes[this.color]);
+                i++;
+            }else{
+                this.wind_directionColor = sharedPreferences.getInt("wind_directionColor", widgetN.getColor(i++, 0));
             }
+            if(this.white_bg) this.wind_directionColor = inverted_text_color;
+            this.wind_directionAlignLeft = sharedPreferences.getBoolean("wind_directionAlignLeft", widgetN.getBoolean(i++, false));
+            this.wind_directionUnits = sharedPreferences.getBoolean("wind_directionUnits", widgetN.getBoolean(i++, true));
+            this.wind_directionIcon = sharedPreferences.getBoolean("wind_directionIcon", widgetN.getBoolean(i++, true));
+            if(wind_directionIcon) {
+                this.wind_directionIconLeft = scale*sharedPreferences.getFloat("wind_directionIconLeft", widgetN.getDimension(i++, 0));
+                this.wind_directionIconTop = scale*sharedPreferences.getFloat("wind_directionIconTop", widgetN.getDimension(i, 0));
+            }
+            widgetN.recycle();
+        }
 
         // wind_strength
-            this.wind_strength = sharedPreferences.getInt("wind_strength", widgets_list.indexOf("wind_strength")+1);
-            if(this.wind_strength>0){
-                TypedArray widgetN = res.obtainTypedArray(res.getIdentifier("widget"+this.wind_strength, "array", context.getPackageName()));
-                i = 0;
-                this.wind_strengthFontSize  = scale*sharedPreferences.getFloat("wind_strengthFontSize", widgetN.getDimension(i++, 0));
-                this.wind_strengthLeft  = scale*sharedPreferences.getFloat("wind_strengthLeft", widgetN.getDimension(i++, 0));
-                this.wind_strengthTop  = scale*sharedPreferences.getFloat("wind_strengthTop", widgetN.getDimension(i++, 0));
-                if(this.color>-1 && theme_elements.indexOf("widget"+this.wind_strength)>-1){
-                    this.wind_strengthColor = Color.parseColor(color_codes[this.color]);
-                    i++;
-                }else{
-                    this.wind_strengthColor = sharedPreferences.getInt("wind_strengthColor", widgetN.getColor(i++, 0));
-                }
-                if(this.white_bg) this.wind_strengthColor = inverted_text_color;
-                this.wind_strengthAlignLeft = sharedPreferences.getBoolean("wind_strengthAlignLeft", widgetN.getBoolean(i++, false));
-                this.wind_strengthUnits = sharedPreferences.getBoolean("wind_strengthUnits", widgetN.getBoolean(i++, true));
-                this.wind_strengthIcon = sharedPreferences.getBoolean("wind_strengthIcon", widgetN.getBoolean(i++, true));
-                if(wind_strengthIcon) {
-                    this.wind_strengthIconLeft = scale*sharedPreferences.getFloat("wind_strengthIconLeft", widgetN.getDimension(i++, 0));
-                    this.wind_strengthIconTop = scale*sharedPreferences.getFloat("wind_strengthIconTop", widgetN.getDimension(i, 0));
-                }
-                widgetN.recycle();
+        this.wind_strength = sharedPreferences.getInt("wind_strength", widgets_list.indexOf("wind_strength")+1);
+        if(this.wind_strength>0){
+            TypedArray widgetN = res.obtainTypedArray(res.getIdentifier("widget"+this.wind_strength, "array", context.getPackageName()));
+            i = 0;
+            this.wind_strengthFontSize  = scale*sharedPreferences.getFloat("wind_strengthFontSize", widgetN.getDimension(i++, 0));
+            this.wind_strengthLeft  = scale*sharedPreferences.getFloat("wind_strengthLeft", widgetN.getDimension(i++, 0));
+            this.wind_strengthTop  = scale*sharedPreferences.getFloat("wind_strengthTop", widgetN.getDimension(i++, 0));
+            if(this.color>-1 && theme_elements.indexOf("widget"+this.wind_strength)>-1){
+                this.wind_strengthColor = Color.parseColor(color_codes[this.color]);
+                i++;
+            }else{
+                this.wind_strengthColor = sharedPreferences.getInt("wind_strengthColor", widgetN.getColor(i++, 0));
             }
+            if(this.white_bg) this.wind_strengthColor = inverted_text_color;
+            this.wind_strengthAlignLeft = sharedPreferences.getBoolean("wind_strengthAlignLeft", widgetN.getBoolean(i++, false));
+            this.wind_strengthUnits = sharedPreferences.getBoolean("wind_strengthUnits", widgetN.getBoolean(i++, true));
+            this.wind_strengthIcon = sharedPreferences.getBoolean("wind_strengthIcon", widgetN.getBoolean(i++, true));
+            if(wind_strengthIcon) {
+                this.wind_strengthIconLeft = scale*sharedPreferences.getFloat("wind_strengthIconLeft", widgetN.getDimension(i++, 0));
+                this.wind_strengthIconTop = scale*sharedPreferences.getFloat("wind_strengthIconTop", widgetN.getDimension(i, 0));
+            }
+            widgetN.recycle();
+        }
 
         // air_pressure
-            this.air_pressure = sharedPreferences.getInt("air_pressure", widgets_list.indexOf("air_pressure")+1);
-            if(this.air_pressure>0){
-                TypedArray widgetN = res.obtainTypedArray(res.getIdentifier("widget"+this.air_pressure, "array", context.getPackageName()));
-                i = 0;
-                this.air_pressureFontSize  = scale*sharedPreferences.getFloat("air_pressureFontSize", widgetN.getDimension(i++, 0));
-                this.air_pressureLeft  = scale*sharedPreferences.getFloat("air_pressureLeft", widgetN.getDimension(i++, 0));
-                this.air_pressureTop  = scale*sharedPreferences.getFloat("air_pressureTop", widgetN.getDimension(i++, 0));
-                if(this.color>-1 && theme_elements.indexOf("widget"+this.air_pressure)>-1){
-                    this.air_pressureColor = Color.parseColor(color_codes[this.color]);
-                    i++;
-                }else{
-                    this.air_pressureColor = sharedPreferences.getInt("air_pressureColor", widgetN.getColor(i++, 0));
-                }
-                if(this.white_bg) this.air_pressureColor = inverted_text_color;
-                this.air_pressureAlignLeft = sharedPreferences.getBoolean("air_pressureAlignLeft", widgetN.getBoolean(i++, false));
-                this.air_pressureUnits = sharedPreferences.getBoolean("air_pressureUnits", widgetN.getBoolean(i++, true));
-                this.air_pressureIcon = sharedPreferences.getBoolean("air_pressureIcon", widgetN.getBoolean(i++, true));
-                if(air_pressureIcon) {
-                    this.air_pressureIconLeft = scale*sharedPreferences.getFloat("air_pressureIconLeft", widgetN.getDimension(i++, 0));
-                    this.air_pressureIconTop = scale*sharedPreferences.getFloat("air_pressureIconTop", widgetN.getDimension(i, 0));
-                }
-                widgetN.recycle();
+        this.air_pressure = sharedPreferences.getInt("air_pressure", widgets_list.indexOf("air_pressure")+1);
+        if(this.air_pressure>0){
+            TypedArray widgetN = res.obtainTypedArray(res.getIdentifier("widget"+this.air_pressure, "array", context.getPackageName()));
+            i = 0;
+            this.air_pressureFontSize  = scale*sharedPreferences.getFloat("air_pressureFontSize", widgetN.getDimension(i++, 0));
+            this.air_pressureLeft  = scale*sharedPreferences.getFloat("air_pressureLeft", widgetN.getDimension(i++, 0));
+            this.air_pressureTop  = scale*sharedPreferences.getFloat("air_pressureTop", widgetN.getDimension(i++, 0));
+            if(this.color>-1 && theme_elements.indexOf("widget"+this.air_pressure)>-1){
+                this.air_pressureColor = Color.parseColor(color_codes[this.color]);
+                i++;
+            }else{
+                this.air_pressureColor = sharedPreferences.getInt("air_pressureColor", widgetN.getColor(i++, 0));
             }
+            if(this.white_bg) this.air_pressureColor = inverted_text_color;
+            this.air_pressureAlignLeft = sharedPreferences.getBoolean("air_pressureAlignLeft", widgetN.getBoolean(i++, false));
+            this.air_pressureUnits = sharedPreferences.getBoolean("air_pressureUnits", widgetN.getBoolean(i++, true));
+            this.air_pressureIcon = sharedPreferences.getBoolean("air_pressureIcon", widgetN.getBoolean(i++, true));
+            if(air_pressureIcon) {
+                this.air_pressureIconLeft = scale*sharedPreferences.getFloat("air_pressureIconLeft", widgetN.getDimension(i++, 0));
+                this.air_pressureIconTop = scale*sharedPreferences.getFloat("air_pressureIconTop", widgetN.getDimension(i, 0));
+            }
+            widgetN.recycle();
+        }
 
         // altitude
-            this.altitude = sharedPreferences.getInt("altitude", widgets_list.indexOf("altitude")+1);
-            if(this.altitude>0){
-                TypedArray widgetN = res.obtainTypedArray(res.getIdentifier("widget"+this.altitude, "array", context.getPackageName()));
-                i = 0;
-                this.altitudeFontSize  = scale*sharedPreferences.getFloat("altitudeFontSize", widgetN.getDimension(i++, 0));
-                this.altitudeLeft  = scale*sharedPreferences.getFloat("altitudeLeft", widgetN.getDimension(i++, 0));
-                this.altitudeTop  = scale*sharedPreferences.getFloat("altitudeTop", widgetN.getDimension(i++, 0));
-                if(this.color>-1 && theme_elements.indexOf("widget"+this.altitude)>-1){
-                    this.altitudeColor = Color.parseColor(color_codes[this.color]);
-                    i++;
-                }else{
-                    this.altitudeColor = sharedPreferences.getInt("altitudeColor", widgetN.getColor(i++, 0));
-                }
-                if(this.white_bg) this.altitudeColor = inverted_text_color;
-                this.altitudeAlignLeft = sharedPreferences.getBoolean("altitudeAlignLeft", widgetN.getBoolean(i++, false));
-                this.altitudeUnits = sharedPreferences.getBoolean("altitudeUnits", widgetN.getBoolean(i++, true));
-                this.altitudeIcon = sharedPreferences.getBoolean("altitudeIcon", widgetN.getBoolean(i++, true));
-                if(altitudeIcon) {
-                    this.altitudeIconLeft = scale*sharedPreferences.getFloat("altitude", widgetN.getDimension(i++, 0));
-                    this.altitudeIconTop = scale*sharedPreferences.getFloat("altitudeIconTop", widgetN.getDimension(i, 0));
-                }
-                widgetN.recycle();
+        this.altitude = sharedPreferences.getInt("altitude", widgets_list.indexOf("altitude")+1);
+        if(this.altitude>0){
+            TypedArray widgetN = res.obtainTypedArray(res.getIdentifier("widget"+this.altitude, "array", context.getPackageName()));
+            i = 0;
+            this.altitudeFontSize  = scale*sharedPreferences.getFloat("altitudeFontSize", widgetN.getDimension(i++, 0));
+            this.altitudeLeft  = scale*sharedPreferences.getFloat("altitudeLeft", widgetN.getDimension(i++, 0));
+            this.altitudeTop  = scale*sharedPreferences.getFloat("altitudeTop", widgetN.getDimension(i++, 0));
+            if(this.color>-1 && theme_elements.indexOf("widget"+this.altitude)>-1){
+                this.altitudeColor = Color.parseColor(color_codes[this.color]);
+                i++;
+            }else{
+                this.altitudeColor = sharedPreferences.getInt("altitudeColor", widgetN.getColor(i++, 0));
             }
+            if(this.white_bg) this.altitudeColor = inverted_text_color;
+            this.altitudeAlignLeft = sharedPreferences.getBoolean("altitudeAlignLeft", widgetN.getBoolean(i++, false));
+            this.altitudeUnits = sharedPreferences.getBoolean("altitudeUnits", widgetN.getBoolean(i++, true));
+            this.altitudeIcon = sharedPreferences.getBoolean("altitudeIcon", widgetN.getBoolean(i++, true));
+            if(altitudeIcon) {
+                this.altitudeIconLeft = scale*sharedPreferences.getFloat("altitude", widgetN.getDimension(i++, 0));
+                this.altitudeIconTop = scale*sharedPreferences.getFloat("altitudeIconTop", widgetN.getDimension(i, 0));
+            }
+            widgetN.recycle();
+        }
 
         // phone_battery
-            this.phone_battery = sharedPreferences.getInt("phone_battery", widgets_list.indexOf("phone_battery")+1);
-            if(this.phone_battery>0){
-                TypedArray widgetN = res.obtainTypedArray(res.getIdentifier("widget"+this.phone_battery, "array", context.getPackageName()));
-                i = 0;
-                this.phone_batteryFontSize  = scale*sharedPreferences.getFloat("phone_batteryFontSize", widgetN.getDimension(i++, 0));
-                this.phone_batteryLeft  = scale*sharedPreferences.getFloat("phone_batteryLeft", widgetN.getDimension(i++, 0));
-                this.phone_batteryTop  = scale*sharedPreferences.getFloat("phone_batteryTop", widgetN.getDimension(i++, 0));
-                if(this.color>-1 && theme_elements.indexOf("widget"+this.phone_battery)>-1){
-                    this.phone_batteryColor = Color.parseColor(color_codes[this.color]);
-                    i++;
-                }else{
-                    this.phone_batteryColor = sharedPreferences.getInt("phone_batteryColor", widgetN.getColor(i++, 0));
-                }
-                if(this.white_bg) this.phone_batteryColor = inverted_text_color;
-                this.phone_batteryAlignLeft = sharedPreferences.getBoolean("phone_batteryAlignLeft", widgetN.getBoolean(i++, false));
-                this.phone_batteryUnits = sharedPreferences.getBoolean("phone_batteryUnits", widgetN.getBoolean(i++, true));
-                this.phone_batteryIcon = sharedPreferences.getBoolean("phone_batteryIcon", widgetN.getBoolean(i++, true));
-                if(phone_batteryIcon) {
-                    this.phone_batteryIconLeft = scale*sharedPreferences.getFloat("phone_batteryIconLeft", widgetN.getDimension(i++, 0));
-                    this.phone_batteryIconTop = scale*sharedPreferences.getFloat("phone_batteryIconTop", widgetN.getDimension(i, 0));
-                }
-                widgetN.recycle();
+        this.phone_battery = sharedPreferences.getInt("phone_battery", widgets_list.indexOf("phone_battery")+1);
+        if(this.phone_battery>0){
+            TypedArray widgetN = res.obtainTypedArray(res.getIdentifier("widget"+this.phone_battery, "array", context.getPackageName()));
+            i = 0;
+            this.phone_batteryFontSize  = scale*sharedPreferences.getFloat("phone_batteryFontSize", widgetN.getDimension(i++, 0));
+            this.phone_batteryLeft  = scale*sharedPreferences.getFloat("phone_batteryLeft", widgetN.getDimension(i++, 0));
+            this.phone_batteryTop  = scale*sharedPreferences.getFloat("phone_batteryTop", widgetN.getDimension(i++, 0));
+            if(this.color>-1 && theme_elements.indexOf("widget"+this.phone_battery)>-1){
+                this.phone_batteryColor = Color.parseColor(color_codes[this.color]);
+                i++;
+            }else{
+                this.phone_batteryColor = sharedPreferences.getInt("phone_batteryColor", widgetN.getColor(i++, 0));
             }
+            if(this.white_bg) this.phone_batteryColor = inverted_text_color;
+            this.phone_batteryAlignLeft = sharedPreferences.getBoolean("phone_batteryAlignLeft", widgetN.getBoolean(i++, false));
+            this.phone_batteryUnits = sharedPreferences.getBoolean("phone_batteryUnits", widgetN.getBoolean(i++, true));
+            this.phone_batteryIcon = sharedPreferences.getBoolean("phone_batteryIcon", widgetN.getBoolean(i++, true));
+            if(phone_batteryIcon) {
+                this.phone_batteryIconLeft = scale*sharedPreferences.getFloat("phone_batteryIconLeft", widgetN.getDimension(i++, 0));
+                this.phone_batteryIconTop = scale*sharedPreferences.getFloat("phone_batteryIconTop", widgetN.getDimension(i, 0));
+            }
+            widgetN.recycle();
+        }
 
         // phone_alarm
-            this.phone_alarm = sharedPreferences.getInt("phone_alarm", widgets_list.indexOf("phone_alarm")+1);
-            if(this.phone_alarm>0){
-                TypedArray widgetN = res.obtainTypedArray(res.getIdentifier("widget"+this.phone_alarm, "array", context.getPackageName()));
-                i = 0;
-                this.phone_alarmFontSize  = scale*sharedPreferences.getFloat("phone_alarmFontSize", widgetN.getDimension(i++, 0));
-                this.phone_alarmLeft  = scale*sharedPreferences.getFloat("phone_alarmLeft", widgetN.getDimension(i++, 0));
-                this.phone_alarmTop  = scale*sharedPreferences.getFloat("phone_alarmTop", widgetN.getDimension(i++, 0));
-                if(this.color>-1 && theme_elements.indexOf("widget"+this.phone_alarm)>-1){
-                    this.phone_alarmColor = Color.parseColor(color_codes[this.color]);
-                    i++;
-                }else{
-                    this.phone_alarmColor = sharedPreferences.getInt("phone_alarmColor", widgetN.getColor(i++, 0));
-                }
-                if(this.white_bg) this.phone_alarmColor = inverted_text_color;
-                this.phone_alarmAlignLeft = sharedPreferences.getBoolean("phone_alarmAlignLeft", widgetN.getBoolean(i++, false));
-                this.phone_alarmUnits = sharedPreferences.getBoolean("phone_alarmUnits", widgetN.getBoolean(i++, true));
-                this.phone_alarmIcon = sharedPreferences.getBoolean("phone_alarmIcon", widgetN.getBoolean(i++, true));
-                if(phone_alarmIcon) {
-                    this.phone_alarmIconLeft = scale*sharedPreferences.getFloat("phone_alarmIconLeft", widgetN.getDimension(i++, 0));
-                    this.phone_alarmIconTop = scale*sharedPreferences.getFloat("phone_alarmIconTop", widgetN.getDimension(i, 0));
-                }
-                widgetN.recycle();
+        this.phone_alarm = sharedPreferences.getInt("phone_alarm", widgets_list.indexOf("phone_alarm")+1);
+        if(this.phone_alarm>0){
+            TypedArray widgetN = res.obtainTypedArray(res.getIdentifier("widget"+this.phone_alarm, "array", context.getPackageName()));
+            i = 0;
+            this.phone_alarmFontSize  = scale*sharedPreferences.getFloat("phone_alarmFontSize", widgetN.getDimension(i++, 0));
+            this.phone_alarmLeft  = scale*sharedPreferences.getFloat("phone_alarmLeft", widgetN.getDimension(i++, 0));
+            this.phone_alarmTop  = scale*sharedPreferences.getFloat("phone_alarmTop", widgetN.getDimension(i++, 0));
+            if(this.color>-1 && theme_elements.indexOf("widget"+this.phone_alarm)>-1){
+                this.phone_alarmColor = Color.parseColor(color_codes[this.color]);
+                i++;
+            }else{
+                this.phone_alarmColor = sharedPreferences.getInt("phone_alarmColor", widgetN.getColor(i++, 0));
             }
+            if(this.white_bg) this.phone_alarmColor = inverted_text_color;
+            this.phone_alarmAlignLeft = sharedPreferences.getBoolean("phone_alarmAlignLeft", widgetN.getBoolean(i++, false));
+            this.phone_alarmUnits = sharedPreferences.getBoolean("phone_alarmUnits", widgetN.getBoolean(i++, true));
+            this.phone_alarmIcon = sharedPreferences.getBoolean("phone_alarmIcon", widgetN.getBoolean(i++, true));
+            if(phone_alarmIcon) {
+                this.phone_alarmIconLeft = scale*sharedPreferences.getFloat("phone_alarmIconLeft", widgetN.getDimension(i++, 0));
+                this.phone_alarmIconTop = scale*sharedPreferences.getFloat("phone_alarmIconTop", widgetN.getDimension(i, 0));
+            }
+            widgetN.recycle();
+        }
 
         // xdrip
-            this.xdrip = sharedPreferences.getInt("xdrip", widgets_list.indexOf("xdrip")+1);
-            if(this.xdrip>0){
-                TypedArray widgetN = res.obtainTypedArray(res.getIdentifier("widget"+this.xdrip, "array", context.getPackageName()));
-                i = 0;
-                this.xdripFontSize  = scale*sharedPreferences.getFloat("xdripFontSize", widgetN.getDimension(i++, 0));
-                this.xdripLeft  = scale*sharedPreferences.getFloat("xdripLeft", widgetN.getDimension(i++, 0));
-                this.xdripTop  = scale*sharedPreferences.getFloat("xdripTop", widgetN.getDimension(i++, 0));
-                if(this.color>-1 && theme_elements.indexOf("widget"+this.xdrip)>-1){
-                    this.xdripColor = Color.parseColor(color_codes[this.color]);
-                    i++;
-                }else{
-                    this.xdripColor = sharedPreferences.getInt("xdripColor", widgetN.getColor(i++, 0));
-                }
-                if(this.white_bg) this.xdripColor = inverted_text_color;
-                this.xdripAlignLeft = sharedPreferences.getBoolean("xdripAlignLeft", widgetN.getBoolean(i++, false));
-                this.xdripUnits = sharedPreferences.getBoolean("xdripUnits", widgetN.getBoolean(i++, true));
-                this.xdripIcon = sharedPreferences.getBoolean("xdripIcon", widgetN.getBoolean(i++, true));
-                if(xdripIcon) {
-                    this.xdripIconLeft = scale*sharedPreferences.getFloat("xdripIconLeft", widgetN.getDimension(i++, 0));
-                    this.xdripIconTop = scale*sharedPreferences.getFloat("xdripIconTop", widgetN.getDimension(i, 0));
-                }
-                widgetN.recycle();
+        this.xdrip = sharedPreferences.getInt("xdrip", widgets_list.indexOf("xdrip")+1);
+        if(this.xdrip>0){
+            TypedArray widgetN = res.obtainTypedArray(res.getIdentifier("widget"+this.xdrip, "array", context.getPackageName()));
+            i = 0;
+            this.xdripFontSize  = scale*sharedPreferences.getFloat("xdripFontSize", widgetN.getDimension(i++, 0));
+            this.xdripLeft  = scale*sharedPreferences.getFloat("xdripLeft", widgetN.getDimension(i++, 0));
+            this.xdripTop  = scale*sharedPreferences.getFloat("xdripTop", widgetN.getDimension(i++, 0));
+            if(this.color>-1 && theme_elements.indexOf("widget"+this.xdrip)>-1){
+                this.xdripColor = Color.parseColor(color_codes[this.color]);
+                i++;
+            }else{
+                this.xdripColor = sharedPreferences.getInt("xdripColor", widgetN.getColor(i++, 0));
             }
+            if(this.white_bg) this.xdripColor = inverted_text_color;
+            this.xdripAlignLeft = sharedPreferences.getBoolean("xdripAlignLeft", widgetN.getBoolean(i++, false));
+            this.xdripUnits = sharedPreferences.getBoolean("xdripUnits", widgetN.getBoolean(i++, true));
+            this.xdripIcon = sharedPreferences.getBoolean("xdripIcon", widgetN.getBoolean(i++, true));
+            if(xdripIcon) {
+                this.xdripIconLeft = scale*sharedPreferences.getFloat("xdripIconLeft", widgetN.getDimension(i++, 0));
+                this.xdripIconTop = scale*sharedPreferences.getFloat("xdripIconTop", widgetN.getDimension(i, 0));
+            }
+            widgetN.recycle();
+        }
 
         // weather_img
         this.weather_img = sharedPreferences.getInt("weather_img", widgets_list.indexOf("weather_img")+1);

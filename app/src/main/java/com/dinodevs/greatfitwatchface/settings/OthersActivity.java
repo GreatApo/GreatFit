@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import com.dinodevs.greatfitwatchface.R;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -184,6 +185,23 @@ public class OthersActivity extends FragmentActivity {
                 Toast.makeText(seekBar.getContext(), "Time diff: "+(seekBar.getProgress()/2f-12)+" hours", Toast.LENGTH_SHORT).show();
             }
         }, (int) (world_time_zone+12)*2, 47));
+
+        final float stepLength = sharedPreferences.getInt( "step_distance", 65);
+        DecimalFormat f = new DecimalFormat("#");
+
+        settings.add(new SeekbarSetting(null, "Step length", "Current: "+f.format(stepLength)+" steps", new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                sharedPreferences.edit().putInt( "step_distance", progress).apply();
+            }
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+            }
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                Toast.makeText(seekBar.getContext(), "Selected: "+(seekBar.getProgress()), Toast.LENGTH_SHORT).show();
+            }
+        }, (int) (stepLength), 100));
 
         //Setup layout
         root.setBackgroundResource(R.drawable.settings_background);

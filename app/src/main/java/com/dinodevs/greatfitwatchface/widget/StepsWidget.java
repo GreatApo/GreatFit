@@ -20,6 +20,7 @@ import com.ingenic.iwds.slpt.view.core.SlptViewComponent;
 import com.ingenic.iwds.slpt.view.sport.SlptTodayStepNumView;
 import com.ingenic.iwds.slpt.view.utils.SimpleFile;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -34,7 +35,7 @@ public class StepsWidget extends AbstractWidget {
 
     private Float stepsSweepAngle = 0f;
     private Integer angleLength;
-    
+
     private LoadSettings settings;
     private Service mService;
 
@@ -88,7 +89,7 @@ public class StepsWidget extends AbstractWidget {
     // Draw screen-on
     public void draw(Canvas canvas, float width, float height, float centerX, float centerY) {
         if (this.stepsData == null) {return;}
-        
+
         // Steps widget
         if(settings.steps>0){
             // Draw icon
@@ -96,7 +97,11 @@ public class StepsWidget extends AbstractWidget {
                 canvas.drawBitmap(this.icon, settings.stepsIconLeft, settings.stepsIconTop, settings.mGPaint);
             }
 
-            String text = String.format("%s", this.stepsData.getSteps());
+            double steps = (this.stepsData.getSteps() * settings.stepLength) / 1000;
+            DecimalFormat f = new DecimalFormat("#.##");
+
+            String text = String.format("%s km", f.format(steps));
+
             canvas.drawText(text, settings.stepsLeft, settings.stepsTop, stepsPaint);
         }
 
@@ -145,7 +150,7 @@ public class StepsWidget extends AbstractWidget {
             // Show or Not icon
             if (settings.stepsIcon) {
                 SlptPictureView stepsIcon = new SlptPictureView();
-                stepsIcon.setImagePicture( SimpleFile.readFileFromAssets(service, ( (better_resolution)?"26wc_":"slpt_" )+"icons/"+settings.is_white_bg+"steps.png") );
+                stepsIcon.setImagePicture( SimpleFile.readFileFromAssets(service, ( (better_resolution)?"26wc_":"slpt_" )+"icons/"+settings.is_white_bg+"today_distance.png") );
                 stepsIcon.setStart(
                         (int) settings.stepsIconLeft,
                         (int) settings.stepsIconTop
@@ -178,7 +183,7 @@ public class StepsWidget extends AbstractWidget {
             );
             slpt_objects.add(steps);
         }
-        
+
         // Steps image
         if(settings.stepsProg>0 && settings.stepsProgType==1) {
             // Image
@@ -206,7 +211,7 @@ public class StepsWidget extends AbstractWidget {
             stepsArcAnglePicView.draw_clockwise = settings.stepsProgClockwise;
             slpt_objects.add(stepsArcAnglePicView);
         }
-        
+
         return slpt_objects;
     }
 }
