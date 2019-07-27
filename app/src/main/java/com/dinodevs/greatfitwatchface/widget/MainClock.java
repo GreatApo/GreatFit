@@ -6,6 +6,7 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
+import android.provider.Settings;
 import android.text.TextPaint;
 import android.util.Log;
 import android.widget.Toast;
@@ -163,6 +164,7 @@ public class MainClock extends DigitalClockWidget {
             {"ARA", "OCA", "ŞUB", "MAR", "NIS", "MAY", "HAZ", "TEM", "AĞU", "EYL", "EKI", "KAS", "ARA"},
     };
 
+    private Service mService;
     private LoadSettings settings;
 
     public MainClock(LoadSettings settings) {
@@ -330,6 +332,11 @@ public class MainClock extends DigitalClockWidget {
         }
     }
 
+    private boolean getLowPowerMode(){
+        String str = Settings.System.getString(this.mService.getContentResolver(), "sys.state.powerlow");
+        Log.d("DinoDevs-GreatFit", "Low power system value: "+str);
+        return str!=null;
+    }
 
     // Screen locked/closed watch mode (Slpt mode)
     @Override
@@ -340,6 +347,7 @@ public class MainClock extends DigitalClockWidget {
     public List<SlptViewComponent> buildSlptViewComponent(Service service, boolean better_resolution) {
         better_resolution = better_resolution && settings.better_resolution_when_raising_hand;
         boolean show_all = (!settings.clock_only_slpt || better_resolution);
+        this.mService = service;
 
         int tmp_left;
         List<SlptViewComponent> slpt_objects = new ArrayList<>();
@@ -350,6 +358,17 @@ public class MainClock extends DigitalClockWidget {
         //Alternative way
         //background.setImagePicture(ResourceManager.getVergeImageFromAssets(settings.isVerge(), service, "background"+ ((better_resolution)?"_better":"") +"_slpt.png"));
         slpt_objects.add(background);
+
+        if (getLowPowerMode()) {
+            // Draw low power icon
+            SlptPictureView lowpower = new SlptPictureView();
+            lowpower.setImagePicture(SimpleFile.readFileFromAssets(service, "slpt_battery/low_battery.png"));
+            lowpower.setStart(
+                    (int) 212,
+                    (int) 270
+            );
+            slpt_objects.add(lowpower);
+        }
 
         // Set font
         Typeface timeTypeFace = ResourceManager.getTypeFace(service.getResources(), settings.font);
