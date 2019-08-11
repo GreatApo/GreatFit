@@ -359,6 +359,7 @@ public class MainClock extends DigitalClockWidget {
         //background.setImagePicture(ResourceManager.getVergeImageFromAssets(settings.isVerge(), service, "background"+ ((better_resolution)?"_better":"") +"_slpt.png"));
         slpt_objects.add(background);
 
+        // DOES NOT WORK
         if (getLowPowerMode()) {
             // Draw low power icon
             SlptPictureView lowpower = new SlptPictureView();

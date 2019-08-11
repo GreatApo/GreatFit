@@ -913,12 +913,12 @@ public class GreatWidget extends AbstractWidget {
             //notificationsStr.textSize = settings.notificationsFontSize;
             //notificationsStr.typeface = ResourceManager.getTypeFace(service.getResources(), settings.font);
             //notificationsStr.textColor = settings.notificationsColor;
-            notificationsStr.setStringPicture( this.customData.notifications );
+            notificationsStr.setStringPicture( this.customData.notifications+" " );// doesn't work without the space
             notificationsLayout.add(notificationsStr);
             notificationsLayout.setTextAttrForAll(
                     settings.notificationsFontSize,
                     settings.notificationsColor,
-                    null//ResourceManager.getTypeFace(service.getResources(), settings.font) //This causes error for some reason...
+                    ResourceManager.getTypeFace(service.getResources(), settings.font)
             );
             // Position based on screen on
             notificationsLayout.alignX = 2;
