@@ -953,26 +953,26 @@ public class GreatWidget extends AbstractWidget {
                 slpt_objects.add(world_timeIcon);
             }
 
-            SlptLinearLayout world_timeLayout = new SlptLinearLayout();
-            // Hours:
+            // Time calculations
             Calendar now = Calendar.getInstance();
             now.add(Calendar.HOUR, (int) settings.world_time_zone);
+            String[] digitalNums = {"0", "1", "2", "3", "4", "5", "-", "-", "-", "-"}; // first digits of minutes
+            if(settings.world_time_zone%1!=0){//+30 minutes
+                now.add(Calendar.MINUTE, (settings.world_time_zone > 0)? 30 : -30 );
+                digitalNums = new String[]{"3", "4", "5", "0", "1", "2", "-", "-", "-", "-"};
+            }
+
+            SlptLinearLayout world_timeLayout = new SlptLinearLayout();
+            // Hours
             int hours = now.get(Calendar.HOUR_OF_DAY);
             SlptPictureView world_timeStr = new SlptPictureView();
             world_timeStr.setStringPicture( Util.formatTime(hours)+":" );
             world_timeLayout.add(world_timeStr);
             // Minutes
-            SlptViewComponent firstDigit = new SlptMinuteHView();
-            if(settings.world_time_zone%1==0){//+00 minutes
-                String[] digitalNums = {"0", "1", "2", "3", "4", "5", "-", "-", "-", "-"};
-                ((SlptNumView) firstDigit).setStringPictureArray(digitalNums);
-            }else{//+30 minutes
-                String[] digitalNums = {"3", "4", "5", "0", "1", "2", "-", "-", "-", "-"};
-                ((SlptNumView) firstDigit).setStringPictureArray(digitalNums);
-            }
-            world_timeLayout.add(firstDigit);
-            //world_timeLayout.add(new SlptMinuteHView());
-            world_timeLayout.add(new SlptMinuteLView());
+            SlptViewComponent SlptMinuteHView = new SlptMinuteHView();
+            ((SlptNumView) SlptMinuteHView).setStringPictureArray(digitalNums);
+            world_timeLayout.add(SlptMinuteHView); // Minutes first digit
+            world_timeLayout.add(new SlptMinuteLView()); // Minutes second digit
 
             world_timeLayout.setTextAttrForAll(
                     settings.world_timeFontSize,
