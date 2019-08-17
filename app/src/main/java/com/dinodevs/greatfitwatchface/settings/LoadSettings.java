@@ -535,7 +535,7 @@ public class LoadSettings {
 
             this.analog_clock = sharedPreferences.getBoolean( "analog_clock", context.getResources().getBoolean(R.bool.analog_clock));
             this.digital_clock = sharedPreferences.getBoolean( "digital_clock", context.getResources().getBoolean(R.bool.digital_clock));
-            this.clock_only_slpt = sharedPreferences.getBoolean( "clock_only_slpt", context.getResources().getBoolean(R.bool.clock_only_slpt));
+            this.clock_only_slpt = sharedPreferences.getBoolean( "clock_only_slpt", isVerge() || context.getResources().getBoolean(R.bool.clock_only_slpt));
 
             // Populate color codes
             String[] colorCodes = context.getResources().getStringArray(R.array.color_codes);
