@@ -292,9 +292,9 @@ public class GreatWidget extends AbstractWidget {
             }
         }
 
-        // Custom time refresher
+        // Custom data refresher
         if(settings.am_pmBool || settings.world_time>0 || airPressureBool) {
-            // Refresh time every hour
+            // Refresh data at specific time
             customRefresher.run();
         }
     }
