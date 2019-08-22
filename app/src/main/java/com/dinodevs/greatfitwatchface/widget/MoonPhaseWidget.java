@@ -105,7 +105,7 @@ public class MoonPhaseWidget extends AbstractWidget {
         try  {
             // Get moon data
             int i = mf.getPhaseIndex();
-            String filename = (better_resolution) ? String.format("26wc_moon/moon%d.png", i) : String.format("slpt_moon/moon%d.png", i);
+            String filename = (better_resolution) ? String.format("26wc_moon/moon%d.png", i) : String.format("slpt_moon/" + settings.is_white_bg + "moon%d.png", i);
 
             SlptPictureView moonphaseIcon = new SlptPictureView();
             moonphaseIcon.setImagePicture(SimpleFile.readFileFromAssets(service, filename));
