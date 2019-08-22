@@ -88,6 +88,7 @@ public class WidgetsActivity extends FragmentActivity {
                 break;
             case "phone_battery":
             case "phone_alarm":
+            case "notifications":
                 subtitle = getString(R.string.needAmazmod);
                 break;
             case "xdrip":
@@ -110,9 +111,6 @@ public class WidgetsActivity extends FragmentActivity {
                 break;
             case "watch_alarm":
                 subtitle = getString(R.string.nextWatchAlarm);
-                break;
-            case "notifications":
-                subtitle = getString(R.string.needAmazmod);
                 break;
         }
 

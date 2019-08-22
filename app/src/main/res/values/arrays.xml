@@ -276,6 +276,7 @@
         <item>uv</item>
         <item>wind_direction</item>
         <item>wind_strength</item>
+        <item>min_max_temperatures</item>
         <!-- <item>sunset</item> -->
         <!-- <item>sunrise</item> -->
         <item>watch_alarm</item>
@@ -287,7 +288,7 @@
         <item>world_time</item>
         <item>notifications</item>
         <item>moonphase</item>
-        <item>none</item> <!-- 24 -->
+        <item>none</item> <!-- 25 -->
     </string-array>
 
     <!-- Supported Progress Elements -->

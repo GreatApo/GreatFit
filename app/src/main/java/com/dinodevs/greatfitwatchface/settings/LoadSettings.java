@@ -295,6 +295,17 @@ public class LoadSettings {
     public boolean wind_strengthIcon;
     public float wind_strengthIconLeft;
     public float wind_strengthIconTop;
+    // min_max_temperatures
+    public int min_max_temperatures;
+    public float min_max_temperaturesFontSize;
+    public float min_max_temperaturesLeft;
+    public float min_max_temperaturesTop;
+    public int min_max_temperaturesColor;
+    public boolean min_max_temperaturesAlignLeft;
+    public boolean min_max_temperaturesUnits;
+    public boolean min_max_temperaturesIcon;
+    public float min_max_temperaturesIconLeft;
+    public float min_max_temperaturesIconTop;
     // air_pressure
     public int air_pressure;
     public float air_pressureFontSize;
@@ -1118,6 +1129,31 @@ public class LoadSettings {
                 widgetN.recycle();
             }
 
+        // min_max_temperatures
+        this.min_max_temperatures = sharedPreferences.getInt("min_max_temperatures", widgets_list.indexOf("min_max_temperatures")+1);
+        if(this.min_max_temperatures>0){
+            TypedArray widgetN = res.obtainTypedArray(res.getIdentifier("widget"+this.min_max_temperatures, "array", context.getPackageName()));
+            i = 0;
+            this.min_max_temperaturesFontSize  = scale*sharedPreferences.getFloat("min_max_temperaturesFontSize", widgetN.getDimension(i++, 0));
+            this.min_max_temperaturesLeft  = scale*sharedPreferences.getFloat("min_max_temperaturesLeft", widgetN.getDimension(i++, 0));
+            this.min_max_temperaturesTop  = scale*sharedPreferences.getFloat("min_max_temperaturesTop", widgetN.getDimension(i++, 0));
+            if(this.color>-1 && theme_elements.indexOf("widget"+this.min_max_temperatures)>-1){
+                this.min_max_temperaturesColor = Color.parseColor(color_codes[this.color]);
+                i++;
+            }else{
+                this.min_max_temperaturesColor = sharedPreferences.getInt("min_max_temperaturesColor", widgetN.getColor(i++, 0));
+            }
+            if(this.white_bg) this.min_max_temperaturesColor = inverted_text_color;
+            this.min_max_temperaturesAlignLeft = sharedPreferences.getBoolean("min_max_temperaturesAlignLeft", widgetN.getBoolean(i++, false));
+            this.min_max_temperaturesUnits = sharedPreferences.getBoolean("min_max_temperaturesUnits", widgetN.getBoolean(i++, true));
+            this.min_max_temperaturesIcon = sharedPreferences.getBoolean("min_max_temperaturesIcon", widgetN.getBoolean(i++, true));
+            if(min_max_temperaturesIcon) {
+                this.min_max_temperaturesIconLeft = scale*sharedPreferences.getFloat("min_max_temperaturesIconLeft", widgetN.getDimension(i++, 0));
+                this.min_max_temperaturesIconTop = scale*sharedPreferences.getFloat("min_max_temperaturesIconTop", widgetN.getDimension(i, 0));
+            }
+            widgetN.recycle();
+        }
+
         // air_pressure
             this.air_pressure = sharedPreferences.getInt("air_pressure", widgets_list.indexOf("air_pressure")+1);
             if(this.air_pressure>0){
@@ -1590,7 +1626,7 @@ public class LoadSettings {
 
     // WEATHER WIDGET
     public boolean isWeather(){
-        return this.temperature>0 || this.city>0 || this.humidity>0 || this.uv>0 || this.wind_direction>0 || this.wind_strength>0 || this.weather_img>0;
+        return this.temperature>0 || this.city>0 || this.humidity>0 || this.uv>0 || this.wind_direction>0 || this.wind_strength>0 || this.min_max_temperatures>0 || this.weather_img>0;
     }
 
     // GREAT WIDGET

@@ -45,6 +45,7 @@ public class WeatherWidget extends AbstractWidget {
     private TextPaint wind_directionPaint;
     private TextPaint wind_strengthPaint;
     private TextPaint weather_imgPaint;
+    private TextPaint min_max_temperaturesPaint;
 
     private Bitmap temperatureIcon;
     private Bitmap cityIcon;
@@ -52,6 +53,7 @@ public class WeatherWidget extends AbstractWidget {
     private Bitmap uvIcon;
     private Bitmap wind_directionIcon;
     private Bitmap wind_strengthIcon;
+    private Bitmap min_max_temperaturesIcon;
 
     private LoadSettings settings;
 
@@ -176,6 +178,18 @@ public class WeatherWidget extends AbstractWidget {
             this.weather_imgPaint.setTextSize(settings.weather_imgFontSize);
             this.weather_imgPaint.setTextAlign((settings.weather_imgAlignLeft) ? Paint.Align.LEFT : Paint.Align.CENTER);
         }
+
+        // min max temperatures
+        if(settings.min_max_temperatures>0) {
+            this.min_max_temperaturesPaint = new TextPaint(TextPaint.ANTI_ALIAS_FLAG);
+            this.min_max_temperaturesPaint.setColor(settings.min_max_temperaturesColor);
+            this.min_max_temperaturesPaint.setTypeface(ResourceManager.getTypeFace(service.getResources(), settings.font));
+            this.min_max_temperaturesPaint.setTextSize(settings.min_max_temperaturesFontSize);
+            this.min_max_temperaturesPaint.setTextAlign((settings.min_max_temperaturesAlignLeft) ? Paint.Align.LEFT : Paint.Align.CENTER);
+            if (settings.min_max_temperaturesIcon) {
+                this.min_max_temperaturesIcon = Util.decodeImage(service.getResources(), "icons/" + settings.is_white_bg + "min_max_temperatures.png");
+            }
+        }
     }
 
     // Register listener
@@ -258,6 +272,14 @@ public class WeatherWidget extends AbstractWidget {
                 canvas.drawText(weather.getTemperature() + units, settings.weather_imgLeft, settings.weather_imgTop, weather_imgPaint);
             }
         }
+
+        // Draw min max temperatures
+        if(settings.min_max_temperatures>0) {
+            if(settings.min_max_temperaturesIcon){
+                canvas.drawBitmap(this.min_max_temperaturesIcon, settings.min_max_temperaturesIconLeft, settings.min_max_temperaturesIconTop, settings.mGPaint);
+            }
+            canvas.drawText(weather.tempFormatted, settings.min_max_temperaturesLeft, settings.min_max_temperaturesTop, min_max_temperaturesPaint);
+        }
     }
 
     /* Get Weather Data on screen off
@@ -273,6 +295,10 @@ public class WeatherWidget extends AbstractWidget {
         String uv = "n/a";
         String windDirection = "n/a";
         String windStrength = "n/a";
+        String tempMax = "-";
+        String tempMin = "-";
+        String tempFormatted = "-/-";
+
 
         // Get ALL data from system
         String str = Settings.System.getString(this.mService.getApplicationContext().getContentResolver(), "WeatherInfo");
@@ -292,15 +318,33 @@ public class WeatherWidget extends AbstractWidget {
         JSONObject weather_data;
         try {
             weather_data = new JSONObject(str);
-            tempUnit = weather_data.getString("tempUnit");
-            temp = weather_data.getString("temp");
+
             //weatherType = weather_data.getInt("weatherCodeFrom");
-            weatherType = weather_data.getInt("weatherCode");
-            city = weather_data.getString("city");
-            humidity = weather_data.getString("sd");
-            uv = weather_data.getString("uv");
-            windDirection = weather_data.getString("windDirection");
-            windStrength = weather_data.getString("windStrength");
+
+            if (weather_data.has("tempUnit"))
+                tempUnit = weather_data.getString("tempUnit");
+            if (weather_data.has("temp"))
+                temp = weather_data.getString("temp");
+            if (weather_data.has("weatherCode"))
+                weatherType = weather_data.getInt("weatherCode");
+            if (weather_data.has("city"))
+                city = weather_data.getString("city");
+            if (weather_data.has("sd"))
+                humidity = weather_data.getString("sd");
+            if (weather_data.has("uv"))
+                uv = weather_data.getString("uv");
+            if (weather_data.has("windDirection"))
+                windDirection = weather_data.getString("windDirection");
+            if (weather_data.has("windStrength"))
+                windStrength = weather_data.getString("windStrength");
+
+            JSONObject weather_forecast = (JSONObject) weather_data.getJSONArray("forecasts").get(0);
+            if (weather_forecast.has("tempMax"))
+                tempMax = weather_forecast.getString("tempMax");
+            if (weather_forecast.has("tempMin"))
+                tempMin = weather_forecast.getString("tempMin");
+            if (weather_forecast.has("tempFormatted"))
+                tempFormatted = weather_forecast.getString("tempFormatted");
         }
         catch (JSONException e) {
           // Nothing
@@ -311,7 +355,7 @@ public class WeatherWidget extends AbstractWidget {
             return new WeatherData("1", "n/a", 22);
         }
 
-        return new WeatherData(tempUnit, temp, weatherType, city, humidity, uv, windDirection, windStrength);
+        return new WeatherData(tempUnit, temp, weatherType, city, humidity, uv, windDirection, windStrength, tempMax, tempMin, tempFormatted);
     }
 
     // Screen-off (SLPT)
@@ -645,6 +689,52 @@ public class WeatherWidget extends AbstractWidget {
                     (int) (settings.wind_strengthTop-((float)settings.font_ratio/100)*settings.wind_strengthFontSize)
             );
             slpt_objects.add(wind_strengthLayout);
+        }
+
+
+        // Draw min max temperatures (ex. 17/20 C)
+        if(settings.min_max_temperatures>0){
+            // Show or Not icon
+            if (settings.min_max_temperaturesIcon) {
+                SlptPictureView min_max_temperaturesIcon = new SlptPictureView();
+                min_max_temperaturesIcon.setImagePicture( SimpleFile.readFileFromAssets(service, ( (better_resolution)?"26wc_":"slpt_" )+"icons/"+settings.is_white_bg+"min_max_temperatures.png") );
+                min_max_temperaturesIcon.setStart(
+                        (int) settings.min_max_temperaturesIconLeft,
+                        (int) settings.min_max_temperaturesIconTop
+                );
+                slpt_objects.add(min_max_temperaturesIcon);
+            }
+            SlptLinearLayout min_max_temperaturesLayout = new SlptLinearLayout();
+            SlptPictureView min_max_temperaturesText = new SlptPictureView();
+            min_max_temperaturesText.setStringPicture(this.weather.tempFormatted);
+            min_max_temperaturesText.setTextAttr(
+                    settings.min_max_temperaturesFontSize,
+                    settings.min_max_temperaturesColor,
+                    ResourceManager.getTypeFace(service.getResources(), settings.font)
+            );
+            min_max_temperaturesLayout.add(min_max_temperaturesText);
+            min_max_temperaturesLayout.setTextAttrForAll(
+                    settings.min_max_temperaturesFontSize,
+                    settings.min_max_temperaturesColor,
+                    ResourceManager.getTypeFace(service.getResources(), settings.font)
+            );
+            // Position based on screen on
+            min_max_temperaturesLayout.alignX = 2;
+            min_max_temperaturesLayout.alignY = 0;
+            int tmp_left = (int) settings.min_max_temperaturesLeft;
+            if(!settings.min_max_temperaturesAlignLeft) {
+                // If text is centered, set rectangle
+                min_max_temperaturesLayout.setRect(
+                        (int) (2 * tmp_left + 640),
+                        (int) (((float)settings.font_ratio/100)*settings.min_max_temperaturesFontSize)
+                );
+                tmp_left = -320;
+            }
+            min_max_temperaturesLayout.setStart(
+                    (int) tmp_left,
+                    (int) (settings.min_max_temperaturesTop-((float)settings.font_ratio/100)*settings.min_max_temperaturesFontSize)
+            );
+            slpt_objects.add(min_max_temperaturesLayout);
         }
 
         return slpt_objects;
