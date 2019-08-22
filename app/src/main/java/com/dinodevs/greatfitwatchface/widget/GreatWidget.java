@@ -108,7 +108,7 @@ public class GreatWidget extends AbstractWidget {
         this.mService = service;
 
         // Get AM/PM
-        if(settings.am_pmBool) {
+        //if(settings.am_pmBool) {
             this.time = getSlptTime();
             this.tempAMPM = this.time.ampmStr;
             this.ampmPaint = new TextPaint(TextPaint.ANTI_ALIAS_FLAG);
@@ -116,7 +116,7 @@ public class GreatWidget extends AbstractWidget {
             this.ampmPaint.setTypeface(ResourceManager.getTypeFace(service.getResources(), settings.font));
             this.ampmPaint.setTextSize(settings.am_pmFontSize);
             this.ampmPaint.setTextAlign((settings.am_pmAlignLeft) ? Paint.Align.LEFT : Paint.Align.CENTER);
-        }
+        //}
 
         // Get next alarm
         if(settings.watch_alarm>0) {
@@ -303,7 +303,7 @@ public class GreatWidget extends AbstractWidget {
     @Override
     public void draw(Canvas canvas, float width, float height, float centerX, float centerY) {
         // Draw AM or PM, if enabled
-        if(settings.am_pmBool) {
+        if(settings.am_pm_always || Settings.System.getString(this.mService.getContentResolver(), "time_12_24").equals("12")) {
             //Calendar now = Calendar.getInstance();
             //String periode = (now.get(Calendar.AM_PM) == Calendar.AM) ? "AM" : "PM";
             String text = String.format("%S", this.tempAMPM);//Capitalize
@@ -409,9 +409,9 @@ public class GreatWidget extends AbstractWidget {
     public List<DataType> getDataTypes() {
         List<DataType> dataTypes = new ArrayList<>();
 
-        if(settings.am_pmBool || settings.world_time_zone>0) {
+        //if(settings.am_pmBool || settings.world_time_zone>0) {
             dataTypes.add(TIME);
-        }
+        //}
 
         if( settings.air_pressure>0 || settings.phone_alarm>0 || settings.phone_battery>0 || settings.phone_batteryProg>0 || settings.altitude>0 || settings.notifications>0 ) {
             dataTypes.add(DataType.CUSTOM);
@@ -439,9 +439,12 @@ public class GreatWidget extends AbstractWidget {
             case TIME:
                 // Update AM/PM
                 this.time = (Time) value;
-                if(settings.am_pmBool && !this.tempAMPM.equals(this.time.ampmStr)){
+                if((settings.am_pm_always || Settings.System.getString(this.mService.getContentResolver(), "time_12_24").equals("12")) && !this.tempAMPM.equals(this.time.ampmStr)){
+                    settings.am_pmBool = true;
                     this.tempAMPM = this.time.ampmStr;
                     refreshSlpt = true;
+                }else{
+                    settings.am_pmBool = false;
                 }
                 if(settings.world_time>0){
                     Integer hours = this.time.hours;
@@ -599,7 +602,7 @@ public class GreatWidget extends AbstractWidget {
         this.customData = getCustomData();
 
         // Draw AM or PM
-        if(settings.am_pmBool && settings.digital_clock){
+        if((settings.am_pm_always || Settings.System.getString(this.mService.getContentResolver(), "time_12_24").equals("12")) && settings.digital_clock){
             SlptLinearLayout ampm = new SlptLinearLayout();
             SlptPictureView ampmStr = new SlptPictureView();
             ampmStr.setStringPicture( this.time.ampmStr );

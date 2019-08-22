@@ -648,13 +648,16 @@ public class LoadSettings {
                 seconds.recycle();
             }
         // am_pm
+            /*
             String time_format = Settings.System.getString(context.getContentResolver(), "time_12_24");
             if(time_format.equals("24") && !this.am_pm_always){
                 this.am_pmBool = false;//Hide on 24 if am/pm not always shown
             }else {
                 this.am_pmBool = sharedPreferences.getBoolean("am_pmBool", res.getIdentifier("am_pm", "array", context.getPackageName()) != 0);
             }
-            if(this.am_pmBool) {
+            //Log.d("DinoDevs-GreatFit", "AM-PM: "+am_pmBool+", share-pref:"+this.am_pm_always+", xml:"+context.getResources().getBoolean(R.bool.am_pm_always)+", time-format:"+time_format);
+            */
+            //if(this.am_pmBool) {
                 TypedArray am_pm = res.obtainTypedArray(res.getIdentifier("am_pm", "array", context.getPackageName()));
                 i = 0;
                 this.am_pmFontSize = scale*sharedPreferences.getFloat("am_pmFontSize", am_pm.getDimension(i++, 0));
@@ -669,7 +672,7 @@ public class LoadSettings {
                 if(this.white_bg) this.am_pmColor = inverted_text_color;
                 this.am_pmAlignLeft = sharedPreferences.getBoolean("am_pmAlignLeft", am_pm.getBoolean(i, false));
                 am_pm.recycle();
-            }
+            //}
         // weekday
             this.weekdayBool = sharedPreferences.getBoolean("weekdayBool", res.getIdentifier("weekday", "array", context.getPackageName())!=0);
             if(this.weekdayBool) {
