@@ -66,11 +66,18 @@ public class WidgetsActivity extends FragmentActivity {
     }
 
     private String prepareTitle(String title){
-        if(title.equals("altitude")){
-            title = "altitude/Dive";
-        }else if(title.equals("weather_img")){
-            title = "weather icon";
+        switch (title) {
+            case "altitude":
+                title = "altitude/Dive";
+                break;
+            case "weather_img":
+                title = "weather icon";
+                break;
+            case "min_max_temperatures":
+                title = "Max/Min temperatures";
+                break;
         }
+
         // Replace _ with spaces
         title = title.replaceAll("_"," ");
         // Capitalize first letter

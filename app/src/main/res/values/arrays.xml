@@ -270,13 +270,13 @@
         <item>floors</item>
         <item>battery_percent</item>
         <item>temperature</item>
+        <item>min_max_temperatures</item>
         <item>weather_img</item>
         <item>city</item>
         <item>humidity</item>
         <item>uv</item>
         <item>wind_direction</item>
         <item>wind_strength</item>
-        <item>min_max_temperatures</item>
         <!-- <item>sunset</item> -->
         <!-- <item>sunrise</item> -->
         <item>watch_alarm</item>
