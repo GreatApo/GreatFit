@@ -90,9 +90,9 @@
     <integer-array name="widgets">
         <item>2</item> <!-- Widget 1: type from "supported widgets" list -->
         <item>1</item> <!-- Widget 2: type from "supported widgets" list -->
-        <item>18</item>
+        <item>19</item>
         <item>7</item>
-        <item>24</item>
+        <item>23</item>
     </integer-array>
 
     <!-- Widget 1 -->
