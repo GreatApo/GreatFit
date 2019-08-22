@@ -44,6 +44,7 @@ import java.util.List;
 
 import com.dinodevs.greatfitwatchface.R;
 import com.dinodevs.greatfitwatchface.resource.ResourceManager;
+import com.ingenic.iwds.slpt.view.sport.SlptSportUtil;
 import com.ingenic.iwds.slpt.view.utils.SimpleFile;
 
 
@@ -332,12 +333,6 @@ public class MainClock extends DigitalClockWidget {
         }
     }
 
-    private boolean getLowPowerMode(){
-        String str = Settings.System.getString(this.mService.getContentResolver(), "sys.state.powerlow");
-        Log.d("DinoDevs-GreatFit", "Low power system value: "+str);
-        return str!=null;
-    }
-
     // Screen locked/closed watch mode (Slpt mode)
     @Override
     public List<SlptViewComponent> buildSlptViewComponent(Service service) {
@@ -359,15 +354,17 @@ public class MainClock extends DigitalClockWidget {
         //background.setImagePicture(ResourceManager.getVergeImageFromAssets(settings.isVerge(), service, "background"+ ((better_resolution)?"_better":"") +"_slpt.png"));
         slpt_objects.add(background);
 
-        // DOES NOT WORK
-        if (getLowPowerMode()) {
+        // Set low power icon
+        if(settings.low_power) {
             // Draw low power icon
             SlptPictureView lowpower = new SlptPictureView();
-            lowpower.setImagePicture(SimpleFile.readFileFromAssets(service, "slpt_battery/low_battery.png"));
+            lowpower.setImagePicture(SimpleFile.readFileFromAssets(service, "slpt_battery/" + settings.is_white_bg + "low_battery.png"));
+            //lowpower.picture.setBackgroundColor(backgroundColor);
             lowpower.setStart(
-                    (int) 212,
-                    (int) 270
+                    (int) settings.low_powerLeft,
+                    (int) settings.low_powerTop
             );
+            SlptSportUtil.setLowBatteryIconView(lowpower);
             slpt_objects.add(lowpower);
         }
 

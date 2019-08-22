@@ -9,4 +9,8 @@
     <!-- status (ex. charging icon) -->
     <integer name="status_left">142</integer>
     <integer name="status_top">175</integer>
+
+    <!-- low power icon (ex. < 5%) -->
+    <integer name="low_power_left">194</integer>
+    <integer name="low_power_top">270</integer>
 </resources>

@@ -22,4 +22,6 @@
 
     <!-- Show status bar (ex. charging icon) -->
     <bool name="status_bar">false</bool>
+    <!-- low power icon (ex. < 5%) -->
+    <bool name="low_power">true</bool>
 </resources>
