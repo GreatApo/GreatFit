@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    tools:layout_gravity="center_vertical"
+    android:foreground="?selectableItemBackground"
+    android:clickable="true"
+    android:focusable="true"
+    android:paddingRight="@dimen/padding_round"
+    android:layout_height="72dp"
+    android:paddingLeft="20dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_vertical"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ellipsize="marquee"
+            android:singleLine="true"
+            android:textColor="@android:color/white"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+            tools:text="Title" />
+
+        <TextView
+            android:id="@+id/subtitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ellipsize="marquee"
+            android:singleLine="true"
+            android:textSize="10sp"
+            tools:text="Subtitle\nMulti row" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:layout_marginStart="10dp">
+            <TextView
+                android:id="@+id/decrease"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:background="@drawable/red_button"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:text="-"
+                android:textColor="#fff"
+                android:textSize="22sp"/>
+
+            <TextView
+                android:id="@+id/value"
+                android:layout_width="90dp"
+                android:layout_height="wrap_content"
+                android:ellipsize="marquee"
+                android:singleLine="true"
+                android:textSize="16sp"
+                android:gravity="center"
+                tools:text="0" />
+
+            <TextView
+                android:id="@+id/increase"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:background="@drawable/green_button"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:text="+"
+                android:textColor="#fff"
+                android:textSize="22sp"/>
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

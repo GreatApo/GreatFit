@@ -45,6 +45,9 @@ class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
         } else if (viewType == 4) {
             //Seekbar Item
             return new ViewHolder(layoutInflater.inflate(R.layout.item_preference_seekbar, parent, false));
+        } else if (viewType == 5) {
+            //Incremental Item
+            return new ViewHolder(layoutInflater.inflate(R.layout.item_preference_increment, parent, false));
         }
         return null;
     }
@@ -57,7 +60,8 @@ class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
         if (setting instanceof IconSetting) return 1;
         if (setting instanceof SwitchSetting) return 2;
         if (setting instanceof ButtonSetting) return 3;
-        else return 4;
+        if (setting instanceof SeekbarSetting) return 4;
+        else return 5;
     }
 
 
@@ -106,7 +110,15 @@ class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
             holder.title.setText(seekbarSetting.title);
             holder.subtitle.setText(seekbarSetting.subtitle);
             holder.subtitle.setVisibility(View.VISIBLE);
-        } else {
+        } else if (setting instanceof IncrementalSetting) {
+            //Icon, setup icon, click listeners, title, value
+            IncrementalSetting IncrementalSetting = (IncrementalSetting) setting;
+            holder.minus.setOnClickListener(IncrementalSetting.onClickLessListener);
+            holder.plus.setOnClickListener(IncrementalSetting.onClickMoreListener);
+            holder.title.setText(IncrementalSetting.title);
+            holder.subtitle.setText(IncrementalSetting.subtitle);
+            holder.value.setText(IncrementalSetting.value);
+        }  else {
             //Icon, setup icon, click listener and title
             IconSetting iconSetting = (IconSetting) setting;
             holder.icon.setImageDrawable(iconSetting.icon);
@@ -131,7 +143,7 @@ class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         View root;
-        TextView title, subtitle;
+        TextView title, subtitle, minus, plus, value;
         ImageView icon;
         Switch sw;
         SeekBar sb;
@@ -144,6 +156,9 @@ class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
             icon = (ImageView) itemView.findViewById(R.id.icon);
             sw = (Switch) itemView.findViewById(R.id.sw);
             sb = (SeekBar) itemView.findViewById(R.id.seekBar);
+            minus = (TextView) itemView.findViewById(R.id.decrease);
+            plus = (TextView) itemView.findViewById(R.id.increase);
+            value = (TextView) itemView.findViewById(R.id.value);
             root = itemView;
         }
     }

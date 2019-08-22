@@ -6,8 +6,10 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.SeekBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.dinodevs.greatfitwatchface.R;
@@ -140,6 +142,7 @@ public class OthersActivity extends FragmentActivity {
             }
         }, am_pm_always));
 
+        /*
         final int target_calories = sharedPreferences.getInt( "target_calories", 1000);
         settings.add(new SeekbarSetting(null, "Target calories", null, new SeekBar.OnSeekBarChangeListener() {
             @Override
@@ -154,7 +157,38 @@ public class OthersActivity extends FragmentActivity {
                 Toast.makeText(seekBar.getContext(), "Target: "+seekBar.getProgress(), Toast.LENGTH_SHORT).show();
             }
         }, target_calories, 3000));
+        */
 
+        final int target_calories = sharedPreferences.getInt( "target_calories", 1000);
+        settings.add(
+                new IncrementalSetting(null, "Target calories", "Current: "+target_calories,
+                        new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                int new_value = sharedPreferences.getInt( "target_calories", 1000)-50;
+                                if(new_value>=100) {
+                                    sharedPreferences.edit().putInt("target_calories", new_value).apply();
+                                    View parent = (View) view.getParent();
+                                    TextView value = (TextView) parent.findViewById(R.id.value);
+                                    value.setText(new_value+"");
+                                }
+                            }
+                        },new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        int new_value = sharedPreferences.getInt( "target_calories", 1000)+50;
+                        if(new_value<=10000) {
+                            sharedPreferences.edit().putInt("target_calories", new_value).apply();
+                            View parent = (View) view.getParent();
+                            TextView value = (TextView) parent.findViewById(R.id.value);
+                            value.setText(new_value+"");
+                        }
+                    }
+                }, target_calories+""
+                )
+        );
+
+        /*
         final int custom_refresh_rate = sharedPreferences.getInt( "custom_refresh_rate", getResources().getInteger(R.integer.custom_refresh_rate)*1000);
         settings.add(new SeekbarSetting(null, "Air pressure refresh sec", null, new SeekBar.OnSeekBarChangeListener() {
             @Override
@@ -169,21 +203,63 @@ public class OthersActivity extends FragmentActivity {
                 Toast.makeText(seekBar.getContext(), "Refresh rate: "+seekBar.getProgress()+" sec", Toast.LENGTH_SHORT).show();
             }
         }, custom_refresh_rate, 60));
+         */
+
+        final int custom_refresh_rate = sharedPreferences.getInt( "custom_refresh_rate", getResources().getInteger(R.integer.custom_refresh_rate)*1000);
+        settings.add(
+                new IncrementalSetting(null, "Air pressure refresh", "Current: "+Math.round(custom_refresh_rate/1000)+" sec",
+                        new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                int new_value = Math.round(sharedPreferences.getInt( "custom_refresh_rate", getResources().getInteger(R.integer.custom_refresh_rate)*1000)/1000-5);
+                                if(new_value>=0) {
+                                    sharedPreferences.edit().putInt("custom_refresh_rate", new_value*1000).apply();
+                                    View parent = (View) view.getParent();
+                                    TextView value = (TextView) parent.findViewById(R.id.value);
+                                    value.setText(new_value+" sec");
+                                }
+                            }
+                        },new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        int new_value = Math.round(sharedPreferences.getInt( "custom_refresh_rate", getResources().getInteger(R.integer.custom_refresh_rate)*1000)/1000+5);
+                        sharedPreferences.edit().putInt("custom_refresh_rate", new_value*1000).apply();
+                        View parent = (View) view.getParent();
+                        TextView value = (TextView) parent.findViewById(R.id.value);
+                        value.setText(new_value+" sec");
+                    }
+                }, Math.round(custom_refresh_rate/1000)+" sec"
+                )
+        );
 
         final float world_time_zone = sharedPreferences.getFloat( "world_time_zone", -1f);
-        settings.add(new SeekbarSetting(null, "Second time difference", "Current: "+world_time_zone+" hours", new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                sharedPreferences.edit().putFloat( "world_time_zone", progress/2f-12).apply();
-            }
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-            }
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-                Toast.makeText(seekBar.getContext(), "Time diff: "+(seekBar.getProgress()/2f-12)+" hours", Toast.LENGTH_SHORT).show();
-            }
-        }, (int) (world_time_zone+12)*2, 47));
+        settings.add(
+                new IncrementalSetting(null, "Second time difference", "Current: "+world_time_zone+" hours",
+                    new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            float new_value = sharedPreferences.getFloat( "world_time_zone", -1f)-0.5f;
+                            if(new_value>=-12 && new_value<=12) {
+                                sharedPreferences.edit().putFloat("world_time_zone", new_value).apply();
+                                View parent = (View) view.getParent();
+                                TextView value = (TextView) parent.findViewById(R.id.value);
+                                value.setText("Hour " + ((new_value > 0) ? "+" + new_value : new_value));
+                            }
+                        }
+                    },new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            float new_value = sharedPreferences.getFloat( "world_time_zone", -1f)+0.5f;
+                            if(new_value>=-12 && new_value<=12) {
+                                sharedPreferences.edit().putFloat("world_time_zone", new_value).apply();
+                                View parent = (View) view.getParent();
+                                TextView value = (TextView) parent.findViewById(R.id.value);
+                                value.setText("Hour " + ((new_value > 0) ? "+" + new_value : new_value));
+                            }
+                        }
+                    }, "Hour " + ((world_time_zone > 0) ? "+" + world_time_zone : world_time_zone)
+                )
+        );
 
         //Setup layout
         root.setBackgroundResource(R.drawable.settings_background);
