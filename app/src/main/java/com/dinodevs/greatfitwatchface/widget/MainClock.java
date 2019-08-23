@@ -50,7 +50,7 @@ import com.ingenic.iwds.slpt.view.utils.SimpleFile;
 
 public class MainClock extends DigitalClockWidget {
 
-    private TextPaint hourFont, minutesFont, secondsFont, indicatorFont, dateFont, dayFont, weekdayFont, monthFont, yearFont;
+    private TextPaint hourFont, minutesFont, secondsFont, indicatorFont, dateFont, dayFont, weekdayFont, monthFont, yearFont, ampmFont;
     private Bitmap dateIcon, hourHand, minuteHand, secondsHand, background;
 
     private String[] digitalNums = {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9"};
@@ -204,6 +204,12 @@ public class MainClock extends DigitalClockWidget {
             this.indicatorFont.setTextSize(settings.indicatorFontSize);
             this.indicatorFont.setColor(settings.indicatorColor);
             this.indicatorFont.setTextAlign((settings.indicatorAlignLeft) ? Paint.Align.LEFT : Paint.Align.CENTER);
+
+            this.ampmFont = new TextPaint(TextPaint.ANTI_ALIAS_FLAG);
+            this.ampmFont.setColor(settings.am_pmColor);
+            this.ampmFont.setTypeface(ResourceManager.getTypeFace(service.getResources(), settings.font));
+            this.ampmFont.setTextSize(settings.am_pmFontSize);
+            this.ampmFont.setTextAlign((settings.am_pmAlignLeft) ? Paint.Align.LEFT : Paint.Align.CENTER);
         }
 
         if(settings.analog_clock) {
@@ -273,6 +279,18 @@ public class MainClock extends DigitalClockWidget {
                 if (seconds % 2 == 0 || !settings.flashing_indicator) { // Draw only on even seconds (flashing : symbol)
                     canvas.drawText(indicator, settings.indicatorLeft, settings.indicatorTop, this.indicatorFont);
                 }
+            }
+
+            // AM-PM (ONLY FOR 12h format)
+            switch (ampm) {
+                case 0:
+                    canvas.drawText("AM", this.settings.am_pmLeft, this.settings.am_pmTop, this.ampmFont);
+                    break;
+                case 1:
+                    canvas.drawText("PM", this.settings.am_pmLeft, this.settings.am_pmTop, this.ampmFont);
+                    break;
+                default:
+                    //Log.d("DinoDevs-GreatFit", "AM-PM: 24h time format is on");
             }
         }
 
@@ -483,6 +501,27 @@ public class MainClock extends DigitalClockWidget {
                 //Add it to the list
                 slpt_objects.add(secondsLayout);
             }
+
+            // AM-PM (ONLY FOR 12h format)
+            SlptLinearLayout ampm = new SlptLinearLayout();
+            SlptPictureView am = new SlptPictureView();
+            SlptPictureView pm = new SlptPictureView();
+            am.setStringPicture("AM");
+            pm.setStringPicture("PM");
+            SlptSportUtil.setAmBgView(am);
+            SlptSportUtil.setPmBgView(pm);
+            ampm.add(am);
+            ampm.add(pm);
+            ampm.setTextAttrForAll(settings.am_pmFontSize, settings.am_pmColor, ResourceManager.getTypeFace(service.getResources(), settings.font));
+            ampm.alignX = 2;
+            ampm.alignY = 0;
+            tmp_left = (int) this.settings.am_pmLeft;
+            if (!this.settings.am_pmAlignLeft) {
+                ampm.setRect((tmp_left * 2) + 640, (int) this.settings.am_pmFontSize);
+                tmp_left = -320;
+            }
+            ampm.setStart(tmp_left, (int) (this.settings.am_pmTop - ((settings.font_ratio / 100.0f) * this.settings.am_pmFontSize)));
+            slpt_objects.add(ampm);
         }
 
         if(settings.analog_clock) {
@@ -510,8 +549,12 @@ public class MainClock extends DigitalClockWidget {
             }
         }
 
+        // Only CLOCK?
+        if (!show_all)
+            return slpt_objects;
+
         // Draw DATE (30.12.2018)
-        if(settings.date>0 && show_all){
+        if(settings.date>0){
             // Show or Not icon
             if (settings.dateIcon) {
                 SlptPictureView dateIcon = new SlptPictureView();
@@ -565,7 +608,7 @@ public class MainClock extends DigitalClockWidget {
         }
 
         // Draw day of month
-        if(settings.dayBool && show_all){
+        if(settings.dayBool){
             SlptLinearLayout dayLayout = new SlptLinearLayout();
             dayLayout.add(new SlptDayHView());
             dayLayout.add(new SlptDayLView());
@@ -594,7 +637,7 @@ public class MainClock extends DigitalClockWidget {
         }
 
         // Draw month
-        if(settings.monthBool && show_all){
+        if(settings.monthBool){
             // JAVA calendar get/show time library
             Calendar calendar = Calendar.getInstance();
             int month = calendar.get(Calendar.MONTH);
@@ -655,7 +698,7 @@ public class MainClock extends DigitalClockWidget {
         }
 
         // Draw year number
-        if(settings.yearBool && show_all){
+        if(settings.yearBool){
             SlptLinearLayout yearLayout = new SlptLinearLayout();
             yearLayout.add(new SlptYear3View());
             yearLayout.add(new SlptYear2View());
@@ -690,7 +733,7 @@ public class MainClock extends DigitalClockWidget {
         Typeface weekfont = ResourceManager.getTypeFace(service.getResources(), settings.font);
 
         // Draw day name
-        if(settings.weekdayBool && show_all){
+        if(settings.weekdayBool){
             SlptLinearLayout WeekdayLayout = new SlptLinearLayout();
             WeekdayLayout.add(new SlptWeekView());
             if(settings.three_letters_day_if_text){

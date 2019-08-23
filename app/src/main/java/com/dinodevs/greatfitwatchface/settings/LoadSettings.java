@@ -103,7 +103,6 @@ public class LoadSettings {
     public float am_pmTop;
     public int am_pmColor;
     public boolean am_pmAlignLeft;
-    public boolean am_pmBool;
     // weekday
     public float weekdayFontSize;
     public float weekdayLeft;
@@ -1640,7 +1639,7 @@ public class LoadSettings {
 
     // GREAT WIDGET
     public boolean isGreat(){
-        return this.am_pmBool || watch_alarm>0 || xdrip>0 || air_pressure>0 || altitude>0 || phone_battery>0 || phone_alarm>0 || notifications>0 || phone_batteryProg>0 || world_time>0;
+        return this.am_pm_always || watch_alarm>0 || xdrip>0 || air_pressure>0 || altitude>0 || phone_battery>0 || phone_alarm>0 || notifications>0 || phone_batteryProg>0 || world_time>0;
     }
     public boolean isCustom(){
         return air_pressure>0 || altitude>0 || phone_battery>0 || phone_alarm>0 || notifications>0;

@@ -51,29 +51,13 @@ public class GreatWidget extends AbstractWidget {
     private Alarm alarmData;
     private Xdrip xdripData;
 
-    private TextPaint ampmPaint;
-    private TextPaint alarmPaint;
-    private TextPaint xdripPaint;
-    private TextPaint airPressurePaint;
-    private TextPaint altitudePaint;
-    private TextPaint phoneBatteryPaint;
-    private TextPaint phoneAlarmPaint;
-    private TextPaint world_timePaint;
-    private TextPaint notificationsPaint;
-
-    private Bitmap watch_alarmIcon;
-    private Bitmap xdripIcon;
-    private Bitmap air_pressureIcon;
-    private Bitmap altitudeIcon;
-    private Bitmap phone_batteryIcon;
-    private Bitmap phone_alarmIcon;
-    private Bitmap world_timeIcon;
-    private Bitmap notificationsIcon;
+    private TextPaint ampmPaint, alarmPaint, xdripPaint, airPressurePaint, altitudePaint, phoneBatteryPaint, phoneAlarmPaint, world_timePaint, notificationsPaint;
+    private Bitmap watch_alarmIcon, xdripIcon, air_pressureIcon, altitudeIcon, phone_batteryIcon, phone_alarmIcon, world_timeIcon, notificationsIcon;
 
     private String tempAMPM;
+    private String time_format;
     private String alarm;
     private Integer tempHour=-1;
-
 
     private Float phone_batterySweepAngle=0f;
     private Integer angleLength;
@@ -108,15 +92,16 @@ public class GreatWidget extends AbstractWidget {
         this.mService = service;
 
         // Get AM/PM
-        //if(settings.am_pmBool) {
+        if(settings.am_pm_always) {
             this.time = getSlptTime();
+            this.time_format = Settings.System.getString(this.mService.getContentResolver(), "time_12_24");
             this.tempAMPM = this.time.ampmStr;
             this.ampmPaint = new TextPaint(TextPaint.ANTI_ALIAS_FLAG);
             this.ampmPaint.setColor(settings.am_pmColor);
             this.ampmPaint.setTypeface(ResourceManager.getTypeFace(service.getResources(), settings.font));
             this.ampmPaint.setTextSize(settings.am_pmFontSize);
             this.ampmPaint.setTextAlign((settings.am_pmAlignLeft) ? Paint.Align.LEFT : Paint.Align.CENTER);
-        //}
+        }
 
         // Get next alarm
         if(settings.watch_alarm>0) {
@@ -293,7 +278,7 @@ public class GreatWidget extends AbstractWidget {
         }
 
         // Custom data refresher
-        if(settings.am_pmBool || settings.world_time>0 || airPressureBool) {
+        if(settings.am_pm_always || settings.world_time>0 || airPressureBool) {
             // Refresh data at specific time
             customRefresher.run();
         }
@@ -303,11 +288,8 @@ public class GreatWidget extends AbstractWidget {
     @Override
     public void draw(Canvas canvas, float width, float height, float centerX, float centerY) {
         // Draw AM or PM, if enabled
-        if(settings.am_pm_always || Settings.System.getString(this.mService.getContentResolver(), "time_12_24").equals("12")) {
-            //Calendar now = Calendar.getInstance();
-            //String periode = (now.get(Calendar.AM_PM) == Calendar.AM) ? "AM" : "PM";
-            String text = String.format("%S", this.tempAMPM);//Capitalize
-            canvas.drawText(text, settings.am_pmLeft, settings.am_pmTop, ampmPaint);
+        if(settings.am_pm_always && this.time_format.equals("24")) {
+            canvas.drawText(/*Capitalize*/String.format("%S", this.tempAMPM), settings.am_pmLeft, settings.am_pmTop, ampmPaint);
         }
 
         // Draw Alarm, if enabled
@@ -409,21 +391,17 @@ public class GreatWidget extends AbstractWidget {
     public List<DataType> getDataTypes() {
         List<DataType> dataTypes = new ArrayList<>();
 
-        //if(settings.am_pmBool || settings.world_time_zone>0) {
+        if(settings.am_pm_always || settings.world_time_zone>0)
             dataTypes.add(TIME);
-        //}
 
-        if( settings.air_pressure>0 || settings.phone_alarm>0 || settings.phone_battery>0 || settings.phone_batteryProg>0 || settings.altitude>0 || settings.notifications>0 ) {
+        if( settings.air_pressure>0 || settings.phone_alarm>0 || settings.phone_battery>0 || settings.phone_batteryProg>0 || settings.altitude>0 || settings.notifications>0 )
             dataTypes.add(DataType.CUSTOM);
-        }
 
-        if(settings.watch_alarm>0) {
+        if(settings.watch_alarm>0)
             dataTypes.add(DataType.ALARM);
-        }
 
-        if(settings.xdrip>0) {
+        if(settings.xdrip>0)
             dataTypes.add(DataType.XDRIP);
-        }
 
         return dataTypes;
     }
@@ -439,13 +417,12 @@ public class GreatWidget extends AbstractWidget {
             case TIME:
                 // Update AM/PM
                 this.time = (Time) value;
-                if((settings.am_pm_always || Settings.System.getString(this.mService.getContentResolver(), "time_12_24").equals("12")) && !this.tempAMPM.equals(this.time.ampmStr)){
-                    settings.am_pmBool = true;
+                this.time_format = Settings.System.getString(this.mService.getContentResolver(), "time_12_24");
+                if((settings.am_pm_always && this.time_format.equals("24")) && !this.tempAMPM.equals(this.time.ampmStr)){
                     this.tempAMPM = this.time.ampmStr;
                     refreshSlpt = true;
-                }else{
-                    settings.am_pmBool = false;
                 }
+                // Update World Time
                 if(settings.world_time>0){
                     Integer hours = this.time.hours;
                     if(settings.world_time_zone%1!=0){
@@ -502,7 +479,7 @@ public class GreatWidget extends AbstractWidget {
             seconds = (60 - seconds)*1000;
 
             // Refresh AM/PM
-            if(settings.am_pmBool && settings.digital_clock){
+            if(settings.am_pm_always && settings.digital_clock){
                 refreshTime = (11-(hours % 12))*60*60*1000 + minutes + seconds + millisecond+1;
             }
 
@@ -536,9 +513,7 @@ public class GreatWidget extends AbstractWidget {
 
     // Get data functions
     private Time getSlptTime() {
-        Calendar now = Calendar.getInstance();
-        int periode = (now.get(Calendar.HOUR_OF_DAY) < 12)?0:1;
-        return new Time(periode);
+        return new Time(Calendar.getInstance().get(Calendar.HOUR_OF_DAY) < 12 ? 0 : 1);
     }
 
     private Alarm getAlarm() {
@@ -584,28 +559,14 @@ public class GreatWidget extends AbstractWidget {
 
         // Do not show in SLPT (but show on raise of hand)
         boolean show_all = (!settings.clock_only_slpt || better_resolution);
-        if (!show_all)
-            return slpt_objects;
-
-        // Get AM/PM
-        this.time = getSlptTime();
-        this.tempAMPM = this.time.ampmStr;
-
-        // Get next alarm
-        this.alarmData = getAlarm();
-        this.alarm = alarmData.alarm;
-
-        // Get xdrip
-        this.xdripData = getXdrip();
-
-        // CustomData
-        this.customData = getCustomData();
 
         // Draw AM or PM
-        if((settings.am_pm_always || Settings.System.getString(this.mService.getContentResolver(), "time_12_24").equals("12")) && settings.digital_clock){
+        this.time_format = Settings.System.getString(this.mService.getContentResolver(), "time_12_24");
+        if((settings.am_pm_always && time_format.equals("24")) && settings.digital_clock){
+            // Draw
             SlptLinearLayout ampm = new SlptLinearLayout();
             SlptPictureView ampmStr = new SlptPictureView();
-            ampmStr.setStringPicture( this.time.ampmStr );
+            ampmStr.setStringPicture( /*Get AM/PM */ getSlptTime().ampmStr );
             ampm.add(ampmStr);
             ampm.setTextAttrForAll(
                     settings.am_pmFontSize,
@@ -631,6 +592,19 @@ public class GreatWidget extends AbstractWidget {
             slpt_objects.add(ampm);
         }
 
+        // Only CLOCK?
+        if (!show_all)
+            return slpt_objects;
+
+        // Get next alarm
+        this.alarmData = getAlarm();
+        this.alarm = alarmData.alarm;
+
+        // Get xdrip
+        this.xdripData = getXdrip();
+
+        // CustomData
+        this.customData = getCustomData();
 
         // Draw Alarm
         if(settings.watch_alarm>0){
