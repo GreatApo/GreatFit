@@ -17,23 +17,27 @@ import com.dinodevs.greatfitwatchface.widget.CaloriesWidget;
 import com.dinodevs.greatfitwatchface.widget.GreatWidget;
 import com.dinodevs.greatfitwatchface.widget.WeatherWidget;
 
+import java.lang.ref.WeakReference;
+
 
 /**
  * Amazfit watch faces
  */
 
 public class GreatFit extends AbstractWatchFace {
-    Context context;
     public GreatFit() {
         super();
     }
+    private static WeakReference<GreatFit> instance;
+    private GreatWidget greatWidget = null;
+
 
     @Override
     public void onCreate() {
-        context = this.getApplicationContext();
+        instance = new WeakReference(this);
 
         // Load settings
-        LoadSettings settings = new LoadSettings(context);
+        LoadSettings settings = new LoadSettings(this.getApplicationContext());
 
         this.clock = new MainClock(settings);
 
@@ -65,7 +69,8 @@ public class GreatFit extends AbstractWatchFace {
             this.widgets.add(new MoonPhaseWidget(settings));
         }
         if(settings.isGreat()) {
-            this.widgets.add(new GreatWidget(settings));
+            this.greatWidget = new GreatWidget(settings);
+            this.widgets.add(this.greatWidget);
         }
 
         status_bar(settings.status_bar, settings.status_barLeft, settings.status_barTop);
@@ -83,6 +88,14 @@ public class GreatFit extends AbstractWatchFace {
         }else{
             notifyStatusBarPosition(10.0F,10.0F);// not working
         }
+    }
+
+    public static GreatWidget getGreatWidget() {
+        WeakReference weakReference = instance;
+        if (weakReference != null) {
+            return ((GreatFit) weakReference.get()).greatWidget;
+        }
+        return null;
     }
 
     @Override

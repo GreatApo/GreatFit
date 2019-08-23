@@ -2,6 +2,7 @@ package com.dinodevs.greatfitwatchface.settings;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -15,9 +16,15 @@ import android.widget.Toast;
 import com.dinodevs.greatfitwatchface.R;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class OthersActivity extends FragmentActivity {
+    public final String[] BUILD_VERGE_MODELS = {"qogir", "qogirUS"};
+    public boolean isVerge(){
+        return Arrays.asList(BUILD_VERGE_MODELS).contains(Build.PRODUCT);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,7 +69,7 @@ public class OthersActivity extends FragmentActivity {
             }
         }, digital_clock));
 
-        final boolean clock_only_slpt = sharedPreferences.getBoolean( "clock_only_slpt", getResources().getBoolean(R.bool.clock_only_slpt));
+        final boolean clock_only_slpt = sharedPreferences.getBoolean( "clock_only_slpt", isVerge() || getResources().getBoolean(R.bool.clock_only_slpt));
         settings.add(new SwitchSetting(null, "SLPT clock only", "Show only clock when screen is off", new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {

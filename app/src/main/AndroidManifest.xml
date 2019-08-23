@@ -22,9 +22,8 @@
         android:label="@string/app_name"
         android:theme="@android:style/Theme.DeviceDefault">
         <!-- Mainface -->
-        <activity android:exported="true" android:launchMode="singleTask" android:name="com.huami.watch.watchface.custom.ui.WatchFaceSettingsActivity" android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
-        <activity android:launchMode="singleTask" android:name="com.huami.watch.watchface.custom.ui.WatchFaceCustomActivity"/>
         <activity android:exported="true" android:launchMode="singleTask" android:name="com.dinodevs.greatfitwatchface.settings.Settings" android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
+        <!-- <activity android:launchMode="singleTask" android:name="com.huami.watch.watchface.custom.ui.WatchFaceCustomActivity"/> -->
         <service android:name="com.dinodevs.greatfitwatchface.GreatFitSlpt"/>
         <service android:name="com.dinodevs.greatfitwatchface.GreatFit" android:label="@string/watch_face" android:permission="android.permission.BIND_WALLPAPER">
             <meta-data android:name="android.service.wallpaper" android:resource="@xml/custom_watch_face" />
@@ -46,6 +45,8 @@
         <activity android:name="com.dinodevs.greatfitwatchface.settings.WidgetsActivity"></activity>
         <activity android:name="com.dinodevs.greatfitwatchface.settings.ProgressWidgetsActivity"></activity>
         <activity android:name="com.dinodevs.greatfitwatchface.settings.LanguageActivity"></activity>
+
+        <receiver android:name="com.dinodevs.greatfitwatchface.widget.AlarmReceiver"/>
     </application>
 
 </manifest>

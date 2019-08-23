@@ -1,7 +1,10 @@
 package com.dinodevs.greatfitwatchface.widget;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -13,6 +16,7 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Handler;
 import android.provider.Settings;
+import android.support.v4.app.NotificationCompat;
 import android.text.TextPaint;
 import android.util.Log;
 
@@ -42,6 +46,8 @@ import com.ingenic.iwds.slpt.view.utils.SimpleFile;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import static android.app.AlarmManager.RTC_WAKEUP;
+import static android.app.PendingIntent.FLAG_UPDATE_CURRENT;
 import static com.dinodevs.greatfitwatchface.data.DataType.TIME;
 
 
@@ -66,12 +72,16 @@ public class GreatWidget extends AbstractWidget {
     private Service mService;
     private LoadSettings settings;
 
+    private boolean firstRun = false;
+
     // Pressure sensor
     private boolean airPressureBool;
     private String tempAirPressure = "--";
     private SensorManager mManager;
     private Sensor mPressureSensor;
     private SensorEventListener mListener;
+
+    private final static  String TAG = "DinoDevs-GreatFit";
 
     // Constructor
     public GreatWidget(LoadSettings settings) {
@@ -232,7 +242,7 @@ public class GreatWidget extends AbstractWidget {
                         float[] pressure = parameters.values;
                         if (pressure != null && pressure.length > 0) {
                             float value = pressure[0];
-                            //Log.d("DinoDevs-GreatFit", "Pressure is " + value + " hPa");
+                            Log.d(TAG, "Pressure is " + value + " hPa");
                             if (value > 0 && !(Float.toString(value)).equals(GreatWidget.this.tempAirPressure)) {
                                 GreatWidget.this.tempAirPressure = Float.toString(value);
                                 // Save
@@ -278,9 +288,9 @@ public class GreatWidget extends AbstractWidget {
         }
 
         // Custom data refresher
+        Log.d(TAG, "GreatWidget custom refresher: " + (settings.am_pm_always || settings.world_time>0 || airPressureBool));
         if(settings.am_pm_always || settings.world_time>0 || airPressureBool) {
-            // Refresh data at specific time
-            customRefresher.run();
+            this.firstRun = true;
         }
     }
 
@@ -409,7 +419,7 @@ public class GreatWidget extends AbstractWidget {
     // Value updater
     @Override
     public void onDataUpdate(DataType type, Object value) {
-        //Log.w("DinoDevs-GreatFit", type.toString()+" => "+value.toString() );
+        //Log.w(TAG, type.toString()+" => "+value.toString() );
         boolean refreshSlpt = false;
 
         // On each Data updated
@@ -455,61 +465,95 @@ public class GreatWidget extends AbstractWidget {
         }
 
         // Refresh Slpt
-        if(refreshSlpt){
-            ((AbstractWatchFace) this.mService).restartSlpt();
+        if (refreshSlpt) {
+            if (firstRun) {
+                log(type.toString(), firstRun);
+                scheduleUpdate();
+                firstRun = false;
+            } else {
+                if (this.mService instanceof AbstractWatchFace)
+                    ((AbstractWatchFace) this.mService).restartSlpt();
+                log(type.toString(), firstRun);
+                scheduleUpdate();
+            }
         }
     }
 
-    // Data updater handler
-    private Handler mHandler = new Handler();
-    private Runnable customRefresher = new Runnable(){
-        @Override
-        public void run() {
-            Calendar now = Calendar.getInstance();
-            int hours = now.get(Calendar.HOUR_OF_DAY);
-            int minutes = now.get(Calendar.MINUTE);
-            int seconds = now.get(Calendar.SECOND);
-            int millisecond = now.get(Calendar.MILLISECOND);
+    // Data updater scheduler
+    private void scheduleUpdate() {
+        Calendar now = Calendar.getInstance();
+        int hours = now.get(Calendar.HOUR_OF_DAY);
+        int minutes = now.get(Calendar.MINUTE);
+        int seconds = now.get(Calendar.SECOND);
+        int millisecond = now.get(Calendar.MILLISECOND);
 
-            Object values = new Time(seconds, minutes, hours, -1);
-            onDataUpdate(TIME, values);
+        //Object values = new Time(seconds, minutes, hours, -1);
+        //onDataUpdate(TIME, values);
 
-            int refreshTime = 48*60*60*1000; //Big value
-            minutes = (60 - minutes)*60*1000;
-            seconds = (60 - seconds)*1000;
+        int refreshTime = 48*60*60*1000; //Big value
+        minutes = (60 - minutes)*60*1000;
+        seconds = (60 - seconds)*1000;
 
-            // Refresh AM/PM
-            if(settings.am_pm_always && settings.digital_clock){
-                refreshTime = (11-(hours % 12))*60*60*1000 + minutes + seconds + millisecond+1;
-            }
+        long currentTime = System.currentTimeMillis();
 
-            // Refreshes world_time
-            if(settings.world_time>0) {
-                // Calculate remaining time to next hour change
-                if (settings.world_time_zone % 1 != 0) {
-                    now.add(Calendar.MINUTE, (settings.world_time_zone > 0) ? 30 : -30);
-                    minutes = (60 - now.get(Calendar.MINUTE))*60*1000;
-                }
-
-                int tempRefreshTime = minutes + seconds + millisecond+1;
-                if(refreshTime>tempRefreshTime)
-                    refreshTime = tempRefreshTime;
-            }
-
-            // Air pressure
-            if(airPressureBool){
-                //Log.d("DinoDevs-GreatFit", "Sensor custom refresh in "+settings.custom_refresh_rate+" sec");
-                // Update AirPressure
-                mManager.registerListener(GreatWidget.this.mListener, GreatWidget.this.mPressureSensor, 60*1000);
-
-                int tempRefreshTime = (settings.custom_refresh_rate>0)? settings.custom_refresh_rate*1000 : 60*60*1000;
-                if(refreshTime>tempRefreshTime)
-                    refreshTime = tempRefreshTime;
-            }
-
-            mHandler.postDelayed(customRefresher, refreshTime);
+        // Refresh AM/PM
+        if(settings.am_pm_always && settings.digital_clock){
+            refreshTime = (11-(hours % 12))*60*60*1000 + minutes + seconds + millisecond+1;
         }
-    };
+
+        // Refreshes world_time
+        if(settings.world_time>0) {
+            // Calculate remaining time to next hour change
+            if (settings.world_time_zone % 1 != 0) {
+                now.add(Calendar.MINUTE, (settings.world_time_zone > 0) ? 30 : -30);
+                minutes = (60 - now.get(Calendar.MINUTE))*60*1000;
+            }
+
+            int tempRefreshTime = minutes + seconds + millisecond+1;
+            if(refreshTime>tempRefreshTime)
+                refreshTime = tempRefreshTime;
+        }
+
+        // Air pressure
+        if(airPressureBool){
+            //Log.d(TAG, "Sensor custom refresh in "+settings.custom_refresh_rate+" sec");
+            // Update AirPressure
+            mManager.registerListener(GreatWidget.this.mListener, GreatWidget.this.mPressureSensor, 60*1000);
+
+            int tempRefreshTime = (settings.custom_refresh_rate>0)? settings.custom_refresh_rate*1000 : 60*60*1000;
+            if(refreshTime>tempRefreshTime)
+                refreshTime = tempRefreshTime;
+        }
+
+        scheduleUpdate(currentTime + refreshTime);
+        now.setTimeInMillis(currentTime + refreshTime);
+        Log.i(TAG, String.format("scheduleUpdate next alarm: %02d:%02d:%02d", now.get(Calendar.HOUR_OF_DAY), now.get(Calendar.MINUTE), now.get(Calendar.SECOND)));
+    }
+
+    private void scheduleUpdate(long time) {
+        Context context = this.mService;
+        AlarmManager alarmMgr = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+        Intent intent = new Intent(context, AlarmReceiver.class);
+        intent.putExtra(AlarmReceiver.REQUEST_CODE, AlarmReceiver.GREATWIDGET_CODE);
+        PendingIntent alarmIntent = PendingIntent.getBroadcast(context, AlarmReceiver.GREATWIDGET_CODE, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        if (alarmIntent == null)
+            Log.e(TAG,"scheduleUpdate null error!");
+        else if (alarmMgr != null)
+            alarmMgr.setExact(AlarmManager.RTC_WAKEUP, time, alarmIntent);
+        else
+            Log.e(TAG, "scheduleUpdate null alarmMgr!");
+    }
+
+    private void log(String type, boolean isFirstRun) {
+        String str = "onDataUpdate refreshSlpt %s ";
+        if (isFirstRun)
+            str += "firstrun";
+        if (this.time != null)
+            Log.i(TAG, String.format(str + " - %02d:%02d:%02d", type, this.time.hours, this.time.minutes, this.time.seconds));
+        else
+            Log.i(TAG, String.format(str, type));
+    }
+
 
     // Get data functions
     private Time getSlptTime() {
@@ -559,6 +603,11 @@ public class GreatWidget extends AbstractWidget {
 
         // Do not show in SLPT (but show on raise of hand)
         boolean show_all = (!settings.clock_only_slpt || better_resolution);
+        // SLPT only clock white bg -> to black
+        if(!show_all && settings.isVerge() && settings.white_bg) {
+            settings.is_white_bg = "";
+            settings.am_pmColor = Color.parseColor("#ffffff");
+        }
 
         // Draw AM or PM
         this.time_format = Settings.System.getString(this.mService.getContentResolver(), "time_12_24");
@@ -592,6 +641,55 @@ public class GreatWidget extends AbstractWidget {
             slpt_objects.add(ampm);
         }
 
+        // CustomData
+        this.customData = getCustomData();
+
+        // Draw Notifications
+        if(settings.notifications>0 && (show_all || (!this.customData.notifications.equals("--") && !this.customData.notifications.equals("0")))){
+            // Show or Not icon
+            if (settings.notificationsIcon) {
+                SlptPictureView notificationIcon = new SlptPictureView();
+                notificationIcon.setImagePicture( SimpleFile.readFileFromAssets(service, ( (better_resolution)?"26wc_":"slpt_" )+"icons/"+settings.is_white_bg+"notifications.png") );
+                notificationIcon.setStart(
+                        (int) settings.notificationsIconLeft,
+                        (int) settings.notificationsIconTop
+                );
+                slpt_objects.add(notificationIcon);
+            }
+
+            SlptLinearLayout notificationsLayout = new SlptLinearLayout();
+            SlptPictureView notificationsStr = new SlptPictureView();
+            // These can be used instead of setTextAttrForAll()
+            //notificationsStr.textSize = settings.notificationsFontSize;
+            //notificationsStr.typeface = ResourceManager.getTypeFace(service.getResources(), settings.font);
+            //notificationsStr.textColor = settings.notificationsColor;
+            notificationsStr.setStringPicture( this.customData.notifications+" " );// doesn't work without the space
+            notificationsLayout.add(notificationsStr);
+            notificationsLayout.setTextAttrForAll(
+                    settings.notificationsFontSize,
+                    settings.notificationsColor,
+                    ResourceManager.getTypeFace(service.getResources(), settings.font)
+            );
+            // Position based on screen on
+            notificationsLayout.alignX = 2;
+            notificationsLayout.alignY = 0;
+            tmp_left = (int) settings.notificationsLeft;
+            if(!settings.notificationsAlignLeft) {
+                // If text is centered, set rectangle
+                notificationsLayout.setRect(
+                        (int) (2 * tmp_left + 640),
+                        (int) (((float)settings.font_ratio/100)*settings.notificationsFontSize)
+                );
+                tmp_left = -320;
+            }
+            notificationsLayout.setStart(
+                    (int) tmp_left,
+                    (int) (settings.notificationsTop-((float)settings.font_ratio/100)*settings.notificationsFontSize)
+            );
+            //Add it to the list
+            slpt_objects.add(notificationsLayout);
+        }
+
         // Only CLOCK?
         if (!show_all)
             return slpt_objects;
@@ -602,9 +700,6 @@ public class GreatWidget extends AbstractWidget {
 
         // Get xdrip
         this.xdripData = getXdrip();
-
-        // CustomData
-        this.customData = getCustomData();
 
         // Draw Alarm
         if(settings.watch_alarm>0){
@@ -869,52 +964,6 @@ public class GreatWidget extends AbstractWidget {
             );
             //Add it to the list
             slpt_objects.add(phoneAlarmLayout);
-        }
-
-        // Draw Notifications
-        if(settings.notifications>0){
-            // Show or Not icon
-            if (settings.notificationsIcon) {
-                SlptPictureView notificationIcon = new SlptPictureView();
-                notificationIcon.setImagePicture( SimpleFile.readFileFromAssets(service, ( (better_resolution)?"26wc_":"slpt_" )+"icons/"+settings.is_white_bg+"notifications.png") );
-                notificationIcon.setStart(
-                        (int) settings.notificationsIconLeft,
-                        (int) settings.notificationsIconTop
-                );
-                slpt_objects.add(notificationIcon);
-            }
-
-            SlptLinearLayout notificationsLayout = new SlptLinearLayout();
-            SlptPictureView notificationsStr = new SlptPictureView();
-            // These can be used instead of setTextAttrForAll()
-            //notificationsStr.textSize = settings.notificationsFontSize;
-            //notificationsStr.typeface = ResourceManager.getTypeFace(service.getResources(), settings.font);
-            //notificationsStr.textColor = settings.notificationsColor;
-            notificationsStr.setStringPicture( this.customData.notifications+" " );// doesn't work without the space
-            notificationsLayout.add(notificationsStr);
-            notificationsLayout.setTextAttrForAll(
-                    settings.notificationsFontSize,
-                    settings.notificationsColor,
-                    ResourceManager.getTypeFace(service.getResources(), settings.font)
-            );
-            // Position based on screen on
-            notificationsLayout.alignX = 2;
-            notificationsLayout.alignY = 0;
-            tmp_left = (int) settings.notificationsLeft;
-            if(!settings.notificationsAlignLeft) {
-                // If text is centered, set rectangle
-                notificationsLayout.setRect(
-                        (int) (2 * tmp_left + 640),
-                        (int) (((float)settings.font_ratio/100)*settings.notificationsFontSize)
-                );
-                tmp_left = -320;
-            }
-            notificationsLayout.setStart(
-                    (int) tmp_left,
-                    (int) (settings.notificationsTop-((float)settings.font_ratio/100)*settings.notificationsFontSize)
-            );
-            //Add it to the list
-            slpt_objects.add(notificationsLayout);
         }
 
         // Draw world_time

@@ -3,6 +3,7 @@ package com.dinodevs.greatfitwatchface.widget;
 import android.app.Service;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
@@ -178,7 +179,7 @@ public class MainClock extends DigitalClockWidget {
         //this.background.setBounds(0, 0, 320, 300);
         this.background = Util.decodeImage(service.getResources(),settings.is_white_bg+"background.png");
         if(settings.isVerge())
-            this.background = Bitmap.createScaledBitmap(this.background, 360, 336, true);// 336 because it is scaled from 300px and not 320px
+            this.background = Bitmap.createScaledBitmap(this.background, 360, 360, true);
 
         if(settings.digital_clock) {
             this.hourFont = new TextPaint(TextPaint.ANTI_ALIAS_FLAG);
@@ -359,7 +360,15 @@ public class MainClock extends DigitalClockWidget {
 
     public List<SlptViewComponent> buildSlptViewComponent(Service service, boolean better_resolution) {
         better_resolution = better_resolution && settings.better_resolution_when_raising_hand;
+        // SLPT only clock
         boolean show_all = (!settings.clock_only_slpt || better_resolution);
+        // SLPT only clock white bg -> to black
+        if(!show_all && settings.isVerge() && settings.white_bg) {
+            settings.is_white_bg = "";
+            settings.hoursColor = Color.parseColor("#ffffff");
+            settings.minutesColor = Color.parseColor("#ffffff");
+            settings.am_pmColor = Color.parseColor("#ffffff");
+        }
         this.mService = service;
 
         int tmp_left;

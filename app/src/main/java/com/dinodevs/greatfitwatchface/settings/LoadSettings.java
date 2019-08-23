@@ -56,8 +56,8 @@ public class LoadSettings {
     public int status_barLeft;
     public int status_barTop;
     public boolean low_power;
-    public int low_powerLeft;
-    public int low_powerTop;
+    public float low_powerLeft;
+    public float low_powerTop;
     public boolean flashing_heart_rate_icon;
     public float target_calories;
     public int custom_refresh_rate;
@@ -539,8 +539,8 @@ public class LoadSettings {
             this.status_barLeft = (int) scale*sharedPreferences.getInt( "status_barLeft", context.getResources().getInteger(R.integer.status_left));
             this.status_barTop = (int) scale*sharedPreferences.getInt( "status_barTop", context.getResources().getInteger(R.integer.status_top));
             this.low_power = sharedPreferences.getBoolean( "low_power", context.getResources().getBoolean(R.bool.low_power));
-            this.low_powerLeft = (int) scale*sharedPreferences.getInt( "low_powerLeft", context.getResources().getInteger(R.integer.low_power_left));
-            this.low_powerTop = (int) scale*sharedPreferences.getInt( "low_powerTop", context.getResources().getInteger(R.integer.low_power_top));
+            this.low_powerLeft = scale*sharedPreferences.getInt( "low_powerLeft", context.getResources().getInteger(R.integer.low_power_left));
+            this.low_powerTop = scale*sharedPreferences.getInt( "low_powerTop", context.getResources().getInteger(R.integer.low_power_top));
             this.flashing_heart_rate_icon = sharedPreferences.getBoolean( "flashing_heart_rate_icon", context.getResources().getBoolean(R.bool.flashing_heart_rate_icon));
             this.target_calories = sharedPreferences.getInt( "target_calories", 1000);
             this.custom_refresh_rate = sharedPreferences.getInt( "custom_refresh_rate", context.getResources().getInteger(R.integer.custom_refresh_rate)*1000);
