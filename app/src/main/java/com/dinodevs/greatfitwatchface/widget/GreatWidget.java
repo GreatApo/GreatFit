@@ -401,8 +401,12 @@ public class GreatWidget extends AbstractWidget {
     public List<DataType> getDataTypes() {
         List<DataType> dataTypes = new ArrayList<>();
 
-        if(settings.am_pm_always || settings.world_time_zone>0)
+        if(settings.am_pm_always || settings.world_time_zone>0) {
             dataTypes.add(TIME);
+        }else{
+            scheduleUpdate();
+            firstRun = false;
+        }
 
         if( settings.air_pressure>0 || settings.phone_alarm>0 || settings.phone_battery>0 || settings.phone_batteryProg>0 || settings.altitude>0 || settings.notifications>0 )
             dataTypes.add(DataType.CUSTOM);
