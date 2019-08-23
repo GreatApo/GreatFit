@@ -517,7 +517,7 @@ public class LoadSettings {
         // Verge scale
         this.scale = (isVerge())? 1.125f : 1f; // 360/320 = 1.125
         int inverted_text_color = Color.parseColor("#000000");
-        Log.d("GreatFit","Scale: "+scale);
+        //Log.d(TAG,"Scale: "+scale);
 
         // All
             this.font_ratio = sharedPreferences.getInt("font_ratio", res.getInteger(R.integer.font_ratio));
@@ -572,7 +572,7 @@ public class LoadSettings {
             List theme_elements = Arrays.asList(context.getResources().getStringArray(R.array.theme_elements));
             String[] color_codes = context.getResources().getStringArray(R.array.color_codes);
 
-            Log.d(TAG, "Language: "+this.language );
+            //Log.d(TAG, "Language: "+this.language );
 
         @StyleableRes int i = 0;
         // Hours
@@ -759,7 +759,7 @@ public class LoadSettings {
             String text = widgetsAsText.replaceAll("(\\[|\\]| )",""); // Replace "[", "]" and "spaces"
             this.widgets_list = Arrays.asList(text.split(","));
         }
-        Log.d(TAG, "Widgets: "+ widgets_list.toString());
+        //Log.d(TAG, "Widgets: "+ widgets_list.toString());
 
 
         // Date
@@ -1404,7 +1404,7 @@ public class LoadSettings {
             this.circle_bars_list = Arrays.asList(text.split(","));
         }
 
-        Log.d(TAG, "Bars: "+ circle_bars_list.toString());
+        //Log.d(TAG, "Bars: "+ circle_bars_list.toString());
 
         // StepsProg
         this.stepsProg = sharedPreferences.getInt("stepsProg", circle_bars_list.indexOf("steps")+1);
