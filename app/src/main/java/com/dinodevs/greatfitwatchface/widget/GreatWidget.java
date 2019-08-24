@@ -23,6 +23,7 @@ import android.util.Log;
 import com.dinodevs.greatfitwatchface.AbstractWatchFace;
 import com.dinodevs.greatfitwatchface.data.Alarm;
 import com.dinodevs.greatfitwatchface.data.CustomData;
+import com.dinodevs.greatfitwatchface.data.Steps;
 import com.dinodevs.greatfitwatchface.data.Xdrip;
 import com.dinodevs.greatfitwatchface.settings.LoadSettings;
 import com.huami.watch.watchface.util.Util;
@@ -46,8 +47,6 @@ import com.ingenic.iwds.slpt.view.utils.SimpleFile;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import static android.app.AlarmManager.RTC_WAKEUP;
-import static android.app.PendingIntent.FLAG_UPDATE_CURRENT;
 import static com.dinodevs.greatfitwatchface.data.DataType.TIME;
 
 
@@ -56,9 +55,10 @@ public class GreatWidget extends AbstractWidget {
     private CustomData customData;
     private Alarm alarmData;
     private Xdrip xdripData;
+    private static Steps stepsData;
 
-    private TextPaint ampmPaint, alarmPaint, xdripPaint, airPressurePaint, altitudePaint, phoneBatteryPaint, phoneAlarmPaint, world_timePaint, notificationsPaint;
-    private Bitmap watch_alarmIcon, xdripIcon, air_pressureIcon, altitudeIcon, phone_batteryIcon, phone_alarmIcon, world_timeIcon, notificationsIcon;
+    private TextPaint ampmPaint, alarmPaint, xdripPaint, airPressurePaint, altitudePaint, phoneBatteryPaint, phoneAlarmPaint, world_timePaint, notificationsPaint, walked_distancePaint;
+    private Bitmap watch_alarmIcon, xdripIcon, air_pressureIcon, altitudeIcon, phone_batteryIcon, phone_alarmIcon, world_timeIcon, notificationsIcon, walked_distanceIcon;
 
     private String tempAMPM;
     private String time_format;
@@ -287,6 +287,19 @@ public class GreatWidget extends AbstractWidget {
             }
         }
 
+        // Walked distance
+        if(settings.walked_distance>0){
+            this.walked_distancePaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
+            this.walked_distancePaint.setTypeface(ResourceManager.getTypeFace(service.getResources(), settings.font));
+            this.walked_distancePaint.setTextSize(settings.walked_distanceFontSize);
+            this.walked_distancePaint.setColor(settings.walked_distanceColor);
+            this.walked_distancePaint.setTextAlign( (settings.walked_distanceAlignLeft) ? Paint.Align.LEFT : Paint.Align.CENTER );
+
+            if(settings.walked_distanceIcon){
+                this.walked_distanceIcon = Util.decodeImage(service.getResources(),"icons/"+settings.is_white_bg+"today_distance.png");
+            }
+        }
+
         // Custom data refresher
         Log.d(TAG, "GreatWidget custom refresher: " + (settings.am_pm_always || settings.world_time>0 || airPressureBool));
         if(settings.am_pm_always || settings.world_time>0 || airPressureBool) {
@@ -375,6 +388,21 @@ public class GreatWidget extends AbstractWidget {
             canvas.drawText(Util.formatTime(hours)+":"+Util.formatTime(minutes), settings.world_timeLeft, settings.world_timeTop, world_timePaint);
         }
 
+        // Draw walked distance
+        if(settings.walked_distance>0) {
+            if(settings.walked_distanceIcon){
+                canvas.drawBitmap(this.walked_distanceIcon, settings.walked_distanceIconLeft, settings.walked_distanceIconTop, settings.mGPaint);
+            }
+            String distance = "N/A";
+            if (stepsData != null) {
+                if (this.settings.isMetric) {
+                    distance = stepsData.getStepsMetric((double) this.settings.step_length);
+                } else {
+                    distance = stepsData.getStepsImperial((double) this.settings.step_length);
+                }
+            }
+            canvas.drawText(distance, settings.walked_distanceLeft, settings.walked_distanceTop, walked_distancePaint);
+        }
 
         // phone_battery bar
         if(settings.phone_batteryProg>0 && settings.phone_batteryProgType==0) {
@@ -416,6 +444,9 @@ public class GreatWidget extends AbstractWidget {
 
         if(settings.xdrip>0)
             dataTypes.add(DataType.XDRIP);
+
+        if(settings.walked_distance>0)
+            dataTypes.add(DataType.STEPS);
 
         return dataTypes;
     }
@@ -466,20 +497,23 @@ public class GreatWidget extends AbstractWidget {
                     this.phone_batterySweepAngle = this.angleLength * Math.min(temp_battery/100f,1f);
                 }
                 break;
+            case STEPS:
+                // Update walked distance
+                this.stepsData = (Steps) value;
+                refreshSlpt = true;
+                break;
         }
 
         // Refresh Slpt
         if (refreshSlpt) {
             if (firstRun) {
-                log(type.toString(), firstRun);
-                scheduleUpdate();
                 firstRun = false;
             } else {
                 if (this.mService instanceof AbstractWatchFace)
                     ((AbstractWatchFace) this.mService).restartSlpt();
-                log(type.toString(), firstRun);
-                scheduleUpdate();
             }
+            log(type.toString(), firstRun);
+            scheduleUpdate();
         }
     }
 
@@ -565,18 +599,15 @@ public class GreatWidget extends AbstractWidget {
     }
 
     private Alarm getAlarm() {
-        String str = Settings.System.getString(this.mService.getContentResolver(), Settings.System.NEXT_ALARM_FORMATTED);
-        return new Alarm(str);
+        return new Alarm(Settings.System.getString(this.mService.getContentResolver(), Settings.System.NEXT_ALARM_FORMATTED));
     }
 
     private Xdrip getXdrip(){
-        String str = Settings.System.getString(this.mService.getContentResolver(), "xdrip");
-        return new Xdrip(str);
+        return new Xdrip(Settings.System.getString(this.mService.getContentResolver(), "xdrip"));
     }
 
     private CustomData getCustomData(){
-        String str = Settings.System.getString(this.mService.getContentResolver(), "CustomWatchfaceData");
-        return new CustomData(str);
+        return new CustomData(Settings.System.getString(this.mService.getContentResolver(), "CustomWatchfaceData"));
     }
 
     // Translate the alarm
@@ -1027,6 +1058,65 @@ public class GreatWidget extends AbstractWidget {
             );
             //Add it to the list
             slpt_objects.add(world_timeLayout);
+        }
+
+        // Walked distance
+        if(settings.walked_distance>0){
+            // Show or Not icon
+            if (settings.walked_distanceIcon) {
+                SlptPictureView walked_distanceIcon = new SlptPictureView();
+                walked_distanceIcon.setImagePicture( SimpleFile.readFileFromAssets(service, ( (better_resolution)?"26wc_":"slpt_" )+"icons/"+settings.is_white_bg+"today_distance.png") );
+                walked_distanceIcon.setStart(
+                        (int) settings.walked_distanceIconLeft,
+                        (int) settings.walked_distanceIconTop
+                );
+                slpt_objects.add(walked_distanceIcon);
+            }
+
+            // Get distance
+            String distance;
+            try {
+                if (this.stepsData != null) {
+                    if (this.settings.isMetric) {
+                        distance = this.stepsData.getStepsMetric((double) this.settings.step_length);
+                    } else {
+                        distance = this.stepsData.getStepsImperial((double) this.settings.step_length);
+                    }
+                } else {
+                    distance = "N/A";
+                }
+            } catch (Exception e2) {
+                Log.e(TAG, e2.getMessage());
+                distance = "Err";
+            }
+
+            SlptLinearLayout walked_distanceLayout = new SlptLinearLayout();
+            SlptPictureView walked_distanceStr = new SlptPictureView();
+            walked_distanceStr.setStringPicture( distance );
+            walked_distanceLayout.add(walked_distanceStr);
+            walked_distanceLayout.setTextAttrForAll(
+                    settings.walked_distanceFontSize,
+                    settings.walked_distanceColor,
+                    ResourceManager.getTypeFace(service.getResources(), settings.font)
+            );
+            // Position based on screen on
+            walked_distanceLayout.alignX = 2;
+            walked_distanceLayout.alignY = 0;
+            tmp_left = (int) settings.walked_distanceLeft;
+            if(!settings.walked_distanceAlignLeft) {
+                // If text is centered, set rectangle
+                walked_distanceLayout.setRect(
+                        (int) (2 * tmp_left + 640),
+                        (int) (((float)settings.font_ratio/100)*settings.walked_distanceFontSize)
+                );
+                tmp_left = -320;
+            }
+            walked_distanceLayout.setStart(
+                    (int) tmp_left,
+                    (int) (settings.walked_distanceTop-((float)settings.font_ratio/100)*settings.walked_distanceFontSize)
+            );
+            //Add it to the list
+            slpt_objects.add(walked_distanceLayout);
         }
 
         // Draw phone battery bar

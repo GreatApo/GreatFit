@@ -68,6 +68,7 @@ public class LoadSettings {
     public Paint mGPaint;
     public List widgets_list;
     public List circle_bars_list;
+    public boolean isMetric;
 
     // Hours
     public boolean hoursBool;
@@ -198,6 +199,18 @@ public class LoadSettings {
     public boolean today_distanceIcon;
     public float today_distanceIconLeft;
     public float today_distanceIconTop;
+    // walked_distance
+    public int step_length;
+    public int walked_distance;
+    public float walked_distanceFontSize;
+    public float walked_distanceLeft;
+    public float walked_distanceTop;
+    public int walked_distanceColor;
+    public boolean walked_distanceAlignLeft;
+    public boolean walked_distanceUnits;
+    public boolean walked_distanceIcon;
+    public float walked_distanceIconLeft;
+    public float walked_distanceIconTop;
     // floors
     public int floors;
     public float floorsFontSize;
@@ -552,6 +565,8 @@ public class LoadSettings {
             this.analog_clock = sharedPreferences.getBoolean( "analog_clock", context.getResources().getBoolean(R.bool.analog_clock));
             this.digital_clock = sharedPreferences.getBoolean( "digital_clock", context.getResources().getBoolean(R.bool.digital_clock));
             this.clock_only_slpt = sharedPreferences.getBoolean( "clock_only_slpt", isVerge() || context.getResources().getBoolean(R.bool.clock_only_slpt));
+
+            this.isMetric = (Settings.Secure.getInt(context.getContentResolver(), "measurement", 0) == 0);
 
             // Populate color codes
             String[] colorCodes = context.getResources().getStringArray(R.array.color_codes);
@@ -908,6 +923,32 @@ public class LoadSettings {
                 if(today_distanceIcon) {
                     this.today_distanceIconLeft  = scale*sharedPreferences.getFloat("today_distanceIconLeft", widgetN.getDimension(i++, 0));
                     this.today_distanceIconTop  = scale*sharedPreferences.getFloat("today_distanceIconTop", widgetN.getDimension(i, 0));
+                }
+                widgetN.recycle();
+            }
+
+        // walked_distance
+            this.step_length = sharedPreferences.getInt("step_length", 78);
+            this.walked_distance = sharedPreferences.getInt("walked_distance", widgets_list.indexOf("walked_distance")+1);
+            if(this.walked_distance>0){
+                TypedArray widgetN = res.obtainTypedArray(res.getIdentifier("widget"+this.walked_distance, "array", context.getPackageName()));
+                i = 0;
+                this.walked_distanceFontSize  = scale*sharedPreferences.getFloat("walked_distanceFontSize", widgetN.getDimension(i++, 0));
+                this.walked_distanceLeft  = scale*sharedPreferences.getFloat("walked_distanceLeft", widgetN.getDimension(i++, 0));
+                this.walked_distanceTop  = scale*sharedPreferences.getFloat("walked_distanceTop", widgetN.getDimension(i++, 0));
+                if(this.color>-1 && theme_elements.indexOf("widget"+this.walked_distance)>-1){
+                    this.walked_distanceColor = Color.parseColor(color_codes[this.color]);
+                    i++;
+                }else{
+                    this.walked_distanceColor = sharedPreferences.getInt("walked_distanceColor", widgetN.getColor(i++, 0));
+                }
+                if(this.white_bg) this.walked_distanceColor = inverted_text_color;
+                this.walked_distanceAlignLeft = sharedPreferences.getBoolean("walked_distanceAlignLeft", widgetN.getBoolean(i++, false));
+                this.walked_distanceUnits = sharedPreferences.getBoolean("walked_distanceUnits", widgetN.getBoolean(i++, true));
+                this.walked_distanceIcon = sharedPreferences.getBoolean("walked_distanceIcon", widgetN.getBoolean(i++, true));
+                if(walked_distanceIcon) {
+                    this.walked_distanceIconLeft  = scale*sharedPreferences.getFloat("walked_distanceIconLeft", widgetN.getDimension(i++, 0));
+                    this.walked_distanceIconTop  = scale*sharedPreferences.getFloat("walked_distanceIconTop", widgetN.getDimension(i, 0));
                 }
                 widgetN.recycle();
             }

@@ -90,9 +90,9 @@
     <integer-array name="widgets">
         <item>2</item> <!-- Widget 1: type from "supported widgets" list -->
         <item>1</item> <!-- Widget 2: type from "supported widgets" list -->
-        <item>19</item>
-        <item>7</item>
-        <item>23</item>
+        <item>20</item>
+        <item>8</item>
+        <item>24</item>
     </integer-array>
 
     <!-- Widget 1 -->
@@ -267,6 +267,7 @@
         <item>heart_rate</item>
         <item>total_distance</item>
         <item>today_distance</item>
+        <item>walked_distance</item>
         <item>floors</item>
         <item>battery_percent</item>
         <item>temperature</item>
@@ -288,7 +289,7 @@
         <item>world_time</item>
         <item>notifications</item>
         <item>moonphase</item>
-        <item>none</item> <!-- 25 -->
+        <item>none</item> <!-- 26 -->
     </string-array>
 
     <!-- Supported Progress Elements -->
