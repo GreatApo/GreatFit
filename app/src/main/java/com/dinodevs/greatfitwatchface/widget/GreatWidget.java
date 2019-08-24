@@ -36,6 +36,7 @@ import com.ingenic.iwds.slpt.view.core.SlptViewComponent;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.TimeZone;
 
 import com.dinodevs.greatfitwatchface.data.DataType;
 import com.dinodevs.greatfitwatchface.data.Time;
@@ -378,7 +379,7 @@ public class GreatWidget extends AbstractWidget {
             if(settings.world_timeIcon){
                 canvas.drawBitmap(this.world_timeIcon, settings.world_timeIconLeft, settings.world_timeIconTop, settings.mGPaint);
             }
-            Calendar now = Calendar.getInstance();
+            Calendar now = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
             now.add(Calendar.HOUR, (int) settings.world_time_zone);
             if(settings.world_time_zone%1!=0) {
                 now.add(Calendar.MINUTE, (settings.world_time_zone>0)?30:-30);
@@ -471,7 +472,7 @@ public class GreatWidget extends AbstractWidget {
                 if(settings.world_time>0){
                     Integer hours = this.time.hours;
                     if(settings.world_time_zone%1!=0){
-                        Calendar now = Calendar.getInstance();
+                        Calendar now = Calendar.getInstance();//doesn't mates if it is GMT or local, only the hour change maters
                         now.add(Calendar.MINUTE, 30);
                         hours = now.get(Calendar.HOUR_OF_DAY);
                     }
@@ -1015,7 +1016,10 @@ public class GreatWidget extends AbstractWidget {
             }
 
             // Time calculations
-            Calendar now = Calendar.getInstance();
+            //Calendar now = Calendar.getInstance(); // local time
+            //Log.d(TAG,"World Time: local hour="+now.get(Calendar.HOUR_OF_DAY));
+            Calendar now = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
+            //Log.d(TAG,"World Time: GMT   hour="+now.get(Calendar.HOUR_OF_DAY));
             now.add(Calendar.HOUR, (int) settings.world_time_zone);
             String[] digitalNums = {"0", "1", "2", "3", "4", "5", "-", "-", "-", "-"}; // first digits of minutes
             if(settings.world_time_zone%1!=0){//+30 minutes

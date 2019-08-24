@@ -238,32 +238,32 @@ public class OthersActivity extends FragmentActivity {
                 }, Math.round(custom_refresh_rate/1000)+" sec")
         );
 
-        final float world_time_zone = sharedPreferences.getFloat( "world_time_zone", -1f);
+        final float world_time_zone = sharedPreferences.getFloat( "world_time_zone", 0f);
         settings.add(
-                new IncrementalSetting(null, "Second time difference", "Current: "+world_time_zone+" hours",
+                new IncrementalSetting(null, "World-time zone", "Current: GMT "+((world_time_zone > 0) ? "+" + world_time_zone : world_time_zone),
                         new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
-                                float new_value = sharedPreferences.getFloat( "world_time_zone", -1f)-0.5f;
+                                float new_value = sharedPreferences.getFloat( "world_time_zone", 0)-0.5f;
                                 if(new_value>=-12) {
                                     sharedPreferences.edit().putFloat("world_time_zone", new_value).apply();
                                     View parent = (View) view.getParent();
                                     TextView value = (TextView) parent.findViewById(R.id.value);
-                                    value.setText("Hour " + ((new_value > 0) ? "+" + new_value : new_value));
+                                    value.setText("GMT " + ((new_value > 0) ? "+" + new_value : new_value));
                                 }
                             }
                         },new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        float new_value = sharedPreferences.getFloat( "world_time_zone", -1f)+0.5f;
+                        float new_value = sharedPreferences.getFloat( "world_time_zone", 0)+0.5f;
                         if(new_value<=12) {
                             sharedPreferences.edit().putFloat("world_time_zone", new_value).apply();
                             View parent = (View) view.getParent();
                             TextView value = (TextView) parent.findViewById(R.id.value);
-                            value.setText("Hour " + ((new_value > 0) ? "+" + new_value : new_value));
+                            value.setText("GMT " + ((new_value > 0) ? "+" + new_value : new_value));
                         }
                     }
-                }, "Hour " + ((world_time_zone > 0) ? "+" + world_time_zone : world_time_zone))
+                }, "GMT " + ((world_time_zone > 0) ? "+" + world_time_zone : world_time_zone))
         );
 
         final int step_length = sharedPreferences.getInt( "step_length", 78);
