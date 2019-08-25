@@ -36,7 +36,8 @@ public class AlarmReceiver extends BroadcastReceiver {
         this.greatWidget = GreatFit.getGreatWidget();
         GreatWidget greatWidget = this.greatWidget;
         if (greatWidget != null) {
-            greatWidget.onDataUpdate(DataType.TIME, new Time(seconds, minutes, hours, -1));
+            //greatWidget.onDataUpdate(DataType.TIME, new Time(seconds, minutes, hours, -1));
+            greatWidget.scheduleUpdate();
         } else {
             Log.e(TAG, "AlarmReceiver error getting widget instance!");
         }
