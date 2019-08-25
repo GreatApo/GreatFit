@@ -266,15 +266,15 @@ public class OthersActivity extends FragmentActivity {
                 }, "GMT " + ((world_time_zone > 0) ? "+" + world_time_zone : world_time_zone))
         );
 
-        final int step_length = sharedPreferences.getInt( "step_length", 78);
+        final int height = sharedPreferences.getInt( "height", 175);
         settings.add(
-                new IncrementalSetting(null, "Step length", "Current: "+step_length+" cm",
+                new IncrementalSetting(null, "Set height", "Current: "+height+" cm",
                         new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
-                                int new_value = sharedPreferences.getInt( "step_length", 78)-1;
-                                if(new_value>=1) {
-                                    sharedPreferences.edit().putInt("step_length", new_value).apply();
+                                int new_value = sharedPreferences.getInt( "height", 175)-1;
+                                if(new_value>=100) {
+                                    sharedPreferences.edit().putInt("height", new_value).apply();
                                     View parent = (View) view.getParent();
                                     TextView value = (TextView) parent.findViewById(R.id.value);
                                     value.setText(new_value+" cm");
@@ -283,13 +283,15 @@ public class OthersActivity extends FragmentActivity {
                         },new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        int new_value = sharedPreferences.getInt( "step_length", 78)+1;
-                        sharedPreferences.edit().putInt("step_length", new_value).apply();
-                        View parent = (View) view.getParent();
-                        TextView value = (TextView) parent.findViewById(R.id.value);
-                        value.setText(new_value+" cm");
+                        int new_value = sharedPreferences.getInt( "height", 175)+1;
+                        if(new_value<=250) {
+                            sharedPreferences.edit().putInt("height", new_value).apply();
+                            View parent = (View) view.getParent();
+                            TextView value = (TextView) parent.findViewById(R.id.value);
+                            value.setText(new_value + " cm");
+                        }
                     }
-                }, step_length+" cm")
+                }, height+" cm")
         );
 
         //Setup layout

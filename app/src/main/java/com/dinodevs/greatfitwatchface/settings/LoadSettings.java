@@ -928,7 +928,7 @@ public class LoadSettings {
             }
 
         // walked_distance
-            this.step_length = sharedPreferences.getInt("step_length", 78);
+            this.step_length = Math.round((float) sharedPreferences.getInt("height", 175)*0.414f);
             this.walked_distance = sharedPreferences.getInt("walked_distance", widgets_list.indexOf("walked_distance")+1);
             if(this.walked_distance>0){
                 TypedArray widgetN = res.obtainTypedArray(res.getIdentifier("widget"+this.walked_distance, "array", context.getPackageName()));

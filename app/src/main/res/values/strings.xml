@@ -34,6 +34,7 @@
     <string name="emptyWidget">Leave widget position empty</string>
     <string name="totalSportDistance">Total distance in sports</string>
     <string name="todaySportDistance">Today distance in sports</string>
+    <string name="basedOnHeight">Calculated based on height</string>
     <string name="needsContinueHeartRate">Needs continue heart rate ON</string>
     <string name="dateFormat">Show date as dd.mm.yyyy</string>
     <string name="nextWatchAlarm">Next watch\'s alarm (Day-Time)</string>

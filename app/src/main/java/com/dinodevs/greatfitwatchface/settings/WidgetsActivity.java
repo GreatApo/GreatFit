@@ -110,6 +110,9 @@ public class WidgetsActivity extends FragmentActivity {
             case "today_distance":
                 subtitle = getString(R.string.todaySportDistance);
                 break;
+            case "walked_distance":
+                subtitle = getString(R.string.basedOnHeight);
+                break;
             case "heart_rate":
                 subtitle = getString(R.string.needsContinueHeartRate);
                 break;
