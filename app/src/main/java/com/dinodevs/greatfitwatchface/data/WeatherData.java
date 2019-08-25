@@ -107,6 +107,27 @@ public class WeatherData {
         return this.tempString;
     }
 
+    public int getTemperatureValueCelsius() {
+        int num = 15; // Default: an average temperature (ºC)
+        if(this.tempString.isEmpty() || this.weatherType==22 || this.tempString.equals("0/0")){
+            return num;
+        }else{
+            try {// Convert from float to int
+                num = (int) Float.parseFloat(this.tempString);
+            } catch (Exception e) {
+                // error in the conversion
+                return num;
+            }
+        }
+
+        if (!this.tempFlag.equals("1") && !this.tempFlag.equals("C")){
+            // Fahrenheit to Celsius
+            num = (num - 32) * 5/9;
+        }
+
+        return num;
+    }
+
     private String getTempMax() {
         if (this.tempMax.isEmpty()) {
             return "-";
@@ -132,5 +153,4 @@ public class WeatherData {
         }
         return string;
     }
-
 }

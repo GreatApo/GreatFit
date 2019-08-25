@@ -14,15 +14,14 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
-import android.os.Handler;
 import android.provider.Settings;
-import android.support.v4.app.NotificationCompat;
 import android.text.TextPaint;
 import android.util.Log;
 
 import com.dinodevs.greatfitwatchface.AbstractWatchFace;
 import com.dinodevs.greatfitwatchface.data.Alarm;
 import com.dinodevs.greatfitwatchface.data.CustomData;
+import com.dinodevs.greatfitwatchface.data.Pressure;
 import com.dinodevs.greatfitwatchface.data.Steps;
 import com.dinodevs.greatfitwatchface.data.Xdrip;
 import com.dinodevs.greatfitwatchface.settings.LoadSettings;
@@ -57,6 +56,7 @@ public class GreatWidget extends AbstractWidget {
     private Alarm alarmData;
     private Xdrip xdripData;
     private static Steps stepsData;
+    private static Pressure pressureData;
 
     private TextPaint ampmPaint, alarmPaint, xdripPaint, airPressurePaint, altitudePaint, phoneBatteryPaint, phoneAlarmPaint, world_timePaint, notificationsPaint, walked_distancePaint;
     private Bitmap watch_alarmIcon, xdripIcon, air_pressureIcon, altitudeIcon, phone_batteryIcon, phone_alarmIcon, world_timeIcon, notificationsIcon, walked_distanceIcon;
@@ -64,7 +64,9 @@ public class GreatWidget extends AbstractWidget {
     private String tempAMPM;
     private String time_format;
     private String alarm;
-    private Integer tempHour=-1;
+    private Integer tempHour;
+    private static float altitude;
+    private static int pressure;
 
     private Float phone_batterySweepAngle=0f;
     private Integer angleLength;
@@ -144,69 +146,72 @@ public class GreatWidget extends AbstractWidget {
             }
         }
 
-        // Custom
-        if(settings.isCustom()) {
-            // CustomData
-            this.customData = getCustomData();
-            if(settings.air_pressure>0) {
-                this.airPressurePaint = new TextPaint(TextPaint.ANTI_ALIAS_FLAG);
-                this.airPressurePaint.setColor(settings.air_pressureColor);
-                this.airPressurePaint.setTypeface(ResourceManager.getTypeFace(service.getResources(), settings.font));
-                this.airPressurePaint.setTextSize(settings.air_pressureFontSize);
-                this.airPressurePaint.setTextAlign((settings.air_pressureAlignLeft) ? Paint.Align.LEFT : Paint.Align.CENTER);
+        // CustomData
+        this.customData = getCustomData();
+        if(settings.air_pressure>0) {
+            this.airPressurePaint = new TextPaint(TextPaint.ANTI_ALIAS_FLAG);
+            this.airPressurePaint.setColor(settings.air_pressureColor);
+            this.airPressurePaint.setTypeface(ResourceManager.getTypeFace(service.getResources(), settings.font));
+            this.airPressurePaint.setTextSize(settings.air_pressureFontSize);
+            this.airPressurePaint.setTextAlign((settings.air_pressureAlignLeft) ? Paint.Align.LEFT : Paint.Align.CENTER);
 
-                if(settings.air_pressureIcon){
-                    this.air_pressureIcon = Util.decodeImage(service.getResources(),"icons/"+settings.is_white_bg+"air_pressure.png");
-                }
+            if(settings.air_pressureIcon){
+                this.air_pressureIcon = Util.decodeImage(service.getResources(),"icons/"+settings.is_white_bg+"air_pressure.png");
             }
-            if(settings.altitude>0) {
-                this.altitudePaint = new TextPaint(TextPaint.ANTI_ALIAS_FLAG);
-                this.altitudePaint.setColor(settings.altitudeColor);
-                this.altitudePaint.setTypeface(ResourceManager.getTypeFace(service.getResources(), settings.font));
-                this.altitudePaint.setTextSize(settings.altitudeFontSize);
-                this.altitudePaint.setTextAlign((settings.altitudeAlignLeft) ? Paint.Align.LEFT : Paint.Align.CENTER);
+        }
+        if(settings.altitude>0) {
+            this.altitudePaint = new TextPaint(TextPaint.ANTI_ALIAS_FLAG);
+            this.altitudePaint.setColor(settings.altitudeColor);
+            this.altitudePaint.setTypeface(ResourceManager.getTypeFace(service.getResources(), settings.font));
+            this.altitudePaint.setTextSize(settings.altitudeFontSize);
+            this.altitudePaint.setTextAlign((settings.altitudeAlignLeft) ? Paint.Align.LEFT : Paint.Align.CENTER);
 
-                if(settings.altitudeIcon){
-                    this.altitudeIcon = Util.decodeImage(service.getResources(),"icons/"+settings.is_white_bg+"altitude.png");
-                }
+            if(settings.altitudeIcon){
+                this.altitudeIcon = Util.decodeImage(service.getResources(),"icons/"+settings.is_white_bg+"altitude.png");
             }
-            if(settings.phone_battery>0) {
-                this.phoneBatteryPaint = new TextPaint(TextPaint.ANTI_ALIAS_FLAG);
-                this.phoneBatteryPaint.setColor(settings.phone_batteryColor);
-                this.phoneBatteryPaint.setTypeface(ResourceManager.getTypeFace(service.getResources(), settings.font));
-                this.phoneBatteryPaint.setTextSize(settings.phone_batteryFontSize);
-                this.phoneBatteryPaint.setTextAlign((settings.phone_batteryAlignLeft) ? Paint.Align.LEFT : Paint.Align.CENTER);
+        }
+        if(settings.phone_battery>0) {
+            this.phoneBatteryPaint = new TextPaint(TextPaint.ANTI_ALIAS_FLAG);
+            this.phoneBatteryPaint.setColor(settings.phone_batteryColor);
+            this.phoneBatteryPaint.setTypeface(ResourceManager.getTypeFace(service.getResources(), settings.font));
+            this.phoneBatteryPaint.setTextSize(settings.phone_batteryFontSize);
+            this.phoneBatteryPaint.setTextAlign((settings.phone_batteryAlignLeft) ? Paint.Align.LEFT : Paint.Align.CENTER);
 
-                if(settings.phone_batteryIcon){
-                    this.phone_batteryIcon = Util.decodeImage(service.getResources(),"icons/"+settings.is_white_bg+"phone_battery.png");
-                }
+            if(settings.phone_batteryIcon){
+                this.phone_batteryIcon = Util.decodeImage(service.getResources(),"icons/"+settings.is_white_bg+"phone_battery.png");
             }
-            if(settings.phone_alarm>0) {
-                this.phoneAlarmPaint = new TextPaint(TextPaint.ANTI_ALIAS_FLAG);
-                this.phoneAlarmPaint.setColor(settings.phone_alarmColor);
-                this.phoneAlarmPaint.setTypeface(ResourceManager.getTypeFace(service.getResources(), settings.font));
-                this.phoneAlarmPaint.setTextSize(settings.phone_alarmFontSize);
-                this.phoneAlarmPaint.setTextAlign((settings.phone_alarmAlignLeft) ? Paint.Align.LEFT : Paint.Align.CENTER);
+        }
+        if(settings.phone_alarm>0) {
+            this.phoneAlarmPaint = new TextPaint(TextPaint.ANTI_ALIAS_FLAG);
+            this.phoneAlarmPaint.setColor(settings.phone_alarmColor);
+            this.phoneAlarmPaint.setTypeface(ResourceManager.getTypeFace(service.getResources(), settings.font));
+            this.phoneAlarmPaint.setTextSize(settings.phone_alarmFontSize);
+            this.phoneAlarmPaint.setTextAlign((settings.phone_alarmAlignLeft) ? Paint.Align.LEFT : Paint.Align.CENTER);
 
-                if(settings.phone_alarmIcon){
-                    this.phone_alarmIcon = Util.decodeImage(service.getResources(),"icons/"+settings.is_white_bg+"phone_alarm.png");
-                }
+            if(settings.phone_alarmIcon){
+                this.phone_alarmIcon = Util.decodeImage(service.getResources(),"icons/"+settings.is_white_bg+"phone_alarm.png");
             }
-            if(settings.notifications>0) {
-                this.notificationsPaint = new TextPaint(TextPaint.ANTI_ALIAS_FLAG);
-                this.notificationsPaint.setColor(settings.notificationsColor);
-                this.notificationsPaint.setTypeface(ResourceManager.getTypeFace(service.getResources(), settings.font));
-                this.notificationsPaint.setTextSize(settings.notificationsFontSize);
-                this.notificationsPaint.setTextAlign((settings.notificationsAlignLeft) ? Paint.Align.LEFT : Paint.Align.CENTER);
+        }
+        if(settings.notifications>0) {
+            this.notificationsPaint = new TextPaint(TextPaint.ANTI_ALIAS_FLAG);
+            this.notificationsPaint.setColor(settings.notificationsColor);
+            this.notificationsPaint.setTypeface(ResourceManager.getTypeFace(service.getResources(), settings.font));
+            this.notificationsPaint.setTextSize(settings.notificationsFontSize);
+            this.notificationsPaint.setTextAlign((settings.notificationsAlignLeft) ? Paint.Align.LEFT : Paint.Align.CENTER);
 
-                if(settings.notificationsIcon){
-                    this.notificationsIcon = Util.decodeImage(service.getResources(),"icons/"+settings.is_white_bg+"notifications.png");
-                }
+            if(settings.notificationsIcon){
+                this.notificationsIcon = Util.decodeImage(service.getResources(),"icons/"+settings.is_white_bg+"notifications.png");
             }
         }
 
         // World time
         if(settings.world_time>0) {
+            // Set initial temp value
+            Calendar now = Calendar.getInstance();
+            if(settings.world_time_zone%1!=0)
+                now.add(Calendar.MINUTE, 30);
+            this.tempHour = now.get(Calendar.HOUR_OF_DAY);
+
             // Get world_time
             this.world_timePaint = new TextPaint(TextPaint.ANTI_ALIAS_FLAG);
             this.world_timePaint.setColor(settings.world_timeColor);
@@ -243,7 +248,12 @@ public class GreatWidget extends AbstractWidget {
                         float[] pressure = parameters.values;
                         if (pressure != null && pressure.length > 0) {
                             float value = pressure[0];
-                            Log.d(TAG, "Pressure is " + value + " hPa");
+                            int temp = GreatWidget.this.getTemperature();
+                            //Log.d(TAG, "Pressure is " + value + " hPa and temperature is "+temp+" C");
+
+                            Object values = new Pressure(value, temp);
+                            onDataUpdate(DataType.PRESSURE, values);
+                            /*
                             if (value > 0 && !(Float.toString(value)).equals(GreatWidget.this.tempAirPressure)) {
                                 GreatWidget.this.tempAirPressure = Float.toString(value);
                                 // Save
@@ -280,6 +290,7 @@ public class GreatWidget extends AbstractWidget {
                                     Settings.System.putString(GreatWidget.this.mService.getContentResolver(), "CustomWatchfaceData", "{\"airPressure\":\"" + GreatWidget.this.tempAirPressure + "\"}");//,\"phoneBattery\":\""+this.phoneBattery+"\",\"phoneAlarm\":\""+this.phoneAlarm+"\"}");//default
                                 }
                             }
+                            */
                         }
                     }
                 };
@@ -302,10 +313,14 @@ public class GreatWidget extends AbstractWidget {
         }
 
         // Custom data refresher
+        /*
         Log.d(TAG, "GreatWidget custom refresher: " + (settings.am_pm_always || settings.world_time>0 || airPressureBool));
         if(settings.am_pm_always || settings.world_time>0 || airPressureBool) {
-            this.firstRun = true;
+            this.firstRun = false;
+            //scheduleUpdate();
         }
+        */
+        scheduleUpdate();
     }
 
     // Draw screen-on
@@ -337,8 +352,12 @@ public class GreatWidget extends AbstractWidget {
             if(settings.air_pressureIcon){
                 canvas.drawBitmap(this.air_pressureIcon, settings.air_pressureIconLeft, settings.air_pressureIconTop, settings.mGPaint);
             }
-            String units = (settings.air_pressureUnits) ? " hPa" : "";
-            canvas.drawText(this.customData.airPressure+units, settings.air_pressureLeft, settings.air_pressureTop, airPressurePaint);
+            String pres = "--";
+            if(this.pressureData!=null) {
+                pres = pressureData.getPressure(settings.air_pressureUnits);
+            }
+
+            canvas.drawText(pres, settings.air_pressureLeft, settings.air_pressureTop, airPressurePaint);
         }
 
         // Draw Altitude, if enabled
@@ -346,8 +365,15 @@ public class GreatWidget extends AbstractWidget {
             if(settings.altitudeIcon){
                 canvas.drawBitmap(this.altitudeIcon, settings.altitudeIconLeft, settings.altitudeIconTop, settings.mGPaint);
             }
-            String units = (settings.altitudeUnits) ? " m" : "";
-            canvas.drawText(this.customData.altitude+units, settings.altitudeLeft, settings.altitudeTop, altitudePaint);
+            String alt = "--";
+            if(this.pressureData!=null) {
+                if (settings.isMetric) {
+                    alt = pressureData.getAltitudeMetric(settings.altitudeUnits);
+                } else {
+                    alt = pressureData.getAltitudeImperial(settings.altitudeUnits);
+                }
+            }
+            canvas.drawText(alt, settings.altitudeLeft, settings.altitudeTop, altitudePaint);
         }
 
         // Draw Phone's Battery
@@ -396,10 +422,10 @@ public class GreatWidget extends AbstractWidget {
             }
             String distance = "N/A";
             if (stepsData != null) {
-                if (this.settings.isMetric) {
-                    distance = stepsData.getStepsMetric((double) this.settings.step_length);
+                if (settings.isMetric) {
+                    distance = stepsData.getStepsMetric((double) settings.step_length);
                 } else {
-                    distance = stepsData.getStepsImperial((double) this.settings.step_length);
+                    distance = stepsData.getStepsImperial((double) settings.step_length);
                 }
             }
             canvas.drawText(distance, settings.walked_distanceLeft, settings.walked_distanceTop, walked_distancePaint);
@@ -430,12 +456,8 @@ public class GreatWidget extends AbstractWidget {
     public List<DataType> getDataTypes() {
         List<DataType> dataTypes = new ArrayList<>();
 
-        if(settings.am_pm_always || settings.world_time_zone>0) {
+        if(settings.am_pm_always || settings.world_time_zone>0)
             dataTypes.add(TIME);
-        }else{
-            scheduleUpdate();
-            firstRun = false;
-        }
 
         if( settings.air_pressure>0 || settings.phone_alarm>0 || settings.phone_battery>0 || settings.phone_batteryProg>0 || settings.altitude>0 || settings.notifications>0 )
             dataTypes.add(DataType.CUSTOM);
@@ -492,10 +514,13 @@ public class GreatWidget extends AbstractWidget {
                 break;
             case CUSTOM:
                 this.customData = (CustomData) value;
-                // Battery bar angle
-                if(settings.phone_batteryProg>0 && settings.phone_batteryProgType==0 && this.customData!=null) {
-                    int temp_battery = (this.customData.phoneBattery.equals("--"))?0:Integer.parseInt(this.customData.phoneBattery);
-                    this.phone_batterySweepAngle = this.angleLength * Math.min(temp_battery/100f,1f);
+                if(this.customData!=null) {
+                    // Battery bar angle
+                    if (settings.phone_batteryProg > 0 && settings.phone_batteryProgType == 0 && this.customData != null) {
+                        int temp_battery = (this.customData.phoneBattery.equals("--")) ? 0 : Integer.parseInt(this.customData.phoneBattery);
+                        this.phone_batterySweepAngle = this.angleLength * Math.min(temp_battery / 100f, 1f);
+                    }
+                    // Pressure
                 }
                 break;
             case STEPS:
@@ -503,41 +528,55 @@ public class GreatWidget extends AbstractWidget {
                 this.stepsData = (Steps) value;
                 refreshSlpt = true;
                 break;
+            case PRESSURE:
+                this.pressureData = (Pressure) value;
+                if(this.altitude!=this.pressureData.altitude || this.pressure!=(int) this.pressureData.airPressure){
+                    this.altitude = this.pressureData.altitude;
+                    this.pressure = (int) this.pressureData.airPressure;
+                    refreshSlpt = true;
+                }
+                break;
         }
 
         // Refresh Slpt
         if (refreshSlpt) {
+            /*
             if (firstRun) {
                 firstRun = false;
             } else {
-                if (this.mService instanceof AbstractWatchFace)
-                    ((AbstractWatchFace) this.mService).restartSlpt();
             }
             log(type.toString(), firstRun);
+             */
+            if (this.mService instanceof AbstractWatchFace){
+                Log.i(TAG, "onDataUpdate calling slpt refresh: "+type.toString());
+                ((AbstractWatchFace) this.mService).restartSlpt();
+            }
             scheduleUpdate();
         }
     }
 
     // Data updater scheduler
-    private void scheduleUpdate() {
+    public void scheduleUpdate() {
         Calendar now = Calendar.getInstance();
         int hours = now.get(Calendar.HOUR_OF_DAY);
         int minutes = now.get(Calendar.MINUTE);
         int seconds = now.get(Calendar.SECOND);
         int millisecond = now.get(Calendar.MILLISECOND);
 
-        //Object values = new Time(seconds, minutes, hours, -1);
-        //onDataUpdate(TIME, values);
+        // Send a time update, because we can :P
+        Object values = new Time(seconds, minutes, hours, -1);
+        onDataUpdate(TIME, values);
 
-        int refreshTime = 48*60*60*1000; //Big value
-        minutes = (60 - minutes)*60*1000;
-        seconds = (60 - seconds)*1000;
-
+        int refreshTime = 48*60*60*1000; //Big value: 2 days
+        String type = "default";
+        minutes = (59 - minutes)*60*1000; // Minutes to next hour in ms
+        seconds = (60 - seconds)*1000; // Seconds to next minute in ms
         long currentTime = System.currentTimeMillis();
 
         // Refresh AM/PM
         if(settings.am_pm_always && settings.digital_clock){
             refreshTime = (11-(hours % 12))*60*60*1000 + minutes + seconds + millisecond+1;
+            type = "AM/PM";
         }
 
         // Refreshes world_time
@@ -545,28 +584,34 @@ public class GreatWidget extends AbstractWidget {
             // Calculate remaining time to next hour change
             if (settings.world_time_zone % 1 != 0) {
                 now.add(Calendar.MINUTE, (settings.world_time_zone > 0) ? 30 : -30);
-                minutes = (60 - now.get(Calendar.MINUTE))*60*1000;
+                minutes = (60 - now.get(Calendar.MINUTE))*60*1000; // 59min because of delay
             }
 
             int tempRefreshTime = minutes + seconds + millisecond+1;
-            if(refreshTime>tempRefreshTime)
+            if(refreshTime>tempRefreshTime){
                 refreshTime = tempRefreshTime;
+                type = "World time";
+            }
         }
 
         // Air pressure
+        //Log.i(TAG, "scheduleUpdate next alarm: airPressureBool:"+airPressureBool+", custom_refresh_rate:"+settings.custom_refresh_rate+"sec");
         if(airPressureBool){
             //Log.d(TAG, "Sensor custom refresh in "+settings.custom_refresh_rate+" sec");
             // Update AirPressure
             mManager.registerListener(GreatWidget.this.mListener, GreatWidget.this.mPressureSensor, 60*1000);
 
-            int tempRefreshTime = (settings.custom_refresh_rate>0)? settings.custom_refresh_rate*1000 : 60*60*1000;
-            if(refreshTime>tempRefreshTime)
+            int tempRefreshTime = (settings.custom_refresh_rate>0)? settings.custom_refresh_rate : /*Big value: 2 days*/ 48*60*60*1000;
+            if(refreshTime>tempRefreshTime) {
                 refreshTime = tempRefreshTime;
+                type = "air pressure";
+            }
         }
 
         scheduleUpdate(currentTime + refreshTime);
+        // Log the next refresh
         now.setTimeInMillis(currentTime + refreshTime);
-        Log.i(TAG, String.format("scheduleUpdate next alarm: %02d:%02d:%02d", now.get(Calendar.HOUR_OF_DAY), now.get(Calendar.MINUTE), now.get(Calendar.SECOND)));
+        Log.i(TAG, String.format("scheduleUpdate next alarm: %02d:%02d:%02d , type: "+type, now.get(Calendar.HOUR_OF_DAY), now.get(Calendar.MINUTE), now.get(Calendar.SECOND)));
     }
 
     private void scheduleUpdate(long time) {
@@ -609,6 +654,34 @@ public class GreatWidget extends AbstractWidget {
 
     private CustomData getCustomData(){
         return new CustomData(Settings.System.getString(this.mService.getContentResolver(), "CustomWatchfaceData"));
+    }
+
+    public int getTemperature() {
+        int temperature = 15; // Default: an average temperature (ºC)
+        // Get ALL data from system
+        String str = Settings.System.getString(this.mService.getApplicationContext().getContentResolver(), "WeatherInfo");
+        JSONObject weather_data;
+        try {
+            weather_data = new JSONObject(str);
+            if (weather_data.has("temp") && weather_data.has("tempUnit")) {
+                String temp = weather_data.getString("temp");
+                try {// Convert from float to int
+                    temperature = (int) Float.parseFloat(temp);
+                } catch (Exception e) {
+                    // error in the conversion
+                    return temperature;
+                }
+
+                String tempUnit = weather_data.getString("tempUnit");
+                if (!tempUnit.equals("1") && !tempUnit.equals("C")){
+                    // Fahrenheit to Celsius
+                    temperature = (temperature - 32) * 5/9;
+                }
+            }
+        }catch (JSONException e) {
+            // JSON error
+        }
+        return temperature;
     }
 
     // Translate the alarm
@@ -834,17 +907,15 @@ public class GreatWidget extends AbstractWidget {
                 );
                 slpt_objects.add(air_pressureIcon);
             }
-
+            // Get pressure
+            String pres = "--";
+            if(this.pressureData!=null) {
+                pres = pressureData.getPressure(settings.air_pressureUnits);
+            }
             SlptLinearLayout airPressureLayout = new SlptLinearLayout();
             SlptPictureView airPressureStr = new SlptPictureView();
-            airPressureStr.setStringPicture( this.customData.airPressure );
+            airPressureStr.setStringPicture( pres );
             airPressureLayout.add(airPressureStr);
-            // Show or Not Units
-            if(settings.air_pressureUnits) {
-                SlptPictureView airPressureUnit = new SlptPictureView();
-                airPressureUnit.setStringPicture(" hPa");
-                airPressureLayout.add(airPressureUnit);
-            }
             airPressureLayout.setTextAttrForAll(
                     settings.air_pressureFontSize,
                     settings.air_pressureColor,
@@ -882,17 +953,19 @@ public class GreatWidget extends AbstractWidget {
                 );
                 slpt_objects.add(altitudeIcon);
             }
-
+            // Get altitude
+            String alt = "--";
+            if(this.pressureData!=null) {
+                if (settings.isMetric) {
+                    alt = pressureData.getAltitudeMetric(settings.altitudeUnits);
+                } else {
+                    alt = pressureData.getAltitudeImperial(settings.altitudeUnits);
+                }
+            }
             SlptLinearLayout altitudeLayout = new SlptLinearLayout();
             SlptPictureView altitudeStr = new SlptPictureView();
-            altitudeStr.setStringPicture( this.customData.altitude );
+            altitudeStr.setStringPicture( alt );
             altitudeLayout.add(altitudeStr);
-            // Show or Not Units
-            if(settings.altitudeUnits) {
-                SlptPictureView altitudeUnit = new SlptPictureView();
-                altitudeUnit.setStringPicture(" m");
-                altitudeLayout.add(altitudeUnit);
-            }
             altitudeLayout.setTextAttrForAll(
                     settings.altitudeFontSize,
                     settings.altitudeColor,

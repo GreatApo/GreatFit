@@ -1682,7 +1682,4 @@ public class LoadSettings {
     public boolean isGreat(){
         return this.am_pm_always || watch_alarm>0 || xdrip>0 || air_pressure>0 || altitude>0 || phone_battery>0 || phone_alarm>0 || notifications>0 || phone_batteryProg>0 || world_time>0;
     }
-    public boolean isCustom(){
-        return air_pressure>0 || altitude>0 || phone_battery>0 || phone_alarm>0 || notifications>0;
-    }
 }

@@ -87,6 +87,12 @@ public enum DataType {
         protected <E> E getValue(Object... args) {
             return (E) new Xdrip((String) args[0]);
         }
+    },
+
+    PRESSURE(16) {
+        protected <E> E getValue(Object... args) {
+            return (E) new Pressure((float) args[0],(int) args[1]);
+        }
     };
 
     private final int dataType;

@@ -214,28 +214,32 @@ public class OthersActivity extends FragmentActivity {
 
         final int custom_refresh_rate = sharedPreferences.getInt( "custom_refresh_rate", getResources().getInteger(R.integer.custom_refresh_rate)*1000);
         settings.add(
-                new IncrementalSetting(null, "Air pressure refresh", "Current: "+Math.round(custom_refresh_rate/1000)+" sec",
+                new IncrementalSetting(null, "Air pressure refresh", "Current: "+((custom_refresh_rate/1000<=60)?Math.round(custom_refresh_rate/1000)+" sec":Math.round(custom_refresh_rate/1000)/60+" min"),
                         new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
                                 int new_value = Math.round(sharedPreferences.getInt( "custom_refresh_rate", getResources().getInteger(R.integer.custom_refresh_rate)*1000)/1000-5);
+                                if(new_value>115)
+                                    new_value = new_value - 55;
                                 if(new_value>=0) {
                                     sharedPreferences.edit().putInt("custom_refresh_rate", new_value*1000).apply();
                                     View parent = (View) view.getParent();
                                     TextView value = (TextView) parent.findViewById(R.id.value);
-                                    value.setText(new_value+" sec");
+                                    value.setText((new_value<=60)?new_value+" sec":new_value/60+" min");
                                 }
                             }
                         },new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         int new_value = Math.round(sharedPreferences.getInt( "custom_refresh_rate", getResources().getInteger(R.integer.custom_refresh_rate)*1000)/1000+5);
+                        if(new_value>125)
+                            new_value = new_value + 55;
                         sharedPreferences.edit().putInt("custom_refresh_rate", new_value*1000).apply();
                         View parent = (View) view.getParent();
                         TextView value = (TextView) parent.findViewById(R.id.value);
-                        value.setText(new_value+" sec");
+                        value.setText((new_value<=60)?new_value+" sec":new_value/60+" min");
                     }
-                }, Math.round(custom_refresh_rate/1000)+" sec")
+                }, (custom_refresh_rate/1000<=60)?Math.round(custom_refresh_rate/1000)+" sec":Math.round(custom_refresh_rate/1000)/60+" min")
         );
 
         final float world_time_zone = sharedPreferences.getFloat( "world_time_zone", 0f);
