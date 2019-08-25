@@ -15,7 +15,7 @@ public class Pressure {
             //int temperature = WeatherWidget.getSlptWeather().getTemperatureValueCelsius();
             //int temperature = 15;
             // Altitude conversion using hypsometric formula
-            this.altitude = (float) Math.round( ( Math.pow(this.airPressure/p0, 1/5.25579) - 1 )*(temperature+273.15)/0.0065 );
+            this.altitude = (float) Math.round( ( 1 - Math.pow(this.airPressure/p0, 1/5.25579) )*(temperature+273.15)/0.0065 );
         }else{
             // Dive depth mode
             this.altitude = (float) - Math.round( measurement - p0 )/100;
@@ -28,7 +28,7 @@ public class Pressure {
         if( this.airPressure < 1200 ) { // less than 1.2m underwater
             //int temperature = WeatherWidget.getSlptWeather().getTemperatureValueCelsius();
             // Altitude conversion using hypsometric formula
-            this.altitude = (float) Math.round( ( Math.pow(this.airPressure/p0, 1/5.25579) - 1 )*(temperature+273.15)/0.0065 );
+            this.altitude = (float) Math.round( ( 1 - Math.pow(this.airPressure/p0, 1/5.25579) )*(temperature+273.15)/0.0065 );
         }else{
             // Dive depth mode
             this.altitude = (float) - Math.round( this.airPressure - p0 )/100;
