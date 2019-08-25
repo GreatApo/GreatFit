@@ -33,8 +33,7 @@ XDA Topic [here](https://forum.xda-developers.com/smartwatch/amazfit/app-watchfa
 
 
 ### Bugs
-- Screen off mode not is sometimes not applied when saving the watchface, just change to an other and change back
-- Screen off mode shows widgets over old widgets, just change to an other and change back
+- If screen off mode is not applied or you see widgets over old widgets, just re-apply the watchface
 - Xdrip widget is not working
 
 
