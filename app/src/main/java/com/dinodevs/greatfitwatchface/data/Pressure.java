@@ -60,7 +60,7 @@ public class Pressure {
     }
     public String getPressure(boolean units, int unitMode) {
         if(unitMode==1){
-            return Math.round(this.airPressure) + ((units)?" ???":"");
+            return Math.round(this.airPressure*0.75006157584566) + ((units)?" mmHg":"");
         }else {
             return Math.round(this.airPressure) + ((units)?" hPa":"");
         }

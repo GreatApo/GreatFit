@@ -15,6 +15,7 @@
     <bool name="flashing_indicator">false</bool><!-- the : between hours and minutes -->
     <!-- Wind direction as arrows -->
     <bool name="wind_direction_as_arrows">false</bool> <!-- false = W, S, E, N, SW etc  , true =  ↖ ↑ ↗ ← → ↙ ↓ ↘ -->
+    <bool name="pressure_to_mmhg">false</bool> <!-- show pressure as mmHg and not hPa -->
 
     <bool name="flashing_heart_rate_icon">true</bool>
 

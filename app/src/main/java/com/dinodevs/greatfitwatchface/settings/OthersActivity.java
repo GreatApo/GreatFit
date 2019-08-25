@@ -149,23 +149,6 @@ public class OthersActivity extends FragmentActivity {
             }
         }, am_pm_always));
 
-        /*
-        final int target_calories = sharedPreferences.getInt( "target_calories", 1000);
-        settings.add(new SeekbarSetting(null, "Target calories", null, new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                sharedPreferences.edit().putInt( "target_calories", progress).apply();
-            }
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-            }
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-                Toast.makeText(seekBar.getContext(), "Target: "+seekBar.getProgress(), Toast.LENGTH_SHORT).show();
-            }
-        }, target_calories, 3000));
-        */
-
         final int target_calories = sharedPreferences.getInt( "target_calories", 1000);
         settings.add(
                 new IncrementalSetting(null, "Target calories", "Current: "+target_calories,
@@ -241,6 +224,14 @@ public class OthersActivity extends FragmentActivity {
                     }
                 }, (custom_refresh_rate/1000<=60)?Math.round(custom_refresh_rate/1000)+" sec":Math.round(custom_refresh_rate/1000)/60+" min")
         );
+
+        final boolean pressure_to_mmhg = sharedPreferences.getBoolean( "pressure_to_mmhg", getResources().getBoolean(R.bool.pressure_to_mmhg));
+        settings.add(new SwitchSetting(null, "Pressure units", "(off: hPa, on: mmHg)", new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                sharedPreferences.edit().putBoolean( "pressure_to_mmhg", b).apply();
+            }
+        }, pressure_to_mmhg));
 
         final float world_time_zone = sharedPreferences.getFloat( "world_time_zone", 0f);
         settings.add(

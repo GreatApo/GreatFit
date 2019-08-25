@@ -354,7 +354,7 @@ public class GreatWidget extends AbstractWidget {
             }
             String pres = "--";
             if(this.pressureData!=null) {
-                pres = pressureData.getPressure(settings.air_pressureUnits);
+                pres = pressureData.getPressure(settings.air_pressureUnits, settings.pressure_to_mmhg?1:0);
             }
 
             canvas.drawText(pres, settings.air_pressureLeft, settings.air_pressureTop, airPressurePaint);
@@ -910,7 +910,7 @@ public class GreatWidget extends AbstractWidget {
             // Get pressure
             String pres = "--";
             if(this.pressureData!=null) {
-                pres = pressureData.getPressure(settings.air_pressureUnits);
+                pres = pressureData.getPressure(settings.air_pressureUnits, settings.pressure_to_mmhg?1:0);
             }
             SlptLinearLayout airPressureLayout = new SlptLinearLayout();
             SlptPictureView airPressureStr = new SlptPictureView();

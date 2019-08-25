@@ -65,6 +65,7 @@ public class LoadSettings {
     public int temp_calories;
     public boolean am_pm_always;
     public float world_time_zone;
+    public boolean pressure_to_mmhg;
     public Paint mGPaint;
     public List widgets_list;
     public List circle_bars_list;
@@ -561,6 +562,7 @@ public class LoadSettings {
             this.temp_calories = sharedPreferences.getInt( "temp_calories", 0);
             this.am_pm_always = sharedPreferences.getBoolean( "am_pm_always", context.getResources().getBoolean(R.bool.am_pm_always));
             this.world_time_zone = sharedPreferences.getFloat( "world_time_zone", -1f);
+            this.pressure_to_mmhg = sharedPreferences.getBoolean( "pressure_to_mmhg", context.getResources().getBoolean(R.bool.pressure_to_mmhg));
 
             this.analog_clock = sharedPreferences.getBoolean( "analog_clock", context.getResources().getBoolean(R.bool.analog_clock));
             this.digital_clock = sharedPreferences.getBoolean( "digital_clock", context.getResources().getBoolean(R.bool.digital_clock));
