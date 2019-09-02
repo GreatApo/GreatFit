@@ -266,7 +266,8 @@ public class WeatherWidget extends AbstractWidget {
 
         // Draw Weather icon
         if(settings.weather_img>0) {
-            canvas.drawBitmap(this.weatherImageIcon, settings.weather_imgIconLeft, settings.weather_imgIconTop, settings.mGPaint);
+            // the icons are 3px larger in width than other icons, thus -2 to calibrate it a little
+            canvas.drawBitmap(this.weatherImageIcon, settings.weather_imgIconLeft-2, settings.weather_imgIconTop-2, settings.mGPaint);
             if(settings.weather_imgIcon) {//In the weather image widget, if icon is disabled, temperature is not shown!
                 String units = (settings.weather_imgUnits) ? weather.getUnits() : ""; //"ºC"
                 canvas.drawText(weather.getTemperature() + units, settings.weather_imgLeft, settings.weather_imgTop, weather_imgPaint);
@@ -426,8 +427,8 @@ public class WeatherWidget extends AbstractWidget {
             SlptPictureView weatherIcon = new SlptPictureView();
             weatherIcon.setImagePicture( SimpleFile.readFileFromAssets(service, String.format(( (better_resolution)?"26wc_":"slpt_" )+"weather/%s.png", settings.is_white_bg+this.weatherImageStrList.get(this.weather.weatherType))) );
             weatherIcon.setStart(
-                    (int) settings.weather_imgIconLeft,
-                    (int) settings.weather_imgIconTop
+                    (int) settings.weather_imgIconLeft-2,    // the icons are 3px larger in width than other
+                    (int) settings.weather_imgIconTop-2     // icons, thus -2 to calibrate it a little
             );
             slpt_objects.add(weatherIcon);
 
