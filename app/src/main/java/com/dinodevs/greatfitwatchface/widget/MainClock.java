@@ -342,7 +342,12 @@ public class MainClock extends DigitalClockWidget {
 
         // Draw Month
         if(settings.monthBool) {
-            String monthText = (settings.month_as_text)? ( (settings.three_letters_month_if_text)? months_3let[settings.language][month] : months[settings.language][month] ) : String.format("%02d", month) ;
+            String monthText = (settings.month_as_text)? (
+                    (settings.three_letters_month_if_text)? months_3let[settings.language][month] : months[settings.language][month]
+            ) : (
+                    (settings.no_0_on_hour_first_digit)? Integer.toString(month) : String.format("%02d", month)
+            ) ;
+
             canvas.drawText(monthText, settings.monthLeft, settings.monthTop, this.monthFont);
         }
 
