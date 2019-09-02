@@ -31,7 +31,7 @@
        <item name="color">#fff</item>
        <item name="align_left">false</item> <!-- not supported -->
     </array>
-    <!-- NOT SUPPORTED YET
+    <!--
     <array name="analog_hours">
         <item name="image">@drawable/hours</item> rotating img
         <item name="left">160px</item> position top
@@ -338,6 +338,7 @@
         <item>@string/Chinese</item>
         <item>@string/Croatian</item>
         <item>@string/Czech</item>
+        <item>@string/Danish</item>
         <item>@string/Dutch</item>
         <item>@string/French</item>
         <item>@string/German</item>
@@ -355,6 +356,7 @@
         <item>@string/Spanish</item>
         <item>@string/Thai</item>
         <item>@string/Turkish</item>
+        <item>@string/Vietnamese</item>
     </string-array>
     <string-array name="languages_EN">
         <item>English</item>
@@ -362,6 +364,7 @@
         <item>Chinese</item>
         <item>Croatian</item>
         <item>Czech</item>
+        <item>Danish</item>
         <item>Dutch</item>
         <item>French</item>
         <item>German</item>
@@ -379,6 +382,7 @@
         <item>Spanish</item>
         <item>Thai</item>
         <item>Turkish</item>
+        <item>Vietnamese</item>
     </string-array>
 
     <!--

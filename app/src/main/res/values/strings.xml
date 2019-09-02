@@ -85,6 +85,7 @@
     <string name="Chinese">中文</string>
     <string name="Croatian">Hrvatski</string>
     <string name="Czech">Czech</string>
+    <string name="Danish">Dansk</string>
     <string name="Dutch">Nederlands</string>
     <string name="French">Français</string>
     <string name="German">Deutsch</string>
@@ -102,4 +103,5 @@
     <string name="Spanish">Español</string>
     <string name="Thai">ไทย</string>
     <string name="Turkish">Türkçe</string>
+    <string name="Vietnamese">Tiếng Việt</string>
 </resources>
