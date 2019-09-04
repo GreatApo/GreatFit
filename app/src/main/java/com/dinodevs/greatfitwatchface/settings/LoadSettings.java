@@ -534,7 +534,6 @@ public class LoadSettings {
         //Log.d(TAG,"Scale: "+scale);
 
         // All
-            this.font_ratio = sharedPreferences.getInt("font_ratio", res.getInteger(R.integer.font_ratio));
             this.watchface = context.getResources().getString(R.string.watch_face);
             this.author = context.getResources().getString(R.string.author);
             this.language = sharedPreferences.getInt( "language", 0);
@@ -581,8 +580,12 @@ public class LoadSettings {
 
             // Select Font
             this.font = ResourceManager.Font.values()[font_no];
+            Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+            paint.setTextSize(100);// 100 to get the 100% value
+            paint.setTypeface(ResourceManager.getTypeFace(context.getResources(), this.font));
+            this.font_ratio = (int) -paint.ascent(); // ascent() is negative
 
-            //icon paint
+        // Icon paint
             this.mGPaint = new Paint();
             mGPaint.setAntiAlias(false);
             mGPaint.setFilterBitmap(false);

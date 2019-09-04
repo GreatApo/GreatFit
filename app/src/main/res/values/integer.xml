@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- slpt position compatibility -->
-    <integer name="font_ratio">75</integer><!-- /100, font height center point ratio -->
-
     <!-- Slpt refresh rate for custom widgets (air pressure, Xdrip) -->
     <integer name="custom_refresh_rate">60</integer><!-- in seconds --> <!-- 60 = 1 min -->
 
