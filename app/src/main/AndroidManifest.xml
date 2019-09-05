@@ -39,12 +39,12 @@
         <!--
             Here you can copy-paste the above code (under "Mainface") to add a second watch face
         -->
-        <activity android:name="com.dinodevs.greatfitwatchface.settings.ColorActivity"></activity>
-        <activity android:name="com.dinodevs.greatfitwatchface.settings.FontActivity"></activity>
-        <activity android:name="com.dinodevs.greatfitwatchface.settings.OthersActivity"></activity>
-        <activity android:name="com.dinodevs.greatfitwatchface.settings.WidgetsActivity"></activity>
-        <activity android:name="com.dinodevs.greatfitwatchface.settings.ProgressWidgetsActivity"></activity>
-        <activity android:name="com.dinodevs.greatfitwatchface.settings.LanguageActivity"></activity>
+        <activity android:name="com.dinodevs.greatfitwatchface.settings.ColorActivity"/>
+        <activity android:name="com.dinodevs.greatfitwatchface.settings.FontActivity"/>
+        <activity android:name="com.dinodevs.greatfitwatchface.settings.OthersActivity"/>
+        <activity android:name="com.dinodevs.greatfitwatchface.settings.WidgetsActivity"/>
+        <activity android:name="com.dinodevs.greatfitwatchface.settings.ProgressWidgetsActivity"/>
+        <activity android:name="com.dinodevs.greatfitwatchface.settings.LanguageActivity"/>
 
         <receiver android:name="com.dinodevs.greatfitwatchface.widget.AlarmReceiver"/>
     </application>
