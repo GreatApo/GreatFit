@@ -20,7 +20,8 @@
         android:name="com.huami.watch.watchface.WatchfaceApplication"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@android:style/Theme.DeviceDefault">
+        android:theme="@android:style/Theme.DeviceDefault"
+        android:allowBackup="false">
         <!-- Mainface -->
         <activity android:exported="true" android:launchMode="singleTask" android:name="com.dinodevs.greatfitwatchface.settings.Settings" android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
         <!-- <activity android:launchMode="singleTask" android:name="com.huami.watch.watchface.custom.ui.WatchFaceCustomActivity"/> -->
