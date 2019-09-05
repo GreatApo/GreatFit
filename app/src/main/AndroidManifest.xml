@@ -1,4 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="GoogleAppIndexingWarning,ProtectedPermissions"
     package="com.dinodevs.greatfitwatchface">
 
     <!-- Required to act as a custom watch face. -->
