@@ -300,9 +300,13 @@ public class WeatherWidget extends AbstractWidget {
         String tempMin = "-";
         String tempFormatted = "-/-";
 
-
         // Get ALL data from system
-        String str = Settings.System.getString(this.mService.getApplicationContext().getContentResolver(), "WeatherInfo");
+        String str = "";
+        try{
+            str = Settings.System.getString(this.mService.getApplicationContext().getContentResolver(), "WeatherInfo");
+        } catch (Exception exception) {
+            // System get value problem
+        }
 
         // WeatherInfo
         // {"isAlert":true, "isNotification":true, "tempFormatted":"28ºC",
