@@ -197,7 +197,7 @@ public class OthersActivity extends FragmentActivity {
 
         final int custom_refresh_rate = sharedPreferences.getInt( "custom_refresh_rate", getResources().getInteger(R.integer.custom_refresh_rate)*1000);
         settings.add(
-                new IncrementalSetting(null, "Air pressure refresh", "Current: "+((custom_refresh_rate/1000<120)?Math.round(custom_refresh_rate/1000)+" sec":Math.round(custom_refresh_rate/1000)/60+" min"),
+                new IncrementalSetting(null, "Custom refresh", "Pressure/Walked distance: "+((custom_refresh_rate/1000<120)?Math.round(custom_refresh_rate/1000)+" sec":Math.round(custom_refresh_rate/1000)/60+" min"),
                         new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {

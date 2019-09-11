@@ -6,14 +6,16 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Toast;
 
-import com.dinodevs.greatfitwatchface.GreatFitSlpt;
+import com.dinodevs.greatfitwatchface.GreatFit;
 import com.dinodevs.greatfitwatchface.R;
+import com.dinodevs.greatfitwatchface.widget.GreatWidget;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -126,6 +128,10 @@ public class Settings extends FragmentActivity {
         settings.add(new ButtonSetting(getString(R.string.save), getDrawable(R.drawable.green_button), new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Settings.quit(Settings.this);
+
+                /*
+                // CODE BASED ON STOCK WAY
                 // Restart watchface
                 Settings.this.sendBroadcast(new Intent("com.huami.intent.action.WATCHFACE_CONFIG_CHANGED"));
                 // Slpt some times doesn't run
@@ -133,6 +139,7 @@ public class Settings extends FragmentActivity {
                 // Kill this
                 Settings.this.setResult(-1);
                 Settings.this.finish();
+                */
             }
         }));
 
@@ -142,6 +149,11 @@ public class Settings extends FragmentActivity {
             public void onClick(View view) {
                 sharedPreferences.edit().clear().apply();
                 Toast.makeText(view.getContext(), "Settings reset", Toast.LENGTH_SHORT).show();
+
+                Settings.quit(Settings.this);
+
+                /*
+                // CODE BASED ON STOCK WAY
                 // Restart watchface
                 Settings.this.sendBroadcast(new Intent("com.huami.intent.action.WATCHFACE_CONFIG_CHANGED"));
                 // Slpt some times doesn't run
@@ -149,6 +161,7 @@ public class Settings extends FragmentActivity {
                 // Kill this
                 Settings.this.setResult(-1);
                 Settings.this.finish();
+                 */
             }
         }));
 
@@ -159,5 +172,21 @@ public class Settings extends FragmentActivity {
         root.setPadding((int) getResources().getDimension(R.dimen.padding_round_small), 0, (int) getResources().getDimension(R.dimen.padding_round_small), (int) getResources().getDimension(R.dimen.padding_round_large));
         root.setClipToPadding(false);
         setContentView(root);
+    }
+
+    private static void quit(final Settings settings) {
+        GreatWidget greatWidget = GreatFit.getGreatWidget();
+        if (greatWidget != null) {
+            greatWidget.refreshSlpt("Apply settings", true);
+        }
+
+        new Handler().postDelayed(new Runnable() {
+            public void run() {
+                settings.sendBroadcast(new Intent("com.huami.intent.action.WATCHFACE_CONFIG_CHANGED"));
+                // Kill this
+                settings.setResult(-1);
+                settings.finish();
+            }
+        }, 5);
     }
 }

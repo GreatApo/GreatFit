@@ -67,6 +67,7 @@ public class GreatWidget extends AbstractWidget {
     private Integer tempHour;
     private static float altitude;
     private static int pressure;
+    private static int steps;
 
     private Float phone_batterySweepAngle=0f;
     private Integer angleLength;
@@ -83,6 +84,8 @@ public class GreatWidget extends AbstractWidget {
     private SensorManager mManager;
     private Sensor mPressureSensor;
     private SensorEventListener mListener;
+    private Sensor mStepsSensor;
+    private SensorEventListener mStepsListener;
 
     private final static  String TAG = "DinoDevs-GreatFit";
 
@@ -244,58 +247,20 @@ public class GreatWidget extends AbstractWidget {
                     }
 
                     public void onSensorChanged(SensorEvent parameters) {
+                        // Unregister sensor
                         GreatWidget.this.mManager.unregisterListener(this);
+                        // Get sensor data
                         float[] pressure = parameters.values;
                         if (pressure != null && pressure.length > 0) {
                             float value = pressure[0];
                             int temp = GreatWidget.this.getTemperature();
                             //Log.d(TAG, "Pressure is " + value + " hPa and temperature is "+temp+" C");
-
-                            Object values = new Pressure(value, temp);
-                            onDataUpdate(DataType.PRESSURE, values);
-                            /*
-                            if (value > 0 && !(Float.toString(value)).equals(GreatWidget.this.tempAirPressure)) {
-                                GreatWidget.this.tempAirPressure = Float.toString(value);
-                                // Save
-                                String data = Settings.System.getString(GreatWidget.this.mService.getContentResolver(), "CustomWatchfaceData");
-
-                                if (data == null || data.equals("")) {
-                                    data = "{}";
-                                }
-
-                                try {
-                                    // Extract data from JSON
-                                    JSONObject json_data = new JSONObject(data);
-                                    json_data.put("airPressure", GreatWidget.this.tempAirPressure);
-                                    // Get temperature
-                                    if (settings.altitude > 0) {
-                                        String str = Settings.System.getString(GreatWidget.this.mService.getApplicationContext().getContentResolver(), "WeatherInfo");
-                                        JSONObject weather_data;
-                                        try {
-                                            weather_data = new JSONObject(str);
-                                            String tempUnit = weather_data.getString("tempUnit");
-                                            String temp = weather_data.getString("temp");
-
-                                            if (!tempUnit.equals("C"))
-                                                temp = String.valueOf((Integer.parseInt(temp) - 32) * 5 / 9);
-
-                                            json_data.put("temperature", temp);
-                                        } catch (JSONException | NumberFormatException e) {
-                                            // Nothing
-                                        }
-                                    }
-
-                                    Settings.System.putString(GreatWidget.this.mService.getContentResolver(), "CustomWatchfaceData", json_data.toString());
-                                } catch (JSONException e) {
-                                    Settings.System.putString(GreatWidget.this.mService.getContentResolver(), "CustomWatchfaceData", "{\"airPressure\":\"" + GreatWidget.this.tempAirPressure + "\"}");//,\"phoneBattery\":\""+this.phoneBattery+"\",\"phoneAlarm\":\""+this.phoneAlarm+"\"}");//default
-                                }
-                            }
-                            */
+                            onDataUpdate(DataType.PRESSURE, new Pressure(value, temp));
                         }
                     }
                 };
             } catch (NullPointerException e) {
-                // Nothing
+                Log.e( TAG, "GreatWidget pressure-sensor"+ e.getMessage() );
             }
         }
 
@@ -310,16 +275,36 @@ public class GreatWidget extends AbstractWidget {
             if(settings.walked_distanceIcon){
                 this.walked_distanceIcon = Util.decodeImage(service.getResources(),"icons/"+settings.is_white_bg+"today_distance.png");
             }
+
+            // Steps sensor
+            if(this.mManager == null)
+                this.mManager = (SensorManager) this.mService.getApplicationContext().getSystemService(Context.SENSOR_SERVICE);
+            try {
+                this.mStepsSensor = this.mManager.getDefaultSensor(19);
+                this.mStepsListener = new SensorEventListener() {
+                    public void onAccuracyChanged(Sensor parameter1, int parameter2) {
+                    }
+
+                    public void onSensorChanged(SensorEvent parameters) {
+                        // Unregister sensor
+                        GreatWidget.this.mManager.unregisterListener(this);
+                        // Get sensor data
+                        float[] steps = parameters.values;
+                        if (steps != null && steps.length > 0) {
+                            int value = (int) steps[0];
+                            if (value < 0)
+                                Log.w(GreatWidget.TAG, "GreatWidget steps-sensor: value is below zero!");
+                            else
+                                onDataUpdate(DataType.STEPS, new Steps(value, 0));
+                        }
+                    }
+                };
+            } catch (NullPointerException e) {
+                Log.e( TAG, "GreatWidget steps-sensor"+ e.getMessage() );
+            }
         }
 
         // Custom data refresher
-        /*
-        Log.d(TAG, "GreatWidget custom refresher: " + (settings.am_pm_always || settings.world_time>0 || airPressureBool));
-        if(settings.am_pm_always || settings.world_time>0 || airPressureBool) {
-            this.firstRun = false;
-            //scheduleUpdate();
-        }
-        */
         scheduleUpdate();
     }
 
@@ -516,17 +501,19 @@ public class GreatWidget extends AbstractWidget {
                 this.customData = (CustomData) value;
                 if(this.customData!=null) {
                     // Battery bar angle
-                    if (settings.phone_batteryProg > 0 && settings.phone_batteryProgType == 0 && this.customData != null) {
+                    if (settings.phone_batteryProg > 0 && settings.phone_batteryProgType == 0) {
                         int temp_battery = (this.customData.phoneBattery.equals("--")) ? 0 : Integer.parseInt(this.customData.phoneBattery);
                         this.phone_batterySweepAngle = this.angleLength * Math.min(temp_battery / 100f, 1f);
                     }
-                    // Pressure
                 }
                 break;
             case STEPS:
                 // Update walked distance
                 this.stepsData = (Steps) value;
-                refreshSlpt = true;
+                if (this.steps != this.stepsData.getSteps()) {
+                    this.steps = this.stepsData.getSteps();
+                    refreshSlpt = true;
+                }
                 break;
             case PRESSURE:
                 this.pressureData = (Pressure) value;
@@ -540,17 +527,7 @@ public class GreatWidget extends AbstractWidget {
 
         // Refresh Slpt
         if (refreshSlpt) {
-            /*
-            if (firstRun) {
-                firstRun = false;
-            } else {
-            }
-            log(type.toString(), firstRun);
-             */
-            if (this.mService instanceof AbstractWatchFace){
-                Log.i(TAG, "onDataUpdate calling slpt refresh: "+type.toString());
-                ((AbstractWatchFace) this.mService).restartSlpt();
-            }
+            refreshSlpt( type.toString() );
             scheduleUpdate();
         }
     }
@@ -594,17 +571,23 @@ public class GreatWidget extends AbstractWidget {
             }
         }
 
-        // Air pressure
+        // Air pressure or Walked distance
         //Log.i(TAG, "scheduleUpdate next alarm: airPressureBool:"+airPressureBool+", custom_refresh_rate:"+settings.custom_refresh_rate+"sec");
-        if(airPressureBool){
+        if(airPressureBool || settings.walked_distance>0){
             //Log.d(TAG, "Sensor custom refresh in "+settings.custom_refresh_rate+" sec");
+
             // Update AirPressure
-            mManager.registerListener(GreatWidget.this.mListener, GreatWidget.this.mPressureSensor, 60*1000);
+            if(airPressureBool)
+                mManager.registerListener(GreatWidget.this.mListener, GreatWidget.this.mPressureSensor, 60*1000);
+
+            // Update Steps
+            if(settings.walked_distance>0)
+                mManager.registerListener(GreatWidget.this.mStepsListener, GreatWidget.this.mStepsSensor, 0);
 
             int tempRefreshTime = (settings.custom_refresh_rate>0)? settings.custom_refresh_rate : /*Big value: 2 days*/ 48*60*60*1000;
             if(refreshTime>tempRefreshTime) {
                 refreshTime = tempRefreshTime;
-                type = "air pressure";
+                type = "air pressure / walked distance";
             }
         }
 
@@ -627,6 +610,18 @@ public class GreatWidget extends AbstractWidget {
         else
             Log.e(TAG, "scheduleUpdate null alarmMgr!");
     }
+
+    public void refreshSlpt(String reason) {
+        refreshSlpt(reason, false);
+    }
+
+    public void refreshSlpt(String reason, boolean redraw) {
+        if (this.mService instanceof AbstractWatchFace) {
+            Log.i(TAG, "onDataUpdate calling slpt refresh: "+reason);
+            ((AbstractWatchFace) this.mService).restartSlpt(redraw);
+        }
+    }
+
 
     private void log(String type, boolean isFirstRun) {
         String str = "onDataUpdate refreshSlpt %s ";
