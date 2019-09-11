@@ -4,8 +4,6 @@ import android.app.Service;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
-import android.graphics.Typeface;
-import android.graphics.drawable.Drawable;
 import android.provider.Settings;
 import android.text.TextPaint;
 import android.util.Log;
@@ -15,10 +13,8 @@ import com.huami.watch.watchface.util.Util;
 import com.ingenic.iwds.slpt.view.core.SlptLinearLayout;
 import com.ingenic.iwds.slpt.view.core.SlptPictureView;
 import com.ingenic.iwds.slpt.view.core.SlptViewComponent;
-import com.ingenic.iwds.slpt.view.sport.SlptTodayFloorNumView;
 import com.ingenic.iwds.slpt.view.utils.SimpleFile;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -29,7 +25,6 @@ import java.util.List;
 import com.dinodevs.greatfitwatchface.data.DataType;
 import com.dinodevs.greatfitwatchface.data.WeatherData;
 import com.dinodevs.greatfitwatchface.resource.ResourceManager;
-import com.dinodevs.greatfitwatchface.R;
 
 
 public class WeatherWidget extends AbstractWidget {
@@ -56,6 +51,9 @@ public class WeatherWidget extends AbstractWidget {
     private Bitmap min_max_temperaturesIcon;
 
     private LoadSettings settings;
+    private final static  String TAG = "DinoDevs-GreatFit";
+
+
 
     // Constructor
     public WeatherWidget(LoadSettings settings) {
@@ -289,24 +287,11 @@ public class WeatherWidget extends AbstractWidget {
     public WeatherData getSlptWeather() {
         // Default variables
         String tempUnit = "1";
-        String temp = "n/a";
         int weatherType = 22;
-        String city = "n/a";
-        String humidity = "n/a";
-        String uv = "n/a";
-        String windDirection = "n/a";
-        String windStrength = "n/a";
-        String tempMax = "-";
-        String tempMin = "-";
-        String tempFormatted = "-/-";
-
-        // Get ALL data from system
-        String str = "";
-        try{
-            str = Settings.System.getString(this.mService.getApplicationContext().getContentResolver(), "WeatherInfo");
-        } catch (Exception exception) {
-            // System get value problem
-        }
+        String temp, city, humidity, uv, windDirection, windStrength;
+        temp = city = humidity = uv = windDirection = windStrength = "n/a";
+        String tempMax, tempMin, tempFormatted;
+        tempMax = tempMin = tempFormatted = "-/-";
 
         // WeatherInfo
         // {"isAlert":true, "isNotification":true, "tempFormatted":"28ºC",
@@ -315,14 +300,15 @@ public class WeatherWidget extends AbstractWidget {
         // "pm25":-1, "sd":"50%", //(Humidity)
         // "temp":28, "time":1531292274457, "uv":"Strong",
         // "weather":0, "windDirection":"NW", "windStrength":"7.4km/h"}
-
         // WeatherCheckedSummary
         // {"tempUnit":"1","temp":"31\/21","weatherCodeFrom":0}
 
-        // Extract data from JSON
-        JSONObject weather_data;
         try {
-            weather_data = new JSONObject(str);
+            // Get ALL data from system
+            String str = Settings.System.getString(this.mService.getApplicationContext().getContentResolver(), "WeatherInfo");
+
+            // Extract data from JSON
+            JSONObject weather_data = new JSONObject(str);
 
             //weatherType = weather_data.getInt("weatherCodeFrom");
 
@@ -351,15 +337,14 @@ public class WeatherWidget extends AbstractWidget {
             if (weather_forecast.has("tempFormatted"))
                 tempFormatted = weather_forecast.getString("tempFormatted");
         }
-        catch (JSONException e) {
-          // Nothing
+        catch (Exception e) {
+            Log.e( TAG, "Weather-widget getSlptWeather: "+ e.getMessage() );
         }
 
         // Unknown weather
-        if(weatherType<0 || weatherType>22){
+        if(weatherType<0 || weatherType>22)
             return new WeatherData("1", "n/a", 22);
-        }
-
+        // Normal
         return new WeatherData(tempUnit, temp, weatherType, city, humidity, uv, windDirection, windStrength, tempMax, tempMin, tempFormatted);
     }
 
