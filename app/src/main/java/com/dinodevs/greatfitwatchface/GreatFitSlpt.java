@@ -2,8 +2,10 @@ package com.dinodevs.greatfitwatchface;
 
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
+import android.support.annotation.Nullable;
 
+import com.dinodevs.greatfitwatchface.data.DataType;
+import com.dinodevs.greatfitwatchface.data.SystemDataController;
 import com.dinodevs.greatfitwatchface.settings.LoadSettings;
 import com.dinodevs.greatfitwatchface.widget.BatteryWidget;
 import com.dinodevs.greatfitwatchface.widget.CaloriesWidget;
@@ -27,6 +29,8 @@ import com.ingenic.iwds.slpt.view.core.SlptViewComponent;
  */
 
 public class GreatFitSlpt extends AbstractWatchFaceSlpt {
+    @Nullable
+    SystemDataController.SystemDataChangeListener mSystemDataChangeListener;
     Context context;
     public GreatFitSlpt() {
         super();
@@ -67,7 +71,18 @@ public class GreatFitSlpt extends AbstractWatchFaceSlpt {
             this.widgets.add(new BatteryWidget(settings));
         }
         if(settings.isWeather()) {
-            this.widgets.add(new WeatherWidget(settings));
+            final Widget widget = new WeatherWidget(settings);
+            this.widgets.add(widget);
+
+            // Workaround for faster weather changes delivering. Standard notification is often
+            // fired with large delay. Don't know why.
+            mSystemDataChangeListener = new SystemDataController.SystemDataChangeListener() {
+                @Override
+                public void onWeatherChanged() {
+                    widget.onDataUpdate(DataType.WEATHER, null);
+                }
+            };
+            SystemDataController.addSystemDataChangeListener(this, mSystemDataChangeListener);
         }
         if(settings.isMoonPhase()){
             this.widgets.add(new MoonPhaseWidget(settings));
@@ -77,6 +92,15 @@ public class GreatFitSlpt extends AbstractWatchFaceSlpt {
         }
 
         return super.onStartCommand(intent, flags, startId);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (mSystemDataChangeListener != null) {
+            SystemDataController.removeSystemDataChangeListener(mSystemDataChangeListener);
+            mSystemDataChangeListener = null;
+        }
     }
 
     @Override

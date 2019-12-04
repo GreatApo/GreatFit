@@ -1,13 +1,16 @@
 package com.dinodevs.greatfitwatchface;
 
-import android.content.Context;
+import android.support.annotation.Nullable;
 
+import com.dinodevs.greatfitwatchface.data.DataType;
+import com.dinodevs.greatfitwatchface.data.SystemDataController;
 import com.dinodevs.greatfitwatchface.settings.LoadSettings;
 import com.dinodevs.greatfitwatchface.widget.FloorWidget;
 import com.dinodevs.greatfitwatchface.widget.MoonPhaseWidget;
 import com.dinodevs.greatfitwatchface.widget.SportTodayDistanceWidget;
 import com.dinodevs.greatfitwatchface.widget.SportTotalDistanceWidget;
 import com.dinodevs.greatfitwatchface.widget.StepsWidget;
+import com.dinodevs.greatfitwatchface.widget.Widget;
 import com.huami.watch.watchface.AbstractSlptClock;
 
 import com.dinodevs.greatfitwatchface.widget.BatteryWidget;
@@ -30,6 +33,9 @@ public class GreatFit extends AbstractWatchFace {
     }
     private static WeakReference<GreatFit> instance;
     private GreatWidget greatWidget = null;
+
+    @Nullable
+    SystemDataController.SystemDataChangeListener mSystemDataChangeListener;
 
 
     @Override
@@ -63,7 +69,18 @@ public class GreatFit extends AbstractWatchFace {
             this.widgets.add(new BatteryWidget(settings));
         }
         if(settings.isWeather()) {
-            this.widgets.add(new WeatherWidget(settings));
+            final Widget widget = new WeatherWidget(settings);
+            this.widgets.add(widget);
+
+            // Workaround for faster weather changes delivering. Standard notification is often
+            // fired with large delay. Don't know why.
+            mSystemDataChangeListener = new SystemDataController.SystemDataChangeListener() {
+                @Override
+                public void onWeatherChanged() {
+                    widget.onDataUpdate(DataType.WEATHER, null);
+                }
+            };
+            SystemDataController.addSystemDataChangeListener(this, mSystemDataChangeListener);
         }
         if (settings.isMoonPhase()){
             this.widgets.add(new MoonPhaseWidget(settings));
@@ -76,6 +93,15 @@ public class GreatFit extends AbstractWatchFace {
         status_bar(settings.status_bar, settings.status_barLeft, settings.status_barTop);
 
         super.onCreate();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (mSystemDataChangeListener != null) {
+            SystemDataController.removeSystemDataChangeListener(mSystemDataChangeListener);
+            mSystemDataChangeListener = null;
+        }
     }
 
     private void status_bar(boolean isOn, int left, int top){
