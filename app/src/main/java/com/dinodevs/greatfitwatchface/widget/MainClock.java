@@ -65,7 +65,7 @@ public class MainClock extends DigitalClockWidget {
     private static String[][] days = {
             //{"SUNDAY", "MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY"},
             {"SUNDAY", "MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY"},     //English
-            {"ПОНЕДЕЛНИК", "ВТОРНИК", "СРЯДА", "ЧЕТВЪРТЪК", "ПЕТЪК", "СЪБОТА", "НЕДЕЛЯ"},       //Bulgarian
+            {"НЕДЕЛЯ", "ПОНЕДЕЛНИК", "ВТОРНИК", "СРЯДА", "ЧЕТВЪРТЪК", "ПЕТЪК", "СЪБОТА"},       //Bulgarian
             {"星期天", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"},                   //Chinese
             {"NEDJELJA", "PONEDJELJAK", "UTORAK", "SRIJEDA", "ČETVRTAK", "PETAK", "SUBOTA"},    //Croatian
             {"NEDĚLE","PONDĚLÍ", "ÚTERÝ", "STŘEDA", "ČTVRTEK", "PÁTEK", "SOBOTA"},              //Czech
@@ -93,7 +93,7 @@ public class MainClock extends DigitalClockWidget {
     public static String[][] days_3let = {
             //{"SUNDAY", "MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY"},
             {"SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"},                  //English
-            {"ПОН", "ВТО", "СРЯ", "ЧЕТ", "ПЕТ", "СЪБ", "НЕД"},                  //Bulgarian
+            {"НЕД", "ПОН", "ВТО", "СРЯ", "ЧЕТ", "ПЕТ", "СЪБ"},                  //Bulgarian
             {"星期天", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"},   //Chinese
             {"NED", "PON", "UTO", "SRI", "ČET", "PET", "SUB"},                  //Croatian
             {"NE", "PO", "ÚT", "ST", "ČT", "PÁ", "SO"},                         //Czech
