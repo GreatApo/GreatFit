@@ -563,7 +563,7 @@ public class MainClock extends DigitalClockWidget {
 
             if(settings.secondsBool){
                 SlptAnalogSecondView slptAnalogSecondView = new SlptAnalogSecondView();
-                slptAnalogSecondView.setImagePicture(SimpleFile.readFileFromAssets(service, "timehand/8c/second"+ ((settings.isVerge())?"_verge":"") +".png"));
+                slptAnalogSecondView.setImagePicture(SimpleFile.readFileFromAssets(service, "timehand/8c/seconds"+ ((settings.isVerge())?"_verge":"") +".png"));
                 slptAnalogSecondView.alignX = (byte) 2;
                 slptAnalogSecondView.alignY = (byte) 2;
                 slptAnalogSecondView.setRect(320 + (settings.isVerge()?40:0), 320 + (settings.isVerge()?40:0));
