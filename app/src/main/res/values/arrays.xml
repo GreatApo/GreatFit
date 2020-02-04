@@ -87,7 +87,7 @@
 
 
     <!-- Widgets -->
-    <integer-array name="widgets">
+    <integer-array name="widgets"> <!-- Reset your settings after adding/removing items on this array -->
         <item>2</item> <!-- Widget 1: type from "supported widgets" list -->
         <item>1</item> <!-- Widget 2: type from "supported widgets" list -->
         <item>24</item>
@@ -161,7 +161,7 @@
 
 
     <!-- Progress bars -->
-    <integer-array name="circle_bars">
+    <integer-array name="circle_bars"> <!-- Reset your settings after adding/removing items on this array -->
         <item>0</item> <!-- Bar 1: type from "supported progress elements" list -->
     </integer-array>
 
