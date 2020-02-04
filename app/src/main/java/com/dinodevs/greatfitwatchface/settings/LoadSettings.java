@@ -322,6 +322,50 @@ public class LoadSettings {
     public boolean min_max_temperaturesIcon;
     public float min_max_temperaturesIconLeft;
     public float min_max_temperaturesIconTop;
+    // sunset
+    public int sunset;
+    public float sunsetFontSize;
+    public float sunsetLeft;
+    public float sunsetTop;
+    public int sunsetColor;
+    public boolean sunsetAlignLeft;
+    public boolean sunsetUnits;
+    public boolean sunsetIcon;
+    public float sunsetIconLeft;
+    public float sunsetIconTop;
+    // sunrise
+    public int sunrise;
+    public float sunriseFontSize;
+    public float sunriseLeft;
+    public float sunriseTop;
+    public int sunriseColor;
+    public boolean sunriseAlignLeft;
+    public boolean sunriseUnits;
+    public boolean sunriseIcon;
+    public float sunriseIconLeft;
+    public float sunriseIconTop;
+    // visibility
+    public int visibility;
+    public float visibilityFontSize;
+    public float visibilityLeft;
+    public float visibilityTop;
+    public int visibilityColor;
+    public boolean visibilityAlignLeft;
+    public boolean visibilityUnits;
+    public boolean visibilityIcon;
+    public float visibilityIconLeft;
+    public float visibilityIconTop;
+    // clouds
+    public int clouds;
+    public float cloudsFontSize;
+    public float cloudsLeft;
+    public float cloudsTop;
+    public int cloudsColor;
+    public boolean cloudsAlignLeft;
+    public boolean cloudsUnits;
+    public boolean cloudsIcon;
+    public float cloudsIconLeft;
+    public float cloudsIconTop;
     // air_pressure
     public int air_pressure;
     public float air_pressureFontSize;
@@ -1208,6 +1252,106 @@ public class LoadSettings {
             widgetN.recycle();
         }
 
+        // sunset
+            this.sunset = sharedPreferences.getInt("sunset", widgets_list.indexOf("sunset")+1);
+            if(this.sunset>0){
+                TypedArray widgetN = res.obtainTypedArray(res.getIdentifier("widget"+this.sunset, "array", context.getPackageName()));
+                i = 0;
+                this.sunsetFontSize  = scale*sharedPreferences.getFloat("sunsetFontSize", widgetN.getDimension(i++, 0));
+                this.sunsetLeft  = scale*sharedPreferences.getFloat("sunsetLeft", widgetN.getDimension(i++, 0));
+                this.sunsetTop  = scale*sharedPreferences.getFloat("sunsetTop", widgetN.getDimension(i++, 0));
+                if(this.color>-1 && theme_elements.indexOf("widget"+this.sunset)>-1){
+                    this.sunsetColor = Color.parseColor(color_codes[this.color]);
+                    i++;
+                }else{
+                    this.sunsetColor = sharedPreferences.getInt("sunsetColor", widgetN.getColor(i++, 0));
+                }
+                if(this.white_bg) this.sunsetColor = inverted_text_color;
+                this.sunsetAlignLeft = sharedPreferences.getBoolean("sunsetAlignLeft", widgetN.getBoolean(i++, false));
+                this.sunsetUnits = sharedPreferences.getBoolean("sunsetUnits", widgetN.getBoolean(i++, true));
+                this.sunsetIcon = sharedPreferences.getBoolean("sunsetIcon", widgetN.getBoolean(i++, true));
+                if(sunsetIcon) {
+                    this.sunsetIconLeft = scale*sharedPreferences.getFloat("sunsetIconLeft", widgetN.getDimension(i++, 0));
+                    this.sunsetIconTop = scale*sharedPreferences.getFloat("sunsetIconTop", widgetN.getDimension(i, 0));
+                }
+                widgetN.recycle();
+            }
+
+        // sunrise
+            this.sunrise = sharedPreferences.getInt("sunrise", widgets_list.indexOf("sunrise")+1);
+            if(this.sunrise>0){
+                TypedArray widgetN = res.obtainTypedArray(res.getIdentifier("widget"+this.sunrise, "array", context.getPackageName()));
+                i = 0;
+                this.sunriseFontSize  = scale*sharedPreferences.getFloat("sunriseFontSize", widgetN.getDimension(i++, 0));
+                this.sunriseLeft  = scale*sharedPreferences.getFloat("sunriseLeft", widgetN.getDimension(i++, 0));
+                this.sunriseTop  = scale*sharedPreferences.getFloat("sunriseTop", widgetN.getDimension(i++, 0));
+                if(this.color>-1 && theme_elements.indexOf("widget"+this.sunrise)>-1){
+                    this.sunriseColor = Color.parseColor(color_codes[this.color]);
+                    i++;
+                }else{
+                    this.sunriseColor = sharedPreferences.getInt("sunriseColor", widgetN.getColor(i++, 0));
+                }
+                if(this.white_bg) this.sunriseColor = inverted_text_color;
+                this.sunriseAlignLeft = sharedPreferences.getBoolean("sunriseAlignLeft", widgetN.getBoolean(i++, false));
+                this.sunriseUnits = sharedPreferences.getBoolean("sunriseUnits", widgetN.getBoolean(i++, true));
+                this.sunriseIcon = sharedPreferences.getBoolean("sunriseIcon", widgetN.getBoolean(i++, true));
+                if(sunriseIcon) {
+                    this.sunriseIconLeft = scale*sharedPreferences.getFloat("sunriseIconLeft", widgetN.getDimension(i++, 0));
+                    this.sunriseIconTop = scale*sharedPreferences.getFloat("sunriseIconTop", widgetN.getDimension(i, 0));
+                }
+                widgetN.recycle();
+            }
+
+        // visibility
+            this.visibility = sharedPreferences.getInt("visibility", widgets_list.indexOf("visibility")+1);
+            if(this.visibility>0){
+                TypedArray widgetN = res.obtainTypedArray(res.getIdentifier("widget"+this.visibility, "array", context.getPackageName()));
+                i = 0;
+                this.visibilityFontSize  = scale*sharedPreferences.getFloat("visibilityFontSize", widgetN.getDimension(i++, 0));
+                this.visibilityLeft  = scale*sharedPreferences.getFloat("visibilityLeft", widgetN.getDimension(i++, 0));
+                this.visibilityTop  = scale*sharedPreferences.getFloat("visibilityTop", widgetN.getDimension(i++, 0));
+                if(this.color>-1 && theme_elements.indexOf("widget"+this.visibility)>-1){
+                    this.visibilityColor = Color.parseColor(color_codes[this.color]);
+                    i++;
+                }else{
+                    this.visibilityColor = sharedPreferences.getInt("visibilityColor", widgetN.getColor(i++, 0));
+                }
+                if(this.white_bg) this.visibilityColor = inverted_text_color;
+                this.visibilityAlignLeft = sharedPreferences.getBoolean("visibilityAlignLeft", widgetN.getBoolean(i++, false));
+                this.visibilityUnits = sharedPreferences.getBoolean("visibilityUnits", widgetN.getBoolean(i++, true));
+                this.visibilityIcon = sharedPreferences.getBoolean("visibilityIcon", widgetN.getBoolean(i++, true));
+                if(visibilityIcon) {
+                    this.visibilityIconLeft = scale*sharedPreferences.getFloat("visibilityIconLeft", widgetN.getDimension(i++, 0));
+                    this.visibilityIconTop = scale*sharedPreferences.getFloat("visibilityIconTop", widgetN.getDimension(i, 0));
+                }
+                widgetN.recycle();
+            }
+
+        // clouds
+            this.clouds = sharedPreferences.getInt("clouds", widgets_list.indexOf("clouds")+1);
+            if(this.clouds>0){
+                TypedArray widgetN = res.obtainTypedArray(res.getIdentifier("widget"+this.clouds, "array", context.getPackageName()));
+                i = 0;
+                this.cloudsFontSize  = scale*sharedPreferences.getFloat("cloudsFontSize", widgetN.getDimension(i++, 0));
+                this.cloudsLeft  = scale*sharedPreferences.getFloat("cloudsLeft", widgetN.getDimension(i++, 0));
+                this.cloudsTop  = scale*sharedPreferences.getFloat("cloudsTop", widgetN.getDimension(i++, 0));
+                if(this.color>-1 && theme_elements.indexOf("widget"+this.clouds)>-1){
+                    this.cloudsColor = Color.parseColor(color_codes[this.color]);
+                    i++;
+                }else{
+                    this.cloudsColor = sharedPreferences.getInt("cloudsColor", widgetN.getColor(i++, 0));
+                }
+                if(this.white_bg) this.cloudsColor = inverted_text_color;
+                this.cloudsAlignLeft = sharedPreferences.getBoolean("cloudsAlignLeft", widgetN.getBoolean(i++, false));
+                this.cloudsUnits = sharedPreferences.getBoolean("cloudsUnits", widgetN.getBoolean(i++, true));
+                this.cloudsIcon = sharedPreferences.getBoolean("cloudsIcon", widgetN.getBoolean(i++, true));
+                if(cloudsIcon) {
+                    this.cloudsIconLeft = scale*sharedPreferences.getFloat("cloudsIconLeft", widgetN.getDimension(i++, 0));
+                    this.cloudsIconTop = scale*sharedPreferences.getFloat("cloudsIconTop", widgetN.getDimension(i, 0));
+                }
+                widgetN.recycle();
+            }
+
         // air_pressure
             this.air_pressure = sharedPreferences.getInt("air_pressure", widgets_list.indexOf("air_pressure")+1);
             if(this.air_pressure>0){
@@ -1680,7 +1824,7 @@ public class LoadSettings {
 
     // WEATHER WIDGET
     public boolean isWeather(){
-        return this.temperature>0 || this.city>0 || this.humidity>0 || this.uv>0 || this.wind_direction>0 || this.wind_strength>0 || this.min_max_temperatures>0 || this.weather_img>0;
+        return this.temperature>0 || this.city>0 || this.humidity>0 || this.uv>0 || this.wind_direction>0 || this.wind_strength>0 || this.min_max_temperatures>0 || this.weather_img>0 || this.sunrise>0 || this.sunset>0 || this.visibility>0 || this.clouds>0;
     }
 
     // GREAT WIDGET

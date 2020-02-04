@@ -93,6 +93,10 @@ public class WidgetsActivity extends FragmentActivity {
             case "altitude":
                 subtitle = getString(R.string.moreBattery);
                 break;
+            case "sunset":
+            case "sunrise":
+            case "visibility":
+            case "clouds":
             case "phone_battery":
             case "phone_alarm":
             case "notifications":

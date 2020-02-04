@@ -17,9 +17,13 @@ import com.ingenic.iwds.slpt.view.utils.SimpleFile;
 
 import org.json.JSONObject;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 import com.dinodevs.greatfitwatchface.data.DataType;
@@ -41,6 +45,10 @@ public class WeatherWidget extends AbstractWidget {
     private TextPaint wind_strengthPaint;
     private TextPaint weather_imgPaint;
     private TextPaint min_max_temperaturesPaint;
+    private TextPaint sunsetPaint;
+    private TextPaint sunrisePaint;
+    private TextPaint visibilityPaint;
+    private TextPaint cloudsPaint;
 
     private Bitmap temperatureIcon;
     private Bitmap cityIcon;
@@ -49,11 +57,16 @@ public class WeatherWidget extends AbstractWidget {
     private Bitmap wind_directionIcon;
     private Bitmap wind_strengthIcon;
     private Bitmap min_max_temperaturesIcon;
+    private Bitmap sunsetIcon;
+    private Bitmap sunriseIcon;
+    private Bitmap visibilityIcon;
+    private Bitmap cloudsIcon;
+
+    private String sunset_time = "n/a";
+    private String sunrise_time = "n/a";
 
     private LoadSettings settings;
     private final static  String TAG = "DinoDevs-GreatFit";
-
-
 
     // Constructor
     public WeatherWidget(LoadSettings settings) {
@@ -188,6 +201,54 @@ public class WeatherWidget extends AbstractWidget {
                 this.min_max_temperaturesIcon = Util.decodeImage(service.getResources(), "icons/" + settings.is_white_bg + "min_max_temperatures.png");
             }
         }
+
+        // sunset
+        if(settings.sunset>0) {
+            this.sunsetPaint = new TextPaint(TextPaint.ANTI_ALIAS_FLAG);
+            this.sunsetPaint.setColor(settings.sunsetColor);
+            this.sunsetPaint.setTypeface(ResourceManager.getTypeFace(service.getResources(), settings.font));
+            this.sunsetPaint.setTextSize(settings.sunsetFontSize);
+            this.sunsetPaint.setTextAlign((settings.sunsetAlignLeft) ? Paint.Align.LEFT : Paint.Align.CENTER);
+            if(settings.sunsetIcon){
+                this.sunsetIcon = Util.decodeImage(service.getResources(),"icons/"+settings.is_white_bg+"sunset.png");
+            }
+        }
+
+        // sunrise
+        if(settings.sunrise>0) {
+            this.sunrisePaint = new TextPaint(TextPaint.ANTI_ALIAS_FLAG);
+            this.sunrisePaint.setColor(settings.sunriseColor);
+            this.sunrisePaint.setTypeface(ResourceManager.getTypeFace(service.getResources(), settings.font));
+            this.sunrisePaint.setTextSize(settings.sunriseFontSize);
+            this.sunrisePaint.setTextAlign((settings.sunriseAlignLeft) ? Paint.Align.LEFT : Paint.Align.CENTER);
+            if(settings.sunriseIcon){
+                this.sunriseIcon = Util.decodeImage(service.getResources(),"icons/"+settings.is_white_bg+"sunrise.png");
+            }
+        }
+
+        // visibility
+        if(settings.visibility>0) {
+            this.visibilityPaint = new TextPaint(TextPaint.ANTI_ALIAS_FLAG);
+            this.visibilityPaint.setColor(settings.visibilityColor);
+            this.visibilityPaint.setTypeface(ResourceManager.getTypeFace(service.getResources(), settings.font));
+            this.visibilityPaint.setTextSize(settings.visibilityFontSize);
+            this.visibilityPaint.setTextAlign((settings.visibilityAlignLeft) ? Paint.Align.LEFT : Paint.Align.CENTER);
+            if(settings.visibilityIcon){
+                this.visibilityIcon = Util.decodeImage(service.getResources(),"icons/"+settings.is_white_bg+"visibility.png");
+            }
+        }
+
+        // clouds
+        if(settings.clouds>0) {
+            this.cloudsPaint = new TextPaint(TextPaint.ANTI_ALIAS_FLAG);
+            this.cloudsPaint.setColor(settings.cloudsColor);
+            this.cloudsPaint.setTypeface(ResourceManager.getTypeFace(service.getResources(), settings.font));
+            this.cloudsPaint.setTextSize(settings.cloudsFontSize);
+            this.cloudsPaint.setTextAlign((settings.cloudsAlignLeft) ? Paint.Align.LEFT : Paint.Align.CENTER);
+            if(settings.cloudsIcon){
+                this.cloudsIcon = Util.decodeImage(service.getResources(),"icons/"+settings.is_white_bg+"clouds.png");
+            }
+        }
     }
 
     // Register listener
@@ -207,6 +268,34 @@ public class WeatherWidget extends AbstractWidget {
         this.weather = getSlptWeather();
 
         this.weatherImageIcon = Util.decodeImage(mService.getResources(),"weather/"+settings.is_white_bg+this.weatherImageStrList.get(this.weather.weatherType)+".png");
+
+        // Get sunset & sunrise to proper format
+        if (settings.sunset > 0 || settings.sunrise > 0) {
+            Calendar current_date = Calendar.getInstance();
+            Calendar data_date = Calendar.getInstance();
+            this.sunset_time = "n/a";
+            this.sunrise_time = "n/a";
+
+            if (settings.sunset > 0) {
+                data_date.setTimeInMillis(this.weather.sunset * 1000L);
+                //Log.d( TAG, "Weather-widget getSlptWeather: (1) "+this.weather.sunset+"="+ data_date.get(Calendar.HOUR_OF_DAY) +":"+ data_date.get(Calendar.MINUTE) + " ("+current_date.get(Calendar.DATE)+"="+data_date.get(Calendar.DATE)+")" );
+                //if (current_date.get(Calendar.DATE) == data_date.get(Calendar.DATE)) {
+                    int hours = data_date.get(Calendar.HOUR_OF_DAY);
+                    int minutes = data_date.get(Calendar.MINUTE);
+                    this.sunset_time = (hours<10?"0":"")+hours+":"+(minutes<10?"0":"")+minutes;
+                //}
+            }
+
+            if (settings.sunrise > 0) {
+                data_date.setTimeInMillis(this.weather.sunrise * 1000L);
+                //Log.d( TAG, "Weather-widget getSlptWeather: (2) "+this.weather.sunrise+"="+ data_date.get(Calendar.HOUR_OF_DAY) +":"+ data_date.get(Calendar.MINUTE) + " ("+current_date.get(Calendar.DATE)+"="+data_date.get(Calendar.DATE)+")" );
+                //if (current_date.get(Calendar.DATE) == data_date.get(Calendar.DATE)) {
+                    int hours = data_date.get(Calendar.HOUR_OF_DAY);
+                    int minutes = data_date.get(Calendar.MINUTE);
+                    this.sunrise_time = (hours<10?"0":"")+hours+":"+(minutes<10?"0":"")+minutes;
+                //}
+            }
+        }
     }
 
     // Screen on
@@ -279,6 +368,38 @@ public class WeatherWidget extends AbstractWidget {
             }
             canvas.drawText(weather.tempFormatted, settings.min_max_temperaturesLeft, settings.min_max_temperaturesTop, min_max_temperaturesPaint);
         }
+
+        // Draw sunset
+        if(settings.sunset>0) {
+            if(settings.sunsetIcon){
+                canvas.drawBitmap(this.sunsetIcon, settings.sunsetIconLeft, settings.sunsetIconTop, settings.mGPaint);
+            }
+            canvas.drawText(this.sunset_time, settings.sunsetLeft, settings.sunsetTop, sunsetPaint);
+        }
+
+        // Draw sunrise
+        if(settings.sunrise>0) {
+            if(settings.sunriseIcon){
+                canvas.drawBitmap(this.sunriseIcon, settings.sunriseIconLeft, settings.sunriseIconTop, settings.mGPaint);
+            }
+            canvas.drawText(this.sunrise_time, settings.sunriseLeft, settings.sunriseTop, sunrisePaint);
+        }
+
+        // Draw visibility
+        if(settings.visibility>0) {
+            if(settings.visibilityIcon){
+                canvas.drawBitmap(this.visibilityIcon, settings.visibilityIconLeft, settings.visibilityIconTop, settings.mGPaint);
+            }
+            canvas.drawText(weather.visibility, settings.visibilityLeft, settings.visibilityTop, visibilityPaint);
+        }
+
+        // Draw clouds
+        if(settings.clouds>0) {
+            if(settings.cloudsIcon){
+                canvas.drawBitmap(this.cloudsIcon, settings.cloudsIconLeft, settings.cloudsIconTop, settings.mGPaint);
+            }
+            canvas.drawText(weather.clouds, settings.cloudsLeft, settings.cloudsTop, cloudsPaint);
+        }
     }
 
     /* Get Weather Data on screen off
@@ -288,10 +409,12 @@ public class WeatherWidget extends AbstractWidget {
         // Default variables
         String tempUnit = "1";
         int weatherType = 22;
-        String temp, city, humidity, uv, windDirection, windStrength;
-        temp = city = humidity = uv = windDirection = windStrength = "n/a";
+        String temp, city, humidity, uv, windDirection, windStrength, pressure, visibility, clouds;
+        temp = city = humidity = uv = windDirection = windStrength = pressure = visibility = clouds ="n/a";
         String tempMax, tempMin, tempFormatted;
         tempMax = tempMin = tempFormatted = "-/-";
+        int sunrise, sunset;
+        sunrise = sunset = 0;
 
         // WeatherInfo
         // {"isAlert":true, "isNotification":true, "tempFormatted":"28ºC",
@@ -329,6 +452,24 @@ public class WeatherWidget extends AbstractWidget {
             if (weather_data.has("windStrength"))
                 windStrength = weather_data.getString("windStrength");
 
+            // New custom values in weather saved by Amazmod
+            /*
+            if (weather_data.has("tempMin"))
+                tempMin = weather_data.getString("tempMin");
+            if (weather_data.has("tempMax"))
+                tempMax = weather_data.getString("tempMax");
+            */
+            if (weather_data.has("pressure"))
+                pressure = weather_data.getString("pressure");
+            if (weather_data.has("visibility"))
+                visibility = weather_data.getString("visibility");
+            if (weather_data.has("clouds"))
+                clouds = weather_data.getString("clouds");
+            if (weather_data.has("sunrise"))
+                sunrise = weather_data.getInt("sunrise");
+            if (weather_data.has("sunset"))
+                sunset = weather_data.getInt("sunset");
+
             JSONObject weather_forecast = (JSONObject) weather_data.getJSONArray("forecasts").get(0);
             if (weather_forecast.has("tempMax"))
                 tempMax = weather_forecast.getString("tempMax");
@@ -345,7 +486,7 @@ public class WeatherWidget extends AbstractWidget {
         if(weatherType<0 || weatherType>22)
             return new WeatherData("1", "n/a", 22);
         // Normal
-        return new WeatherData(tempUnit, temp, weatherType, city, humidity, uv, windDirection, windStrength, tempMax, tempMin, tempFormatted);
+        return new WeatherData(tempUnit, temp, weatherType, city, humidity, uv, windDirection, windStrength, tempMax, tempMin, tempFormatted, sunrise, sunset, pressure, visibility, clouds);
     }
 
     // Screen-off (SLPT)
@@ -725,6 +866,208 @@ public class WeatherWidget extends AbstractWidget {
                     (int) (settings.min_max_temperaturesTop-((float)settings.font_ratio/100)*settings.min_max_temperaturesFontSize)
             );
             slpt_objects.add(min_max_temperaturesLayout);
+        }
+
+        // Draw sunset
+        if(settings.sunset>0){
+            // Show or Not icon
+            if (settings.sunsetIcon) {
+                SlptPictureView sunsetIcon = new SlptPictureView();
+                sunsetIcon.setImagePicture( SimpleFile.readFileFromAssets(service, ( (better_resolution)?"26wc_":"slpt_" )+"icons/"+settings.is_white_bg+"sunset.png") );
+                sunsetIcon.setStart(
+                        (int) settings.sunsetIconLeft,
+                        (int) settings.sunsetIconTop
+                );
+                slpt_objects.add(sunsetIcon);
+            }
+            // Get sunset to proper format
+            Calendar current_date = Calendar.getInstance();
+            Calendar data_date = Calendar.getInstance();
+            data_date.setTimeInMillis(this.weather.sunset * 1000L);
+            String sunset_time = "n/a";
+            //if (current_date.get(Calendar.DATE) == data_date.get(Calendar.DATE)) {
+                int hours = data_date.get(Calendar.HOUR_OF_DAY);
+                int minutes = data_date.get(Calendar.MINUTE);
+                sunset_time = (hours<10?"0":"")+hours+":"+(minutes<10?"0":"")+minutes;
+            //}
+            // Display it
+            SlptLinearLayout sunsetLayout = new SlptLinearLayout();
+            SlptPictureView sunsetNum = new SlptPictureView();
+            sunsetNum.setStringPicture(sunset_time);
+            sunsetNum.setTextAttr(
+                    settings.sunsetFontSize,
+                    settings.sunsetColor,
+                    ResourceManager.getTypeFace(service.getResources(), settings.font)
+            );
+            sunsetLayout.add(sunsetNum);
+            sunsetLayout.setTextAttrForAll(
+                    settings.sunsetFontSize,
+                    settings.sunsetColor,
+                    ResourceManager.getTypeFace(service.getResources(), settings.font)
+            );
+            // Position based on screen on
+            sunsetLayout.alignX = 2;
+            sunsetLayout.alignY = 0;
+            int tmp_left = (int) settings.sunsetLeft;
+            if(!settings.sunsetAlignLeft) {
+                // If text is centered, set rectangle
+                sunsetLayout.setRect(
+                        (int) (2 * tmp_left + 640),
+                        (int) (((float)settings.font_ratio/100)*settings.sunsetFontSize)
+                );
+                tmp_left = -320;
+            }
+            sunsetLayout.setStart(
+                    (int) tmp_left,
+                    (int) (settings.sunsetTop-((float)settings.font_ratio/100)*settings.sunsetFontSize)
+            );
+            slpt_objects.add(sunsetLayout);
+        }
+
+        // Draw sunrise
+        if(settings.sunrise>0){
+            // Show or Not icon
+            if (settings.sunriseIcon) {
+                SlptPictureView sunriseIcon = new SlptPictureView();
+                sunriseIcon.setImagePicture( SimpleFile.readFileFromAssets(service, ( (better_resolution)?"26wc_":"slpt_" )+"icons/"+settings.is_white_bg+"sunrise.png") );
+                sunriseIcon.setStart(
+                        (int) settings.sunriseIconLeft,
+                        (int) settings.sunriseIconTop
+                );
+                slpt_objects.add(sunriseIcon);
+            }
+            // Get sunrise to proper format
+            Calendar current_date = Calendar.getInstance();
+            Calendar data_date = Calendar.getInstance();
+            data_date.setTimeInMillis(this.weather.sunrise * 1000L);
+            String sunrise_time = "n/a";
+            //if (current_date.get(Calendar.DATE) == data_date.get(Calendar.DATE)) {
+                int hours = data_date.get(Calendar.HOUR_OF_DAY);
+                int minutes = data_date.get(Calendar.MINUTE);
+                sunrise_time = (hours<10?"0":"")+hours+":"+(minutes<10?"0":"")+minutes;
+            //}
+            // Display it
+            SlptLinearLayout sunriseLayout = new SlptLinearLayout();
+            SlptPictureView sunriseNum = new SlptPictureView();
+            sunriseNum.setStringPicture(sunrise_time);
+            sunriseNum.setTextAttr(
+                    settings.sunriseFontSize,
+                    settings.sunriseColor,
+                    ResourceManager.getTypeFace(service.getResources(), settings.font)
+            );
+            sunriseLayout.add(sunriseNum);
+            sunriseLayout.setTextAttrForAll(
+                    settings.sunriseFontSize,
+                    settings.sunriseColor,
+                    ResourceManager.getTypeFace(service.getResources(), settings.font)
+            );
+            // Position based on screen on
+            sunriseLayout.alignX = 2;
+            sunriseLayout.alignY = 0;
+            int tmp_left = (int) settings.sunriseLeft;
+            if(!settings.sunriseAlignLeft) {
+                // If text is centered, set rectangle
+                sunriseLayout.setRect(
+                        (int) (2 * tmp_left + 640),
+                        (int) (((float)settings.font_ratio/100)*settings.sunriseFontSize)
+                );
+                tmp_left = -320;
+            }
+            sunriseLayout.setStart(
+                    (int) tmp_left,
+                    (int) (settings.sunriseTop-((float)settings.font_ratio/100)*settings.sunriseFontSize)
+            );
+            slpt_objects.add(sunriseLayout);
+        }
+
+        // Draw visibility
+        if(settings.visibility>0){
+            // Show or Not icon
+            if (settings.visibilityIcon) {
+                SlptPictureView visibilityIcon = new SlptPictureView();
+                visibilityIcon.setImagePicture( SimpleFile.readFileFromAssets(service, ( (better_resolution)?"26wc_":"slpt_" )+"icons/"+settings.is_white_bg+"visibility.png") );
+                visibilityIcon.setStart(
+                        (int) settings.visibilityIconLeft,
+                        (int) settings.visibilityIconTop
+                );
+                slpt_objects.add(visibilityIcon);
+            }
+            SlptLinearLayout visibilityLayout = new SlptLinearLayout();
+            SlptPictureView visibilityNum = new SlptPictureView();
+            visibilityNum.setStringPicture(this.weather.visibility);
+            visibilityNum.setTextAttr(
+                    settings.visibilityFontSize,
+                    settings.visibilityColor,
+                    ResourceManager.getTypeFace(service.getResources(), settings.font)
+            );
+            visibilityLayout.add(visibilityNum);
+            visibilityLayout.setTextAttrForAll(
+                    settings.visibilityFontSize,
+                    settings.visibilityColor,
+                    ResourceManager.getTypeFace(service.getResources(), settings.font)
+            );
+            // Position based on screen on
+            visibilityLayout.alignX = 2;
+            visibilityLayout.alignY = 0;
+            int tmp_left = (int) settings.visibilityLeft;
+            if(!settings.visibilityAlignLeft) {
+                // If text is centered, set rectangle
+                visibilityLayout.setRect(
+                        (int) (2 * tmp_left + 640),
+                        (int) (((float)settings.font_ratio/100)*settings.visibilityFontSize)
+                );
+                tmp_left = -320;
+            }
+            visibilityLayout.setStart(
+                    (int) tmp_left,
+                    (int) (settings.visibilityTop-((float)settings.font_ratio/100)*settings.visibilityFontSize)
+            );
+            slpt_objects.add(visibilityLayout);
+        }
+
+        // Draw clouds
+        if(settings.clouds>0){
+            // Show or Not icon
+            if (settings.cloudsIcon) {
+                SlptPictureView cloudsIcon = new SlptPictureView();
+                cloudsIcon.setImagePicture( SimpleFile.readFileFromAssets(service, ( (better_resolution)?"26wc_":"slpt_" )+"icons/"+settings.is_white_bg+"clouds.png") );
+                cloudsIcon.setStart(
+                        (int) settings.cloudsIconLeft,
+                        (int) settings.cloudsIconTop
+                );
+                slpt_objects.add(cloudsIcon);
+            }
+            SlptLinearLayout cloudsLayout = new SlptLinearLayout();
+            SlptPictureView cloudsNum = new SlptPictureView();
+            cloudsNum.setStringPicture(this.weather.clouds);
+            cloudsNum.setTextAttr(
+                    settings.cloudsFontSize,
+                    settings.cloudsColor,
+                    ResourceManager.getTypeFace(service.getResources(), settings.font)
+            );
+            cloudsLayout.add(cloudsNum);
+            cloudsLayout.setTextAttrForAll(
+                    settings.cloudsFontSize,
+                    settings.cloudsColor,
+                    ResourceManager.getTypeFace(service.getResources(), settings.font)
+            );
+            // Position based on screen on
+            cloudsLayout.alignX = 2;
+            cloudsLayout.alignY = 0;
+            int tmp_left = (int) settings.cloudsLeft;
+            if(!settings.cloudsAlignLeft) {
+                // If text is centered, set rectangle
+                cloudsLayout.setRect(
+                        (int) (2 * tmp_left + 640),
+                        (int) (((float)settings.font_ratio/100)*settings.cloudsFontSize)
+                );
+                tmp_left = -320;
+            }
+            cloudsLayout.setStart(
+                    (int) tmp_left,
+                    (int) (settings.cloudsTop-((float)settings.font_ratio/100)*settings.cloudsFontSize)
+            );
+            slpt_objects.add(cloudsLayout);
         }
 
         return slpt_objects;

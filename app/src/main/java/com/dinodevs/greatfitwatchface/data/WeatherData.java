@@ -10,9 +10,14 @@ public class WeatherData {
     public String windDirection = "n/a";
     public String windStrength = "n/a";
     public String windArrow = "•";
-    public String tempMax="-";
-    public String tempMin="-";
-    public String tempFormatted="-/-";
+    public String tempMax = "-";
+    public String tempMin = "-";
+    public String tempFormatted = "-/-";
+    public String pressure = "n/a";
+    public String visibility = "n/a";
+    public String clouds = "n/a";
+    public int sunrise = 0;
+    public int sunset = 0;
 
 
     public WeatherData(String tempFlag, String tempString, int weatherType) {
@@ -21,7 +26,7 @@ public class WeatherData {
         this.weatherType = weatherType;
     }
 
-    public WeatherData(String tempFlag, String tempString, int weatherType, String tempCity, String tempHumidity, String tempUV, String tempWindDirection, String tempWindStrength, String tempMax, String tempMin, String tempFormatted) {
+    public WeatherData(String tempFlag, String tempString, int weatherType, String tempCity, String tempHumidity, String tempUV, String tempWindDirection, String tempWindStrength, String tempMax, String tempMin, String tempFormattedsunrise, int sunrise, int sunset, String pressure, String visibility, String clouds) {
         this.tempFlag = tempFlag;
         this.tempString = tempString;
         this.weatherType = weatherType;
@@ -34,6 +39,12 @@ public class WeatherData {
         this.tempMax = tempMax;
         this.tempMin = tempMin;
         this.tempFormatted = tempFormatted;
+        this.pressure = pressure;
+        this.visibility = visibility;
+        this.clouds = clouds;
+        this.sunrise = sunrise;
+        this.sunset = sunset;
+
         getTempFormatted();
     }
 

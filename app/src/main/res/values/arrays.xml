@@ -90,9 +90,9 @@
     <integer-array name="widgets">
         <item>2</item> <!-- Widget 1: type from "supported widgets" list -->
         <item>1</item> <!-- Widget 2: type from "supported widgets" list -->
-        <item>20</item>
-        <item>8</item>
         <item>24</item>
+        <item>8</item>
+        <item>28</item>
     </integer-array>
 
     <!-- Widget 1 -->
@@ -271,25 +271,27 @@
         <item>floors</item>
         <item>battery_percent</item>
         <item>temperature</item>
-        <item>min_max_temperatures</item>
+        <item>min_max_temperatures</item> <!-- 10... -->
         <item>weather_img</item>
         <item>city</item>
         <item>humidity</item>
         <item>uv</item>
-        <item>wind_direction</item>
+        <item>wind_direction</item> <!-- 15... -->
         <item>wind_strength</item>
-        <!-- <item>sunset</item> -->
-        <!-- <item>sunrise</item> -->
+        <item>sunrise</item>
+        <item>sunset</item>
+        <item>visibility</item>
+        <item>clouds</item> <!-- 20... -->
         <item>watch_alarm</item>
         <item>air_pressure</item> <!-- Uses a sensor which may drain a little the battery -->
         <item>altitude</item> <!-- Calculated approximately based on air pressure -->
         <item>phone_battery</item>
-        <item>phone_alarm</item>
+        <item>phone_alarm</item> <!-- 25... -->
         <item>xdrip</item>
         <item>world_time</item>
         <item>notifications</item>
         <item>moonphase</item>
-        <item>none</item> <!-- 26 -->
+        <item>none</item> <!-- 30 -->
     </string-array>
 
     <!-- Supported Progress Elements -->
