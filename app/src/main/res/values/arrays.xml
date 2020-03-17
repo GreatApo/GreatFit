@@ -249,6 +249,37 @@
         <item>slpt_battery/battery10</item>
     </array>
 
+	<!-- Bar 4 -->
+    <array name="progress_element4">
+        <item name="left">0px</item>
+        <item name="top">0px</item>
+        <item name="progress_type">1</item> <!-- 1 : images as steps -->
+        <!-- screen-on images for type 1 -->
+        <item>steps/steps0</item>
+        <item>steps/steps1</item>
+        <item>steps/steps2</item>
+        <item>steps/steps3</item>
+        <item>steps/steps4</item>
+        <item>steps/steps5</item>
+        <item>steps/steps6</item>
+        <item>steps/steps7</item>
+        <item>steps/steps8</item>
+        <item>steps/steps9</item>
+        <item>steps/steps10</item>
+        <!-- screen-off images for type 1 -->
+        <item>slpt_steps/steps0</item> <!-- location in assets folder -->
+        <item>slpt_steps/steps1</item>
+        <item>slpt_steps/steps2</item>
+        <item>slpt_steps/steps3</item>
+        <item>slpt_steps/steps4</item>
+        <item>slpt_steps/steps5</item>
+        <item>slpt_steps/steps6</item>
+        <item>slpt_steps/steps7</item>
+        <item>slpt_steps/steps8</item>
+        <item>slpt_steps/steps9</item>
+        <item>slpt_steps/steps10</item>
+    </array>
+
 
     <!-- The color of the following elements will be changed from settings (all have the same color) -->
     <string-array name="theme_elements">
