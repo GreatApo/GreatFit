@@ -73,7 +73,7 @@ public class SportTotalDistanceWidget extends AbstractWidget {
 
         // total Sport's Distance widget
         String units = (settings.total_distanceUnits) ? " km" : "";// if units are enabled
-        String text = String.format("%s", this.total_distanceData.getDistance())+units;
+        String text = String.format( (this.total_distanceData.getDistance() > 100)?"%.1f":"%s"), this.total_distanceData.getDistance())+units;
         canvas.drawText(text, settings.total_distanceLeft, settings.total_distanceTop, total_distancePaint);
     }
 

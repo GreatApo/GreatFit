@@ -181,9 +181,15 @@ public class StepsWidget extends AbstractWidget {
         
         // Steps image
         if(settings.stepsProg>0 && settings.stepsProgType==1) {
-            // Image
-            // todo
-            //SlptTodayStepPicGroupView
+            int step_steps = 11;
+            byte[][] arrayOfByte = new byte[step_steps][];
+            for (int i = 0; i < arrayOfByte.length; i++) {
+                arrayOfByte[i] = SimpleFile.readFileFromAssets(service, String.format(((better_resolution) ? "" : "slpt_") + "steps/steps%d.png", i));
+            }
+            SlptTodayStepPicGroupView localSlptStepsView = new SlptTodayStepPicGroupView(step_steps);
+            localSlptStepsView.setImagePictureArray(arrayOfByte);
+            localSlptStepsView.setStart((int) settings.stepsProgLeft, (int) settings.stepsProgTop);
+            slpt_objects.add(localSlptStepsView);
         }
 
         // steps bar
