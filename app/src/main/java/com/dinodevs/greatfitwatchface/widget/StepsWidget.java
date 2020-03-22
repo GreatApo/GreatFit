@@ -18,6 +18,7 @@ import com.ingenic.iwds.slpt.view.core.SlptLinearLayout;
 import com.ingenic.iwds.slpt.view.core.SlptPictureView;
 import com.ingenic.iwds.slpt.view.core.SlptViewComponent;
 import com.ingenic.iwds.slpt.view.sport.SlptTodayStepNumView;
+import com.ingenic.iwds.slpt.view.sport.SlptTodayStepPicGroupView;
 import com.ingenic.iwds.slpt.view.utils.SimpleFile;
 
 import java.util.ArrayList;

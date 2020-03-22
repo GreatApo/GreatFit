@@ -163,6 +163,9 @@
     <!-- Progress bars -->
     <integer-array name="circle_bars"> <!-- Reset your settings after adding/removing items on this array -->
         <item>0</item> <!-- Bar 1: type from "supported progress elements" list -->
+        <!-- <item>2</item> --> <!-- Bar 2 -->
+        <!-- <item>0</item> --> <!-- Bar 3 --> <!-- Currently it has battery images -->
+        <!-- <item>1</item> --> <!-- Bar 4 --> <!-- Currently it has steps images, but it is basically just circular bar images -->
     </integer-array>
 
     <!-- Bar 1 -->
@@ -222,7 +225,7 @@
     <array name="progress_element3">
         <item name="left">160px</item>
         <item name="top">160px</item>
-        <item name="progress_type">1</item> <!-- 0 : arc/circle bar -->
+        <item name="progress_type">1</item> <!-- 1 : images as steps -->
         <!-- screen-on images for type 1 -->
         <item>battery/battery0</item>
         <item>battery/battery1</item>
@@ -329,13 +332,13 @@
     <string-array name="supported_progress_elements">
         <item>battery</item> <!-- 0 -->
         <item>steps</item> <!-- 1 -->
-        <item>today_distance</item>
+        <item>today_distance</item> <!-- 2 -->
         <item>heart_rate</item> <!-- 0-200 bpm -->
         <item>calories</item> <!-- set target in settings -->
-        <!-- <item>humidity</item> -->
+        <!-- <item>humidity</item> --> <!-- todo -->
         <item>phone_battery</item>
-        <!-- <item>wind_strength</item> -->
-        <!-- <item>floors</item> -->
+        <!-- <item>wind_strength</item> --> <!-- todo -->
+        <!-- <item>floors</item> --> <!-- todo -->
         <item>none</item>
     </string-array>
 
