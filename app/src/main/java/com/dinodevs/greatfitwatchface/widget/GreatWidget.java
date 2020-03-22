@@ -47,6 +47,7 @@ import com.ingenic.iwds.slpt.view.utils.SimpleFile;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import static com.dinodevs.greatfitwatchface.data.DataType.DATE;
 import static com.dinodevs.greatfitwatchface.data.DataType.TIME;
 
 
@@ -442,7 +443,7 @@ public class GreatWidget extends AbstractWidget {
         List<DataType> dataTypes = new ArrayList<>();
 
         if(settings.am_pm_always || settings.world_time_zone>0)
-            dataTypes.add(TIME);
+            dataTypes.add(DataType.TIME);
 
         if( settings.air_pressure>0 || settings.phone_alarm>0 || settings.phone_battery>0 || settings.phone_batteryProg>0 || settings.altitude>0 || settings.notifications>0 )
             dataTypes.add(DataType.CUSTOM);
@@ -455,6 +456,9 @@ public class GreatWidget extends AbstractWidget {
 
         if(settings.walked_distance>0)
             dataTypes.add(DataType.STEPS);
+
+        if(settings.moonphase>0)
+            dataTypes.add(DataType.DATE);
 
         return dataTypes;
     }
@@ -498,6 +502,7 @@ public class GreatWidget extends AbstractWidget {
                 this.xdripData = (Xdrip) value;
                 break;
             case CUSTOM:
+                // Update phone (and other custom) data
                 this.customData = (CustomData) value;
                 if(this.customData!=null) {
                     // Battery bar angle
@@ -516,12 +521,18 @@ public class GreatWidget extends AbstractWidget {
                 }
                 break;
             case PRESSURE:
+                // Update pressure
                 this.pressureData = (Pressure) value;
                 if(this.altitude!=this.pressureData.altitude || this.pressure!=(int) this.pressureData.airPressure){
                     this.altitude = this.pressureData.altitude;
                     this.pressure = (int) this.pressureData.airPressure;
                     refreshSlpt = true;
                 }
+                break;
+            case DATE:
+                // Update moonphase
+                if(settings.moonphase>0)
+                    refreshSlpt = true;
                 break;
         }
 
