@@ -78,7 +78,7 @@ public class GreatFit extends AbstractWatchFace {
         super.onCreate();
     }
 
-    private void status_bar(boolean isOn, int left, int top){
+    private void status_bar(boolean isOn, float left, float top){
         // Show it or... show it off screen :P
         if(isOn) {
             notifyStatusBarPosition(

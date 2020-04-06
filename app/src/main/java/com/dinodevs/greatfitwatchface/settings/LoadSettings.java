@@ -53,8 +53,8 @@ public class LoadSettings {
     public boolean no_0_on_hour_first_digit;
     public boolean wind_direction_as_arrows;
     public boolean status_bar;
-    public int status_barLeft;
-    public int status_barTop;
+    public float status_barLeft;
+    public float status_barTop;
     public boolean low_power;
     public float low_powerLeft;
     public float low_powerTop;
@@ -593,8 +593,8 @@ public class LoadSettings {
             this.no_0_on_hour_first_digit = sharedPreferences.getBoolean( "no_0_on_hour_first_digit", context.getResources().getBoolean(R.bool.no_0_on_hour_first_digit));
             this.wind_direction_as_arrows = sharedPreferences.getBoolean( "wind_direction_as_arrows", context.getResources().getBoolean(R.bool.wind_direction_as_arrows));
             this.status_bar = sharedPreferences.getBoolean( "status_bar", context.getResources().getBoolean(R.bool.status_bar));
-            this.status_barLeft = (int) scale*sharedPreferences.getInt( "status_barLeft", context.getResources().getInteger(R.integer.status_left));
-            this.status_barTop = (int) scale*sharedPreferences.getInt( "status_barTop", context.getResources().getInteger(R.integer.status_top));
+            this.status_barLeft = scale*sharedPreferences.getInt( "status_barLeft", context.getResources().getInteger(R.integer.status_left));
+            this.status_barTop = scale*sharedPreferences.getInt( "status_barTop", context.getResources().getInteger(R.integer.status_top));
             this.low_power = sharedPreferences.getBoolean( "low_power", context.getResources().getBoolean(R.bool.low_power));
             this.low_powerLeft = scale*sharedPreferences.getInt( "low_powerLeft", context.getResources().getInteger(R.integer.low_power_left));
             this.low_powerTop = scale*sharedPreferences.getInt( "low_powerTop", context.getResources().getInteger(R.integer.low_power_top));
@@ -694,7 +694,7 @@ public class LoadSettings {
             }
         // Seconds
             this.secondsBool = sharedPreferences.getBoolean("secondsBool", res.getIdentifier("seconds", "array", context.getPackageName())!=0) && Util.needSlptRefreshSecond(context);
-            if(this.secondsBool) {
+            //if(this.secondsBool) { (Always draw seconds with unlocked screen as for stock watchface)
                 TypedArray seconds = res.obtainTypedArray(res.getIdentifier("seconds", "array", context.getPackageName()));
                 i = 0;
                 this.secondsFontSize = scale*sharedPreferences.getFloat("secondsFontSize", seconds.getDimension(i++, 0));
@@ -709,7 +709,7 @@ public class LoadSettings {
                 if(this.white_bg) this.secondsColor = inverted_text_color;
                 this.secondsAlignLeft = sharedPreferences.getBoolean("secondsAlignLeft", seconds.getBoolean(i, false));
                 seconds.recycle();
-            }
+            //}
         // am_pm
             /*
             String time_format = Settings.System.getString(context.getContentResolver(), "time_12_24");
