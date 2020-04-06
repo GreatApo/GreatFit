@@ -694,7 +694,7 @@ public class LoadSettings {
             }
         // Seconds
             this.secondsBool = sharedPreferences.getBoolean("secondsBool", res.getIdentifier("seconds", "array", context.getPackageName())!=0) && Util.needSlptRefreshSecond(context);
-            if(this.secondsBool) {
+            //if(this.secondsBool) { (Always draw seconds with unlocked screen as for stock watchface)
                 TypedArray seconds = res.obtainTypedArray(res.getIdentifier("seconds", "array", context.getPackageName()));
                 i = 0;
                 this.secondsFontSize = scale*sharedPreferences.getFloat("secondsFontSize", seconds.getDimension(i++, 0));
@@ -709,7 +709,7 @@ public class LoadSettings {
                 if(this.white_bg) this.secondsColor = inverted_text_color;
                 this.secondsAlignLeft = sharedPreferences.getBoolean("secondsAlignLeft", seconds.getBoolean(i, false));
                 seconds.recycle();
-            }
+            //}
         // am_pm
             /*
             String time_format = Settings.System.getString(context.getContentResolver(), "time_12_24");

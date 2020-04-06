@@ -278,9 +278,9 @@ public class MainClock extends DigitalClockWidget {
             canvas.drawText(Util.formatTime(minutes), settings.minutesLeft, settings.minutesTop, this.minutesFont);
 
             // Draw Seconds
-            if (settings.secondsBool) {
+            //if (settings.secondsBool) { (Always draw seconds with unlocked screen as for stock watchface)
                 canvas.drawText(Util.formatTime(seconds), settings.secondsLeft, settings.secondsTop, this.secondsFont);
-            }
+            //}
 
             // : indicator Draw + Flashing
             if (settings.indicatorBool) {
@@ -312,12 +312,12 @@ public class MainClock extends DigitalClockWidget {
             canvas.rotate((float) (minutes * 6), 160.0f + (settings.isVerge()?20f:0f), 159.0f + (settings.isVerge()?20f:0f));
             canvas.drawBitmap(this.minuteHand, centerX - this.minuteHand.getWidth() / 2f, centerY - this.minuteHand.getHeight() / 2f, null);
             canvas.restore();
-            if (settings.secondsBool) {
+            //if (settings.secondsBool) { (Always draw seconds with unlocked screen as for stock watchface)
                 canvas.save();
                 canvas.rotate((float) (seconds * 6), 160.0f + (settings.isVerge() ? 20f : 0f), 159.0f + (settings.isVerge() ? 20f : 0f));
                 canvas.drawBitmap(this.secondsHand, centerX - this.secondsHand.getWidth() / 2f, centerY - this.secondsHand.getHeight() / 2f, null);
                 canvas.restore();
-            }
+            //}
         }
 
         // JAVA calendar get/show time library
